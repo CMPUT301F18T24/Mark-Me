@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 dorsa
 rizwan
-=======
-dorsa
->>>>>>> 78da3b552810e8ac08c3e4d761bed33ac01ee9c7
+
+
