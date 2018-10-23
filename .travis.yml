@@ -12,13 +12,16 @@ android:
     - android-21
 
     # Specify one system emimage
-    - sys-img-armeabi-v7a-android-26
-    - sys-img-armeabi-v7a-android-17
+    # - sys-img-armeabi-v7a-android-26
+    # - sys-img-armeabi-v7a-android-17
 
   licenses:
     - android-sdk-preview-license-.+
     - android-sdk-license-.+
     - google-gdk-license-.+
+
+notifications:
+  email: false
 
 before_install:
   - chmod +x gradlew
