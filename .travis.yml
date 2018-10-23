@@ -1,6 +1,9 @@
 language: android
 android:
   components:
+    - platform-tools
+    - tools
+    
     # The BuildTools version used by our project.
     - build-tools-27.0.3
 
@@ -13,6 +16,6 @@ android:
 
   licenses:
     - 'android-sdk-license-.+'
-    
+
 before_install:
   - chmod +x gradlew
