@@ -1,0 +1,13 @@
+language: android
+android:
+  components:
+
+  # The BuildTools version used by our project.
+  - build-tools-26.0.2
+
+  # The SDK version used to compile our project
+  - android-21
+
+  # Specify one system emimage
+  - sys-img-armeabi-v7a-android-26
+  - sys-img-armeabi-v7a-android-17
