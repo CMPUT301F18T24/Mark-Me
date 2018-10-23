@@ -9,7 +9,7 @@ android:
 
     # Specify one system emimage
     - sys-img-armeabi-v7a-android-26
-    # - sys-img-armeabi-v7a-android-17
+    - sys-img-armeabi-v7a-android-17
 
 licenses:
   - android-sdk-preview-license-.+
@@ -21,6 +21,10 @@ notifications:
 
 before_install:
   - chmod +x gradlew
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
    - ./gradlew build connectedCheck
