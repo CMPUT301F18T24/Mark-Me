@@ -5,7 +5,7 @@ android:
     - tools # Needs to be included twice.
     - platform-tools
     - build-tools-27.0.3   # The BuildTools version used by our project.
-    - android-27 # The SDK version used to compile our project
+    - android-28 # The SDK version used to compile our project
 
     # Specify one system emimage
     # - sys-img-armeabi-v7a-android-26
