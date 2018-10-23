@@ -1,6 +1,7 @@
 language: android
 android:
   components:
+    - tools
     - platform-tools
     - tools
 
@@ -15,8 +16,10 @@ android:
     - sys-img-armeabi-v7a-android-17
 
   licenses:
-    - 'android-sdk-license-.+'
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
 
 before_install:
   - chmod +x gradlew
-  - yes | sdkmanager "platforms;android=28"
+  # - yes | sdkmanager "platforms;android=28"
