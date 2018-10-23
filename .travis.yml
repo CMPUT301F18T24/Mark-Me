@@ -21,7 +21,6 @@ notifications:
 
 before_install:
   - chmod +x gradlew
-  - yes | sdkmanager "platforms;android=27"
 
 script:
    - ./gradlew build connectedCheck
