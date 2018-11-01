@@ -11,6 +11,16 @@ public class UserModel {
     private String password;
     private String userType;
 
+    /*added a constructor*/
+    public UserModel(String userID,String password){
+        this.userID = userID;
+        this.password = password;
+    }
+
+    public UserModel(){
+
+    }
+
     private boolean isUser(String UserID){
         return UserID!=null;
     }
