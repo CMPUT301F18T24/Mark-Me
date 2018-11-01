@@ -6,19 +6,37 @@ import static org.junit.Assert.*;
 
 public class ProblemModelTest {
     @Test
-    public void addRecord() {
+    public void testAddRecord() {
         assertTrue(false);
     }
 
     @Test
-    public void removeRecord() {
+    public void testRemoveRecord() {
         assertTrue(false);
     }
 
     @Test
-    public void getRecord() {
+    public void testGetRecord() {
         assertTrue(false);
     }
 
-    public void 
+    @Test
+    public void testGetTitle() {
+        assertTrue(false);
+    }
+
+    @Test
+    public void testSetTitle() {
+        assertTrue(false);
+    }
+
+    @Test
+    public void testGetDescription() {
+        assertTrue(false);
+    }
+
+    @Test
+    public void testSetDescription() {
+        assertTrue(false);
+    }
 }
