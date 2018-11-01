@@ -10,6 +10,7 @@ public class ProblemModelTest {
     public void createProblem() {
         try {
             ProblemModel problem = new ProblemModel(null, null);
+            assertTrue(false);
         } catch (TitleTooLongException e) {
             assertTrue(false);
         } catch (DescriptionTooLongException e) {

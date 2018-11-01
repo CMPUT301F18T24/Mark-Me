@@ -40,6 +40,8 @@ public class ProblemModel {
             throw new NullPointerException();
         else if (description.length() > MAX_DESCRIPTION_LENGTH)
             throw new DescriptionTooLongException();
+
+        this.description = description;
     }
 }
 
