@@ -50,7 +50,37 @@ public class ProblemModelTest {
 
     @Test
     public void testSetTitle() {
-        assertTrue(false);
+        String title = "title";
+        String description = "description";
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel(title, description);
+            title = "less than 30 chars";
+            assertTrue(title.length() <= ProblemModel.MAX_TITLE_LENGTH);
+            problem.setTitle(title);
+            assertTrue(true);
+        } catch (TitleTooLongException e) {
+            assertTrue(false);
+        } catch (DescriptionTooLongException e) {
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
+
+        String longTitle = "";
+        for (int i = 0; i < ProblemModel.MAX_TITLE_LENGTH + 1; i++) {
+            longTitle += ".";
+        }
+        assertTrue(longTitle.length() > ProblemModel.MAX_TITLE_LENGTH);
+
+        try {
+            problem.setTitle(longTitle);
+            assertTrue(false);
+        } catch (TitleTooLongException e) {
+            assertTrue(true);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
     }
 
     @Test
@@ -73,7 +103,37 @@ public class ProblemModelTest {
 
     @Test
     public void testSetDescription() {
-        assertTrue(false);
+        String title = "title";
+        String description = "description";
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel(title, description);
+            description = "less than 300 chars";
+            assertTrue(description.length() <= ProblemModel.MAX_TITLE_LENGTH);
+            problem.setDescription(title);
+            assertTrue(true);
+        } catch (TitleTooLongException e) {
+            assertTrue(false);
+        } catch (DescriptionTooLongException e) {
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
+
+        String longDescr = "";
+        for (int i = 0; i < ProblemModel.MAX_DESCRIPTION_LENGTH + 1; i++) {
+            longDescr += ".";
+        }
+        assertTrue(longDescr.length() > ProblemModel.MAX_DESCRIPTION_LENGTH);
+
+        try {
+            problem.setDescription(longDescr);
+            assertTrue(false);
+        } catch (DescriptionTooLongException e) {
+            assertTrue(true);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
     }
 
     @Test
