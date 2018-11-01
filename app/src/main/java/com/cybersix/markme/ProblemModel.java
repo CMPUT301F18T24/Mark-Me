@@ -16,6 +16,8 @@ public class ProblemModel {
             throws TitleTooLongException, DescriptionTooLongException, NullPointerException {
         setTitle(title);
         setDescription(description);
+
+        this.started = new Date();
     }
 
     public String getTitle() {
@@ -42,6 +44,10 @@ public class ProblemModel {
             throw new DescriptionTooLongException();
 
         this.description = description;
+    }
+
+    public Date getDateStarted() {
+        return this.started;
     }
 }
 

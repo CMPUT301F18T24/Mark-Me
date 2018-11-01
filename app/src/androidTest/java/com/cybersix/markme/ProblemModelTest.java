@@ -3,6 +3,8 @@ package com.cybersix.markme;
 import org.junit.Test;
 import org.junit.runner.Description;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 public class ProblemModelTest {
@@ -22,6 +24,8 @@ public class ProblemModelTest {
 
     @Test
     public void testAddRecord() {
+        RecordModel record = new RecordModel();
+
         assertTrue(false);
     }
 
@@ -137,7 +141,19 @@ public class ProblemModelTest {
     }
 
     @Test
-    public void testDateStarted() {
-        assertTrue(false);
+    public void testGetDateStarted() {
+        String title = "title";
+        String description = "description";
+        try {
+            ProblemModel problem = new ProblemModel(title, description);
+            // NOTE: Only checks for the same "yyyy-mm-dd", might not be sufficient enough
+            assertEquals(problem.getDateStarted(), new Date());
+        } catch (TitleTooLongException e) {
+            assertTrue(false);
+        } catch (DescriptionTooLongException e) {
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
     }
 }
