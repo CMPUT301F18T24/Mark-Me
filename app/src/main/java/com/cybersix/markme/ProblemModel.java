@@ -1,10 +1,10 @@
 package com.cybersix.markme;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class ProblemModel {
-    private Collection<RecordModel> records;
+    private List<RecordModel> records;
     private String title;
     private String description;
     private Date started;
@@ -48,6 +48,20 @@ public class ProblemModel {
 
     public Date getDateStarted() {
         return this.started;
+    }
+
+    public void addRecord(RecordModel record) {
+        if (record == null || records.contains(record))
+            return;
+
+        records.add(record);
+    }
+
+    public RecordModel getRecord(int index) {
+        if (records.size() > index)
+            return null;
+
+        return records.get(index);
     }
 }
 

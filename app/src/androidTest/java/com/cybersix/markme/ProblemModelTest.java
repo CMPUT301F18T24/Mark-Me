@@ -25,13 +25,24 @@ public class ProblemModelTest {
     @Test
     public void testAddRecord() {
         RecordModel record = new RecordModel();
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel("", "");
+        } catch (TitleTooLongException e) {
+            assertTrue(false);
+        } catch (DescriptionTooLongException e) {
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(false);
+        }
 
-        assertTrue(false);
+        problem.addRecord(record);
+        assertEquals(record, problem.getRecord(0));
     }
 
     @Test
     public void testGetRecord() {
-        assertTrue(false);
+
     }
 
     @Test
