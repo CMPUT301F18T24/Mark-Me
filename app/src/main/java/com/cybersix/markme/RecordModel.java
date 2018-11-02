@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +13,7 @@ public class RecordModel {
     private String comment;
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
-    private GPSCoordinate mapLocation;
+    private Location mapLocation;
 
     public RecordModel(String title, String desc){
         photos = new ArrayList<Bitmap>(10);
@@ -63,11 +64,11 @@ public class RecordModel {
         return photo;
     }
 
-    public void setMapLocation(GPSCoordinate mapLocation) {
+    public void setMapLocation(Location mapLocation) {
         this.mapLocation = mapLocation;
     }
 
-    public GPSCoordinate getMapLocation() {
+    public Location getMapLocation() {
         return mapLocation;
     }
 

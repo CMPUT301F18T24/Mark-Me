@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.media.Image;
 
 import org.junit.Test;
@@ -94,8 +95,8 @@ public class RecordModelTest {
     @Test
     public void testSetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        GPSCoordinate gpOld = new GPSCoordinate();
-        GPSCoordinate gpNew = new GPSCoordinate();
+        Location gpOld = new Location("prov");
+        Location gpNew = new Location("prov2");
         rm.setMapLocation(gpOld);
         assertEquals(rm.getMapLocation(),gpOld);
         rm.setMapLocation(gpNew);
@@ -105,9 +106,9 @@ public class RecordModelTest {
     @Test
     public void testGetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        GPSCoordinate gp = new GPSCoordinate();
+        Location gp = new Location("prov");
         rm.setMapLocation(gp);
-        GPSCoordinate getMapLoc = rm.getMapLocation();
+        Location getMapLoc = rm.getMapLocation();
         assertEquals(getMapLoc,gp);
     }
 
