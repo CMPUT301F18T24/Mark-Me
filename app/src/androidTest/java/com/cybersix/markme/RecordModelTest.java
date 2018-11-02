@@ -1,5 +1,8 @@
 package com.cybersix.markme;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -111,24 +114,45 @@ public class RecordModelTest {
     @Test
     public void testAddPhoto() {
         RecordModel rm = new RecordModel("test","test");
-        PhotoRecord photo = new PhotoRecord();
+        Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<PhotoRecord> ph = rm.getPhotos();
+            ArrayList<Bitmap> ph = rm.getPhotos();
             assertEquals(photo,ph.get(0));
         } catch(TooManyPhotosException e){
+            fail();
+        }
+        catch(PhotoTooLargeException e){
             fail();
         }
 
         rm = new RecordModel("test","test");
         try{
             for(int i=0;i<=11;i++){
-                PhotoRecord ph = new PhotoRecord();
+                Bitmap ph = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
                 rm.addPhoto(ph);
             }
         } catch(TooManyPhotosException e){
             assertEquals(e.getClass(),TooManyPhotosException.class);
         }
+        catch(PhotoTooLargeException e){
+            fail();
+        }
+
+        rm = new RecordModel("test","test");
+        try{
+            Bitmap phTooLarge = Bitmap.createBitmap(9999999,9999999,Bitmap.Config.ARGB_4444);
+            rm.addPhoto(phTooLarge);
+        } catch(TooManyPhotosException e){
+            fail();
+        }
+        catch(PhotoTooLargeException e){
+            //This will fail
+            assertEquals(e.getClass(),PhotoTooLargeException.class); //Still needs full implementation..except fail here for now
+        }
+        //Should not get here
+        fail();
+
 
 
     }
@@ -136,13 +160,16 @@ public class RecordModelTest {
     @Test
     public void testGetPhotos() {
         RecordModel rm = new RecordModel("test","test");
-        PhotoRecord photo = new PhotoRecord();
+        Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<PhotoRecord> ph = rm.getPhotos();
-            PhotoRecord p = ph.get(0);
+            ArrayList<Bitmap> ph = rm.getPhotos();
+            Bitmap p = ph.get(0);
             assertEquals(photo,p);
         } catch(TooManyPhotosException e){
+            fail();
+        }
+        catch(PhotoTooLargeException e){
             fail();
         }
     }
@@ -150,11 +177,11 @@ public class RecordModelTest {
     @Test
     public void testRemovePhoto() {
         RecordModel rm = new RecordModel("test","test");
-        PhotoRecord photo = new PhotoRecord();
+        Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<PhotoRecord> ph = rm.getPhotos();
-            PhotoRecord p = ph.get(0);
+            ArrayList<Bitmap> ph = rm.getPhotos();
+            Bitmap p = ph.get(0);
             assertEquals(photo,p);
 
             rm.removePhoto(photo);
@@ -162,6 +189,9 @@ public class RecordModelTest {
             assertFalse(ph.contains(photo));
 
         } catch(TooManyPhotosException e){
+            fail();
+        }
+        catch(PhotoTooLargeException e){
             fail();
         }
     }

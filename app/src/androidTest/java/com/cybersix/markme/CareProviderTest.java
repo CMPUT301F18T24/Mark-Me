@@ -56,10 +56,11 @@ public class CareProviderTest {
         Patient pat = new Patient("guy44","password!");
         Patient pat2 = new Patient("guy4412123","password!");
         care.addPatient(pat);
+        care.addPatient(pat2);
 
-        care.removePatient(pat);
         assertTrue(care.hasPatient(pat));
 
+        care.removePatient(pat2);
         assertFalse(care.hasPatient(pat2));
     }
 
