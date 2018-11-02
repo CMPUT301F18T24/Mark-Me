@@ -11,11 +11,16 @@ public class UserModel {
     private String password;
     private String userType;
 
+    public static final int MINIMUM_USERID_LENGTH = 8;
+
     // Need a default constructor to compile with Patient/Care Provider inheritance.
     public UserModel() { }
 
     /*added a constructor*/
     public UserModel(String userID, String password) throws UserIDTooShortException {
+        if (userID.length() < MINIMUM_USERID_LENGTH)
+            throw new UserIDTooShortException();
+
         this.userID = userID;
         this.password = password;
     }
