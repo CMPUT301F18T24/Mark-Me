@@ -22,7 +22,7 @@ public class ProblemModelTest {
 
     @Test
     public void testAddRecord() {
-        RecordModel record = new RecordModel();
+        RecordModel record = new RecordModel("","");
         ProblemModel problem = null;
         try {
             problem = new ProblemModel("", "");
@@ -36,7 +36,7 @@ public class ProblemModelTest {
 
     @Test
     public void testGetRecord() {
-        RecordModel record = new RecordModel();
+        RecordModel record = new RecordModel("","");
         ProblemModel problem = null;
         try {
             problem = new ProblemModel("", "");
@@ -53,7 +53,7 @@ public class ProblemModelTest {
 
     @Test
     public void testRemoveRecord() {
-        RecordModel record = new RecordModel();
+        RecordModel record = new RecordModel("","");
         ProblemModel problem = null;
         try {
             problem = new ProblemModel("", "");
@@ -76,7 +76,7 @@ public class ProblemModelTest {
         assertTrue(problem.removeRecord(record));
 
         problem.addRecord(record);
-        assertFalse(problem.removeRecord(new RecordModel()));
+        assertFalse(problem.removeRecord(new RecordModel("","")));
     }
 
     @Test

@@ -7,6 +7,7 @@ public class RecordModel {
     private String title;
     private String description;
     private Date timestamp;
+    private String comment;
     private ArrayList<PhotoRecord> photos;
     private BodyLocation bodyLocation;
     private GPSCoordinate mapLocation;
@@ -41,13 +42,19 @@ public class RecordModel {
         return timestamp;
     }
 
-    public void addPhoto(PhotoRecord photo){
+    public void addPhoto(PhotoRecord photo) throws TooManyPhotosException{
         //TODO: Check photo size!
         if(photos.size()<10){ photos.add(photo); }
+        else{ throw new TooManyPhotosException(); }
     }
 
     public ArrayList<PhotoRecord> getPhotos() {
         return photos;
+    }
+
+    public PhotoRecord removePhoto(PhotoRecord photo){
+        boolean r = this.photos.remove(photo);
+        return photo;
     }
 
     public void setMapLocation(GPSCoordinate mapLocation) {
@@ -57,5 +64,15 @@ public class RecordModel {
     public GPSCoordinate getMapLocation() {
         return mapLocation;
     }
+
+    public String getComment(){
+        return this.comment;
+    }
+
+    public void setComment(String c){this.comment = c;}
+
+}
+
+class TooManyPhotosException extends Exception {
 
 }
