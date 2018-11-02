@@ -34,15 +34,53 @@ public class UserModel {
     }
 
     public void setEmail(String email) throws InvalidEmailAddressException {
+        if (!isValidEmail(email))
+            throw new InvalidEmailAddressException();
+
         this.email = email;
     }
+
+    static public boolean isValidEmail(String email) {
+        if (email == null || !email.contains("@"))
+            return false;
+
+        return true;
+    }
+
     public String getEmail(){
         return this.email;
     }
 
     public void setPhone(String phone) throws InvalidPhoneNumberException {
+        if (!isValidPhone(phone))
+            throw new InvalidPhoneNumberException();
+
         this.phone = phone;
     }
+
+    static public boolean isValidPhone(String phone) {
+        if (phone == null)
+            return false;
+
+        String[] phoneSegments = phone.split("-");
+        if (phoneSegments.length != 3)
+            return false;
+
+        if (phoneSegments[0].length() != 3 || phoneSegments[1].length() != 3
+                || phoneSegments[2].length() != 4)
+            return false;
+
+        for (String segment: phoneSegments) {
+            try {
+                Integer.parseInt(segment);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public String getPhone(){
         return this.phone;
     }

@@ -23,7 +23,7 @@ public class UserModelTest {
             assertEquals(pass, userModel.getPassword());
 
         } catch (UserIDTooShortException e) {
-
+            fail();
         }
 
     }
@@ -61,8 +61,7 @@ public class UserModelTest {
     public void testGetPasswordHash() {
         // Note: Since we have not implemented encryption algorithms, we cannot test password
         // hashes yet.
-        assertTrue(true);
-
+        fail();
     }
 
     @Test
@@ -130,7 +129,7 @@ public class UserModelTest {
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
             userModel.setPhone("123-456-7890");
-            assertEquals("joseph@world.com", userModel.getEmail());
+            assertEquals("123-456-7890", userModel.getPhone());
         } catch (UserIDTooShortException | InvalidPhoneNumberException e) {
             fail();
         }
