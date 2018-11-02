@@ -8,8 +8,9 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 public class ProblemModelTest {
+
     @Test
-    public void createProblem() {
+    public void testCreateProblem() {
         try {
             ProblemModel problem = new ProblemModel(null, null);
             fail("We should have gotton a null pointer exception");
