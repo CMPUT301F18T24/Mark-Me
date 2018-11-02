@@ -3,8 +3,9 @@ package com.cybersix.markme;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
-public class ProblemModel {
+public class ProblemModel extends Observable {
     private List<RecordModel> records;
     private String title;
     private String description;
@@ -57,14 +58,21 @@ public class ProblemModel {
             return;
 
         records.add(record);
+        notifyObservers();
     }
 
     public RecordModel removeRecord(int index) {
-        return records.remove(index);
+        RecordModel record = records.remove(index);
+        notifyObservers();
+
+        return record;
     }
 
     public boolean removeRecord(RecordModel record) {
-        return records.remove(record);
+        boolean removed = records.remove(record);
+        notifyObservers();
+
+        return removed;
     }
 
     public RecordModel getRecord(int index) {
