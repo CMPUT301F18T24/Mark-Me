@@ -33,7 +33,7 @@ public class UserModel {
         return this.userType;
     }
 
-    public void setEmail(String email) throws InvalidEmailAddressExecption {
+    public void setEmail(String email) throws InvalidEmailAddressException {
         this.email = email;
     }
     public String getEmail(){
@@ -57,6 +57,6 @@ public class UserModel {
 }
 
 class UserIDTooShortException extends Exception {}
-class InvalidEmailAddressExecption extends Exception {}
+class InvalidEmailAddressException extends Exception {}
 class InvalidPhoneNumberException extends Exception {}
 
