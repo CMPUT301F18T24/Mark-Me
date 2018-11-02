@@ -71,7 +71,7 @@ public class UserModelTest {
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
             userModel.setEmail("joseph@world.com");
-        } catch (UserIDTooShortException | InvalidEmailAddressExecption e) {
+        } catch (UserIDTooShortException | InvalidEmailAddressException e) {
             fail();
         }
 
@@ -82,7 +82,7 @@ public class UserModelTest {
             fail(); // Shouldn't get this far.
         } catch (UserIDTooShortException e) {
             fail();
-        } catch (InvalidEmailAddressExecption e){
+        } catch (InvalidEmailAddressException e){
             assertTrue(true); // Correctly caught the invalid email.
         }
 
@@ -95,7 +95,7 @@ public class UserModelTest {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
             userModel.setEmail("joseph@world.com");
             assertEquals("joseph@world.com", userModel.getEmail());
-        } catch (UserIDTooShortException | InvalidEmailAddressExecption e) {
+        } catch (UserIDTooShortException | InvalidEmailAddressException e) {
             fail();
         }
 
