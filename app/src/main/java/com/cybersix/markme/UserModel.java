@@ -4,56 +4,59 @@ package com.cybersix.markme;
 import android.os.Bundle;
 
 public class UserModel {
-    public String userID;
-    String name;
+
+    private String userID;
     private String email;
     private String phone;
     private String password;
     private String userType;
 
+    // Need a default constructor to compile with Patient/Care Provider inheritance.
+    public UserModel() { }
+
     /*added a constructor*/
-    public UserModel(String userID,String password){
+    public UserModel(String userID, String password) throws UserIDTooShortException {
         this.userID = userID;
         this.password = password;
     }
 
-    public UserModel(){
-
-    }
-
-    private boolean isUser(String UserID){
-        return UserID!=null;
-    }
-    private String getUsername(){
-        return this.userID;
-    }
-
+    public void setUserID(String userID) { this.userID = userID; }
     public String getUserID() {
         return userID;
     }
 
-    private String getUserType(){
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+    public String getUserType(){
 
         return this.userType;
     }
 
-    public boolean passwordExist(){
-        return password!= null;
+    public void setEmail(String email) throws InvalidEmailAddressExecption {
+        this.email = email;
     }
-
-    private String getEmail(){
+    public String getEmail(){
         return this.email;
     }
 
-    private String getPhone(){
+    public void setPhone(String phone) throws InvalidPhoneNumberException {
+        this.phone = phone;
+    }
+    public String getPhone(){
         return this.phone;
     }
 
-    private String getPassword(){
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getPassword(){
         return this.password;
     }
 
-    public boolean useridExist(){
-        return userID!=null;
-    }
 }
+
+class UserIDTooShortException extends Exception {}
+class InvalidEmailAddressExecption extends Exception {}
+class InvalidPhoneNumberException extends Exception {}
+
