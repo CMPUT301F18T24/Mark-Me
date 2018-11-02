@@ -41,8 +41,14 @@ public class ProblemModelTest {
         try {
             problem = new ProblemModel("", "");
         } catch (Exception e) {
-            fail("A problem with empty string should certainly be creatable");
+            fail();
         }
+
+        assertEquals("first element should not exist", problem.getRecord(0), null);
+
+        problem.addRecord(record);
+        assertEquals("first element should exist", problem.getRecord(0), record);
+        assertEquals("second element should not exist", problem.getRecord(1),null);
     }
 
     @Test

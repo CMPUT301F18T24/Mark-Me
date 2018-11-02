@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ProblemModel {
         setDescription(description);
 
         this.started = new Date();
+        this.records = new ArrayList<RecordModel>();
     }
 
     public String getTitle() {
@@ -58,7 +60,7 @@ public class ProblemModel {
     }
 
     public RecordModel getRecord(int index) {
-        if (records.size() > index)
+        if (records.size() <= index)
             return null;
 
         return records.get(index);
