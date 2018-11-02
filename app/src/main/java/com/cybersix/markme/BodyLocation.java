@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+
 public class BodyLocation {
     private EBodyPart bodyPart;
 
