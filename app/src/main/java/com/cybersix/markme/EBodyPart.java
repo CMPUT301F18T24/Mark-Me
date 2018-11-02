@@ -1,13 +1,7 @@
 package com.cybersix.markme;
 
-class EBodyPart {
-    private String bodyPart;
-
-    public String getBodyPart() {
-        return bodyPart;
-    }
-
-    public void setBodyPart(String bodyPart) {
-        this.bodyPart = bodyPart;
-    }
+public enum EBodyPart {
+    LEFTHAND,LEFTARM,LEFTLEG,LEFTFOOT,
+    RIGHTHAND,RIGHTARM,RIGHTLEG,RIGHTFOOT,
+    HEAD,NECK,CHEST,ABDOMEN,UPPERBACK,LOWERBACK
 }

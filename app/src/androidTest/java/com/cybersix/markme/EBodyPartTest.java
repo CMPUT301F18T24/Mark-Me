@@ -1,7 +1,5 @@
 package com.cybersix.markme;
 
-public enum EBodyPartTest {
-    LEFTHAND,LEFTARM,LEFTLEG,LEFTFOOT,
-    RIGHTHAND,RIGHTARM,RIGHTLEG,RIGHTFOOT,
-    HEAD,NECK,CHEST,ABDOMEN,UPPERBACK,LOWERBACK
+public class EBodyPartTest {
+
 }

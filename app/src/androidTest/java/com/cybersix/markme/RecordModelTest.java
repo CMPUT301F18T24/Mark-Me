@@ -8,10 +8,14 @@ public class RecordModelTest {
 
     @Test
     public void setTimestamp() {
+
     }
 
     @Test
     public void setBodyLocation() {
+        for(EBodyPart e : ){
+
+        }
     }
 
     @Test
