@@ -59,6 +59,14 @@ public class ProblemModel {
         records.add(record);
     }
 
+    public RecordModel removeRecord(int index) {
+        return records.remove(index);
+    }
+
+    public boolean removeRecord(RecordModel record) {
+        return records.remove(record);
+    }
+
     public RecordModel getRecord(int index) {
         if (records.size() <= index)
             return null;

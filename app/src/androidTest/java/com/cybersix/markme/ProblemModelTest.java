@@ -48,7 +48,35 @@ public class ProblemModelTest {
 
         problem.addRecord(record);
         assertEquals("first element should exist", problem.getRecord(0), record);
-        assertEquals("second element should not exist", problem.getRecord(1),null);
+        assertEquals("second element should not exist", problem.getRecord(1), null);
+    }
+
+    @Test
+    public void testRemoveRecord() {
+        RecordModel record = new RecordModel();
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel("", "");
+        } catch (Exception e) {
+            fail();
+        }
+
+        try {
+            problem.removeRecord(0);
+        } catch (IndexOutOfBoundsException e) {
+            assertTrue(true);
+        } catch (Exception e) {
+            fail();
+        }
+
+        problem.addRecord(record);
+        assertEquals(problem.getRecord(0), record);
+
+        problem.addRecord(record);
+        assertTrue(problem.removeRecord(record));
+
+        problem.addRecord(record);
+        assertFalse(problem.removeRecord(new RecordModel()));
     }
 
     @Test
