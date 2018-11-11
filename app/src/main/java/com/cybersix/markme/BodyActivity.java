@@ -1,6 +1,14 @@
 package com.cybersix.markme;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Region;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Debug;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -26,18 +34,19 @@ public class BodyActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 if(action == MotionEvent.ACTION_UP){
-                    //float xdp = event.getX()*(160f/dpi); //Necessary calculation.. Scales X and Y to screen size
-                    //float ydp = event.getY()*(160f/dpi);
+
                     int h = bodyView.getHeight();
                     int w = bodyView.getWidth();
-                    Log.d("Size","h: " + h + " " + "w: " + w);
 
-                    float xdp = 0;
-                    float ydp = 0;
+                    float xdp = event.getX()/w; //Necessary calculation.. Scales X and Y to screen size
+                    float ydp = event.getY()/h;
+
 
                     Log.d("BODY TOUCH","X: " + xdp + " " + "Y: " + ydp);
                     for(EBodyPart part : EBodyPart.values()){
-                        if(xdp <= part.getX2() && xdp>=part.getX1() && ydp<=part.getY2() && ydp>=part.getY1()){
+
+
+                        if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y){
                             Log.d("BODY HIT",part.toString());
                         }
                     }
@@ -46,4 +55,6 @@ public class BodyActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
