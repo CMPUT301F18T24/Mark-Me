@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login_activity">
+
+    <EditText
+        android:id="@+id/usernameText"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/usernameHint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.957" />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="@string/passwordHint"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="331dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/loginText"
+        app:layout_constraintBottom_toTopOf="@+id/signupButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/signupText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

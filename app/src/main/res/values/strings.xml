@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MarkMe</string>
+    <string name="usernameHint">Username:</string>
+    <string name="passwordHint">Password:</string>
+    <string name="loginText">Log In</string>
+    <string name="signupText">Sign Up</string>
 </resources>

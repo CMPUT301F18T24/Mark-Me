@@ -25,13 +25,29 @@ public class UserModel {
         this.password = password;
     }
 
-    public void setUserID(String userID) { this.userID = userID; }
+    public void setUserID(String userID) throws UserIDTooShortException {
+
+        if (userID.length() < MINIMUM_USERID_LENGTH) {
+            throw new UserIDTooShortException();
+        } else {
+            this.userID = userID;
+        }
+
+    }
+
     public String getUserID() {
         return userID;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    // Only accept two types of user types: "patient" ir "care_provider".
+    public void setUserType(String userType) throws InvalidUserTypeException {
+
+        if (userType.equals("patient") || userType.equals("care_provider")) {
+            this.userType = userType;
+        } else {
+            throw new InvalidUserTypeException();
+        }
+
     }
     public String getUserType(){
 
@@ -93,6 +109,7 @@ public class UserModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getPassword(){
         return this.password;
     }
@@ -102,4 +119,5 @@ public class UserModel {
 class UserIDTooShortException extends Exception {}
 class InvalidEmailAddressException extends Exception {}
 class InvalidPhoneNumberException extends Exception {}
+class InvalidUserTypeException extends Exception {}
 
