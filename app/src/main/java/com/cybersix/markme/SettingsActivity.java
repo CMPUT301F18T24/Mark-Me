@@ -1,3 +1,11 @@
+/**
+ * Jose: This is the settings activity that will have all of the necessary componenets to
+ *       configure the application from the users side
+ *
+ * Date: 2018-11-10
+ *
+ * Copyright Notice
+ */
 package com.cybersix.markme;
 
 import android.support.v7.app.AppCompatActivity;

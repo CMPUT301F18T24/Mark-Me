@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".PatientAssignmentActivity"></activity>
+        <activity android:name=".PatientAssignmentActivity" />
+        <activity android:name=".accountSettingsActivity"></activity>
     </application>
 
 </manifest>
