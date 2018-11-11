@@ -2,19 +2,24 @@ package com.cybersix.markme;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class login_activity extends AppCompatActivity {
 
-    public static UserProfileController userProfile; // Should this be static?
+    public static UserProfileController userProfileController; // Should this be static?
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
 
-        userProfile = new UserProfileController();
+        userProfileController = new UserProfileController();
 
         initUI();
 
@@ -47,9 +52,29 @@ public class login_activity extends AppCompatActivity {
     // Checks the provided login information against the UserModel.
     // If info is valid, it "logs" the user on.
     // If info is not valid, it displays a error message.
+    // Assumes that the user model has been loaded with user info.
+    // Inputs: Reads the userText and passText.
+    // Outputs:
     // TODO: Fill in stub for after login.
     public void checkLogin() {
 
+        TextView userText = (TextView) findViewById(R.id.usernameText);
+        TextView passText = (TextView) findViewById(R.id.passwordText);
+
+         if (userProfileController.isUserValid(userText.getText().toString(),
+                                               passText.getText().toString())) {
+             Log.d("Vishal_Login_Activity", "Successful Login.");
+             // Put code here for after login...
+         } else {
+
+             // Clear password box.
+             passText.setText("");
+
+             // Notify user that login failed.
+             Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
+             toast.show();
+
+         }
     }
 
 
