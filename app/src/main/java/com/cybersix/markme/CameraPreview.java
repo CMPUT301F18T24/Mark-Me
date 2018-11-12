@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 
 import java.util.Collections;
 
@@ -31,6 +32,8 @@ import java.util.Collections;
 
 public class CameraPreview {
     static final int CAMERA_REQUEST_CODE = 0;
+    static final int CAMERA_FACE_VIEW = 1;
+    static final int CAMERA_FRONT_VIEW = 0;
     Context mContext = null;
     CameraManager mManager = null;
     CameraDevice mDevice = null;
@@ -40,6 +43,9 @@ public class CameraPreview {
     Size mPreviewSize = null;
     Handler mHandler = null;
     HandlerThread mHandlerThread = null;
+    View mCaptureButton = null;
+    View mToggleViewButton = null;
+    int mCurrentView = CAMERA_FRONT_VIEW;
 
     final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -97,7 +103,7 @@ public class CameraPreview {
 
         mManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
-            mID = mManager.getCameraIdList()[0];
+            mID = mManager.getCameraIdList()[mCurrentView];
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -115,6 +121,37 @@ public class CameraPreview {
     public void stop() {
         close();
         closeCameraHandlerThread();
+    }
+
+    public void setToggleViewButton(View button) {
+        if (button == null)
+            return;
+
+        mToggleViewButton = button;
+        mToggleViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextDevice();
+            }
+        });
+    }
+
+    public void nextDevice() {
+        if (mManager == null)
+            return;
+
+        if (mCurrentView == CAMERA_FRONT_VIEW)
+            mCurrentView = CAMERA_FACE_VIEW;
+        else
+            mCurrentView = CAMERA_FRONT_VIEW;
+
+        stop();
+        try {
+            mID = mManager.getCameraIdList()[mCurrentView];
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        start();
     }
 
     private void open() {
