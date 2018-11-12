@@ -1,6 +1,8 @@
 package com.cybersix.markme;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -20,7 +22,16 @@ import android.view.TextureView;
 
 import java.util.Collections;
 
+/**
+ * The following code is based off of:
+ *  https://android.jlelse.eu/the-least-you-can-do-with-camera2-api-2971c8c81b8b
+ * Which was authored by:
+ *  Mateusz Dziubek
+ **/
+
 public class CameraPreview {
+    static final int CAMERA_REQUEST_CODE = 0;
+    Context mContext = null;
     CameraManager mManager = null;
     CameraDevice mDevice = null;
     CameraCaptureSession mCaptureSession = null;
@@ -33,7 +44,7 @@ public class CameraPreview {
     final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            openCamera();
+            open();
         }
 
         @Override
@@ -52,12 +63,10 @@ public class CameraPreview {
         }
     };
 
-    final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
+    final CameraDevice.StateCallback mDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
-            if (mDevice != null) {
-                mDevice.close();
-            }
+            closeDevice(); // assuming we somehow have a pre-existing CameraDevice opened
 
             mDevice = camera;
             createPreviewSession();
@@ -65,71 +74,119 @@ public class CameraPreview {
 
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
-            if (mDevice == null)
-                return;
-
-            mDevice.close();
-            mDevice = null;
+            closeDevice();
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            if (mDevice == null)
-                return;
-
-            mDevice.close();
-            mDevice = null;
+            closeDevice();
         }
     };
 
-    public void open() {
+    public CameraPreview(Activity context, TextureView textureView) {
+        if (context == null || textureView == null)
+            return;
+
+        mContext = context;
+        mTextureView = textureView;
+        initialize();
+    }
+
+    public void initialize() {
+        ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+
+        mManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
-            CameraCharacteristics cc = cameraManager.getCameraCharacteristics(cameraID);
+            mID = mManager.getCameraIdList()[0];
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+        createCameraHandlerThread();
+        if (mTextureView.isAvailable()) {
+            open();
+        } else {
+            mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
+        }
+    }
+
+    public void stop() {
+        close();
+        closeCameraHandlerThread();
+    }
+
+    private void open() {
+        try {
+            CameraCharacteristics cc = mManager.getCameraCharacteristics(mID);
             StreamConfigurationMap streamConfigurationMap = cc.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                cameraManager.openCamera(cameraID, stateCallback, cameraHandler);
+            mPreviewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                mManager.openCamera(mID, mDeviceStateCallback, mHandler);
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
 
-    public void closeCamera() {
-        cameraCaptureSession.close();
-        cameraCaptureSession = null;
+    private void close() {
+        closeCaptureSession();
+        closeDevice();
+    }
 
-        cameraDevice.close();
-        cameraDevice = null;
+    private void closeCaptureSession() {
+        if (mCaptureSession == null)
+            return;
+
+        mCaptureSession.close();
+        mCaptureSession = null;
+    }
+
+    private void closeDevice() {
+        if (mDevice == null)
+            return;
+
+        mDevice.close();
+        mDevice = null;
     }
 
     private void createCameraHandlerThread() {
-        cameraHandlerThread = new HandlerThread("camera_handler_thread");
-        cameraHandlerThread.start();
-        cameraHandler = new Handler(cameraHandlerThread.getLooper());
+        closeCameraHandlerThread(); // close any pre-existing thread, if it somehow exists.
+
+        mHandlerThread = new HandlerThread("camera_handler_thread");
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper());
     }
 
     private void closeCameraHandlerThread() {
-        cameraHandlerThread.quitSafely();
-        cameraHandlerThread = null;
-        cameraHandler = null;
+        if (mHandlerThread == null)
+            return;
+
+        mHandlerThread.quitSafely();
+        mHandlerThread = null;
+        mHandler = null;
     }
 
     private void createPreviewSession() {
+        if (mTextureView == null || mPreviewSize == null)
+            return;
+
         try {
-            SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
-            surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
+            SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
+            surfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             Surface previewSurface = new Surface(surfaceTexture);
-            final CaptureRequest.Builder captureRequestBuider = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+
+            final CaptureRequest.Builder captureRequestBuider = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuider.addTarget(previewSurface);
 
-            cameraDevice.createCaptureSession(Collections.singletonList(previewSurface), new CameraCaptureSession.StateCallback() {
+            mDevice.createCaptureSession(Collections.singletonList(previewSurface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
                     CaptureRequest captureRequest = captureRequestBuider.build();
-                    cameraCaptureSession = session;
+                    mCaptureSession = session;
                     try {
-                        cameraCaptureSession.setRepeatingRequest(captureRequest, null, cameraHandler);
+                        mCaptureSession.setRepeatingRequest(captureRequest, null, mHandler);
                     } catch (CameraAccessException e) { e.printStackTrace(); }
                 }
 
@@ -137,7 +194,7 @@ public class CameraPreview {
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                     return;
                 }
-            }, cameraHandler);
+            }, mHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
