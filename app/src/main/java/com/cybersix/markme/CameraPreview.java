@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -31,21 +33,23 @@ import java.util.Collections;
  **/
 
 public class CameraPreview {
-    static final int CAMERA_REQUEST_CODE = 0;
-    static final int CAMERA_FACE_VIEW = 1;
-    static final int CAMERA_FRONT_VIEW = 0;
-    Context mContext = null;
-    CameraManager mManager = null;
-    CameraDevice mDevice = null;
-    CameraCaptureSession mCaptureSession = null;
-    TextureView mTextureView = null;
-    String mID = null;
-    Size mPreviewSize = null;
-    Handler mHandler = null;
-    HandlerThread mHandlerThread = null;
-    View mCaptureButton = null;
-    View mToggleViewButton = null;
-    int mCurrentView = CAMERA_FRONT_VIEW;
+    static public final int CAMERA_FACE_VIEW = 1;
+    static public final int CAMERA_FRONT_VIEW = 0;
+    static private final int CAMERA_REQUEST_CODE = 0;
+    private Context mContext = null;
+    private CameraManager mManager = null;
+    private CameraDevice mDevice = null;
+    private CameraCaptureSession mCaptureSession = null;
+    private CaptureRequest.Builder mCaptureRequestBuider = null;
+    private TextureView mTextureView = null;
+    private String mID = null;
+    private Size mPreviewSize = null;
+    private Handler mHandler = null;
+    private HandlerThread mHandlerThread = null;
+    private View mCaptureButton = null;
+    private View mToggleViewButton = null;
+    private int mCurrentView = CAMERA_FRONT_VIEW;
+    private CaptureListener mCaptureListener = null;
 
     final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -136,6 +140,35 @@ public class CameraPreview {
         });
     }
 
+    public void setCaptureButton(View button) {
+        if (button == null)
+            return;
+
+        mCaptureButton = button;
+        mCaptureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                capture();
+            }
+        });
+    }
+
+    public View getToggleViewButton() {
+        return mToggleViewButton;
+    }
+
+    public View getCaptureButton() {
+        return mCaptureButton;
+    }
+
+    public Bitmap getBitmap() {
+        return mTextureView.getBitmap();
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
     public void nextDevice() {
         if (mManager == null)
             return;
@@ -152,6 +185,32 @@ public class CameraPreview {
             e.printStackTrace();
         }
         start();
+    }
+
+    public void capture() {
+        try {
+            mCaptureSession.capture(
+                    mCaptureRequestBuider.build(),
+                    null,
+                    mHandler
+            );
+            if (mCaptureListener != null)
+                mCaptureListener.onCapture(getBitmap());
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void restartCaptureSession() {
+        try {
+            mCaptureSession.setRepeatingRequest(
+                    mCaptureRequestBuider.build(),
+                    null,
+                    mHandler
+            );
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private void open() {
@@ -214,13 +273,13 @@ public class CameraPreview {
             surfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             Surface previewSurface = new Surface(surfaceTexture);
 
-            final CaptureRequest.Builder captureRequestBuider = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            captureRequestBuider.addTarget(previewSurface);
+            mCaptureRequestBuider = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mCaptureRequestBuider.addTarget(previewSurface);
 
             mDevice.createCaptureSession(Collections.singletonList(previewSurface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
-                    CaptureRequest captureRequest = captureRequestBuider.build();
+                    CaptureRequest captureRequest = mCaptureRequestBuider.build();
                     mCaptureSession = session;
                     try {
                         mCaptureSession.setRepeatingRequest(captureRequest, null, mHandler);

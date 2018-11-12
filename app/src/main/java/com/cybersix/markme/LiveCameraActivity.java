@@ -23,6 +23,7 @@ public class LiveCameraActivity extends AppCompatActivity {
 
         cameraPreview = new CameraPreview(this, textureView);
         cameraPreview.setToggleViewButton(toggleViewButton);
+        cameraPreview.setCaptureButton(captureButton);
     }
 
     @Override
