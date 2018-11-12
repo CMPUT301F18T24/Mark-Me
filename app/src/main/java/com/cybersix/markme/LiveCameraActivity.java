@@ -1,10 +1,14 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.ByteArrayOutputStream;
 
 public class LiveCameraActivity extends AppCompatActivity {
     TextureView textureView = null;
@@ -24,6 +28,20 @@ public class LiveCameraActivity extends AppCompatActivity {
         cameraPreview = new CameraPreview(this, textureView);
         cameraPreview.setToggleViewButton(toggleViewButton);
         cameraPreview.setCaptureButton(captureButton);
+        cameraPreview.setOnCaptureListener(new OnCaptureListener() {
+            @Override
+            public void onCapture(Bitmap bitmap) {
+                Intent data = new Intent();
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+                data.putExtra("image", bytes);
+
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
     }
 
     @Override
