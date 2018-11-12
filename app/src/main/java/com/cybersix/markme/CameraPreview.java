@@ -49,7 +49,7 @@ public class CameraPreview {
     private View mCaptureButton = null;
     private View mToggleViewButton = null;
     private int mCurrentView = CAMERA_FRONT_VIEW;
-    private CaptureListener mCaptureListener = null;
+    private OnCaptureListener mCaptureListener = null;
 
     final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -151,6 +151,10 @@ public class CameraPreview {
                 capture();
             }
         });
+    }
+
+    public void setOnCaptureListener(OnCaptureListener listener) {
+        mCaptureListener = listener;
     }
 
     public View getToggleViewButton() {

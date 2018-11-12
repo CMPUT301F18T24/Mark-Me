@@ -2,6 +2,6 @@ package com.cybersix.markme;
 
 import android.graphics.Bitmap;
 
-public interface CaptureListener {
+public interface OnCaptureListener {
     void onCapture(Bitmap bitmap);
 }
