@@ -4,4 +4,9 @@
     <string name="passwordHint">Password:</string>
     <string name="loginText">Log In</string>
     <string name="signupText">Sign Up</string>
+    <string name="signupPrompt">Please enter the required information to register an account:</string>
+    <string name="femaleText">Female</string>
+    <string name="maleText">Male</string>
+    <string name="emailHint">Email:</string>
+    <string name="phoneHint">Phone:</string>
 </resources>
