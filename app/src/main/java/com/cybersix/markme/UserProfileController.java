@@ -2,14 +2,22 @@ package com.cybersix.markme;
 
 public class UserProfileController {
 
+    private static UserProfileController instance = null;
     private UserModel user;
 
     // Is the controller a singleton, or is the model a singleton?
-    public UserProfileController() {
+    protected UserProfileController() {
         user = new UserModel();
     }
 
-    // Todo: Fill in stub.
+    // Lazy construction of instance.
+    public static UserProfileController getInstance() {
+        if (instance == null) {
+            instance = new UserProfileController();
+        }
+        return instance;
+    }
+
     public Boolean addUser(String userID, String email, String phone, String password, String userType) {
 
         try {
