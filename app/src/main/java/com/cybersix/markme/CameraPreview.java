@@ -102,6 +102,10 @@ public class CameraPreview {
         initialize();
     }
 
+    /**
+     * Performs the basic intialization for the CameraManager object.
+     * This includes getting permission from the user to the camera on the phone.
+     */
     public void initialize() {
         ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
 
@@ -113,7 +117,13 @@ public class CameraPreview {
         }
     }
 
+    /**
+     * Starts the camera service in the given texture view.
+     */
     public void start() {
+        if (mTextureView == null)
+            return;
+
         createCameraHandlerThread();
         if (mTextureView.isAvailable()) {
             open();
@@ -122,11 +132,19 @@ public class CameraPreview {
         }
     }
 
+    /**
+     * Stops the camera service in the given texture view.
+     */
     public void stop() {
         close();
         closeCameraHandlerThread();
     }
 
+    /**
+     * Sets the onClick parameter of the button to switch the next camera device by
+     * invoking nextDevice(). mToggleViewButton is also set to the given button view.
+     * @param button is the view which acts as the toggle button.
+     */
     public void setToggleViewButton(View button) {
         if (button == null)
             return;
@@ -140,6 +158,11 @@ public class CameraPreview {
         });
     }
 
+    /**
+     * Sets the onClick parameter of the button to "capture" or "take a photo" in the current
+     * camera device by invoking capture(). mCaptureButton is also set to the given button view.
+     * @param button is the view which acts as the capture button.
+     */
     public void setCaptureButton(View button) {
         if (button == null)
             return;
@@ -153,26 +176,50 @@ public class CameraPreview {
         });
     }
 
+    /**
+     * Sets mCaptureListener to the supplied listener. The listener's method will be called
+     * when the capture() method is invoked.
+     * @param listener
+     */
     public void setOnCaptureListener(OnCaptureListener listener) {
         mCaptureListener = listener;
     }
 
+    /**
+     * @return mToggleViewButton
+     */
     public View getToggleViewButton() {
         return mToggleViewButton;
     }
 
+    /**
+     * @return mCaptureButton
+     */
     public View getCaptureButton() {
         return mCaptureButton;
     }
 
+    /**
+     * @return the current bitmap being displayed on the given TextureView.
+     */
     public Bitmap getBitmap() {
         return mTextureView.getBitmap();
     }
 
+    /**
+     * @return mContext
+     */
     public Context getContext() {
         return mContext;
     }
 
+    /**
+     * Safely stops the capture session on the current device before switching
+     * and starting the capture session on the next camera device.
+     *
+     * Currently there are only two camera devices that are considered on the phone:
+     *  The "Front" camera device and the "Face" camera device.
+     */
     public void nextDevice() {
         if (mManager == null)
             return;
@@ -191,6 +238,10 @@ public class CameraPreview {
         start();
     }
 
+    /**
+     * Captures the photo on the current capture session.
+     * Consequently, the onCapture method is called, assuming it exists.
+     */
     public void capture() {
         try {
             mCaptureSession.capture(
@@ -205,6 +256,10 @@ public class CameraPreview {
         }
     }
 
+    /**
+     * Supposedly the capture session is "locked" after a capture occurs (this is to be tested).
+     * If so, we can restart the capture session using this method.
+     */
     public void restartCaptureSession() {
         try {
             mCaptureSession.setRepeatingRequest(
@@ -217,7 +272,13 @@ public class CameraPreview {
         }
     }
 
+    /**
+     * Safely opens the camera using the CameraManger.openCamera(), assuming permission is given.
+     */
     private void open() {
+        if (mManager == null)
+            return;
+
         try {
             CameraCharacteristics cc = mManager.getCameraCharacteristics(mID);
             StreamConfigurationMap streamConfigurationMap = cc.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -230,11 +291,17 @@ public class CameraPreview {
         }
     }
 
+    /**
+     * Closes the capture session and camera device.
+     */
     private void close() {
         closeCaptureSession();
         closeDevice();
     }
 
+    /**
+     * Safely closes the capture session.
+     */
     private void closeCaptureSession() {
         if (mCaptureSession == null)
             return;
@@ -243,6 +310,9 @@ public class CameraPreview {
         mCaptureSession = null;
     }
 
+    /**
+     * Safely closes the camera device.
+     */
     private void closeDevice() {
         if (mDevice == null)
             return;
@@ -251,6 +321,9 @@ public class CameraPreview {
         mDevice = null;
     }
 
+    /**
+     * Safely creates a camera handler thread to take care of all the camera processing.
+     */
     private void createCameraHandlerThread() {
         closeCameraHandlerThread(); // close any pre-existing thread, if it somehow exists.
 
@@ -259,6 +332,9 @@ public class CameraPreview {
         mHandler = new Handler(mHandlerThread.getLooper());
     }
 
+    /**
+     * Safely closes the camera handler thread.
+     */
     private void closeCameraHandlerThread() {
         if (mHandlerThread == null)
             return;
@@ -268,6 +344,10 @@ public class CameraPreview {
         mHandler = null;
     }
 
+    /**
+     * Creates a preview capture session which allows us to stream the contents of the camera directly to
+     * the mTextureView.
+     */
     private void createPreviewSession() {
         if (mTextureView == null || mPreviewSize == null)
             return;
