@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more implementation to attempt robotium intent testing.
+    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
 
         // Add an onClick listener that validates login information
@@ -39,10 +40,16 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo: Fill in the code for opening signup activity.
+                openSignupActivity();
             }
         });
 
+    }
+
+    // Launches the signup activity.
+    public void openSignupActivity() {
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
     }
 
     // Checks the provided login information against the UserModel.

@@ -18,6 +18,10 @@ public class UserProfileController {
         return instance;
     }
 
+    // Attempts to add a user to the UserModel.
+    // Inputs: userID, email, phone, password - User information
+    //         userType - The type of the user.
+    // Outputs: Returns true if added user was successful, false otherwise.
     public Boolean addUser(String userID, String email, String phone, String password, String userType) {
 
         try {
