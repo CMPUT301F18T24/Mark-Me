@@ -3,7 +3,9 @@ package com.cybersix.markme;
 
 import android.os.Bundle;
 
-public class UserModel {
+import java.util.Observable;
+
+public class UserModel extends Observable {
 
     private String userID;
     private String email;
@@ -33,6 +35,9 @@ public class UserModel {
             this.userID = userID;
         }
 
+        setChanged();
+        notifyObservers();
+
     }
 
     public String getUserID() {
@@ -48,6 +53,9 @@ public class UserModel {
             throw new InvalidUserTypeException();
         }
 
+        setChanged();
+        notifyObservers();
+
     }
     public String getUserType(){
 
@@ -59,6 +67,9 @@ public class UserModel {
             throw new InvalidEmailAddressException();
 
         this.email = email;
+
+        setChanged();
+        notifyObservers();
     }
 
     static public boolean isValidEmail(String email) {
@@ -77,6 +88,9 @@ public class UserModel {
             throw new InvalidPhoneNumberException();
 
         this.phone = phone;
+
+        setChanged();
+        notifyObservers();
     }
 
     static public boolean isValidPhone(String phone) {
@@ -108,6 +122,9 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+
+        setChanged();
+        notifyObservers();
     }
 
     public String getPassword(){

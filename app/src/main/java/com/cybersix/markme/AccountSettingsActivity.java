@@ -59,8 +59,28 @@ public class AccountSettingsActivity extends AppCompatActivity {
     // Try to save the new contact information provided by the user.
     public void saveNewContactInformation() {
 
+        UserProfileController profileController = UserProfileController.getInstance();
 
-        // TODO: Set changed?
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
+
+        // Edit the contact information.
+        profileController.editContactInformation(emailText.getText().toString(),
+                                                 phoneText.getText().toString());
+
+        // Disable the contact info text fields again.
+        emailText.setEnabled(false);
+        phoneText.setEnabled(false);
+
+        // Hide the save button
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setVisibility(View.GONE);
+
+        // And show the edit contact info button.
+        Button editContactsButton = (Button) findViewById(R.id.editContactButton);
+        editContactsButton.setVisibility(View.VISIBLE);
+
+        // TODO: Set UserModel Changed?
     }
 
     // Enable changing the contact info text boxes, show the save button and hide the edit
