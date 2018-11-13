@@ -6,12 +6,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AccountSettingsActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
+
+public class AccountSettingsActivity extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
+
+        // Add the AccoutSettingsActivity view as an observer to the UserModel.
+        UserProfileController profileController = UserProfileController.getInstance();
+        profileController.user.addObserver(this);
 
         initUI();
     }
@@ -54,6 +61,21 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // Update the contact information fields.
+        updateContactInformationFields((UserModel) o);
+    }
+
+    // Update the contact information fields using the updated values from the model.
+    public void updateContactInformationFields(UserModel model) {
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
+
+        emailText.setText(model.getEmail());
+        phoneText.setText(model.getPhone());
     }
 
     // Try to save the new contact information provided by the user.
