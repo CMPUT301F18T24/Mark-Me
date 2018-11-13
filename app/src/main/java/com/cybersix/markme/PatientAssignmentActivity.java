@@ -12,7 +12,7 @@ public class PatientAssignmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_assignment);
 
-        // set up all of the buttons that are used within this acitivity
+        // set up all of the buttons that are used within this activity
     }
 
     @Override
