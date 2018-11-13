@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -53,11 +54,22 @@ public class BodyActivity extends AppCompatActivity {
     private ImageView bodyView;
     private PointView point;
     private ImageButton rotateButton;
+    private ImageButton addButton;
+    private TextView totalText;
+    private TextView userPromptText;
+    private TextView notListedText;
+    private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private DisplayMetrics dm;
     private boolean frontFacing = true;
 
 
+    /*
+        TODO:
+        1. On click -> Create new problem at point for body location
+        2. Get total ailments and display on screen
+        3. Map current records to the body and draw
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -68,6 +80,12 @@ public class BodyActivity extends AppCompatActivity {
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) findViewById(R.id.rotateButton);
+        addButton = (ImageButton) findViewById(R.id.addButton);
+        viewAllButton = (ImageButton) findViewById(R.id.viewAllButton);
+        totalText = (TextView) findViewById(R.id.totalText);
+        notListedText = (TextView) findViewById(R.id.notListedText);
+        userPromptText = (TextView) findViewById(R.id.userPromptText);
+
 
         rotateButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -76,6 +94,26 @@ public class BodyActivity extends AppCompatActivity {
             }
 
         });
+
+        addButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                newRecord();
+            }
+        });
+
+        viewAllButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                viewAllRecords();
+            }
+        });
+
+
+
+
         bodyView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -104,11 +142,34 @@ public class BodyActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        drawRecords();
     }
 
 
     private void reverse(){
         frontFacing = !frontFacing;
+    }
+
+    private void drawRecords(){
+        /*
+            TODO: Get all records and draw/highlight areas
+         */
+    }
+
+    private void viewAllRecords(){
+        /*
+            TODO: Get all records and send to list view
+         */
+    }
+
+    private void newRecord(){
+        /*
+            TODO: Instantiate new record with body part and add
+         */
+        userPromptText.setVisibility(View.VISIBLE);
+
     }
 
 }
