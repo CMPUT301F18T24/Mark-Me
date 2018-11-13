@@ -9,4 +9,8 @@
     <string name="maleText">Male</string>
     <string name="emailHint">Email:</string>
     <string name="phoneHint">Phone:</string>
+    <string name="accountSettingsText">Account Information:</string>
+    <string name="contactInformationText">Contact Information:</string>
+    <string name="editContactInfoText">Edit Contact Information</string>
+    <string name="resetPasswordText">Reset Password</string>
 </resources>

@@ -38,6 +38,8 @@ public class UserProfileController {
     }
 
     // Checks if the userID and corresponding password exists.
+    // TODO: This should search the elasticsearch database for the user.
+    // This method is a stub, the current implementation helps test user registration.
     public Boolean isUserValid(String username, String password) {
 
         if (this.user.getUserID().equals(username) && this.user.getPassword().equals(password)) {
