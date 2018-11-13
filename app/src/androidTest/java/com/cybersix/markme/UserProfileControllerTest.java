@@ -6,6 +6,12 @@ import static org.junit.Assert.*;
 public class UserProfileControllerTest {
 
     @Test
+    public void testGetInstance() {
+        UserProfileController controller = UserProfileController.getInstance();
+        assertNotEquals(controller, null);
+    }
+
+    @Test
     public void testAddUniqueUser() {
 
         String userID = "vpTest123";
@@ -16,7 +22,7 @@ public class UserProfileControllerTest {
 
         try {
 
-            UserProfileController controller = new UserProfileController();
+            UserProfileController controller = UserProfileController.getInstance();
 
             // Add our user to the usermodel.
             assertTrue(controller.addUser(userID, email, pass, phone, userType));
@@ -38,7 +44,7 @@ public class UserProfileControllerTest {
 
         try {
 
-            UserProfileController controller = new UserProfileController();
+            UserProfileController controller = UserProfileController.getInstance();
 
             // Add our user to the usermodel.
             assertTrue(controller.addUser(userID, email, pass, phone, userType));
