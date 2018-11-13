@@ -21,8 +21,7 @@ public class PatientAssignmentActivity extends AppCompatActivity {
         // the list view will show all of the registered care providers from within the database
         // getCareProviders();
         // displayCareProvides();
-        // TODO: Make sure to check the previous assignment for reference into how to use the
-        //      list adapter
+        // TODO: Make sure to check the previous assignment for reference into how to use the list adapter
         // The list will have a "Select is on" mode where the user can select one of the patient
         // items
     }
