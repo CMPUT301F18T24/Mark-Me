@@ -213,6 +213,10 @@ public class CameraPreview {
         return mContext;
     }
 
+    public int getCurrentView() {
+        return mCurrentView;
+    }
+
     /**
      * Safely stops the capture session on the current device before switching
      * and starting the capture session on the next camera device.

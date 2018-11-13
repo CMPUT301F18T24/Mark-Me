@@ -10,10 +10,10 @@ import android.view.View;
 import java.io.ByteArrayOutputStream;
 
 public class LiveCameraActivity extends AppCompatActivity {
-    TextureView textureView = null;
-    View toggleViewButton = null;
-    View captureButton = null;
-    CameraPreview cameraPreview = null;
+    private TextureView textureView = null;
+    private View toggleViewButton = null;
+    private View captureButton = null;
+    private CameraPreview cameraPreview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,5 +53,9 @@ public class LiveCameraActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         cameraPreview.stop();
+    }
+
+    public CameraPreview getCameraPreview() {
+        return cameraPreview;
     }
 }
