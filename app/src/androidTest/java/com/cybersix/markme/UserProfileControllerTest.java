@@ -25,7 +25,7 @@ public class UserProfileControllerTest {
             UserProfileController controller = UserProfileController.getInstance();
 
             // Add our user to the usermodel.
-            assertTrue(controller.addUser(userID, email, pass, phone, userType));
+            assertTrue(controller.addUser(userID, email, phone, pass, userType));
 
             // Check that adding user was successful.
             assertEquals(userID, controller.user.getUserID());
@@ -54,7 +54,7 @@ public class UserProfileControllerTest {
             UserProfileController controller = UserProfileController.getInstance();
 
             // Add our user to the usermodel.
-            assertTrue(controller.addUser(userID, email, pass, phone, userType));
+            assertTrue(controller.addUser(userID, email, phone, pass, userType));
 
             // Check if entering valid pass and username works.
             assertTrue(controller.isUserValid(userID, pass));

@@ -42,6 +42,21 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Debug purposes:
+        Button debug = (Button) findViewById(R.id.debug);
+        debug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAccountSettingsActivity();
+            }
+        });
+
+    }
+
+    // DEBUG ONLY - launches the openAccountSettingsActivity.
+    public void openAccountSettingsActivity() {
+        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        startActivity(intent);
     }
 
     // Launches the signup activity.

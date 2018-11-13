@@ -1,5 +1,7 @@
 package com.cybersix.markme;
 
+import android.util.Log;
+
 public class UserProfileController {
 
     private static UserProfileController instance = null;
@@ -35,7 +37,10 @@ public class UserProfileController {
     // Inputs: userID, email, phone, password - User information
     //         userType - The type of the user.
     // Outputs: Returns true if added user was successful, false otherwise.
+    // TODO: This should save to the elastic search database.
     public Boolean addUser(String userID, String email, String phone, String password, String userType) {
+
+        // Stub: Save new user to the database instead of setting the user model.
 
         try {
             user.setUserID(userID);
@@ -45,6 +50,7 @@ public class UserProfileController {
             user.setUserType(userType);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
+            Log.d("Vishal_UserProfileCont", e.toString());
             return false;
         }
 
@@ -55,11 +61,18 @@ public class UserProfileController {
     // This method is a stub, the current implementation helps test user registration.
     public Boolean isUserValid(String username, String password) {
 
-        if (this.user.getUserID().equals(username) && this.user.getPassword().equals(password)) {
-            return true;
-        } else {
-            return false;
+        // Stub: Search elasticSearch database for a user....
+
+        // If the elastic search returned a result. Then confirm the password matches.
+        // Note: Since we are searching by usernames exactly then we don't need to compare userIDs
+        // a second time.
+        if (this.user.getUserID() != null) {
+            if (this.user.getPassword().equals(password)) {
+                return true;
+            }
         }
+
+        return false;
     }
 
 }

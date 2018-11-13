@@ -102,7 +102,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Observ
         Button editContactsButton = (Button) findViewById(R.id.editContactButton);
         editContactsButton.setVisibility(View.VISIBLE);
 
-        // TODO: Set UserModel Changed?
     }
 
     // Enable changing the contact info text boxes, show the save button and hide the edit
