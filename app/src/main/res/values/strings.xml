@@ -13,4 +13,5 @@
     <string name="contactInformationText">Contact Information:</string>
     <string name="editContactInfoText">Edit Contact Information</string>
     <string name="resetPasswordText">Reset Password</string>
+    <string name="saveText">Save</string>
 </resources>

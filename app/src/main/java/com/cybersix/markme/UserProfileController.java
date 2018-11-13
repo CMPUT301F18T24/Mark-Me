@@ -3,7 +3,7 @@ package com.cybersix.markme;
 public class UserProfileController {
 
     private static UserProfileController instance = null;
-    private UserModel user;
+    public UserModel user; // TODO: Should this be public?
 
     // Is the controller a singleton, or is the model a singleton?
     protected UserProfileController() {
@@ -16,6 +16,19 @@ public class UserProfileController {
             instance = new UserProfileController();
         }
         return instance;
+    }
+
+    // Attempts to change a user's contact information.
+    // Inputs: email, phone - Contact information
+    // Outputs: Returns true if contact information was successfully changed, false otherwise.
+    public Boolean editContactInformation(String email, String phone) {
+        try {
+            user.setEmail(email);
+            user.setPhone(phone);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Attempts to add a user to the UserModel.
