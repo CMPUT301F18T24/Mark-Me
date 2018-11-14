@@ -15,7 +15,7 @@ public class PatientAssignmentTest {
         // care to the patient
         // string insertion = "Add the query string"
         // try
-        // ElasticController(insertion);
+        // IO_Utility(insertion);
 
         // retreive the associtation from the elastic search and put into assertion
         // string query = "Add the query that will get the associations"
