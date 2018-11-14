@@ -1,4 +1,5 @@
 *.iml
+.ser
 .gradle
 /local.properties
 /.idea/libraries
