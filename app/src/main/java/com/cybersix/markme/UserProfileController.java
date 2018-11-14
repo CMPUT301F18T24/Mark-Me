@@ -41,6 +41,7 @@ public class UserProfileController {
     public Boolean addUser(String userID, String email, String phone, String password, String userType) {
 
         // Stub: Save new user to the database instead of setting the user model.
+        // Also check if user exists before saving to the database. Return false if it already esists.
 
         try {
             user.setUserID(userID);

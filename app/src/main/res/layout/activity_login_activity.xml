@@ -70,4 +70,19 @@
         app:layout_constraintStart_toEndOf="@+id/signupButton"
         app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="354dp"
+        android:layout_height="248dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/Logo_Transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.027" />
+
 </android.support.constraint.ConstraintLayout>
