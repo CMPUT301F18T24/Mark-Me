@@ -62,6 +62,7 @@ public class BodyActivity extends AppCompatActivity {
     private ConstraintLayout bodyConstraintLayout;
     private DisplayMetrics dm;
     private boolean frontFacing = true;
+    private boolean addingRecord = false;
 
 
     /*
@@ -126,10 +127,10 @@ public class BodyActivity extends AppCompatActivity {
                     float xdp = event.getX()/w; //Necessary calculation.. Scales X and Y to screen size
                     float ydp = event.getY()/h;
 
+                    selectNewRecord();
 
                     Log.d("BODY TOUCH","X: " + xdp + " " + "Y: " + ydp);
                     for(EBodyPart part : EBodyPart.values()){
-
 
                         if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y && part.getFace() == frontFacing){
                             Log.d("BODY HIT",part.toString());
@@ -142,14 +143,18 @@ public class BodyActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
         drawRecords();
     }
 
 
     private void reverse(){
         frontFacing = !frontFacing;
+    }
+
+    private void selectNewRecord(){
+        if(addingRecord){
+            addingRecord = false;
+        }
     }
 
     private void drawRecords(){
@@ -168,7 +173,13 @@ public class BodyActivity extends AppCompatActivity {
         /*
             TODO: Instantiate new record with body part and add
          */
-        userPromptText.setVisibility(View.VISIBLE);
+        if(!addingRecord){
+            userPromptText.setVisibility(View.VISIBLE);
+            addingRecord = true;
+        } else {
+            userPromptText.setVisibility(View.INVISIBLE);
+            addingRecord = false;
+        }
 
     }
 

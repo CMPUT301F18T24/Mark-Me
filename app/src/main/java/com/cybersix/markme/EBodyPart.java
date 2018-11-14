@@ -4,6 +4,16 @@ import android.graphics.PointF;
 import android.graphics.Region;
 
 public enum EBodyPart {
+    /*
+        NOTE: The below values are attributes for the enumerables as follows:
+        BODYPART("Name as String", Top left Point, Bottom right Point, frontFacing)
+        Where Top left point and bottom right point are the two points
+        that form the bounding rectangle that the body part represents on screen.
+
+        X and Y values stored in these points are percentages of width (X) /height (Y) and
+        should be multiplied against the width or height of the ImageView used to display the
+        body to get a proper scaled X and Y coordinate
+     */
     LEFTHAND("Left Hand",new PointF(0.7649231f,0.5043793f), new PointF(0.83862305f,0.5434799f),true),
     LEFTARM("Left Arm",new PointF(0.6341858f,0.29815674f), new PointF(0.8121948f,0.48286438f),true),
     LEFTLEG("Left Leg",new PointF(0.5368347f,0.672493f), new PointF(0.6202698f,0.86013794f),true),
@@ -24,7 +34,6 @@ public enum EBodyPart {
     private final PointF p2;
     private final boolean frontFacing;
 
-    //Point 1-4 Create a bounding Rectangle for the body part on screen
     private EBodyPart(String name,PointF p1,PointF p2, boolean front){
         this.name=name;
         this.p1=p1;
