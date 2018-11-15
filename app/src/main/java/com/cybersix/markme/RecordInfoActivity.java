@@ -11,7 +11,7 @@ package com.cybersix.markme;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class recordInfoActivity extends AppCompatActivity {
+public class RecordInfoActivity extends AppCompatActivity {
 
     // record activity will be linked with the photo gallery and being able to add photos, but the
     // user should be able to view all of the information

@@ -10,7 +10,7 @@ package com.cybersix.markme;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class problemPopUp extends AppCompatActivity {
+public class ProblemPopUp extends AppCompatActivity {
 
     // the problem pop-up will display the problem information related by the user
     @Override
