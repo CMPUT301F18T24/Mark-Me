@@ -9,13 +9,14 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/titleTextView"
@@ -53,23 +54,23 @@
     <ListView
         android:id="@+id/mainListView"
         android:layout_width="0dp"
-        android:layout_height="310dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginBottom="16dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/mainListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -78,36 +79,36 @@
             android:id="@+id/returnButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@android:string/cancel"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@android:string/cancel"
             app:srcCompat="?attr/homeAsUpIndicator" />
 
         <ImageView
             android:id="@+id/addButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/add_text"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add_text"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
         <ImageView
             android:id="@+id/searchIcon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/search_text"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/search_text"
             app:srcCompat="@android:drawable/ic_menu_search" />
 
         <EditText
@@ -118,6 +119,7 @@
             android:ems="10"
             android:hint="@string/keyword_text"
             android:inputType="textPersonName"
+            android:imeOptions="actionDone"
             android:textAlignment="textStart"
             android:textColor="@android:color/background_light" />
     </LinearLayout>

@@ -14,7 +14,6 @@ import android.widget.TextView;
  *      TODO: this may involve some elastic searching and queries that should be handled by the controller
  */
 public class RecordListActivity extends ListActivity {
-    private ListView recordListView;
     private ArrayAdapter<RecordModel> recordListAdapter;
     private RecordController controllerInstance = RecordController.getInstance();
 
@@ -33,27 +32,7 @@ public class RecordListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // initialize all of the buttons and hid the ones not needed for the record list activity
-        Button addButton = (Button) findViewById(R.id.addButton);
-        Button infoButton = (Button) findViewById(R.id.infoButton);
-
-        // set the title text
-        TextView titleText = (TextView) findViewById(R.id.titleTextView);
-        titleText.setText("List of Records");
-        EditText searchText = (EditText) findViewById(R.id.searchText);
-        searchText.setText("Search for a record");
-
-        // initialize the list view
-        recordListView = (ListView) findViewById(R.id.mainListView);
-
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // set up the button click where the user will be able to show the problem info
-                // popup
-            }
-        });
+        title().setText("List of Records");
     }
 
     @Override
@@ -61,6 +40,6 @@ public class RecordListActivity extends ListActivity {
         super.onStart();
         // set the adapter for the list activity
         recordListAdapter = new ArrayAdapter<RecordModel>(this, R.layout.list_item, controllerInstance.records);
-        recordListView.setAdapter(recordListAdapter);
+        listView().setAdapter(recordListAdapter);
     }
 }

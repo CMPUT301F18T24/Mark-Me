@@ -21,7 +21,6 @@ public class ProblemListActivity extends ListActivity {
     // where it deals with a list of problems
     // getProblems(); <- this will probably come from the controller
 
-    private ListView problemListView;
     private ArrayAdapter<ProblemModel> problemListAdapter;
     private ProblemController controllerInstance = ProblemController.getInstance();
 
@@ -29,21 +28,10 @@ public class ProblemListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialize all of the buttons and hid the ones not needed for the problem list activity
-        Button addButton = (Button) findViewById(R.id.addButton);
-        Button infoButton = (Button) findViewById(R.id.infoButton);
-
-        // Also initialize the title textview
-        TextView titleText = (TextView) findViewById(R.id.titleTextView);
-        titleText.setText("List of Problems");
-        EditText searchText = (EditText) findViewById(R.id.searchText);
-        searchText.setText("Search for a problem");
-
-        // initialize the list view
-        problemListView = (ListView) findViewById(R.id.mainListView);
+        title().setText("List of Problems");
 
         // set the on click listeners
-        addButton.setOnClickListener(new View.OnClickListener() {
+        addButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // put down the procedure of what the click would do when we want to add
@@ -56,7 +44,7 @@ public class ProblemListActivity extends ListActivity {
         });
 
         // we are going to set the listener for the list view
-        problemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
@@ -75,6 +63,6 @@ public class ProblemListActivity extends ListActivity {
 
         // set up the array adapter with the list of problems
         problemListAdapter = new ArrayAdapter<ProblemModel>(this, R.layout.list_item, controllerInstance.problems);
-        problemListView.setAdapter(problemListAdapter);
+        listView().setAdapter(problemListAdapter);
     }
 }
