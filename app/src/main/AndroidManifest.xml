@@ -19,7 +19,8 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".ListActivity" />
-        <activity android:name=".ProblemPopUp" />
+        <activity android:name=".ProblemListActivity" />
+        <activity android:name=".RecordListActivity" />
         <activity android:name=".RecordInfoActivity"></activity>
     </application>
 
