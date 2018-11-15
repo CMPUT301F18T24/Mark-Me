@@ -3,6 +3,7 @@ package com.cybersix.markme;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,7 +20,9 @@ public class ProblemListActivity extends ListActivity {
     // where it deals with a list of problems
     // getProblems(); <- this will probably come from the controller
 
-    private ListView problemList;
+    private ListView problemListView;
+    private ArrayAdapter<ProblemModel> problemListAdapter;
+    private ProblemController controllerInstance = ProblemController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class ProblemListActivity extends ListActivity {
         searchText.setText("Search for a problem");
 
         // initialize the list view
-        problemList = (ListView) findViewById(R.id.mainListView);
+        problemListView = (ListView) findViewById(R.id.mainListView);
 
         // set the on click listeners
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -64,5 +67,14 @@ public class ProblemListActivity extends ListActivity {
                 // TODO: search through list or get results from elastic search
             }
         });
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        // set up the array adapter with the list of problems
+        problemListAdapter = new ArrayAdapter<ProblemModel>(this, R.layout.list_item, controllerInstance.problems);
+        problemListView.setAdapter(problemListAdapter);
     }
 }

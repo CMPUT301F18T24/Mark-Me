@@ -1,9 +1,11 @@
 package com.cybersix.markme;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
+import java.util.TimeZone;
 
 public class ProblemModel extends Observable {
     private ArrayList<RecordModel> records;
@@ -84,6 +86,13 @@ public class ProblemModel extends Observable {
 
     public ArrayList<RecordModel> getRecords() {
         return records;
+    }
+
+    public String toString() {
+        // This will return the string that will be visible to the user
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("MDT"));
+        return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
     }
 }
 
