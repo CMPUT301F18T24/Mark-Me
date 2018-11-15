@@ -33,15 +33,10 @@ public class RecordListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
 
         // initialize all of the buttons and hid the ones not needed for the record list activity
         Button addButton = (Button) findViewById(R.id.addButton);
-        Button searchButton = (Button) findViewById(R.id.searchButton);
         Button infoButton = (Button) findViewById(R.id.infoButton);
-
-        // for the record list activity the add button is not needed
-        addButton.setVisibility(View.GONE);
 
         // set the title text
         TextView titleText = (TextView) findViewById(R.id.titleTextView);
@@ -51,15 +46,6 @@ public class RecordListActivity extends ListActivity {
 
         // initialize the list view
         recordListView = (ListView) findViewById(R.id.mainListView);
-
-        // set the on click listeners for the valid buttons
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Set up the button click where the user will be able to search for specific
-                // records based from the text
-            }
-        });
 
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,15 +28,10 @@ public class ProblemListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
 
         // initialize all of the buttons and hid the ones not needed for the problem list activity
         Button addButton = (Button) findViewById(R.id.addButton);
-        Button searchButton = (Button) findViewById(R.id.searchButton);
         Button infoButton = (Button) findViewById(R.id.infoButton);
-
-        // for the problem list activity, the info button is not relevant
-        infoButton.setVisibility(View.GONE);
 
         // Also initialize the title textview
         TextView titleText = (TextView) findViewById(R.id.titleTextView);
@@ -57,16 +52,6 @@ public class ProblemListActivity extends ListActivity {
                 // itself
                 // Intent intent = new Intent(this, ProblemCreationActivity.activity)
                 // startActivity(intent);
-            }
-        });
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // put down the procure of searching for specific problems in the activity
-                // this is going to search through the list from the problems, or we could
-                // use elasticsearch
-                // TODO: search through list or get results from elastic search
             }
         });
 
