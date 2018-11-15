@@ -8,7 +8,9 @@ import android.graphics.Path;
 import android.graphics.Region;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Debug;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -71,12 +74,43 @@ public class BodyActivity extends AppCompatActivity {
         2. Get total ailments and display on screen
         3. Map current records to the body and draw
      */
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.settings:
+//                    mTextMessage.setText(R.string.title_home);
+                    return true;
+                case R.id.gps:
+//                    mTextMessage.setText(R.string.title_dashboard);
+                    return true;
+                case R.id.body:
+//                    mTextMessage.setText(R.string.title_notifications);
+                    return true;
+                case R.id.gallery:
+//                    mTextMessage.setText(R.string.title_dashboard);
+                    return true;
+                case R.id.list:
+//                    mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bodyView = (ImageView) findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
