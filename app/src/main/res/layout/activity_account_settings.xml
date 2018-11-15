@@ -58,7 +58,7 @@
         android:ems="10"
         android:hint="@string/emailHint"
         android:inputType="textEmailAddress"
-        android:selectAllOnFocus="true"
+        android:selectAllOnFocus="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
