@@ -103,7 +103,7 @@ public class CameraPreview {
     }
 
     /**
-     * Performs the basic intialization for the CameraManager object.
+     * Performs the basic initialization for the CameraManager object.
      * This includes getting permission from the user to the camera on the phone.
      */
     public void initialize() {
