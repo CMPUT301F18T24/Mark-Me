@@ -3,8 +3,10 @@ package com.cybersix.markme;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class RecordModel {
     private String title;
@@ -77,6 +79,13 @@ public class RecordModel {
     }
 
     public void setComment(String c){this.comment = c;}
+
+    public String toString() {
+        // this will return a formatted string that will be visible to the user
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("MDT"));
+        return this.getTitle() + " - " + this.getBodyLocation() + " | " + format.format(this.getTimestamp());
+    }
 
 }
 
