@@ -84,7 +84,14 @@ public class RecordModel {
         // this will return a formatted string that will be visible to the user
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
-        return this.getTitle() + " - " + this.getBodyLocation() + " | " + format.format(this.getTimestamp());
+        String bodyPart;
+        if (this.getBodyLocation() == null) {
+            bodyPart = "No Assignment body location";
+        }
+        else {
+            bodyPart = this.getBodyLocation().getBodyPart().name();
+        }
+        return this.getTitle() + " - " + bodyPart + " | " + format.format(this.getTimestamp());
     }
 
 }

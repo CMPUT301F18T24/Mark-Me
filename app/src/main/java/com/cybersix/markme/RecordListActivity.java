@@ -3,6 +3,7 @@ package com.cybersix.markme;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -13,7 +14,9 @@ import android.widget.TextView;
  *      TODO: this may involve some elastic searching and queries that should be handled by the controller
  */
 public class RecordListActivity extends ListActivity {
-    private ListView recordList;
+    private ListView recordListView;
+    private ArrayAdapter<RecordModel> recordListAdapter;
+    private RecordController controllerInstance = RecordController.getInstance();
 
     // create the problem info pop-up for the activity
     public class ProblemPopUp extends AppCompatActivity {
@@ -47,7 +50,7 @@ public class RecordListActivity extends ListActivity {
         searchText.setText("Search for a record");
 
         // initialize the list view
-        recordList = (ListView) findViewById(R.id.mainListView);
+        recordListView = (ListView) findViewById(R.id.mainListView);
 
         // set the on click listeners for the valid buttons
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -65,5 +68,13 @@ public class RecordListActivity extends ListActivity {
                 // popup
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // set the adapter for the list activity
+        recordListAdapter = new ArrayAdapter<RecordModel>(this, R.layout.list_item, controllerInstance.records);
+        recordListView.setAdapter(recordListAdapter);
     }
 }

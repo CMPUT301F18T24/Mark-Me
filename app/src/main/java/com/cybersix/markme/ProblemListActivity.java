@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,7 +55,8 @@ public class ProblemListActivity extends ListActivity {
                 // a problem
                 // open problem creation activity with an intent and then let that handle
                 // itself
-
+                // Intent intent = new Intent(this, ProblemCreationActivity.activity)
+                // startActivity(intent);
             }
         });
 
@@ -65,6 +67,19 @@ public class ProblemListActivity extends ListActivity {
                 // this is going to search through the list from the problems, or we could
                 // use elasticsearch
                 // TODO: search through list or get results from elastic search
+            }
+        });
+
+        // we are going to set the listener for the list view
+        problemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // the user is going to select the problem that they want to view
+                Intent intent = new Intent(view.getContext(), RecordListActivity.class);
+                intent.putExtra("EXTRA_PROBLEM_INDEX", position);
+                startActivity(intent);
+                // TODO: for now the resulting activity will show preset data but the later version
+                // TODO: will show the records related to the problem
             }
         });
     }

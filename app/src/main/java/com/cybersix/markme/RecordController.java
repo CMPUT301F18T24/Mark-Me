@@ -19,6 +19,7 @@ import android.location.Location;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecordController {
     // set up the controller instance with lazy construction
@@ -85,6 +86,7 @@ public class RecordController {
         if (location != null) {
             record.setMapLocation(location);
         }
+        record.setTimestamp(new Date());
 
         // finally add the record to the record list
         records.add(record);
