@@ -3,6 +3,7 @@ package com.cybersix.markme;
 import org.junit.Test;
 import org.junit.runner.Description;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -50,6 +51,30 @@ public class ProblemModelTest {
         problem.addRecord(record);
         assertEquals("first element should exist", problem.getRecord(0), record);
         assertEquals("second element should not exist", problem.getRecord(1), null);
+    }
+
+    @Test
+    public void testGetRecords() {
+        // tests that all records are returned
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel("", "");
+        } catch (Exception e) {
+            fail();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            RecordModel record = new RecordModel(Integer.toString(i), Integer.toString(i));
+            problem.addRecord(record);
+        }
+        ArrayList<RecordModel> records = problem.getRecords();
+
+        int i = 0;
+        for (RecordModel record : records) {
+            assertEquals(record.getTitle(), Integer.toString(i));
+            assertEquals(record.getDescription(), Integer.toString(i));
+            i++;
+        }
     }
 
     @Test
