@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Observable;
 
 public class ProblemModel extends Observable {
-    private List<RecordModel> records;
+    private ArrayList<RecordModel> records;
     private String title;
     private String description;
     private Date started;
@@ -80,6 +80,10 @@ public class ProblemModel extends Observable {
             return null;
 
         return records.get(index);
+    }
+
+    public ArrayList<RecordModel> getRecords() {
+        return records;
     }
 }
 
