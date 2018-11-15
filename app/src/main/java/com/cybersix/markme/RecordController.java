@@ -54,10 +54,15 @@ public class RecordController {
 
     public ArrayList<RecordModel> loadRecordData(ProblemModel problemModel) {
 
-        return problemModel.;
+        return problemModel.getRecords();
     }
-+ loadRecordData(problem : ProblemModel) : Collection<recordmodel style="font-size: 14px;"></recordmodel>
-            + editRecord(record : RecordModel) : void
-    + saveRecordData(records : Collection<RecordModel>) : void
+
+    public void editRecord(int index, RecordModel editRecord) {
+
+    }
+
+    public void saveRecordData(ArrayList<RecordModel> records) {
+
+    }
 
 }
