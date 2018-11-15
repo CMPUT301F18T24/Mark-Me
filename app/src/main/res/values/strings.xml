@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MarkMe</string>
+    <string name="capture">Take a Photo</string>
+    <string name="ToggleCameraView">Toggle the camera view</string>
+    <string name="faceView">FACE</string>
+    <string name="frontView">FRONT</string>
 </resources>
