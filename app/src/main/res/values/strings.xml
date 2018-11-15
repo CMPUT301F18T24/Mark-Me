@@ -15,4 +15,8 @@
     <string name="resetPasswordText">Reset Password</string>
     <string name="saveText">Save</string>
     <string name="usernameSignupHint">Username: Enter at least 8 digits.</string>
+    <string name="capture">Take a Photo</string>
+    <string name="ToggleCameraView">Toggle the camera view</string>
+    <string name="faceView">FACE</string>
+    <string name="frontView">FRONT</string>
 </resources>
