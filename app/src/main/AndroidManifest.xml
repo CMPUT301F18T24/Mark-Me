@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cybersix.markme">
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,23 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".BodyActivity"></activity>
-        <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
-        <activity android:name=".PatientListActivity" android:exported="true"></activity>
+        <activity
+            android:name=".NavigationBar"
+            android:label="@string/title_activity_navigation_bar"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".AccountSettingsActivity"></activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
+        <activity android:name=".PatientListActivity" android:exported="true"></activity>
         <activity android:name=".RecordInfoActivity"></activity>
+        <activity android:name=".BodyActivity" android:exported="true"></activity>
+        <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
     </application>
 
 </manifest>

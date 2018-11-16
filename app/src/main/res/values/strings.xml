@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">MarkMe</string>
+    <string name="usernameHint">Username:</string>
+    <string name="passwordHint">Password:</string>
+    <string name="loginText">Log In</string>
+    <string name="signupText">Sign Up</string>
+    <string name="signupPrompt">Please enter the required information to register an account:</string>
+    <string name="femaleText">Female</string>
+    <string name="maleText">Male</string>
+    <string name="emailHint">Email: example@domain.com</string>
+    <string name="phoneHint">Phone: XXX-XXX-XXXX</string>
+    <string name="accountSettingsText">Account Information:</string>
+    <string name="contactInformationText">Contact Information:</string>
+    <string name="editContactInfoText">Edit Contact Information</string>
+    <string name="resetPasswordText">Reset Password</string>
+    <string name="saveText">Save</string>
+    <string name="usernameSignupHint">Username: Enter at least 8 digits.</string>
     <string name="capture">Take a Photo</string>
     <string name="ToggleCameraView">Toggle the camera view</string>
     <string name="faceView">FACE</string>
@@ -11,4 +26,10 @@
     <string name="keyword_text">Filter</string>
     <string name="show_text">Show</string>
     <string name="hide_text">Hide</string>
+    <string name="title_activity_navigation_bar">NavigationBar</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_GPS">GPS</string>
+    <string name="title_Body">Body</string>
+    <string name="title_Gallery">Gallary</string>
+    <string name="title_List">List</string>
 </resources>

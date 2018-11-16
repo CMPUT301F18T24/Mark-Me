@@ -6,11 +6,11 @@ import java.util.List;
 public class CareProvider extends UserModel {
     private List<Patient> patients = null;
 
-    public CareProvider(String username){
+    public CareProvider(String username) throws UserIDTooShortException {
         this(username, null);
     }
 
-    public CareProvider(String username, List<Patient> patients) {
+    public CareProvider(String username, List<Patient> patients) throws UserIDTooShortException {
         super();
         super.setUserID(username);
 
