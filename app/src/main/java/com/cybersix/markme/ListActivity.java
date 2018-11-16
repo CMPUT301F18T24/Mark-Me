@@ -12,6 +12,7 @@
  */
 package com.cybersix.markme;
 
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class ListActivity extends AppCompatActivity {
     private View mAddButton = null;
     private EditText mSearchField = null;
     private ListView mListView = null;
+    private NavigationBar mNavigationBar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,9 @@ public class ListActivity extends AppCompatActivity {
         mAddButton = findViewById(R.id.addButton);
         mSearchField = findViewById(R.id.seachField);
         mListView = findViewById(R.id.mainListView);
+        mNavigationBar = new NavigationBar(this, (BottomNavigationView) findViewById(R.id.navigation));
 
+        mNavigationBar.setSelectedItem(R.id.list);
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

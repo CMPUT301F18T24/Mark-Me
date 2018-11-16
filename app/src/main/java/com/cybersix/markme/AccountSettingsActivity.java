@@ -15,6 +15,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Observ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
+        GuiUtils.setFullScreen(this);
 
         // Add the AccoutSettingsActivity view as an observer to the UserModel.
         UserProfileController profileController = UserProfileController.getInstance();
