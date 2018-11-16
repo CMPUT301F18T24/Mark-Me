@@ -45,8 +45,8 @@ public class NavigationBar {
 
     private void switchToActivity(Class<?> clazz) {
         Intent intent = new Intent(mActivity, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mActivity.startActivity(intent);
-        mActivity.finish();
+//        mActivity.finish();
     }
 }
