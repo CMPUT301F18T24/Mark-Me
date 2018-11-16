@@ -1,3 +1,13 @@
+/**
+ * LiveCameraActivity v.1.0
+ *
+ * Provides a UI interface for taking one photo. It returns the photo taken as a byte stream
+ * in the activity result. It attempts to compress the photo to be <64kB before returning.
+ *
+ * Issues: - The photo compression has extremely varied results and it needs more work to ensure
+ * consistency of photo size that's returned.
+ *
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;
@@ -13,8 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class LiveCameraActivity extends AppCompatActivity {
-
-    private static final int MAX_IMAGE_SIZE = 64000;
 
     private TextureView textureView = null;
     private View toggleViewButton = null;
@@ -38,10 +46,6 @@ public class LiveCameraActivity extends AppCompatActivity {
             public void onCapture(Bitmap bitmap) {
                 Intent data = new Intent();
 
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 65, stream);
-//                byte[] bytes = stream.toByteArray();
-
                 // Compress and output the bitmap.
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 Bitmap newBitmap = cropAndScaleImage(bitmap);
@@ -61,10 +65,14 @@ public class LiveCameraActivity extends AppCompatActivity {
         });
     }
 
-    // Generates an image that can be found here:
-    // .../data/data/com.cybersix.markme/files/test.jpeg
-    // This method is for debug purposes to help determine an appropriate quality
-    // for our photos.
+    /**
+     * Generates an image that can be found here:
+     * .../data/data/com.cybersix.markme/files/test.jpeg
+     * This method is for debug purposes to help determine an appropriate quality
+     * for our photos. It prints the # of bytes needed for the corresponding quality of bitmap.
+     * @param bitmap The raw bitmap to compress.
+     * @param quality The quality to which we want to compress the bitmap.
+     */
     public void compressionTest(Bitmap bitmap, int quality) {
         String filename = getApplicationContext().getFilesDir() + "/test.jpeg";
         try (FileOutputStream out = new FileOutputStream(filename)) {
@@ -86,11 +94,13 @@ public class LiveCameraActivity extends AppCompatActivity {
         }
     }
 
-    // Performs the following functions in order to cutdown on the image size:
-    // 1. Crops into a square from the center.
-    // 2. Scales the bitmap by a percentage.
-    // Inputs: imageQuality - Must be between 0-100 where 100 is maximum quality,
-    // and 0 is lowest quality.
+    /**
+     * Performs the following functions in order to cutdown on the image size:
+     * 1. Crops into a square from the center.
+     * 2. Scales the bitmap by a percentage.
+     * @param bitmap The original bitmap.
+     * @return Cropped and scaled bitmap.
+     */
     public Bitmap cropAndScaleImage(Bitmap bitmap) {
 
         // Always crop the image
@@ -111,8 +121,13 @@ public class LiveCameraActivity extends AppCompatActivity {
         return scaledBitmap;
     }
 
-    // Scales down by the requested percentange while maintaining aspect ratio.
-    // Ensure you recycle all bitmaps after use.
+    /**
+     * Scales down by the requested percentage while maintaining aspect ratio.
+     * Note: Save the result to a new bitmap and ensure you recycle the original bitmap.
+     * @param scalePercentage Percent value to scale bitmap down. ex) 0.5 = 50% reduction in size.
+     * @param bitmap The original bitmap.
+     * @return The scaled bitmap.
+     */
     public Bitmap scaleBitmap(double scalePercentage, Bitmap bitmap) {
         return Bitmap.createScaledBitmap(bitmap,
                 (int)(bitmap.getWidth() * scalePercentage),
@@ -120,9 +135,12 @@ public class LiveCameraActivity extends AppCompatActivity {
                 true);
     }
 
-    // Creates a square crop of the bitmap focused on the center of the bitmap
-    // and width = height = bitmap.getWidth().
-    // See the documentation for the derivation of y.
+    /**
+     * Creates a square crop of the bitmap focused on the center of the bitmap
+     * and width = height = bitmap.getWidth().
+     * @param bitmap The bitmap to crop
+     * @return Cropped bitmap.
+     */
     public Bitmap cropBitmapFromCenter(Bitmap bitmap) {
         return Bitmap.createBitmap(bitmap,
                 0,
