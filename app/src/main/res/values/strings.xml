@@ -25,4 +25,7 @@
     <string name="title_Body">Body</string>
     <string name="title_Gallery">Gallary</string>
     <string name="title_List">List</string>
+    <string name="touch_a_location">Touch a Location</string>
+    <string name="total">Total:</string>
+    <string name="not_listed">Not Listed:</string>
 </resources>
