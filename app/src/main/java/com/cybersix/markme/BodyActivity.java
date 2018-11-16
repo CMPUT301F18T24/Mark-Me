@@ -64,6 +64,7 @@ public class BodyActivity extends AppCompatActivity {
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private DisplayMetrics dm;
+    private BottomNavigationView bnv;
     private boolean frontFacing = true;
     private boolean addingRecord = false;
 
@@ -115,6 +116,7 @@ public class BodyActivity extends AppCompatActivity {
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) findViewById(R.id.rotateButton);
+        bnv = (BottomNavigationView) findViewById(R.id.navigation);
         addButton = (ImageButton) findViewById(R.id.addButton);
         viewAllButton = (ImageButton) findViewById(R.id.viewAllButton);
         totalText = (TextView) findViewById(R.id.totalText);
@@ -169,7 +171,7 @@ public class BodyActivity extends AppCompatActivity {
                         if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y && part.getFace() == frontFacing){
                             Log.d("BODY HIT",part.toString());
                             bodyConstraintLayout.removeView(point);
-                            point = new PointView(BodyActivity.this, null,event.getX(),event.getY());
+                            point = new PointView(BodyActivity.this, null,event.getX(),event.getY()-(bnv.getHeight()/2));
                             bodyConstraintLayout.addView(point);
                         }
                     }

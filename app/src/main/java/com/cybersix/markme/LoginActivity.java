@@ -18,6 +18,9 @@ public class LoginActivity extends AppCompatActivity {
 
         initUI();
 
+        Intent intent = new Intent(this, BodyActivity.class);
+        startActivity(intent);
+
     }
 
     // Initializes onClick listeners for UI elements.
