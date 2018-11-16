@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cybersix.markme">
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".NavigationBar"
+            android:label="@string/title_activity_navigation_bar"></activity>
+        <activity
             android:name=".SignupActivity"
             android:parentActivityName=".LoginActivity" />
         <activity android:name=".AccountSettingsActivity"></activity>
@@ -27,7 +32,7 @@
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
         <activity android:name=".RecordInfoActivity"></activity>
-        <activity android:name=".BodyActivity"></activity>
+        <activity android:name=".BodyActivity" android:exported="true"></activity>
         <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
     </application>
 
