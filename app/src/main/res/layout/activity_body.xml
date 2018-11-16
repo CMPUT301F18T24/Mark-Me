@@ -96,14 +96,13 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <android.support.design.widget.BottomNavigationView
+    <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
 
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
+        android:layout_weight="1"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
