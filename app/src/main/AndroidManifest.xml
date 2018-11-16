@@ -32,7 +32,7 @@
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
         <activity android:name=".RecordInfoActivity"></activity>
-        <activity android:name=".BodyActivity"></activity>
+        <activity android:name=".BodyActivity" android:exported="true"></activity>
         <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
     </application>
 
