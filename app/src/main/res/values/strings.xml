@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">MarkMe</string>
+    <string name="usernameHint">Username:</string>
+    <string name="passwordHint">Password:</string>
+    <string name="loginText">Log In</string>
+    <string name="signupText">Sign Up</string>
+    <string name="signupPrompt">Please enter the required information to register an account:</string>
+    <string name="femaleText">Female</string>
+    <string name="maleText">Male</string>
+    <string name="emailHint">Email: example@domain.com</string>
+    <string name="phoneHint">Phone: XXX-XXX-XXXX</string>
+    <string name="accountSettingsText">Account Information:</string>
+    <string name="contactInformationText">Contact Information:</string>
+    <string name="editContactInfoText">Edit Contact Information</string>
+    <string name="resetPasswordText">Reset Password</string>
+    <string name="saveText">Save</string>
+    <string name="usernameSignupHint">Username: Enter at least 8 digits.</string>
     <string name="capture">Take a Photo</string>
     <string name="ToggleCameraView">Toggle the camera view</string>
     <string name="faceView">FACE</string>
