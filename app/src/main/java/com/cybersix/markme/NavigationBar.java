@@ -1,16 +1,14 @@
 package com.cybersix.markme;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class NavigationBar {
-    private Activity mActivity = null;
+    private FragmentManager mFragmentManager = null;
+    private Fragment mFragment = null;
     private BottomNavigationView mNavigationView = null;
     private BottomNavigationView.OnNavigationItemSelectedListener mListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -22,19 +20,20 @@ public class NavigationBar {
                 case R.id.gps:
                     return true;
                 case R.id.body:
-                    switchToActivity(BodyActivity.class);
+//                    switchToFragment(BodyActivity.class);
                     return true;
                 case R.id.gallery:
                     return true;
                 case R.id.list:
+                    switchToFragment(PatientListFragment.class);
                     return true;
             }
             return false;
         }
     };
 
-    public NavigationBar(@NonNull Activity activity, @NonNull BottomNavigationView navigationView) {
-        mActivity = activity;
+    public NavigationBar(@NonNull FragmentManager manager, @NonNull BottomNavigationView navigationView) {
+        mFragmentManager = manager;
         mNavigationView = navigationView;
         mNavigationView.setOnNavigationItemSelectedListener(mListener);
     }
@@ -43,10 +42,33 @@ public class NavigationBar {
         mNavigationView.setSelectedItemId(itemId);
     }
 
-    private void switchToActivity(Class<?> clazz) {
-        Intent intent = new Intent(mActivity, clazz);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        mActivity.startActivity(intent);
-//        mActivity.finish();
+    private void switchToFragment(Class<? extends Fragment> clazz) {
+        setFragment(clazz);
+        if (mFragmentManager.getFragments().size() == 0)
+            createFragmentDynamically();
+        else
+            replaceFragment();
+    }
+
+    private void createFragmentDynamically() {
+        mFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_layout, mFragment)
+                .commit();
+    }
+
+    private void setFragment(Class<? extends Fragment> clazz) {
+        try {
+            mFragment = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void replaceFragment() {
+        mFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_layout, mFragment)
+                .commit();
     }
 }

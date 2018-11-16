@@ -2,18 +2,13 @@ package com.cybersix.markme;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
 /**
  * Jose: I will have to set this up also to be able to get a list of records based off of a problem
  *      TODO: this may involve some elastic searching and queries that should be handled by the controller
  */
-public class RecordListActivity extends ListActivity {
+public class RecordListFragment extends ListFragment {
     private ArrayAdapter<RecordModel> recordListAdapter;
     private RecordController controllerInstance = RecordController.getInstance();
 
@@ -30,16 +25,16 @@ public class RecordListActivity extends ListActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         title().setText("List of Records");
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(this, R.layout.list_item, controllerInstance.records);
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, controllerInstance.records);
         listView().setAdapter(recordListAdapter);
     }
 }

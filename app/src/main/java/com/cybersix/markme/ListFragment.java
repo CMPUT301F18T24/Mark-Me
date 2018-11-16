@@ -12,42 +12,44 @@
  */
 package com.cybersix.markme;
 
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListActivity extends AppCompatActivity {
+public class ListFragment extends Fragment {
     private TextView mTitle = null;
     private TextView mDetails = null;
     private View mReturnButton = null;
     private View mAddButton = null;
     private EditText mSearchField = null;
     private ListView mListView = null;
-    private NavigationBar mNavigationBar = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        GuiUtils.setFullScreen(this);
+        return inflater.inflate(R.layout.activity_list, container, false);
+    }
 
-        mTitle = findViewById(R.id.titleTextView);
-        mDetails = findViewById(R.id.descriptionTextView);
-        mReturnButton = findViewById(R.id.returnButton);
-        mAddButton = findViewById(R.id.addButton);
-        mSearchField = findViewById(R.id.seachField);
-        mListView = findViewById(R.id.mainListView);
-        mNavigationBar = new NavigationBar(this, (BottomNavigationView) findViewById(R.id.navigation));
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        mNavigationBar.setSelectedItem(R.id.list);
+        mTitle = getActivity().findViewById(R.id.titleTextView);
+        mDetails = getActivity().findViewById(R.id.descriptionTextView);
+        mReturnButton = getActivity().findViewById(R.id.returnButton);
+        mAddButton = getActivity().findViewById(R.id.addButton);
+        mSearchField = getActivity().findViewById(R.id.seachField);
+        mListView = getActivity().findViewById(R.id.mainListView);
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+//                mActivity.finish();
             }
         });
     }

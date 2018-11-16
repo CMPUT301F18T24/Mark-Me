@@ -1,18 +1,23 @@
 package com.cybersix.markme;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
+    private NavigationBar mNavigationBar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent i = new Intent(this,BodyActivity.class);
-        this.startActivity(i);
+        GuiUtils.setFullScreen(this);
+
+        mNavigationBar = new NavigationBar(getSupportFragmentManager(), (BottomNavigationView) findViewById(R.id.navigation));
+        mNavigationBar.setSelectedItem(R.id.list);
+
+//        Intent i = new Intent(this,BodyActivity.class);
+//        this.startActivity(i);
     }
 
     @Override
@@ -20,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         // send the intent to the problem list view
-        Intent intent = new Intent(this, ProblemListActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ProblemListFragment.class);
+//        startActivity(intent);
+    }
+
+    public NavigationBar getNavigationBar() {
+        return mNavigationBar;
     }
 }
