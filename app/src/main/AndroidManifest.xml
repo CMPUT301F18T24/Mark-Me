@@ -37,7 +37,8 @@
         <activity
             android:name=".LiveCameraActivity"
             android:exported="true" />
-        <activity android:name=".Reminder"></activity>
+        <activity android:name=".Reminder" />
+        <activity android:name=".Gallery"></activity>
     </application>
 
 </manifest>
