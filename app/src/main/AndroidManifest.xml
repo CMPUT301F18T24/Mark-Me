@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cybersix.markme">
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,9 +23,14 @@
         <activity android:name=".ListActivity" />
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
-        <activity android:name=".RecordInfoActivity"></activity>
-        <activity android:name=".BodyActivity"></activity>
-        <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
+        <activity android:name=".RecordInfoActivity" />
+        <activity android:name=".BodyActivity" />
+        <activity
+            android:name=".LiveCameraActivity"
+            android:exported="true" />
+        <activity android:name=".ProblemActivityCreation"
+                  android:parentActivityName=".ProblemListActivity"
+                  android:theme="@style/AppTheme.PopUp"></activity>
     </application>
 
 </manifest>

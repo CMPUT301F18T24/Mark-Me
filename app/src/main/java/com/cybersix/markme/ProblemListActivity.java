@@ -1,8 +1,13 @@
 package com.cybersix.markme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,8 +60,8 @@ public class ProblemListActivity extends ListActivity {
                 // a problem
                 // open problem creation activity with an intent and then let that handle
                 // itself
-                // Intent intent = new Intent(this, ProblemCreationActivity.activity)
-                // startActivity(intent);
+                Intent intent = new Intent(v.getContext(), ProblemActivityCreation.class);
+                startActivity(intent);
             }
         });
 

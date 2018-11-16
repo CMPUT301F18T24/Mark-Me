@@ -4,4 +4,9 @@
     <string name="ToggleCameraView">Toggle the camera view</string>
     <string name="faceView">FACE</string>
     <string name="frontView">FRONT</string>
+    <string name="ProblemCreationTitle">Create a problem</string>
+    <string name="ProblemCreationTitleText">Title (max. 30 characters)</string>
+    <string name="ProblemCreationDescription">Enter description</string>
+    <string name="save_button">SAVE</string>
+    <string name="DateTime">HH:MM</string>
 </resources>
