@@ -6,6 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Debug;
@@ -25,6 +28,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 
 public class BodyActivity extends AppCompatActivity {
 
@@ -52,6 +59,35 @@ public class BodyActivity extends AppCompatActivity {
 
     }
 
+    private class HighlightView extends View{
+
+        private final float x1;
+        private final float x2;
+
+        private final float y1;
+        private final float y2;
+
+
+        public HighlightView(Context context, @Nullable AttributeSet ars, float x1, float y1, float x2, float y2){
+            super(context,ars);
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas){
+            super.onDraw(canvas);
+            Paint p = new Paint();
+            p.setColor(Color.argb(20,255,0,0));
+            canvas.drawRect(new RectF(x1,y1,x2,y2),p);
+        }
+
+
+
+    }
+
     private ImageView bodyView;
     private PointView point;
     private ImageButton rotateButton;
@@ -65,6 +101,7 @@ public class BodyActivity extends AppCompatActivity {
     private DisplayMetrics dm;
     private boolean frontFacing = true;
     private boolean addingRecord = false;
+    private HashMap<EBodyPart,ArrayList<RecordModel>> recordParts = new HashMap<EBodyPart,ArrayList<RecordModel>>();
 
 
 
@@ -84,7 +121,7 @@ public class BodyActivity extends AppCompatActivity {
 
 
 
-    private void initAttributes(){
+    private void initAttributes() {
         bodyView = (ImageView) findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
@@ -94,6 +131,16 @@ public class BodyActivity extends AppCompatActivity {
         totalText = (TextView) findViewById(R.id.totalText);
         notListedText = (TextView) findViewById(R.id.notListedText);
         userPromptText = (TextView) findViewById(R.id.userPromptText);
+        recordParts.put(null,new ArrayList<RecordModel>());
+        for(EBodyPart part : EBodyPart.values()) {
+            recordParts.put(part,new ArrayList<RecordModel>());
+        }
+
+        for(RecordModel r : recordController.records){
+            ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
+            records.add(r);
+            recordParts.put(r.getBodyLocation().getBodyPart(),records);
+        }
     }
 
     private void setListeners(){
@@ -118,8 +165,6 @@ public class BodyActivity extends AppCompatActivity {
                 viewAllRecords();
             }
         });
-
-
 
 
         bodyView.setOnTouchListener(new View.OnTouchListener() {
@@ -176,6 +221,17 @@ public class BodyActivity extends AppCompatActivity {
         /*
             TODO: Get all records and draw/highlight areas
          */
+        for(EBodyPart bp: recordParts.keySet()){
+            if(bp != null){
+                PointF p1 = bp.getP1();
+                PointF p2 = bp.getP2();
+                HighlightView highlight = new HighlightView(BodyActivity.this, null,p1.x,p1.y,p2.x,p2.y);
+                bodyConstraintLayout.addView(highlight);
+            } else {
+
+            }
+
+        }
     }
 
     private void viewAllRecords(){

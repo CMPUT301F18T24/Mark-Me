@@ -48,7 +48,7 @@ public class RecordController {
         for (int i = 0; i < 30; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
-            instance.createNewRecord(title, description, null, null, null);
+            instance.createNewRecord(title, description, null, null, new BodyLocation(EBodyPart.CHEST));
         }
     }
 

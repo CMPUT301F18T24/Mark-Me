@@ -18,8 +18,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // send the intent to the problem list view
-        Intent intent = new Intent(this, ProblemListActivity.class);
-        startActivity(intent);
     }
 }
