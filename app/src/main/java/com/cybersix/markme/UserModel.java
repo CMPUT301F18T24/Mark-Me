@@ -3,7 +3,9 @@ package com.cybersix.markme;
 
 import android.os.Bundle;
 
-public class UserModel {
+import java.util.Observable;
+
+public class UserModel extends Observable {
     public static final String USERID = "USERID";
     private String userID;
     private String email;
@@ -97,6 +99,9 @@ public class UserModel {
         return this.password;
     }
 
+    public String toString() {
+        return this.userID.toString();
+    }
 }
 
 class UserIDTooShortException extends Exception {}

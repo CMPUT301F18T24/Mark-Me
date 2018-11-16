@@ -18,7 +18,10 @@ public class PatientListActivity extends ListActivity {
         final String userid = intent.getStringExtra(UserModel.USERID);
         mCareProvider = new CareProvider(userid, CloudUtils.getAssignedPatients(userid));
 
-        mArrayAdapter = new ArrayAdapter<Patient>();
+        mArrayAdapter = new ArrayAdapter<Patient>(this, R.layout.list_item, mCareProvider.getPatients());
+        listView().setAdapter(mArrayAdapter);
+
+        mCareProvider.addObserver();
     }
 
     protected void setupUI() {

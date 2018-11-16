@@ -24,9 +24,13 @@ public class CareProvider extends UserModel {
         patients.add(p);
     }
 
-    public Patient removePatient(Patient p) {
-        patients.remove(p);
-        return p;
+    public boolean removePatient(Patient p) {
+        if (patients.remove(p)) {
+            notifyObservers();
+            return true;
+        }
+
+        return false;
     }
 
     public List<Patient> getPatients() {
