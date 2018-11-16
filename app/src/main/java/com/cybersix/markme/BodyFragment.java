@@ -4,31 +4,27 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Region;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Nullable;
 
-public class BodyActivity extends AppCompatActivity {
+public class BodyFragment extends Fragment {
 
 
     private class PointView extends View{
@@ -76,53 +72,27 @@ public class BodyActivity extends AppCompatActivity {
         3. Map current records to the body and draw
      */
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.settings:
-//                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.gps:
-//                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.body:
-//                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-                case R.id.gallery:
-//                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.list:
-//                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        return inflater.inflate(R.layout.activity_body, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_body);
-        GuiUtils.setFullScreen(this);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        bodyView = (ImageView) findViewById(R.id.bodyView);
-        bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
+        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        bodyView = (ImageView) getActivity().findViewById(R.id.bodyView);
+        bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
-        rotateButton = (ImageButton) findViewById(R.id.rotateButton);
-        bnv = (BottomNavigationView) findViewById(R.id.navigation);
-        addButton = (ImageButton) findViewById(R.id.addButton);
-        viewAllButton = (ImageButton) findViewById(R.id.viewAllButton);
-        totalText = (TextView) findViewById(R.id.totalText);
-        notListedText = (TextView) findViewById(R.id.notListedText);
-        userPromptText = (TextView) findViewById(R.id.userPromptText);
+        rotateButton = (ImageButton) getActivity().findViewById(R.id.rotateButton);
+        bnv = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        addButton = (ImageButton) getActivity().findViewById(R.id.addButton);
+        viewAllButton = (ImageButton) getActivity().findViewById(R.id.viewAllButton);
+        totalText = (TextView) getActivity().findViewById(R.id.totalText);
+        notListedText = (TextView) getActivity().findViewById(R.id.notListedText);
+        userPromptText = (TextView) getActivity().findViewById(R.id.userPromptText);
 
 
         rotateButton.setOnClickListener(new View.OnClickListener(){
@@ -172,7 +142,7 @@ public class BodyActivity extends AppCompatActivity {
                         if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y && part.getFace() == frontFacing){
                             Log.d("BODY HIT",part.toString());
                             bodyConstraintLayout.removeView(point);
-                            point = new PointView(BodyActivity.this, null,event.getX(),event.getY());
+                            point = new PointView(getActivity(), null,event.getX(),event.getY());
                             bodyConstraintLayout.addView(point);
                         }
                     }
@@ -182,7 +152,6 @@ public class BodyActivity extends AppCompatActivity {
         });
         drawRecords();
     }
-
 
     private void reverse(){
         frontFacing = !frontFacing;

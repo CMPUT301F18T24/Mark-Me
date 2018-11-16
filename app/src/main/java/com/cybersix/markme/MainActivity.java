@@ -14,9 +14,9 @@ public class MainActivity extends FragmentActivity {
         GuiUtils.setFullScreen(this);
 
         mNavigationBar = new NavigationBar(getSupportFragmentManager(), (BottomNavigationView) findViewById(R.id.navigation));
-        mNavigationBar.setSelectedItem(R.id.list);
+        mNavigationBar.setSelectedItem(R.id.body);
 
-//        Intent i = new Intent(this,BodyActivity.class);
+//        Intent i = new Intent(this,BodyFragment.class);
 //        this.startActivity(i);
     }
 

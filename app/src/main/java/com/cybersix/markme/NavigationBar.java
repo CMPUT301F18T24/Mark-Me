@@ -20,7 +20,7 @@ public class NavigationBar {
                 case R.id.gps:
                     return true;
                 case R.id.body:
-//                    switchToFragment(BodyActivity.class);
+                    switchToFragment(BodyFragment.class);
                     return true;
                 case R.id.gallery:
                     return true;
