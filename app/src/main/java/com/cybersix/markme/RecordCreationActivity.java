@@ -1,6 +1,8 @@
 package com.cybersix.markme;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +44,7 @@ public class RecordCreationActivity extends AppCompatActivity {
                 String desc = recordAddDescText.getText().toString();
                 BodyLocation bl = new BodyLocation(selectedPart);
                 recordController.createNewRecord(title,desc,null,null,bl);
-                finish();
+                newRecordAlert();
             }
         });
 
@@ -58,4 +60,26 @@ public class RecordCreationActivity extends AppCompatActivity {
         recordBodyLocation.setText("Body Location: " + selectedPart.toString());
 
     }
+
+    private void newRecordAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Record Added!");
+        builder.setMessage("Would you like to add a Photo or Location to the Record?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //TODO: Send to edit records
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        builder.show();
+    }
+
 }

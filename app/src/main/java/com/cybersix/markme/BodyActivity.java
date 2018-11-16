@@ -70,9 +70,8 @@ public class BodyActivity extends AppCompatActivity {
 
     /*
         TODO:
-        1. On click -> Create new problem at point for body location
-        2. Get total ailments and display on screen
-        3. Map current records to the body and draw
+        1. Get total ailments and display on screen
+        2. Map current records to the body and draw
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
