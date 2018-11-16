@@ -99,12 +99,11 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/problemNotifyTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="date"
-                android:text="@string/DateTime"
+                android:inputType="time"
                 android:textAlignment="center" />
 
             <Space
