@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -72,6 +74,23 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     // TODO: Fill in stub for after login.
     public void checkLogin() {
+
+        Log.d("Vishal", "I'm going to try a thing.");
+
+        try {
+            ArrayList<UserModel> foundUsers = new ElasticSearchIOController.GetUserTask()
+                                                                    .execute("Boy").get();
+            for (UserModel user : foundUsers) {
+                Log.d("Vishal_info: ", user.getUsername() + " "
+                                            + user.getPassword() + " "
+                                            + user.getEmail() + " "
+                                            + user.getPhone() + " "
+                                            + user.getUserType());
+            }
+            Log.d("Vishal_Login_Activity", Integer.toString(foundUsers.size()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         UserProfileController profileController = UserProfileController.getInstance();
         TextView userText = (TextView) findViewById(R.id.usernameText);

@@ -44,7 +44,7 @@ public class UserProfileController {
         // Also check if user exists before saving to the database. Return false if it already esists.
 
         try {
-            user.setUserID(userID);
+            user.setUsername(userID);
             user.setEmail(email);
             user.setPhone(phone);
             user.setPassword(password);
@@ -67,7 +67,7 @@ public class UserProfileController {
         // If the elastic search returned a result. Then confirm the password matches.
         // Note: Since we are searching by usernames exactly then we don't need to compare userIDs
         // a second time.
-        if (this.user.getUserID() != null) {
+        if (this.user.getUsername() != null) {
             if (this.user.getPassword().equals(password)) {
                 return true;
             }

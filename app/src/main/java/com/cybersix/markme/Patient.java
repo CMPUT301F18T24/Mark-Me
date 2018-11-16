@@ -42,6 +42,6 @@ public class Patient extends UserModel {
     }
 
     public String getPatientID(){
-        return this.getUserID();
+        return this.getUsername();
     }
 }

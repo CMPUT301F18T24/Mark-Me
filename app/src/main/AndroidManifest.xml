@@ -30,6 +30,6 @@
         <activity android:name=".RecordInfoActivity"></activity>
         <activity android:name=".BodyActivity"></activity>
         <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
-
 </manifest>
