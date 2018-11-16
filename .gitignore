@@ -8,3 +8,5 @@
 .externalNativeBuild
 *.ser
 /.idea
+.idea/gradle.xml
+.idea/misc.xml
