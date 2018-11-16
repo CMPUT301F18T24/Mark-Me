@@ -28,4 +28,23 @@
     <string name="touch_a_location">Touch a Location</string>
     <string name="total">Total:</string>
     <string name="not_listed">Not Listed:</string>
+    <string name="please_choose_a_language">Please Choose a Language:</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="about">About</string>
+    <string name="copyright">MarkMe Copyright 2018</string>
+    <string name="creaters">Created by \n Vishal, Rizwan, Curtis, Dorsa, and Jose</string>
+    <string name="language_settings">Language</string>
+    <string name="account">Account</string>
+    <string name="about_settings">About</string>
+    <string name="weekly">Weekly</string>
+    <string name="bi_weekly">Bi-weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="set_reminder">Set Reminder:</string>
+    <string name="start_date">Start Date:</string>
+    <string name="end_date">End Date:</string>
+    <string name="set_time">Set Time:</string>
+    <string name="slash">/</string>
+    <string name="semiColon">;</string>
+    <string name="colon">:</string>
 </resources>

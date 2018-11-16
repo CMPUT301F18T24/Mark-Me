@@ -6,42 +6,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
+    tools:context=".LanguageHandler"
     android:weightSum="8"
     android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/please_choose_a_language"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/language"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:text="@string/english"
         android:layout_weight="1"
-        android:onClick="changeLanguages"
-        android:text="@string/language_settings"
+        android:onClick="english"
         app:layout_constraintStart_toEndOf="@+id/titleTextView" />
     <Button
         android:id="@+id/Account"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:text="@string/french"
         android:layout_weight="1"
-        android:text="@string/account"
-        android:onClick="AccountSettings"
-        app:layout_constraintStart_toEndOf="@+id/titleTextView" />
-    <Button
-        android:id="@+id/About"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="about"
-        android:text="@string/about_settings"
+        android:onClick="french"
         app:layout_constraintStart_toEndOf="@+id/titleTextView" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
