@@ -20,19 +20,25 @@
         </activity>
         <activity
             android:name=".NavigationBar"
-            android:label="@string/title_activity_navigation_bar"></activity>
+            android:label="@string/title_activity_navigation_bar" />
         <activity
             android:name=".SignupActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
-        <activity android:name=".RecordInfoActivity"></activity>
-        <activity android:name=".BodyActivity" android:exported="true"></activity>
-        <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
+        <activity android:name=".RecordInfoActivity" />
+        <activity
+            android:name=".BodyActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LiveCameraActivity"
+            android:exported="true" />
+        <activity android:name=".Reminder" />
+        <activity android:name=".Gallery"></activity>
     </application>
 
 </manifest>

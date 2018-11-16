@@ -6,42 +6,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
+    tools:context=".About"
     android:weightSum="8"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/language"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="changeLanguages"
-        android:text="@string/language_settings"
-        app:layout_constraintStart_toEndOf="@+id/titleTextView" />
-    <Button
-        android:id="@+id/Account"
+        android:layout_weight="1" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/account"
-        android:onClick="AccountSettings"
-        app:layout_constraintStart_toEndOf="@+id/titleTextView" />
-    <Button
-        android:id="@+id/About"
+        android:text="@string/about"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_weight="1" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="about"
-        android:text="@string/about_settings"
-        app:layout_constraintStart_toEndOf="@+id/titleTextView" />
+        android:text="@string/copyright"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/creaters"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_weight="1"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
