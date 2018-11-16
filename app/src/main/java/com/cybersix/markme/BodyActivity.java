@@ -171,7 +171,7 @@ public class BodyActivity extends AppCompatActivity {
                         if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y && part.getFace() == frontFacing){
                             Log.d("BODY HIT",part.toString());
                             bodyConstraintLayout.removeView(point);
-                            point = new PointView(BodyActivity.this, null,event.getX(),event.getY()-(bnv.getHeight()/2));
+                            point = new PointView(BodyActivity.this, null,event.getX(),event.getY());
                             bodyConstraintLayout.addView(point);
                         }
                     }
