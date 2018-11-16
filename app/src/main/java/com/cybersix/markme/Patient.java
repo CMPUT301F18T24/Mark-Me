@@ -9,7 +9,7 @@ public class Patient extends UserModel {
 
     public Patient(String userID, String password){
         super();
-        super.setUserID(userID);
+        //super.setUserID(userID);
         super.setPassword(password);
         problems = new ArrayList<ProblemModel>();
         providers = new ArrayList<CareProvider>();

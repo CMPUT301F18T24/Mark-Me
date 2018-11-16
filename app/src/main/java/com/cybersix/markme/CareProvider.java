@@ -7,7 +7,8 @@ public class CareProvider extends UserModel {
 
     public CareProvider(String username){
         super();
-        super.setUserID(username);
+
+        //super.setUserID(username);
         patients = new ArrayList<Patient>();
     }
 
