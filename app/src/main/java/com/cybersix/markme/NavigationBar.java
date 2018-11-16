@@ -25,7 +25,7 @@ public class NavigationBar {
                 case R.id.gallery:
                     return true;
                 case R.id.list:
-                    switchToFragment(PatientListFragment.class);
+                    switchToFragment(ProblemListFragment.class);
                     return true;
             }
             return false;
@@ -42,7 +42,7 @@ public class NavigationBar {
         mNavigationView.setSelectedItemId(itemId);
     }
 
-    private void switchToFragment(Class<? extends Fragment> clazz) {
+    public void switchToFragment(Class<? extends Fragment> clazz) {
         setFragment(clazz);
         if (mFragmentManager.getFragments().size() == 0)
             createFragmentDynamically();

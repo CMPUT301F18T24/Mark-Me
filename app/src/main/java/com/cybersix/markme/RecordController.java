@@ -47,14 +47,14 @@ public class RecordController {
         // This will fill up the list of records with fake records. There will be around 30 of them
         for (int i = 0; i < 30; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
-            String description = "Fake record descriptions for title " + Integer.toString(i);
+            String description = "Fake record descriptions for getTitle " + Integer.toString(i);
             instance.createNewRecord(title, description, null, null, null);
         }
     }
 
     /**
      * This function will create a new record to add to the associated list of records to the controller
-     * @param title the title of the record
+     * @param title the getTitle of the record
      * @param description the description of the record
      * @param photos the list of photos to add for the record (optional)
      * @param bodyLocation the location on the body of the record (optional)

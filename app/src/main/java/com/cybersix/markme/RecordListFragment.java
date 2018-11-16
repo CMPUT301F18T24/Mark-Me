@@ -2,6 +2,7 @@ package com.cybersix.markme;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 /**
@@ -27,7 +28,14 @@ public class RecordListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        title().setText("List of Records");
+        getTitle().setText("List of Records");
+
+        getReturnButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNavigationBar().switchToFragment(ProblemListFragment.class);
+            }
+        });
     }
 
     @Override
@@ -35,6 +43,6 @@ public class RecordListFragment extends ListFragment {
         super.onStart();
         // set the adapter for the list activity
         recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, controllerInstance.records);
-        listView().setAdapter(recordListAdapter);
+        getListView().setAdapter(recordListAdapter);
     }
 }

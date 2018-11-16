@@ -15,17 +15,17 @@ public class ProblemListFragment extends ListFragment {
     // where it deals with a list of problems
     // getProblems(); <- this will probably come from the controller
 
-    private ArrayAdapter<ProblemModel> problemListAdapter;
+    private ArrayAdapter<ProblemModel> problemListAdapter = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        title().setText("List of Problems");
+        getTitle().setText("List of Problems");
 
         // set the on click listeners
-        addButton().setOnClickListener(new View.OnClickListener() {
+        getAddButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // put down the procedure of what the click would do when we want to add
@@ -38,25 +38,17 @@ public class ProblemListFragment extends ListFragment {
         });
 
         // we are going to set the listener for the list view
-        listView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                Intent intent = new Intent(view.getContext(), RecordListFragment.class);
-                intent.putExtra("EXTRA_PROBLEM_INDEX", position);
-                startActivity(intent);
+                getNavigationBar().switchToFragment(RecordListFragment.class);
                 // TODO: for now the resulting activity will show preset data but the later version
                 // TODO: will show the records related to the problem
             }
         });
-    }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-
-        // set up the array adapter with the list of problems
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, controllerInstance.problems);
-        listView().setAdapter(problemListAdapter);
+        getListView().setAdapter(problemListAdapter);
     }
 }

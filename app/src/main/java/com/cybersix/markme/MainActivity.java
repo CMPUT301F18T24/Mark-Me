@@ -15,18 +15,6 @@ public class MainActivity extends FragmentActivity {
 
         mNavigationBar = new NavigationBar(getSupportFragmentManager(), (BottomNavigationView) findViewById(R.id.navigation));
         mNavigationBar.setSelectedItem(R.id.body);
-
-//        Intent i = new Intent(this,BodyFragment.class);
-//        this.startActivity(i);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // send the intent to the problem list view
-//        Intent intent = new Intent(this, ProblemListFragment.class);
-//        startActivity(intent);
     }
 
     public NavigationBar getNavigationBar() {

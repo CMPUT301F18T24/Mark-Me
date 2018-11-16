@@ -29,6 +29,7 @@ public class ListFragment extends Fragment {
     private View mAddButton = null;
     private EditText mSearchField = null;
     private ListView mListView = null;
+    private NavigationBar mNavigationBar = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ListFragment extends Fragment {
         mAddButton = getActivity().findViewById(R.id.addButton);
         mSearchField = getActivity().findViewById(R.id.seachField);
         mListView = getActivity().findViewById(R.id.mainListView);
+        mNavigationBar = ((MainActivity) getActivity()).getNavigationBar();
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,27 +56,31 @@ public class ListFragment extends Fragment {
         });
     }
 
-    public TextView title() {
+    public TextView getTitle() {
         return mTitle;
     }
 
-    public TextView details() {
+    public TextView getDetails() {
         return mDetails;
     }
 
-    public View returnButton() {
+    public View getReturnButton() {
         return mReturnButton;
     }
 
-    public View addButton() {
+    public View getAddButton() {
         return mAddButton;
     }
 
-    public EditText searchField() {
+    public EditText getSearchField() {
         return mSearchField;
     }
 
-    public ListView listView() {
+    public ListView getListView() {
         return mListView;
+    }
+
+    public NavigationBar getNavigationBar() {
+        return mNavigationBar;
     }
 }

@@ -43,7 +43,7 @@ public class ProblemController {
         // This function will just load fake problems to the data
         for (int i = 0; i < 10; i++) {
             String title = "Fake Title " + Integer.toString(i);
-            String Description = "This is a fake description for title " + Integer.toString(i);
+            String Description = "This is a fake description for getTitle " + Integer.toString(i);
             instance.createNewProblem(title, Description);
         }
     }
@@ -54,7 +54,7 @@ public class ProblemController {
      * This function will create a new problem for the user that called it and will add it
      * to the problem list.
      *
-     * @param title the title of the problem
+     * @param title the getTitle of the problem
      * @param description the description of the problem
      * @author Jose Ramirez
      */
@@ -66,7 +66,7 @@ public class ProblemController {
             instance.problems.add(newProblem);
         }
         catch (Exception e) {
-            // display an error that the problem has too long of a title
+            // display an error that the problem has too long of a getTitle
             String message = e.getMessage();
 
         }
@@ -76,13 +76,13 @@ public class ProblemController {
     /**
      * This function will edit one of the selected problems
      * @param index the problem index to edit
-     * @param newTitle the new title for the edit
+     * @param newTitle the new getTitle for the edit
      * @param newDescription the new description for the edit
      */
     public void editProblem(int index, String newTitle, String newDescription) {
         // To find the problem, we compare the date as the date should be unique enough.
         ProblemModel problem = instance.problems.get(index);
-        // set the new title and description
+        // set the new getTitle and description
         try {
             // does references work here? Testing will check
             problem.setTitle(newTitle);
