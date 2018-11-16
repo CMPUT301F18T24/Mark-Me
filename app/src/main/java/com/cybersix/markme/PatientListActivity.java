@@ -16,12 +16,13 @@ public class PatientListActivity extends ListActivity {
 
         Intent intent = getIntent();
         final String userid = intent.getStringExtra(UserModel.USERID);
-        mCareProvider = new CareProvider(userid, CloudUtils.getAssignedPatients(userid));
-
-        mArrayAdapter = new ArrayAdapter<Patient>(this, R.layout.list_item, mCareProvider.getPatients());
-        listView().setAdapter(mArrayAdapter);
-
-        mCareProvider.addObserver();
+        try {
+            mCareProvider = new CareProvider(userid, CloudUtils.getAssignedPatients(userid));
+            mArrayAdapter = new ArrayAdapter<Patient>(this, R.layout.list_item, mCareProvider.getPatients());
+            listView().setAdapter(mArrayAdapter);
+        } catch (UserIDTooShortException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void setupUI() {

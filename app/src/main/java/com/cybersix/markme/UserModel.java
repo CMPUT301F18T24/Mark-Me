@@ -7,11 +7,11 @@ import java.util.Observable;
 
 public class UserModel extends Observable {
     public static final String USERID = "USERID";
-    private String userID;
-    private String email;
-    private String phone;
-    private String password;
-    private String userType;
+    private String userID = null;
+    private String email = null;
+    private String phone = null;
+    private String password = null;
+    private String userType = null;
 
     public static final int MINIMUM_USERID_LENGTH = 8;
 
@@ -20,16 +20,15 @@ public class UserModel extends Observable {
 
     /*added a constructor*/
     public UserModel(String userID, String password) throws UserIDTooShortException {
-        if (userID.length() < MINIMUM_USERID_LENGTH)
-            throw new UserIDTooShortException();
+        setUserID(userID);
 
-        this.userID = userID;
         this.password = password;
     }
 
     public void setUserID(String userID) throws UserIDTooShortException {
-
-        if (userID.length() < MINIMUM_USERID_LENGTH) {
+        if (userID == null) {
+            userID = null;
+        } else if (userID.length() < MINIMUM_USERID_LENGTH) {
             throw new UserIDTooShortException();
         } else {
             this.userID = userID;
@@ -37,7 +36,6 @@ public class UserModel extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
 
     public String getUserID() {
@@ -46,8 +44,9 @@ public class UserModel extends Observable {
 
     // Only accept two types of user types: "patient" ir "care_provider".
     public void setUserType(String userType) throws InvalidUserTypeException {
-
-        if (userType.equals("patient") || userType.equals("care_provider")) {
+        if (userType == null) {
+            this.userType = null;
+        } else if (userType.equals("patient") || userType.equals("care_provider")) {
             this.userType = userType;
         } else {
             throw new InvalidUserTypeException();
@@ -55,10 +54,9 @@ public class UserModel extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
-    public String getUserType(){
 
+    public String getUserType(){
         return this.userType;
     }
 
@@ -132,7 +130,10 @@ public class UserModel extends Observable {
     }
 
     public String toString() {
-        return this.userID.toString();
+        if (userID == null)
+            return "null";
+
+        return userID.toString();
     }
 }
 
