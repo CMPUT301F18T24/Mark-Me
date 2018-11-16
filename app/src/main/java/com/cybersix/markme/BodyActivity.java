@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -60,9 +61,11 @@ public class BodyActivity extends AppCompatActivity {
     private TextView notListedText;
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
+    private RecordController recordController = RecordController.getInstance();
     private DisplayMetrics dm;
     private boolean frontFacing = true;
     private boolean addingRecord = false;
+
 
 
     /*
@@ -73,10 +76,16 @@ public class BodyActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body);
+        initAttributes();
+        setListeners();
+        drawRecords();
+    }
+
+
+
+    private void initAttributes(){
         bodyView = (ImageView) findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
@@ -86,8 +95,9 @@ public class BodyActivity extends AppCompatActivity {
         totalText = (TextView) findViewById(R.id.totalText);
         notListedText = (TextView) findViewById(R.id.notListedText);
         userPromptText = (TextView) findViewById(R.id.userPromptText);
+    }
 
-
+    private void setListeners(){
         rotateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -95,7 +105,6 @@ public class BodyActivity extends AppCompatActivity {
             }
 
         });
-
         addButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -103,7 +112,6 @@ public class BodyActivity extends AppCompatActivity {
                 newRecord();
             }
         });
-
         viewAllButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -121,13 +129,13 @@ public class BodyActivity extends AppCompatActivity {
                 int action = event.getAction();
                 if(action == MotionEvent.ACTION_UP){
 
+                    EBodyPart selectedPart = null;
+
                     int h = bodyView.getHeight();
                     int w = bodyView.getWidth();
 
                     float xdp = event.getX()/w; //Necessary calculation.. Scales X and Y to screen size
                     float ydp = event.getY()/h;
-
-                    selectNewRecord();
 
                     Log.d("BODY TOUCH","X: " + xdp + " " + "Y: " + ydp);
                     for(EBodyPart part : EBodyPart.values()){
@@ -137,23 +145,31 @@ public class BodyActivity extends AppCompatActivity {
                             bodyConstraintLayout.removeView(point);
                             point = new PointView(BodyActivity.this, null,event.getX(),event.getY());
                             bodyConstraintLayout.addView(point);
+                            selectedPart = part;
                         }
                     }
+                    selectNewRecord(selectedPart);
                 }
                 return true;
             }
         });
-        drawRecords();
     }
-
 
     private void reverse(){
         frontFacing = !frontFacing;
     }
 
-    private void selectNewRecord(){
-        if(addingRecord){
+    private void selectNewRecord(EBodyPart selectedPart){
+        if(selectedPart == null || !addingRecord){
             addingRecord = false;
+            userPromptText.setVisibility(View.INVISIBLE);
+            return;
+        }else{
+            addingRecord = false;
+            userPromptText.setVisibility(View.INVISIBLE);
+            Intent i = new Intent(this, RecordCreationActivity.class);
+            i.putExtra("BodyPart",selectedPart);
+            startActivity(i);
         }
     }
 

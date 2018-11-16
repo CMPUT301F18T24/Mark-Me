@@ -33,7 +33,7 @@ public class RecordListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        //setContentView(R.layout.activity_list);
 
         // initialize all of the buttons and hid the ones not needed for the record list activity
         Button addButton = (Button) findViewById(R.id.addButton);
