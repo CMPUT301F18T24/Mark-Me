@@ -68,9 +68,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getApplicationContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomGesturesEnabled(true);
+        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+        googleMap.setMinZoomPreference(12);
         LatLng uni = new LatLng(53.5232, -113.5263);
         googleMap.addMarker(new MarkerOptions().position(uni)
-                .title("Marker in Sydney"));
+                .title("University of Alberta"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(uni));
 
 
