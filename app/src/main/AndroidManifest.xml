@@ -21,6 +21,11 @@
         <activity
             android:name=".NavigationBar"
             android:label="@string/title_activity_navigation_bar" />
+            android:label="@string/title_activity_navigation_bar"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".AccountSettingsActivity"></activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".ListActivity" />
