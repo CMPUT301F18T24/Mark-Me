@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/bodyView"
             android:layout_width="0dp"
-            android:layout_height="514dp"
+            android:layout_height="0dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
             android:layout_marginStart="8dp"
             android:enabled="true"
             android:text="Touch a Location"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/rotateButton"
             app:layout_constraintStart_toEndOf="@+id/addButton"
