@@ -15,7 +15,7 @@ public class CareProvider extends UserModel {
         patients.add(p);
     }
 
-    public Patient removePatient(Patient p){
+    public Patient removePatient(Patient p) {
         patients.remove(p);
         return p;
     }

@@ -19,7 +19,7 @@ public class LiveCameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_camera);
-        GuiUtil.setFullScreen(this);
+        GuiUtils.setFullScreen(this);
 
         textureView = findViewById(R.id.liveCameraView);
         toggleViewButton = findViewById(R.id.toggleCameraButton);

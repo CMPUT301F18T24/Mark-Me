@@ -4,7 +4,7 @@ package com.cybersix.markme;
 import android.os.Bundle;
 
 public class UserModel {
-
+    public static final String USERID = "USERID";
     private String userID;
     private String email;
     private String phone;
