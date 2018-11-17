@@ -31,6 +31,9 @@
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
         <activity android:name=".RecordInfoActivity" />
+        <activity android:name=".ProblemActivityCreation"
+                  android:parentActivityName=".ProblemListActivity"
+                  android:theme="@style/AppTheme.PopUp"></activity>
         <activity
             android:name=".BodyActivity"
             android:exported="true" />
