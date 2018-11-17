@@ -111,8 +111,6 @@ public class BodyActivity extends AppCompatActivity {
         TODO:
         1. Click to view records of body part in a record list
      */
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -152,7 +150,6 @@ public class BodyActivity extends AppCompatActivity {
     }
 
     private void initAttributes() {
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bodyView = (ImageView) findViewById(R.id.bodyView);
