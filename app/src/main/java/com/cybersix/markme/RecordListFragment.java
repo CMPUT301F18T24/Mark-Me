@@ -28,8 +28,8 @@ public class RecordListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getTitle().setText("List of Records");
-
+        getTitle().setText("List of Records"); // Title should be title of problem
+        getDetails().setText("List of records"); // Detail should be problem description
         getReturnButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

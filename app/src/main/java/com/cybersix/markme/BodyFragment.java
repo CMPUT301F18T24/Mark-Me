@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class BodyFragment extends Fragment {
 
 
-    private class PointView extends View{
+    private class PointView extends View {
 
         private final float x;
         private final float y;
@@ -87,7 +87,6 @@ public class BodyFragment extends Fragment {
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) getActivity().findViewById(R.id.rotateButton);
-        bnv = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         addButton = (ImageButton) getActivity().findViewById(R.id.addButton);
         viewAllButton = (ImageButton) getActivity().findViewById(R.id.viewAllButton);
         totalText = (TextView) getActivity().findViewById(R.id.totalText);
