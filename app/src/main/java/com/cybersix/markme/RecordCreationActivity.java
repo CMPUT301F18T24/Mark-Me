@@ -68,13 +68,17 @@ public class RecordCreationActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //TODO: Send to edit records
+                //TODO: Send to edit records instead of prev screen
+                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+                startActivity(i);
                 finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+                startActivity(i);
                 finish();
             }
         });

@@ -121,6 +121,7 @@ public class BodyActivity extends AppCompatActivity {
         recordController = RecordController.getInstance();
         initAttributes();
         setListeners();
+
     }
 
     private void initAttributes() {
@@ -133,17 +134,19 @@ public class BodyActivity extends AppCompatActivity {
         totalText = (TextView) findViewById(R.id.totalText);
         notListedText = (TextView) findViewById(R.id.notListedText);
         userPromptText = (TextView) findViewById(R.id.userPromptText);
+
+        //Init mapping dict
         recordParts.put(null,new ArrayList<RecordModel>());
         for(EBodyPart part : EBodyPart.values()) {
             recordParts.put(part,new ArrayList<RecordModel>());
         }
 
+        //Add existing records to body mappings
         for(RecordModel r : recordController.records){
             ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
             records.add(r);
             recordParts.put(r.getBodyLocation().getBodyPart(),records);
         }
-        Log.d("Records",Integer.toString(recordParts.get(EBodyPart.CHEST).size()));
     }
 
     private void setListeners(){
@@ -230,6 +233,7 @@ public class BodyActivity extends AppCompatActivity {
             Intent i = new Intent(this, RecordCreationActivity.class);
             i.putExtra("BodyPart",selectedPart);
             startActivity(i);
+            finish();
         }
     }
 
