@@ -18,6 +18,9 @@ public class ElasticSearchIOController {
 
     private static JestDroidClient client = null;
 
+    /**
+     * Create a singleton of the JestDroidClient.
+     */
     public static void setClient() {
         if (client == null) {
             DroidClientConfig config = new DroidClientConfig
@@ -28,24 +31,27 @@ public class ElasticSearchIOController {
         }
     }
 
-    // TODO: Implement the userID.
-    public static List<UserModel> getUser(String userID) {
+    /**
+     * Queries the elasticsearch database for a user. Do NOT call directly, call getUserTask
+     * instead.
+     * @param username - The username you want to find.
+     * @return - Returns a list of users that match the username, which should be 0 or 1.
+     */
+    public static List<UserModel> getUser(String username) {
         setClient();
 
+        // Case does not matter.
         String query = "{ \"query\" : \n" +
                        "{ \"match\" :\n" +
-                       "{ \"username\" : \"myFirstUsername\" }}}";
+                       "{ \"username\" : \" " + username + " \" }}}";
 
         Search search = new Search.Builder(query)
                 .addIndex("cmput301f18t24test")
                 .addType("users")
                 .build();
 
-        Log.d("Vishal", "I built the query.");
-
         try {
             JestResult result = client.execute(search);
-            Log.d("Vishal", "Search was successful");
             if (result.isSucceeded()) {
                 List<UserModel> userList;
                 userList = result.getSourceAsObjectList(UserModel.class);
@@ -58,11 +64,13 @@ public class ElasticSearchIOController {
         return new ArrayList<UserModel>();
     }
 
+    /**
+     * Queries a list the elastic search database for a list of users. See also getUser().
+     */
     public static class GetUserTask extends AsyncTask<String, Void, ArrayList<UserModel>> {
 
         protected ArrayList<UserModel> doInBackground(String... strings) {
             ArrayList<UserModel> users = new ArrayList<UserModel>();
-            Log.d("Vishal", "I'm ready to get users.");
             for (String s: strings) {
                 users.addAll(getUser(s));
             }

@@ -72,45 +72,49 @@ public class LoginActivity extends AppCompatActivity {
     // If info is not valid, it displays a error message.
     // Assumes that the user model has been loaded with user info.
     // Inputs: Reads the userText and passText.
-    // TODO: Fill in stub for after login.
     public void checkLogin() {
 
-        Log.d("Vishal", "I'm going to try a thing.");
+        UserProfileController profileController = UserProfileController.getInstance();
+        TextView userText = (TextView) findViewById(R.id.usernameText);
+        TextView passText = (TextView) findViewById(R.id.passwordText);
+        ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
 
+        // Search elasticsearch database for the username.
         try {
-            ArrayList<UserModel> foundUsers = new ElasticSearchIOController.GetUserTask()
-                                                                    .execute("Boy").get();
-            for (UserModel user : foundUsers) {
-                Log.d("Vishal_info: ", user.getUsername() + " "
-                                            + user.getPassword() + " "
-                                            + user.getEmail() + " "
-                                            + user.getPhone() + " "
-                                            + user.getUserType());
-            }
+            foundUsers = new ElasticSearchIOController.GetUserTask()
+                    .execute(userText.getText().toString()).get();
             Log.d("Vishal_Login_Activity", Integer.toString(foundUsers.size()));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        UserProfileController profileController = UserProfileController.getInstance();
-        TextView userText = (TextView) findViewById(R.id.usernameText);
-        TextView passText = (TextView) findViewById(R.id.passwordText);
+        // If we got exactly one username returned.
+        if (foundUsers.size() == 1) {
 
-         if (profileController.isUserValid(userText.getText().toString(),
-                                               passText.getText().toString())) {
-             Log.d("Vishal_Login_Activity", "Successful Login.");
-             // Put code here for after login...
-         } else {
+            // Check if the password match.
+            if (foundUsers.get(0).getPassword().compareTo(passText.getText().toString()) == 0) {
+                Log.d("Vishal_Login_Activity", "Successful Login.");
+                // Put code here for after login...
+            } else {
+                // Clear password box.
+                passText.setText("");
 
-             // Clear password box.
-             passText.setText("");
+                // Notify user that login failed.
+                Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
 
-             // Notify user that login failed.
-             Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
-             toast.show();
+        } else {
 
-         }
+            // Clear password box.
+            passText.setText("");
+
+            // Notify user that login failed.
+            Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+
     }
-
 
 }
