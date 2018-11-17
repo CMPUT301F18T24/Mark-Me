@@ -95,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
             if (foundUsers.get(0).getPassword().compareTo(passText.getText().toString()) == 0) {
 
                 // Tell the controller to update the usermodel.
-                profileController.setUser(foundUsers.get(0).getUsername(),
+                profileController.setUser(foundUsers.get(0).getUserID(),
+                                          foundUsers.get(0).getUsername(),
                                           foundUsers.get(0).getEmail(),
                                           foundUsers.get(0).getPhone(),
                                           foundUsers.get(0).getPassword(),

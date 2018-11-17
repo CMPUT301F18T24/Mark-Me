@@ -29,10 +29,16 @@ public class UserModel extends Observable {
         this.password = password;
     }
 
+    /**
+     * @return The userID which is the ID of the entry in the elastic search database.
+     */
     public String getUserID() {
         return userID;
     }
 
+    /**
+     * @param userID ID of the entry in the elastic search database.
+     */
     public void setUserID(String userID) {
         this.userID = userID;
     }

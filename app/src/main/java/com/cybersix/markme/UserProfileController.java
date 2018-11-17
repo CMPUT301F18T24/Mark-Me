@@ -36,18 +36,17 @@ public class UserProfileController {
     }
 
     // Attempts to set the user in the UserModel.
-    public Boolean setUser(String username, String email, String phone, String password, String userType) {
+    public void setUser(String userID, String username, String email, String phone, String password,
+                        String userType) {
         try {
+            user.setUserID(userID);
             user.setUsername(username);
             user.setEmail(email);
             user.setPhone(phone);
             user.setPassword(password);
             user.setUserType(userType);
-
-            return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
             Log.d("Vishal_ProfileCont", e.toString());
-            return false;
         }
     }
 
