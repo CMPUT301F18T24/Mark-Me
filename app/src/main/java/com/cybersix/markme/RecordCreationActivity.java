@@ -22,6 +22,8 @@ public class RecordCreationActivity extends AppCompatActivity {
     private Button buttonCancelRecord;
     private Button buttonAddRecord;
     private RecordController recordController = RecordController.getInstance();
+    private ProblemController problemController = ProblemController.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class RecordCreationActivity extends AppCompatActivity {
                 String title = recordAddTitleText.getText().toString();
                 String desc = recordAddDescText.getText().toString();
                 BodyLocation bl = new BodyLocation(selectedPart);
-                recordController.createNewRecord(title,desc,null,null,bl);
+                RecordModel record = recordController.createNewRecord(title,desc,null,null,bl);
+                problemController.getSelectedProblem().addRecord(record);
                 newRecordAlert();
             }
         });
@@ -52,12 +55,19 @@ public class RecordCreationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+                startActivity(i);
                 finish();
             }
         });
 
 
-        recordBodyLocation.setText("Body Location: " + selectedPart.toString());
+        if(selectedPart != null){
+            recordBodyLocation.setText("Body Location: " + selectedPart.toString());
+        } else {
+            recordBodyLocation.setText("Body Location: Unlisted");
+
+        }
 
     }
 

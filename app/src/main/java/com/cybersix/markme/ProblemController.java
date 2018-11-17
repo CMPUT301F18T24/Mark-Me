@@ -125,10 +125,14 @@ public class ProblemController {
 
     public void setSelectedProblem(ProblemModel problem){
         selectedProblem = problem;
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
     }
 
     public void setSelectedProblem(int index){
         selectedProblem = problems.get(index);
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
     }
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){

@@ -140,7 +140,7 @@ public class BodyActivity extends AppCompatActivity {
             //Send to problem view
             Intent i = new Intent(this, ProblemListActivity.class);
             startActivity(i);
-            finish();
+            //TODO: finish();
         }
     }
 
@@ -175,11 +175,14 @@ public class BodyActivity extends AppCompatActivity {
             recordParts.put(part,new ArrayList<RecordModel>());
         }
 
-        //Add existing records to body mappings
-        for(RecordModel r : problemController.getSelectedProblemRecords()){
-            ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
-            records.add(r);
-            recordParts.put(r.getBodyLocation().getBodyPart(),records);
+        //TODO: Remove this check here
+        if(problemController.getSelectedProblem() != null){
+            //Add existing records to body mappings
+            for(RecordModel r : problemController.getSelectedProblemRecords()){
+                ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
+                records.add(r);
+                recordParts.put(r.getBodyLocation().getBodyPart(),records);
+            }
         }
     }
 
@@ -202,7 +205,7 @@ public class BodyActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                viewAllRecords();
+                viewRecords(null);
             }
         });
 
@@ -223,13 +226,13 @@ public class BodyActivity extends AppCompatActivity {
 
                     Log.d("BODY TOUCH","X: " + xdp + " " + "Y: " + ydp);
                     for(EBodyPart part : EBodyPart.values()){
-
                         if(xdp >= part.getP1().x && xdp<=part.getP2().x && ydp >= part.getP1().y && ydp <= part.getP2().y && part.getFace() == frontFacing){
                             Log.d("BODY HIT",part.toString());
                             bodyConstraintLayout.removeView(point);
                             point = new PointView(BodyActivity.this, null,event.getX(),event.getY());
                             bodyConstraintLayout.addView(point);
                             selectedPart = part;
+                            viewRecords(selectedPart);
                         }
                     }
                     selectNewRecord(selectedPart);
@@ -256,8 +259,12 @@ public class BodyActivity extends AppCompatActivity {
         frontFacing = !frontFacing;
     }
 
+
+    /*
+        Creates new record for selected part if one is selected
+     */
     private void selectNewRecord(EBodyPart selectedPart){
-        if(selectedPart == null || !addingRecord){
+        if(!addingRecord){
             addingRecord = false;
             userPromptText.setVisibility(View.INVISIBLE);
             return;
@@ -271,10 +278,10 @@ public class BodyActivity extends AppCompatActivity {
         }
     }
 
+    /*
+        Draws an overlay for records on the screen
+    */
     private void drawRecords(){
-        /*
-            TODO: Get all records and draw/highlight areas
-         */
         for(EBodyPart bp: recordParts.keySet()){
             listedCount += recordParts.get(bp).size();
             if(bp != null && recordParts.get(bp).size() > 0){
@@ -295,10 +302,17 @@ public class BodyActivity extends AppCompatActivity {
         }
     }
 
-    private void viewAllRecords(){
+    private void viewRecords(EBodyPart selectedPart){
         /*
-            TODO: Get all records and send to list view
+            TODO: Get records and send to list view
          */
+        //If we have records for the clicked part
+        if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
+            Intent i = new Intent(this, RecordListActivity.class);
+            i.putExtra("SelectedPart",selectedPart);
+            startActivity(i);
+            finish();
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Jose: I will have to set this up also to be able to get a list of records based off of a problem
  *      TODO: this may involve some elastic searching and queries that should be handled by the controller
@@ -16,7 +19,9 @@ import android.widget.TextView;
 public class RecordListActivity extends ListActivity {
     private ListView recordListView;
     private ArrayAdapter<RecordModel> recordListAdapter;
-    private RecordController controllerInstance = RecordController.getInstance();
+    private RecordController recordController = RecordController.getInstance();
+    private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
+
 
     // create the problem info pop-up for the activity
     public class ProblemPopUp extends AppCompatActivity {
@@ -68,13 +73,29 @@ public class RecordListActivity extends ListActivity {
                 // popup
             }
         });
+
+        Intent i = getIntent();
+        //Get selected part from intent
+        EBodyPart selectedPart = (EBodyPart) i.getSerializableExtra("SelectedPart");
+
+        //If null, we want all records
+        if(selectedPart == null){
+            recordsToDisplay = recordController.selectedProblemRecords;
+        } else {
+            //Otherwise we filter out for just the selected part
+            for(RecordModel r : recordController.selectedProblemRecords){
+                if(r.getBodyLocation().getBodyPart() == selectedPart){
+                    recordsToDisplay.add(r);
+                }
+            }
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(this, R.layout.list_item, controllerInstance.records);
+        recordListAdapter = new ArrayAdapter<RecordModel>(this, R.layout.list_item, recordsToDisplay);
         recordListView.setAdapter(recordListAdapter);
     }
 }

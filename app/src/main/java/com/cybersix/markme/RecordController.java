@@ -25,6 +25,7 @@ public class RecordController {
     // set up the controller instance with lazy construction
     private static RecordController instance = null;
     public ArrayList<RecordModel> records;
+    public ArrayList<RecordModel> selectedProblemRecords;
 
     /**
      * This contructor will set up the controller variable "problems"
@@ -59,7 +60,7 @@ public class RecordController {
      * @param photos the list of photos to add for the record (optional)
      * @param bodyLocation the location on the body of the record (optional)
      */
-    public void createNewRecord(String title, String description, ArrayList<Bitmap> photos, Location location,
+    public RecordModel createNewRecord(String title, String description, ArrayList<Bitmap> photos, Location location,
                                 BodyLocation bodyLocation) {
         // This will need to be modified as soon as the gelocation stuff is handled
         //GeoLocationRecord location = null
@@ -74,7 +75,7 @@ public class RecordController {
                 catch (Exception e) {
                     // display unable to save the photos
                     String message = e.getMessage();
-                    return;
+                    return null;
                 }
             }
         }
@@ -91,6 +92,7 @@ public class RecordController {
         // finally add the record to the record list
         records.add(record);
         Log.d("Jose_CreateRecord", "Record successfully created");
+        return record;
 
     }
 
