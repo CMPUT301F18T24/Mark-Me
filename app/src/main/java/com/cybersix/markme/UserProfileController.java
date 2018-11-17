@@ -66,7 +66,7 @@ public class UserProfileController {
             new ElasticSearchIOController.AddUserTask().execute(user);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
-            Log.d("Vishal_UserProfileCont", e.toString());
+            Log.d("Vishal_ProfileCont", e.toString());
             return false;
         }
 

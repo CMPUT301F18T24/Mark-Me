@@ -69,14 +69,24 @@ public class ElasticSearchIOController {
     public static void addUser(UserModel user) {
         setClient();
 
-        Index index = new Index.Builder(user)
+        // Create a data class to save to elastic search. This lets us avoid saving the extra
+        // information contained in the usermodel.
+        NewUser newUser = new NewUser(user.getUsername(),
+                                      user.getEmail(),
+                                      user.getPhone(),
+                                      user.getPassword(),
+                                      user.getUserType());
+
+        Index index = new Index.Builder(newUser)
                         .index("cmput301f18t24test")
                         .type("users")
                         .build();
 
         try {
             DocumentResult result = client.execute(index);
+            Log.d("Vishal", "addUser: " + result.isSucceeded() + " " + index.getId());
             if (result.isSucceeded()) {
+                // Associate the ID with the original userModel object.
                 user.setUserID(result.getId());
             }
         } catch (IOException e) {
@@ -110,4 +120,21 @@ public class ElasticSearchIOController {
         }
     }
 
+}
+
+class NewUser {
+    private String username;
+    private String email;
+    private String phone;
+    private String password;
+    private String userType;
+
+    public NewUser(String username, String email, String phone, String password,
+                   String userType) {
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.userType = userType;
+    }
 }
