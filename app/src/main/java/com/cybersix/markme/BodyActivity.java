@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 
+//Note: https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
 public class BodyActivity extends AppCompatActivity {
 
 
@@ -54,16 +56,12 @@ public class BodyActivity extends AppCompatActivity {
             p.setColor(Color.RED);
             canvas.drawCircle(x,y,8,p);
         }
-
-
-
     }
 
     private class HighlightView extends View{
 
         private final float x1;
         private final float x2;
-
         private final float y1;
         private final float y2;
 
@@ -80,12 +78,10 @@ public class BodyActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas){
             super.onDraw(canvas);
             Paint p = new Paint();
-            p.setColor(Color.argb(20,255,0,0));
+            p.setColor(Color.argb(35,0,0,255));
+            p.setStrokeWidth(12);
             canvas.drawRect(new RectF(x1,y1,x2,y2),p);
         }
-
-
-
     }
 
     private ImageView bodyView;
@@ -97,9 +93,11 @@ public class BodyActivity extends AppCompatActivity {
     private TextView notListedText;
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
-    private RecordController recordController = RecordController.getInstance();
+    private RecordController recordController;
     private DisplayMetrics dm;
     private boolean frontFacing = true;
+    private int listedCount = 0;
+    private int unlistedCount = 0;
     private boolean addingRecord = false;
     private HashMap<EBodyPart,ArrayList<RecordModel>> recordParts = new HashMap<EBodyPart,ArrayList<RecordModel>>();
 
@@ -107,19 +105,23 @@ public class BodyActivity extends AppCompatActivity {
 
     /*
         TODO:
-        1. Get total ailments and display on screen
-        2. Map current records to the body and draw
+        1. Click to view records of body part in a record list
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body);
-        initAttributes();
-        setListeners();
-        drawRecords();
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        listedCount = 0;
+        unlistedCount = 0;
+        recordController = RecordController.getInstance();
+        initAttributes();
+        setListeners();
+    }
 
     private void initAttributes() {
         bodyView = (ImageView) findViewById(R.id.bodyView);
@@ -141,6 +143,7 @@ public class BodyActivity extends AppCompatActivity {
             records.add(r);
             recordParts.put(r.getBodyLocation().getBodyPart(),records);
         }
+        Log.d("Records",Integer.toString(recordParts.get(EBodyPart.CHEST).size()));
     }
 
     private void setListeners(){
@@ -197,6 +200,19 @@ public class BodyActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //We must wait for the layout to be drawn and measured to use getHeight and getWidth
+        // So we listen for the API to tell us measurements are done and then we can draw
+        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                drawRecords();
+                totalText.setText("Total: " + Integer.toString(listedCount));
+                notListedText.setText("Not Listed: " + Integer.toString(unlistedCount));
+            }
+        });
     }
 
     private void reverse(){
@@ -222,15 +238,22 @@ public class BodyActivity extends AppCompatActivity {
             TODO: Get all records and draw/highlight areas
          */
         for(EBodyPart bp: recordParts.keySet()){
-            if(bp != null){
+            listedCount += recordParts.get(bp).size();
+            if(bp != null && recordParts.get(bp).size() > 0){
+                //Get p1 and p2 of the body part
                 PointF p1 = bp.getP1();
                 PointF p2 = bp.getP2();
-                HighlightView highlight = new HighlightView(BodyActivity.this, null,p1.x,p1.y,p2.x,p2.y);
+
+                //Need w/h to scale the x and y values dynamically to our screen
+                float h = bodyView.getHeight();
+                float w = bodyView.getWidth();
+
+                //Create new view and add to layout
+                HighlightView highlight = new HighlightView(BodyActivity.this, null,p1.x*w,p1.y*h,p2.x*w,p2.y*h);
                 bodyConstraintLayout.addView(highlight);
             } else {
-
+                unlistedCount += recordParts.get(bp).size();
             }
-
         }
     }
 
@@ -239,6 +262,8 @@ public class BodyActivity extends AppCompatActivity {
             TODO: Get all records and send to list view
          */
     }
+
+
 
     private void newRecord(){
         /*
