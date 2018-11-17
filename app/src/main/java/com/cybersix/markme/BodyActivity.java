@@ -96,7 +96,7 @@ public class BodyActivity extends AppCompatActivity {
     private TextView notListedText;
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
-    private RecordController recordController;
+    private ProblemController problemController = ProblemController.getInstance();
     private DisplayMetrics dm;
     private BottomNavigationView bnv;
     private boolean frontFacing = true;
@@ -136,6 +136,12 @@ public class BodyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body);
+        if(problemController.getSelectedProblem() == null){
+            //Send to problem view
+            Intent i = new Intent(this, ProblemListActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     @Override
@@ -143,7 +149,7 @@ public class BodyActivity extends AppCompatActivity {
         super.onStart();
         listedCount = 0;
         unlistedCount = 0;
-        recordController = RecordController.getInstance();
+        problemController = ProblemController.getInstance();
         initAttributes();
         setListeners();
 
@@ -170,7 +176,7 @@ public class BodyActivity extends AppCompatActivity {
         }
 
         //Add existing records to body mappings
-        for(RecordModel r : recordController.records){
+        for(RecordModel r : problemController.getSelectedProblemRecords()){
             ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
             records.add(r);
             recordParts.put(r.getBodyLocation().getBodyPart(),records);

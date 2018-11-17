@@ -20,6 +20,7 @@ import java.util.Date;
 public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
+    private static ProblemModel selectedProblem = null;
     public ArrayList<ProblemModel> problems;
 
     /**
@@ -120,6 +121,22 @@ public class ProblemController {
         list of problems
          */
         instance.problems = problems;
+    }
+
+    public void setSelectedProblem(ProblemModel problem){
+        selectedProblem = problem;
+    }
+
+    public void setSelectedProblem(int index){
+        selectedProblem = problems.get(index);
+    }
+
+    public ArrayList<RecordModel> getSelectedProblemRecords(){
+        return selectedProblem.getRecords();
+    }
+
+    public ProblemModel getSelectedProblem(){
+        return selectedProblem;
     }
 
 }
