@@ -12,7 +12,9 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Debug;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -95,6 +98,7 @@ public class BodyActivity extends AppCompatActivity {
     private ConstraintLayout bodyConstraintLayout;
     private RecordController recordController;
     private DisplayMetrics dm;
+    private BottomNavigationView bnv;
     private boolean frontFacing = true;
     private int listedCount = 0;
     private int unlistedCount = 0;
@@ -107,6 +111,29 @@ public class BodyActivity extends AppCompatActivity {
         TODO:
         1. Click to view records of body part in a record list
      */
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.settings:
+                    return true;
+                case R.id.gps:
+                    return true;
+                case R.id.body:
+                    return true;
+                case R.id.gallery:
+                    return true;
+                case R.id.list:
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,10 +152,14 @@ public class BodyActivity extends AppCompatActivity {
     }
 
     private void initAttributes() {
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bodyView = (ImageView) findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) findViewById(R.id.rotateButton);
+        bnv = (BottomNavigationView) findViewById(R.id.navigation);
         addButton = (ImageButton) findViewById(R.id.addButton);
         viewAllButton = (ImageButton) findViewById(R.id.viewAllButton);
         totalText = (TextView) findViewById(R.id.totalText);
