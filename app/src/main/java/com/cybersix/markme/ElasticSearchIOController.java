@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 
 public class ElasticSearchIOController {
@@ -64,6 +66,25 @@ public class ElasticSearchIOController {
         return new ArrayList<UserModel>();
     }
 
+    public static void addUser(UserModel user) {
+        setClient();
+
+        Index index = new Index.Builder(user)
+                        .index("cmput301f18t24test")
+                        .type("users")
+                        .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                user.setUserID(result.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Queries a list the elastic search database for a list of users. See also getUser().
      */
@@ -75,6 +96,17 @@ public class ElasticSearchIOController {
                 users.addAll(getUser(s));
             }
             return users;
+        }
+    }
+
+    public static class AddUserTask extends AsyncTask<UserModel, Void, Void> {
+
+        protected Void doInBackground(UserModel... params) {
+            for (UserModel user : params) {
+                addUser(user);
+            }
+
+            return null;
         }
     }
 

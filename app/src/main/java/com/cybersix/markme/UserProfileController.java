@@ -2,6 +2,8 @@ package com.cybersix.markme;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class UserProfileController {
 
     private static UserProfileController instance = null;
@@ -38,17 +40,30 @@ public class UserProfileController {
     //         userType - The type of the user.
     // Outputs: Returns true if added user was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public Boolean addUser(String userID, String email, String phone, String password, String userType) {
+    public Boolean addUser(String username, String email, String phone, String password, String userType) {
 
-        // Stub: Save new user to the database instead of setting the user model.
-        // Also check if user exists before saving to the database. Return false if it already esists.
+        // Check if the user exists.
+        ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
+        try {
+            foundUsers = new ElasticSearchIOController.GetUserTask().execute(username).get();
+            Log.d("Vishal_ProfileCont", Integer.toString(foundUsers.size()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // If username exists, then send a fail.
+        if (foundUsers.size() > 0) {
+            return false;
+        }
 
         try {
-            user.setUsername(userID);
+            user.setUsername(username);
             user.setEmail(email);
             user.setPhone(phone);
             user.setPassword(password);
             user.setUserType(userType);
+
+            new ElasticSearchIOController.AddUserTask().execute(user);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
             Log.d("Vishal_UserProfileCont", e.toString());

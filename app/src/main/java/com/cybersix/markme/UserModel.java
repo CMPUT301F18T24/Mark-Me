@@ -29,6 +29,14 @@ public class UserModel extends Observable {
         this.password = password;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     public void setUsername(String username) throws UsernameTooShortException {
 
         if (username.length() < MINIMUM_USERNAME_LENGTH) {
