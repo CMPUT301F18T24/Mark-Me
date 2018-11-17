@@ -1,5 +1,7 @@
 package com.cybersix.markme;
 
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -58,7 +60,6 @@ public class ElasticSearchIOController {
             if (result.isSucceeded()) {
                 List<UserModel> userList;
                 userList = result.getSourceAsObjectList(UserModel.class);
-                Log.d("Vishal", "getUser: Send help: " + result.getJsonString());
                 return userList;
             }
         } catch (IOException e) {
@@ -114,7 +115,6 @@ public class ElasticSearchIOController {
             if (result.isSucceeded()) {
                 List<ProblemModel> problemList;
                 problemList = result.getSourceAsObjectList(ProblemModel.class);
-                Log.d("Vishal", "getUser: Send help: " + result.getJsonString());
                 return problemList;
             }
         } catch (IOException e) {
@@ -143,13 +143,44 @@ public class ElasticSearchIOController {
 
         try {
             DocumentResult result = client.execute(index);
-            Log.d("Vishal", "addProblem: " + result.isSucceeded());
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 problem.setProblemID(result.getId());
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public static void addRecords(ProblemModel problem) {
+        setClient();
+
+        UserProfileController profileController = UserProfileController.getInstance();
+
+        for (RecordModel record : problem.getRecords()) {
+
+            // Create a data class to save to elastic search. This lets us avoid saving the extra
+            // information contained in the problemModel.
+            NewRecord newRecord = new NewRecord(record.getTitle(),
+                    record.getDescription(), record.getTimestamp(), record.getComment(),
+                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation());
+
+
+            Index index = new Index.Builder(newRecord)
+                    .index("cmput301f18t24test")
+                    .type("records")
+                    .build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    // Associate the ID with the original userModel object.
+                    record.setRecordID(result.getId());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -205,6 +236,21 @@ public class ElasticSearchIOController {
         }
     }
 
+    /**
+     * Adds all records for each given problem.
+     */
+    public static class AddRecordTask extends AsyncTask<ProblemModel, Void, Void> {
+
+        protected Void doInBackground(ProblemModel... params) {
+            for (ProblemModel problem : params) {
+                addRecords(problem);
+            }
+
+            return null;
+        }
+
+    }
+
 }
 
 class NewUser {
@@ -237,4 +283,27 @@ class NewProblem {
         this.started = started;
         this.userID = userID;
     }
+}
+
+class NewRecord {
+
+    private String title;
+    private String description;
+    private Date timestamp;
+    private String comment;
+    private ArrayList<Bitmap> photos;
+    private BodyLocation bodyLocation;
+    private Location mapLocation;
+
+    public NewRecord(String title, String description, Date timestamp, String comment,
+                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, Location mapLocation) {
+        this.title = title;
+        this.description = description;
+        this.timestamp = timestamp;
+        this.comment = comment;
+        this.photos = photos;
+        this.bodyLocation = bodyLocation;
+        this.mapLocation = mapLocation;
+    }
+
 }

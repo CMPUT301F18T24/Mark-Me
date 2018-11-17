@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
+import io.searchbox.annotations.JestId;
+
 public class RecordModel {
     private String title;
     private String description;
@@ -16,6 +18,17 @@ public class RecordModel {
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
     private Location mapLocation;
+
+    public String getRecordID() {
+        return recordID;
+    }
+
+    public void setRecordID(String recordID) {
+        this.recordID = recordID;
+    }
+
+    @JestId
+    private String recordID;
 
     public RecordModel(String title, String desc){
         photos = new ArrayList<Bitmap>(10);

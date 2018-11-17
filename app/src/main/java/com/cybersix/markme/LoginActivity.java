@@ -1,6 +1,8 @@
 package com.cybersix.markme;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,6 +70,28 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Both these functions assume the user has logged in already.
+    // Example adding problem.
+    public void testAddRecord() {
+
+        try {
+            ProblemModel newProblem = new ProblemModel("Test1", "This is a description.");
+            RecordModel newRecord = new RecordModel("TestRecord1", "Record description");
+
+            newRecord.addPhoto(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888));
+            newRecord.setBodyLocation(new BodyLocation(EBodyPart.ABDOMEN));
+            Location newLocation = new Location("");
+            newLocation.setLatitude(0.0d);
+            newLocation.setLongitude(0.0d);
+            newRecord.setMapLocation(newLocation);
+            newProblem.addRecord(newRecord);
+            new ElasticSearchIOController.AddRecordTask().execute(newProblem);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Checks the provided login information against the UserModel.
     // If info is valid, it "logs" the user on.
     // If info is not valid, it displays a error message.
@@ -105,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Log.d("Vishal_Login_Activity", "Successful Login.");
                 // Stub: Put code here for after login...
+                testAddRecord();
 
             } else {
                 // Clear password box.
