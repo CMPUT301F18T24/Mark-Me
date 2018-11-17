@@ -9,6 +9,7 @@ import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
@@ -96,6 +97,63 @@ public class ElasticSearchIOController {
 
     }
 
+    public static List<ProblemModel> getProblems(String userID) {
+        setClient();
+
+        String query = "{ \"query\" : \n" +
+                       "{ \"match\" :\n" +
+                       "{ \"userID\" : \"" + userID + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex("cmput301f18t24test")
+                .addType("problems")
+                .build();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<ProblemModel> problemList;
+                problemList = result.getSourceAsObjectList(ProblemModel.class);
+                Log.d("Vishal", "getUser: Send help: " + result.getJsonString());
+                return problemList;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<ProblemModel>();
+    }
+
+    public static void addProblem(ProblemModel problem) {
+        setClient();
+
+        UserProfileController profileController = UserProfileController.getInstance();
+
+        // Create a data class to save to elastic search. This lets us avoid saving the extra
+        // information contained in the problemModel.
+        NewProblem newProblem = new NewProblem(problem.getTitle(),
+                                               problem.getDescription(),
+                                               problem.getDateStarted(),
+                                               profileController.user.getUserID());
+
+        Index index = new Index.Builder(newProblem)
+                .index("cmput301f18t24test")
+                .type("problems")
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            Log.d("Vishal", "addProblem: " + result.isSucceeded());
+            if (result.isSucceeded()) {
+                // Associate the ID with the original userModel object.
+                problem.setProblemID(result.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Queries a list the elastic search database for a list of users. See also getUser().
      */
@@ -121,6 +179,32 @@ public class ElasticSearchIOController {
         }
     }
 
+    public static class GetProblemTask extends AsyncTask<String, Void, ArrayList<ProblemModel>> {
+
+        protected ArrayList<ProblemModel> doInBackground(String... strings) {
+            ArrayList<ProblemModel> problems = new ArrayList<ProblemModel>();
+            for (String s: strings) {
+                problems.addAll(getProblems(s));
+            }
+            return problems;
+        }
+
+    }
+
+    /**
+     * Adds a problem to the elastic search database. See also addProblem().
+     */
+    public static class AddProblemTask extends AsyncTask<ProblemModel, Void, Void> {
+
+        protected Void doInBackground(ProblemModel... params) {
+            for (ProblemModel problem : params) {
+                addProblem(problem);
+            }
+
+            return null;
+        }
+    }
+
 }
 
 class NewUser {
@@ -137,5 +221,20 @@ class NewUser {
         this.phone = phone;
         this.password = password;
         this.userType = userType;
+    }
+}
+
+class NewProblem {
+
+    private String title;
+    private String description;
+    private Date started;
+    private String userID;
+
+    public NewProblem(String title, String description, Date started, String userID) {
+        this.title = title;
+        this.description = description;
+        this.started = started;
+        this.userID = userID;
     }
 }
