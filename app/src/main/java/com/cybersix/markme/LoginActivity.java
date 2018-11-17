@@ -93,8 +93,16 @@ public class LoginActivity extends AppCompatActivity {
 
             // Check if the password match.
             if (foundUsers.get(0).getPassword().compareTo(passText.getText().toString()) == 0) {
+
+                // Tell the controller to update the usermodel.
+                profileController.setUser(foundUsers.get(0).getUsername(),
+                                          foundUsers.get(0).getEmail(),
+                                          foundUsers.get(0).getPhone(),
+                                          foundUsers.get(0).getPassword(),
+                                          foundUsers.get(0).getUserType());
+
                 Log.d("Vishal_Login_Activity", "Successful Login.");
-                // Put code here for after login...
+                // Stub: Put code here for after login...
             } else {
                 // Clear password box.
                 passText.setText("");

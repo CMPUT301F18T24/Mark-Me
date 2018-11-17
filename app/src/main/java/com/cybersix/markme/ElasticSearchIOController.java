@@ -42,10 +42,10 @@ public class ElasticSearchIOController {
     public static List<UserModel> getUser(String username) {
         setClient();
 
-        // Case does not matter.
+        // Case does matter, and subset of usernames will not cause problems.
         String query = "{ \"query\" : \n" +
                        "{ \"match\" :\n" +
-                       "{ \"username\" : \" " + username + " \" }}}";
+                       "{ \"username\" : \"" + username + "\" }}}";
 
         Search search = new Search.Builder(query)
                 .addIndex("cmput301f18t24test")
@@ -57,6 +57,7 @@ public class ElasticSearchIOController {
             if (result.isSucceeded()) {
                 List<UserModel> userList;
                 userList = result.getSourceAsObjectList(UserModel.class);
+                Log.d("Vishal", "getUser: Send help: " + result.getJsonString());
                 return userList;
             }
         } catch (IOException e) {

@@ -35,7 +35,23 @@ public class UserProfileController {
         }
     }
 
-    // Attempts to add a user to the UserModel.
+    // Attempts to set the user in the UserModel.
+    public Boolean setUser(String username, String email, String phone, String password, String userType) {
+        try {
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setPhone(phone);
+            user.setPassword(password);
+            user.setUserType(userType);
+
+            return true;
+        } catch (Exception e) { // TODO: Can we handle specific exceptions?
+            Log.d("Vishal_ProfileCont", e.toString());
+            return false;
+        }
+    }
+
+    // Attempts to add a user to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information
     //         userType - The type of the user.
     // Outputs: Returns true if added user was successful, false otherwise.
@@ -57,13 +73,14 @@ public class UserProfileController {
         }
 
         try {
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPhone(phone);
-            user.setPassword(password);
-            user.setUserType(userType);
+            UserModel newUser = new UserModel();
+            newUser.setUsername(username);
+            newUser.setEmail(email);
+            newUser.setPhone(phone);
+            newUser.setPassword(password);
+            newUser.setUserType(userType);
 
-            new ElasticSearchIOController.AddUserTask().execute(user);
+            new ElasticSearchIOController.AddUserTask().execute(newUser);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
             Log.d("Vishal_ProfileCont", e.toString());
