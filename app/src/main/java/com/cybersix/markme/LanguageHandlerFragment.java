@@ -1,9 +1,9 @@
 package com.cybersix.markme;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
-public class LanguageHandler extends Activity {
+public class LanguageHandlerFragment extends Fragment {
 
     public void english(View view) {
 

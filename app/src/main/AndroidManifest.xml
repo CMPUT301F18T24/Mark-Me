@@ -21,8 +21,8 @@
         <activity
             android:name=".SignupActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".AccountSettingsActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AccountSettingsFragment" />
+        <activity android:name=".SettingsFragment" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".RecordInfoActivity"></activity>
         <activity android:name=".LiveCameraActivity" android:exported="true"></activity>

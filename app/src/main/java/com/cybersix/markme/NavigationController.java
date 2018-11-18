@@ -6,16 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
-public class NavigationBar {
+public class NavigationController {
     private FragmentManager mFragmentManager = null;
     private Fragment mFragment = null;
     private BottomNavigationView mNavigationView = null;
+    private static NavigationController mNavigationController = null;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.settings:
+                    switchToFragment(SettingsFragment.class);
                     return true;
                 case R.id.gps:
                     return true;
@@ -32,10 +35,24 @@ public class NavigationBar {
         }
     };
 
-    public NavigationBar(@NonNull FragmentManager manager, @NonNull BottomNavigationView navigationView) {
+    private NavigationController(@NonNull FragmentManager manager, @NonNull BottomNavigationView navigationView) {
         mFragmentManager = manager;
         mNavigationView = navigationView;
         mNavigationView.setOnNavigationItemSelectedListener(mListener);
+    }
+
+    public static NavigationController getInstance(MainActivity activity) {
+        if (mNavigationController == null)
+            mNavigationController = new NavigationController(
+                    activity.getSupportFragmentManager(),
+                    (BottomNavigationView) activity.findViewById(R.id.navigation)
+            );
+
+        return mNavigationController;
+    }
+
+    public static NavigationController getInstance() {
+        return mNavigationController;
     }
 
     public void setSelectedItem(int itemId) {

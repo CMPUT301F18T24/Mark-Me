@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // DEBUG ONLY - launches the openAccountSettingsActivity.
     public void openAccountSettingsActivity() {
-        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        Intent intent = new Intent(this, AccountSettingsFragment.class);
         startActivity(intent);
     }
 

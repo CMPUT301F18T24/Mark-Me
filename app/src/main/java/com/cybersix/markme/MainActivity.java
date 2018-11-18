@@ -1,11 +1,10 @@
 package com.cybersix.markme;
 
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 public class MainActivity extends FragmentActivity {
-    private NavigationBar mNavigationBar = null;
+    private NavigationController mNavigationController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,11 +12,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         GuiUtils.setFullScreen(this);
 
-        mNavigationBar = new NavigationBar(getSupportFragmentManager(), (BottomNavigationView) findViewById(R.id.navigation));
-        mNavigationBar.setSelectedItem(R.id.body);
-    }
-
-    public NavigationBar getNavigationBar() {
-        return mNavigationBar;
+        mNavigationController = NavigationController.getInstance(this);
+        mNavigationController.setSelectedItem(R.id.body);
     }
 }

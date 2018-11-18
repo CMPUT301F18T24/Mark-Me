@@ -1,18 +1,18 @@
 package com.cybersix.markme;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+    import android.content.DialogInterface;
+    import android.support.v7.app.AlertDialog;
+    import android.support.v7.app.AppCompatActivity;
+    import android.os.Bundle;
+    import android.util.DisplayMetrics;
+    import android.view.Gravity;
+    import android.view.View;
+    import android.view.WindowManager;
+    import android.widget.Button;
+    import android.widget.EditText;
+    import android.widget.TextView;
 
-import org.w3c.dom.Text;
+    import org.w3c.dom.Text;
 
 public class ProblemActivityCreation extends AppCompatActivity {
 
@@ -70,6 +70,7 @@ public class ProblemActivityCreation extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                setResult(RESULT_OK);
                 finish();
             }
         });

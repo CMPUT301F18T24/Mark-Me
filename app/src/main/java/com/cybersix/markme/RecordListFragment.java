@@ -33,7 +33,7 @@ public class RecordListFragment extends ListFragment {
         getReturnButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNavigationBar().switchToFragment(ProblemListFragment.class);
+                NavigationController.getInstance().switchToFragment(ProblemListFragment.class);
             }
         });
     }
