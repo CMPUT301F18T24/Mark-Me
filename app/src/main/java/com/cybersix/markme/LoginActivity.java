@@ -70,57 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Both these functions assume the user has logged in already.
-    // Example adding record.
-    public void testAddRecord() {
-
-        UserProfileController profileController = UserProfileController.getInstance();
-        try {
-            ArrayList<ProblemModel> problems = new ArrayList<>();
-            problems = new ElasticSearchIOController.GetProblemTask().execute(profileController.user.getUserID()).get();
-
-            RecordModel newRecord = new RecordModel("TestRecord2", "Record description");
-
-            newRecord.addPhoto(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888));
-            newRecord.setBodyLocation(new BodyLocation(EBodyPart.ABDOMEN));
-            Location newLocation = new Location("");
-            newLocation.setLatitude(0.0d);
-            newLocation.setLongitude(0.0d);
-            newRecord.setMapLocation(newLocation);
-
-            problems.get(0).initializeRecordModel(); // This fixes the null records arraylist.
-
-            problems.get(0).addRecord(newRecord);
-            new ElasticSearchIOController.AddRecordTask().execute(problems.get(0));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Example getting record.
-    public void testGetRecord() {
-
-        UserProfileController profileController = UserProfileController.getInstance();
-        try {
-            ArrayList<ProblemModel> problems = new ArrayList<>();
-            problems = new ElasticSearchIOController.GetProblemTask().execute(profileController.user.getUserID()).get();
-
-            ArrayList<RecordModel> records = new ArrayList<>();
-
-            // I know that the first problem pulled will have some records in elasticsearch db.
-            records = new ElasticSearchIOController.GetRecordTask().execute(problems.get(0).getProblemID()).get();
-
-            for (RecordModel record : records) {
-                Log.d("Vishal", record.getRecordID());
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     // Checks the provided login information against the UserModel.
     // If info is valid, it "logs" the user on.
     // If info is not valid, it displays a error message.
@@ -158,8 +107,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Log.d("Vishal_Login_Activity", "Successful Login.");
                 // Stub: Put code here for after login...
-                testAddRecord();
-                testGetRecord();
 
             } else {
                 // Clear password box.
