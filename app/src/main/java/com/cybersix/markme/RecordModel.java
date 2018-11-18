@@ -34,6 +34,7 @@ public class RecordModel {
         photos = new ArrayList<Bitmap>(10);
         this.title = title;
         this.description = desc;
+        this.timestamp = new Date();
     }
 
     public String getTitle(){ return  this.title; }

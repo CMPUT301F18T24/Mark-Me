@@ -98,6 +98,12 @@ public class ElasticSearchIOController {
 
     }
 
+    /**
+     * Gets all problems for a user. Note: It does not initialize the records for each problem.
+     * They need to be grabbed separately.
+     * @param userID The userID of the user to pull all problems.
+     * @return All problems for the given userID.
+     */
     public static List<ProblemModel> getProblems(String userID) {
         setClient();
 
@@ -115,6 +121,7 @@ public class ElasticSearchIOController {
             if (result.isSucceeded()) {
                 List<ProblemModel> problemList;
                 problemList = result.getSourceAsObjectList(ProblemModel.class);
+
                 return problemList;
             }
         } catch (IOException e) {
@@ -153,6 +160,32 @@ public class ElasticSearchIOController {
 
     }
 
+    public static List<RecordModel> getRecords(String problemID) {
+        setClient();
+
+        String query = "{ \"query\" : \n" +
+                       "{ \"match\" :\n" +
+                       "{ \"problemID\" : \"" + problemID + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex("cmput301f18t24test")
+                .addType("records")
+                .build();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<RecordModel> recordList;
+                recordList = result.getSourceAsObjectList(RecordModel.class);
+                return recordList;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<RecordModel>();
+    }
+
     public static void addRecords(ProblemModel problem) {
         setClient();
 
@@ -164,7 +197,8 @@ public class ElasticSearchIOController {
             // information contained in the problemModel.
             NewRecord newRecord = new NewRecord(record.getTitle(),
                     record.getDescription(), record.getTimestamp(), record.getComment(),
-                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation());
+                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation(),
+                    problem.getProblemID(), profileController.user.getUserID());
 
 
             Index index = new Index.Builder(newRecord)
@@ -237,6 +271,21 @@ public class ElasticSearchIOController {
     }
 
     /**
+     * Gets the record for each given problemID.
+     */
+    public static class GetRecordTask extends AsyncTask<String, Void, ArrayList<RecordModel>> {
+
+        protected ArrayList<RecordModel> doInBackground(String... strings) {
+            ArrayList<RecordModel> records = new ArrayList<RecordModel>();
+            for (String s: strings) {
+                records.addAll(getRecords(s));
+            }
+            return records;
+        }
+
+    }
+
+    /**
      * Adds all records for each given problem.
      */
     public static class AddRecordTask extends AsyncTask<ProblemModel, Void, Void> {
@@ -287,6 +336,9 @@ class NewProblem {
 
 class NewRecord {
 
+    private String problemID;
+    private String userID;
+
     private String title;
     private String description;
     private Date timestamp;
@@ -296,7 +348,8 @@ class NewRecord {
     private Location mapLocation;
 
     public NewRecord(String title, String description, Date timestamp, String comment,
-                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, Location mapLocation) {
+                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, Location mapLocation,
+                     String problemID, String userID) {
         this.title = title;
         this.description = description;
         this.timestamp = timestamp;
@@ -304,6 +357,9 @@ class NewRecord {
         this.photos = photos;
         this.bodyLocation = bodyLocation;
         this.mapLocation = mapLocation;
+
+        this.problemID = problemID;
+        this.userID = userID;
     }
 
 }

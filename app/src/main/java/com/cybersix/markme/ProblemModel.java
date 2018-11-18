@@ -76,6 +76,11 @@ public class ProblemModel extends Observable {
         notifyObservers();
     }
 
+    // Note: Temporary bug fix.
+    public void initializeRecordModel() {
+        this.records = new ArrayList<RecordModel>();
+    }
+
     public RecordModel removeRecord(int index) {
         RecordModel record = records.remove(index);
         notifyObservers();
