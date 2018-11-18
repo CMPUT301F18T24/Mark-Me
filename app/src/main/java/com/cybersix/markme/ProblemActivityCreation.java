@@ -20,6 +20,7 @@ public class ProblemActivityCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem_creation);
+        GuiUtils.setFullScreen(this);
 
         // get the display metrics for the edit popup window
         DisplayMetrics dm = new DisplayMetrics();

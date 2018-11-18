@@ -55,6 +55,7 @@ public class ProblemListFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
             problemListAdapter.notifyDataSetChanged();
         }
