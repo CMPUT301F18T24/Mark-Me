@@ -32,13 +32,16 @@
         <activity
             android:name=".SignupActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PatientAssignmentActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
         <activity android:name=".RecordInfoActivity" />
+        <activity android:name=".ProblemActivityCreation"
+            android:parentActivityName=".ProblemListActivity"
+            android:theme="@style/AppTheme.PopUp"/>
         <activity android:name=".BodyActivity" />
         <activity
             android:name=".LiveCameraActivity"
@@ -47,7 +50,8 @@
             android:name=".MapActivity"
             android:label="@string/title_activity_map"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
+        <activity android:name=".Reminder" />
+        <activity android:name=".Gallery"></activity>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
