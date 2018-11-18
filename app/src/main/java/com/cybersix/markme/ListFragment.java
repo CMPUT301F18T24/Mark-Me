@@ -77,4 +77,17 @@ public class ListFragment extends Fragment {
     public ListView getListView() {
         return mListView;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        mTitle = null;
+        mDetails = null;
+        mReturnButton = null;
+        mAddButton = null;
+        mSearchField = null;
+        mListView = null;
+        mReturnButton = null;
+    }
 }
