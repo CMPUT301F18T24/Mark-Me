@@ -59,4 +59,5 @@
     <string name="add_button">Add</string>
     <string name="search_button">Search</string>
     <string name="filter_edit_text">Enter keyword here</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

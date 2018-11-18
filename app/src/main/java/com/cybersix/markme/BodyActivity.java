@@ -4,15 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Region;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -21,7 +15,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,19 +77,14 @@ public class BodyActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.settings:
-//                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.gps:
-//                    mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.body:
-//                    mTextMessage.setText(R.string.title_notifications);
                     return true;
                 case R.id.gallery:
-//                    mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.list:
-//                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;
