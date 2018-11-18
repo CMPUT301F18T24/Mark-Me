@@ -39,6 +39,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    public void UserAssignments(View view) {
+        startActivities(new Intent[] {new Intent(SettingsActivity.this, UserAssignmentActivity.class)});
+    }
+
     public void about(View view) {
         startActivities(new Intent[]{new Intent(SettingsActivity.this, About.class)});
 
