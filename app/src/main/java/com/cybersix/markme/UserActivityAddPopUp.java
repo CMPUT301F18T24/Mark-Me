@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class UserActivityAddPopUp extends AppCompatActivity {
     private ArrayAdapter<UserModel> usersAdapter;
-    private ArrayList<UserModel> users;
+    private ArrayList<UserModel> users = new ArrayList<UserModel>();
     private ListView usersListView;
 
     @Override

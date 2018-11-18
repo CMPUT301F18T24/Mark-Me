@@ -23,7 +23,7 @@ public class UserAssignmentActivity extends AppCompatActivity {
     // will need to set a list adapter to the view to be notified if any of the models have been
     // updated
     private ArrayAdapter<UserModel> userListAdapter;
-    private ArrayList<UserModel> userList;
+    private ArrayList<UserModel> userList = new ArrayList<UserModel>();
     private ListView assignedUserListView;
 
     @Override
