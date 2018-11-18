@@ -143,4 +143,11 @@ public class ProblemController {
         return selectedProblem;
     }
 
+    public void UpdateSelectedProblemRecord(RecordModel rm, int idx){
+        selectedProblem.getRecord(idx).setTitle(rm.getTitle());
+        selectedProblem.getRecord(idx).setDescription(rm.getDescription());
+        selectedProblem.getRecord(idx).setBodyLocation(rm.getBodyLocation());
+
+    }
+
 }

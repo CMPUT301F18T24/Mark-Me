@@ -154,8 +154,11 @@ public class RecordController {
 
     }
 
-    public void saveRecordChanges(RecordModel model){
-
+    public void saveRecordChanges(String title, String desc, BodyLocation bl, int idx){
+        selectedProblemRecords.get(idx).setTitle(title);
+        selectedProblemRecords.get(idx).setDescription(desc);
+        selectedProblemRecords.get(idx).setBodyLocation(bl);
+        ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
     }
 
 }

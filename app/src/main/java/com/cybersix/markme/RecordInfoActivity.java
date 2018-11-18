@@ -29,23 +29,25 @@ public class RecordInfoActivity extends AppCompatActivity {
     private EditText editTextDescription;
     private TextView textViewComment;
     private Spinner bodyLocationSpinner;
-    private ConstraintLayout photoLayout;
     private Button buttonSave;
 
     private RecordModel selectedRecord;
     private RecordController recordController = RecordController.getInstance();
 
+    private int recordIdx = 0;
+
     // record activity will be linked with the photo gallery and being able to add photos, but the
     // user should be able to view all of the information
 
     // TODO: the "feebackButton" view is only visible to the care provider. Make sure there is
+    // TODO: Add picture, Add Location
     //       a case for checking who the user is
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_info);
         Intent i = getIntent();
-        int recordIdx = i.getIntExtra("RecordIdx",0);
+        recordIdx = i.getIntExtra("RecordIdx",0);
         selectedRecord = recordController.selectedProblemRecords.get(recordIdx);
         initAttributes();
     }
@@ -55,12 +57,11 @@ public class RecordInfoActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.editTextDescription);
         bodyLocationSpinner = findViewById(R.id.bodyLocationSpinner);
         textViewComment = findViewById(R.id.commentTextView);
-        photoLayout = findViewById(R.id.photoLayout);
         buttonSave = findViewById(R.id.buttonSaveChanges);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveRecordChanges();
+                saveRecordEdits();
             }
         });
 
@@ -73,20 +74,18 @@ public class RecordInfoActivity extends AppCompatActivity {
         }
         bodyLocationSpinner.setAdapter(new ArrayAdapter<EBodyPart>(this,android.R.layout.simple_list_item_1,EBodyPart.values()));
         bodyLocationSpinner.setSelection(selectedRecord.getBodyLocation().getBodyPart().ordinal());
-        int photoCount = photoLayout.getChildCount();
-        int currentPhoto = 0;
-        for(int i=0; i<photoCount; i++){
-            View v = photoLayout.getChildAt(i);
-            //Ensure we only get the views we want
-            if(v instanceof ImageView){
-                //TODO: Set click listeners to add and remove photos and init the displayed image
-                currentPhoto++;
-            }
-        }
+
 
     }
 
-    private void saveRecordChanges(){
+    private void saveRecordEdits(){
+        String title = recordTitleEdit.getText().toString();
+        String desc = recordTitleEdit.getText().toString();
+        EBodyPart bodyPart = (EBodyPart) bodyLocationSpinner.getSelectedItem();
+        recordController.saveRecordChanges(title,desc,new BodyLocation(bodyPart), recordIdx);
+    }
+
+    private void addRecordPicture(){
 
     }
 }
