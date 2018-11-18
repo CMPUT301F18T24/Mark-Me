@@ -52,4 +52,6 @@
     <string name="slash">/</string>
     <string name="semiColon">;</string>
     <string name="colon">:</string>
+    <string name="title_activity_map">MapActivity</string>
+
 </resources>

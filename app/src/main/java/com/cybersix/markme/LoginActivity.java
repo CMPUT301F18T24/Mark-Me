@@ -18,7 +18,6 @@ public class LoginActivity extends AppCompatActivity {
 
         initUI();
 
-
     }
 
     // Initializes onClick listeners for UI elements.
