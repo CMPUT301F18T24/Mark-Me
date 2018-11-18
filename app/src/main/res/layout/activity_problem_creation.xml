@@ -38,7 +38,7 @@
                 android:layout_height="56dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/ProblemCreationTitleText" />
+                android:hint="@string/ProblemCreationTitleText" />
 
             <EditText
                 android:id="@+id/problemDescText"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/ProblemCreationDescription"
+                android:hint="@string/ProblemCreationDescription"
                 tools:layout_editor_absoluteX="37dp"
                 tools:layout_editor_absoluteY="101dp" />
 
@@ -58,34 +58,40 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set a notification reminder:"
+                android:text="@string/set_a_notification_reminder"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="61dp"
                 tools:layout_editor_absoluteY="142dp" />
+            <RadioGroup
+                android:id="@+id/reminder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/checkBox2"
+            <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Weekly"
+                android:text="@string/weekly"
+                android:tag="w"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="215dp"
+                />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bi_weekly"
+                android:tag="b"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="215dp" />
 
-            <CheckBox
-                android:id="@+id/checkBox3"
+            <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bi-Weekly"
+                android:text="@string/monthly"
+                android:tag="m"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="215dp" />
-
-            <CheckBox
-                android:id="@+id/checkBox4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Monthly"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="215dp" />
+            </RadioGroup>
 
             <Space
                 android:layout_width="match_parent"
@@ -95,16 +101,16 @@
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Notification Time:"
+
                 android:textSize="18sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/problemNotifyTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="time"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:ignore="TextViewEdits" />
 
             <Space
                 android:layout_width="match_parent"

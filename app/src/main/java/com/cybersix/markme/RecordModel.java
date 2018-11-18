@@ -176,7 +176,7 @@ class TooManyPhotosException extends Exception {
 }
 
 /**
- * exception the photo is large 
+ * exception the photo is large
  */
 class PhotoTooLargeException extends Exception {
 

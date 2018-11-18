@@ -19,8 +19,6 @@ public class Reminder extends AppCompatActivity {
 
     public void weekly(View view) {
 
-
-
     }
 
     public void biweekly(View view) {
