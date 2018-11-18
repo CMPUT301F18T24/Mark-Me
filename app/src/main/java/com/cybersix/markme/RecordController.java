@@ -154,4 +154,8 @@ public class RecordController {
 
     }
 
+    public void saveRecordChanges(RecordModel model){
+
+    }
+
 }

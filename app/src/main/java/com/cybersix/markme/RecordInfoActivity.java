@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -29,7 +30,7 @@ public class RecordInfoActivity extends AppCompatActivity {
     private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private ConstraintLayout photoLayout;
-
+    private Button buttonSave;
 
     private RecordModel selectedRecord;
     private RecordController recordController = RecordController.getInstance();
@@ -55,6 +56,15 @@ public class RecordInfoActivity extends AppCompatActivity {
         bodyLocationSpinner = findViewById(R.id.bodyLocationSpinner);
         textViewComment = findViewById(R.id.commentTextView);
         photoLayout = findViewById(R.id.photoLayout);
+        buttonSave = findViewById(R.id.buttonSaveChanges);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveRecordChanges();
+            }
+        });
+
+
 
         recordTitleEdit.setText(selectedRecord.getTitle());
         editTextDescription.setText(selectedRecord.getDescription());
@@ -64,14 +74,19 @@ public class RecordInfoActivity extends AppCompatActivity {
         bodyLocationSpinner.setAdapter(new ArrayAdapter<EBodyPart>(this,android.R.layout.simple_list_item_1,EBodyPart.values()));
         bodyLocationSpinner.setSelection(selectedRecord.getBodyLocation().getBodyPart().ordinal());
         int photoCount = photoLayout.getChildCount();
+        int currentPhoto = 0;
         for(int i=0; i<photoCount; i++){
             View v = photoLayout.getChildAt(i);
             //Ensure we only get the views we want
             if(v instanceof ImageView){
-                //Set click listeners to add and remove photos
-
+                //TODO: Set click listeners to add and remove photos and init the displayed image
+                currentPhoto++;
             }
         }
+
+    }
+
+    private void saveRecordChanges(){
 
     }
 }
