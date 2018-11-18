@@ -79,7 +79,8 @@ public class RecordCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //TODO: Send to edit records instead of prev screen
-                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+                Intent i = new Intent(RecordCreationActivity.this, RecordInfoActivity.class);
+                i.putExtra("RecordIdx",problemController.getSelectedProblemRecords().size() - 1);
                 startActivity(i);
                 finish();
             }
