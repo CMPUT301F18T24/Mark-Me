@@ -28,7 +28,7 @@
         <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
         <activity android:name=".ProblemActivityCreation" android:theme="@style/AppTheme.PopUp"></activity>
         <activity android:name=".Reminder" />
-        <activity android:name=".Gallery"></activity>
+        <activity android:name=".GalleryFragment"></activity>
     </application>
 
 </manifest>

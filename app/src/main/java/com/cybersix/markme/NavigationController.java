@@ -26,6 +26,7 @@ public class NavigationController {
                     switchToFragment(BodyFragment.class);
                     return true;
                 case R.id.gallery:
+                    switchToFragment(GalleryFragment.class);
                     return true;
                 case R.id.list:
                     switchToFragment(ProblemListFragment.class);
