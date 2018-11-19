@@ -34,16 +34,19 @@
             android:parentActivityName=".LoginActivity" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".PatientAssignmentActivity" />
+        <activity android:name=".UserAssignmentActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".RecordCreationActivity" />
         <activity android:name=".ProblemListActivity" />
         <activity android:name=".RecordListActivity" />
-        <activity android:name=".RecordInfoActivity"/>
-        <activity android:name=".ProblemActivityCreation"
+        <activity android:name=".RecordInfoActivity" />
+        <activity
+            android:name=".ProblemActivityCreation"
             android:parentActivityName=".ProblemListActivity"
-            android:theme="@style/AppTheme.PopUp"/>
-        <activity android:name=".BodyActivity" />
+            android:theme="@style/AppTheme.PopUp" />
+        <activity
+            android:name=".BodyActivity"
+            android:exported="true" />
         <activity
             android:name=".LiveCameraActivity"
             android:exported="true" />
@@ -52,7 +55,8 @@
             android:label="@string/title_activity_map"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Reminder" />
-        <activity android:name=".Gallery"></activity>
+        <activity android:name=".Gallery" />
+        <activity android:name=".UserActivityAddPopUp"></activity>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

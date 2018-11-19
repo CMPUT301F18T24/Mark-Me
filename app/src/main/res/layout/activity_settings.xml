@@ -26,6 +26,15 @@
         android:text="@string/account"
         android:onClick="AccountSettings"
         app:layout_constraintStart_toEndOf="@+id/titleTextView" />
+
+    <Button
+        android:id="@+id/userAssignmentButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="UserAssignments"
+        android:text="@string/user_assignment_settings" />
+
     <Button
         android:id="@+id/About"
         android:layout_width="match_parent"

@@ -1,3 +1,11 @@
+/**
+ * Jose: This is the settings activity that will have all of the necessary componenets to
+ *       configure the application from the users side
+ *
+ * Date: 2018-11-10
+ *
+ * Copyright Notice
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;
@@ -29,6 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
         startActivities(new Intent[]{new Intent(SettingsActivity.this, AccountSettingsActivity.class)});
 
 
+    }
+
+    public void UserAssignments(View view) {
+        startActivities(new Intent[] {new Intent(SettingsActivity.this, UserAssignmentActivity.class)});
     }
 
     public void about(View view) {
