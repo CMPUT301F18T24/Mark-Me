@@ -73,4 +73,5 @@
     <string name="set_a_notification_reminder">Set a notification Reminder</string>
     <string name="daily">Daily</string>
     <string name="every_other_day">Every other day</string>
+    <string name="delete">Delete</string>
 </resources>
