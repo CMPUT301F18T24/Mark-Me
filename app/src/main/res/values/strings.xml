@@ -19,6 +19,13 @@
     <string name="ToggleCameraView">Toggle the camera view</string>
     <string name="faceView">FACE</string>
     <string name="frontView">FRONT</string>
+    <string name="add_text">add</string>
+    <string name="search_text">search</string>
+    <string name="empty_textview">List Title</string>
+    <string name="info_text">Details</string>
+    <string name="keyword_text">Filter</string>
+    <string name="show_text">Show</string>
+    <string name="hide_text">Hide</string>
     <string name="ProblemCreationTitle">Create a problem</string>
     <string name="ProblemCreationTitleText">Title (max. 30 characters)</string>
     <string name="ProblemCreationDescription">Enter description</string>
@@ -28,8 +35,9 @@
     <string name="title_settings">Settings</string>
     <string name="title_GPS">GPS</string>
     <string name="title_Body">Body</string>
-    <string name="title_Gallery">Gallary</string>
+    <string name="title_Gallery">Gallery</string>
     <string name="title_List">List</string>
+    <string name="overlay_description">overlay</string>
     <string name="touch_a_location">Touch a Location</string>
     <string name="total">Total:</string>
     <string name="not_listed">Not Listed:</string>
@@ -60,4 +68,10 @@
     <string name="search_button">Search</string>
     <string name="filter_edit_text">Enter keyword here</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="channel_name">channelName</string>
+    <string name="channel_description">channelDesc</string>
+    <string name="set_a_notification_reminder">Set a notification Reminder</string>
+    <string name="daily">Daily</string>
+    <string name="every_other_day">Every other day</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -6,23 +6,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 
 public class LiveCameraActivity extends AppCompatActivity {
+    public static final String OVERLAY_RESOURCE_ID = "OVERLAY_RESOURCE_ID";
     private TextureView textureView = null;
     private View toggleViewButton = null;
     private View captureButton = null;
+    private ImageView overlayView = null;
     private CameraPreview cameraPreview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_camera);
+        GuiUtils.setFullScreen(this);
 
         textureView = findViewById(R.id.liveCameraView);
         toggleViewButton = findViewById(R.id.toggleCameraButton);
         captureButton = findViewById(R.id.captureCameraButton);
+        overlayView = findViewById(R.id.overlayView);
+
+        Intent intent = getIntent();
+        int overlay_id = intent.getIntExtra(OVERLAY_RESOURCE_ID, 0);
+        if (overlay_id != 0) {
+            overlayView.setImageResource(overlay_id);
+            overlayView.setAlpha((float) 0.75);
+        }
 
         cameraPreview = new CameraPreview(this, textureView);
         cameraPreview.setToggleViewButton(toggleViewButton);

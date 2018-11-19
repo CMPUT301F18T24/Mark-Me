@@ -15,8 +15,8 @@ public class RecordModelTest {
 
     @Test
     public void testSetTitle() {
-        String title = "title";
-        String newTitle = "new title";
+        String title = "getTitle";
+        String newTitle = "new getTitle";
         RecordModel rm = new RecordModel(title,"");
         assertEquals(title,rm.getTitle());
         rm.setTitle(newTitle);
@@ -25,7 +25,7 @@ public class RecordModelTest {
 
     @Test
     public void testGetTitle() {
-        String title = "title";
+        String title = "getTitle";
         RecordModel rm = new RecordModel(title,"");
         String getTitle = rm.getTitle();
         assertEquals(title,getTitle);

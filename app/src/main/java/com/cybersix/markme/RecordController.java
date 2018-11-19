@@ -25,6 +25,7 @@ public class RecordController {
     // set up the controller instance with lazy construction
     private static RecordController instance = null;
     public ArrayList<RecordModel> records;
+    public ArrayList<RecordModel> selectedProblemRecords;
 
     /**
      * This contructor will set up the controller variable "problems"
@@ -37,7 +38,7 @@ public class RecordController {
     public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
-            loadFakeData();
+           // loadFakeData();
         }
         return instance;
     }
@@ -51,18 +52,18 @@ public class RecordController {
         for (int i = 0; i < 30; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
-            instance.createNewRecord(title, description, null, l, new BodyLocation(EBodyPart.LEFTARM));
+            instance.createNewRecord(title, description, null, l, new BodyLocation(EBodyPart.UNLISTED));
         }
     }
 
     /**
      * This function will create a new record to add to the associated list of records to the controller
-     * @param title the title of the record
+     * @param title the getTitle of the record
      * @param description the description of the record
      * @param photos the list of photos to add for the record (optional)
      * @param bodyLocation the location on the body of the record (optional)
      */
-    public void createNewRecord(String title, String description, ArrayList<Bitmap> photos, Location location,
+    public RecordModel createNewRecord(String title, String description, ArrayList<Bitmap> photos, Location location,
                                 BodyLocation bodyLocation) {
         // This will need to be modified as soon as the gelocation stuff is handled
         //GeoLocationRecord location = null
@@ -77,7 +78,7 @@ public class RecordController {
                 catch (Exception e) {
                     // display unable to save the photos
                     String message = e.getMessage();
-                    return;
+                    return null;
                 }
             }
         }
@@ -94,6 +95,7 @@ public class RecordController {
         // finally add the record to the record list
         records.add(record);
         Log.d("Jose_CreateRecord", "Record successfully created");
+        return record;
 
     }
 
@@ -153,6 +155,25 @@ public class RecordController {
 
     public void saveRecordData(ArrayList<RecordModel> records) {
 
+    }
+
+    public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
+        selectedProblemRecords.get(idx).setTitle(title);
+        selectedProblemRecords.get(idx).setDescription(desc);
+        selectedProblemRecords.get(idx).setBodyLocation(bl);
+        selectedProblemRecords.get(idx).setComment(comment);
+        ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
+    }
+
+    public void addRecordPhoto(Bitmap b, int idx){
+        try{
+            selectedProblemRecords.get(idx).addPhoto(b);
+            ProblemController.getInstance().AddSelectedProblemRecordPhoto(b,idx);
+        } catch (TooManyPhotosException e){
+            Log.d("Warning", "Too many photos. Photo not added");
+        } catch (PhotoTooLargeException e){
+            Log.d("Warning", "Photo too large. Photo not added");
+        }
     }
 
 }

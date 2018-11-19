@@ -115,13 +115,13 @@ public class ProblemModelTest {
             ProblemModel problem = new ProblemModel(title, description);
             assertEquals(title, problem.getTitle());
         } catch (Exception e) {
-            fail("We should have been able to get the same title from the ProblemModel");
+            fail("We should have been able to get the same getTitle from the ProblemModel");
         }
     }
 
     @Test
     public void testSetTitle() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         ProblemModel problem = null;
         try {
@@ -146,7 +146,7 @@ public class ProblemModelTest {
         } catch (TitleTooLongException e) {
             assertTrue(true);
         } catch (Exception e) {
-            fail("The title was too long, thus we should have gotten a TitleTooLongException");
+            fail("The getTitle was too long, thus we should have gotten a TitleTooLongException");
         }
     }
 
@@ -166,7 +166,7 @@ public class ProblemModelTest {
 
     @Test
     public void testSetDescription() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         ProblemModel problem = null;
         try {
@@ -197,7 +197,7 @@ public class ProblemModelTest {
 
     @Test
     public void testGetDateStarted() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         try {
             ProblemModel problem = new ProblemModel(title, description);

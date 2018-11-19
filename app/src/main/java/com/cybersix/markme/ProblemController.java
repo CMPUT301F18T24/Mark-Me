@@ -14,12 +14,16 @@
  */
 package com.cybersix.markme;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
+    private static ProblemModel selectedProblem = null;
     public ArrayList<ProblemModel> problems;
 
     /**
@@ -43,7 +47,7 @@ public class ProblemController {
         // This function will just load fake problems to the data
         for (int i = 0; i < 10; i++) {
             String title = "Fake Title " + Integer.toString(i);
-            String Description = "This is a fake description for title " + Integer.toString(i);
+            String Description = "This is a fake description for getTitle " + Integer.toString(i);
             instance.createNewProblem(title, Description);
         }
     }
@@ -54,19 +58,19 @@ public class ProblemController {
      * This function will create a new problem for the user that called it and will add it
      * to the problem list.
      *
-     * @param title the title of the problem
+     * @param title the getTitle of the problem
      * @param description the description of the problem
      * @author Jose Ramirez
      */
     public void createNewProblem(String title, String description) {
         try {
             ProblemModel newProblem = new ProblemModel(title, description);
-
+            newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
             instance.problems.add(newProblem);
         }
         catch (Exception e) {
-            // display an error that the problem has too long of a title
+            // display an error that the problem has too long of a getTitle
             String message = e.getMessage();
 
         }
@@ -76,13 +80,13 @@ public class ProblemController {
     /**
      * This function will edit one of the selected problems
      * @param index the problem index to edit
-     * @param newTitle the new title for the edit
+     * @param newTitle the new getTitle for the edit
      * @param newDescription the new description for the edit
      */
     public void editProblem(int index, String newTitle, String newDescription) {
         // To find the problem, we compare the date as the date should be unique enough.
         ProblemModel problem = instance.problems.get(index);
-        // set the new title and description
+        // set the new getTitle and description
         try {
             // does references work here? Testing will check
             problem.setTitle(newTitle);
@@ -120,6 +124,43 @@ public class ProblemController {
         list of problems
          */
         instance.problems = problems;
+    }
+
+    public void setSelectedProblem(ProblemModel problem){
+        selectedProblem = problem;
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+    }
+
+    public void setSelectedProblem(int index){
+        selectedProblem = problems.get(index);
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+    }
+
+    public ArrayList<RecordModel> getSelectedProblemRecords(){
+        return selectedProblem.getRecords();
+    }
+
+    public ProblemModel getSelectedProblem(){
+        return selectedProblem;
+    }
+
+    public void UpdateSelectedProblemRecord(RecordModel rm, int idx){
+        selectedProblem.getRecord(idx).setTitle(rm.getTitle());
+        selectedProblem.getRecord(idx).setDescription(rm.getDescription());
+        selectedProblem.getRecord(idx).setBodyLocation(rm.getBodyLocation());
+        selectedProblem.getRecord(idx).setComment(rm.getComment());
+    }
+
+    public void AddSelectedProblemRecordPhoto(Bitmap b, int idx){
+        try{
+            selectedProblem.getRecord(idx).addPhoto(b);
+        } catch (TooManyPhotosException e){
+            Log.d("Warning", "Too many photos. Photo not added");
+        } catch (PhotoTooLargeException e){
+            Log.d("Warning", "Photo too large. Photo not added");
+        }
     }
 
 }

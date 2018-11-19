@@ -1,53 +1,68 @@
 package com.cybersix.markme;
 //Click the class or method you want to test, then press Ctrl+Shift+T (⇧⌘T).
 
-import android.os.Bundle;
-
 import java.util.Observable;
+import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
+    public static final String USERID = "USERID";
+    private String username = null;
+    private String email = null;
+    private String phone = null;
+    private String password = null;
+    private String userType = null;
 
-    private String userID;
-    private String email;
-    private String phone;
-    private String password;
-    private String userType;
+    @JestId
+    private String userID = null;
 
-    public static final int MINIMUM_USERID_LENGTH = 8;
+    public static final int MINIMUM_USERNAME_LENGTH = 8;
 
     // Need a default constructor to compile with Patient/Care Provider inheritance.
     public UserModel() { }
 
-    /*added a constructor*/
-    public UserModel(String userID, String password) throws UserIDTooShortException {
-        if (userID.length() < MINIMUM_USERID_LENGTH)
-            throw new UserIDTooShortException();
+    public UserModel(String username, String password) throws UsernameTooShortException {
+        if (username.length() < MINIMUM_USERNAME_LENGTH)
+            throw new UsernameTooShortException();
 
-        this.userID = userID;
+        this.username = username;
         this.password = password;
     }
 
-    public void setUserID(String userID) throws UserIDTooShortException {
-
-        if (userID.length() < MINIMUM_USERID_LENGTH) {
-            throw new UserIDTooShortException();
-        } else {
-            this.userID = userID;
-        }
-
-        setChanged();
-        notifyObservers();
-
-    }
-
+    /**
+     * @return The userID which is the ID of the entry in the elastic search database.
+     */
     public String getUserID() {
         return userID;
     }
 
+    /**
+     * @param userID ID of the entry in the elastic search database.
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public void setUsername(String username) throws UsernameTooShortException {
+
+        if (username.length() < MINIMUM_USERNAME_LENGTH) {
+            throw new UsernameTooShortException();
+        } else {
+            this.username = username;
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     // Only accept two types of user types: "patient" ir "care_provider".
     public void setUserType(String userType) throws InvalidUserTypeException {
-
-        if (userType.equals("patient") || userType.equals("care_provider")) {
+        if (userType == null) {
+            this.userType = null;
+        } else if (userType.equals("patient") || userType.equals("care_provider")) {
             this.userType = userType;
         } else {
             throw new InvalidUserTypeException();
@@ -55,10 +70,9 @@ public class UserModel extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
-    public String getUserType(){
 
+    public String getUserType(){
         return this.userType;
     }
 
@@ -131,9 +145,15 @@ public class UserModel extends Observable {
         return this.password;
     }
 
+    public String toString() {
+        if (userID == null)
+            return "null";
+
+        return userID.toString();
+    }
 }
 
-class UserIDTooShortException extends Exception {}
+class UsernameTooShortException extends Exception {}
 class InvalidEmailAddressException extends Exception {}
 class InvalidPhoneNumberException extends Exception {}
 class InvalidUserTypeException extends Exception {}

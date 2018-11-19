@@ -1,27 +1,39 @@
 package com.cybersix.markme;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CareProvider extends UserModel {
-    private ArrayList<Patient> patients;
+    private List<Patient> patients = null;
 
-    public CareProvider(String username){
+    public CareProvider(String username) {
+        this(username, null);
+    }
+
+    public CareProvider(String username, List<Patient> patients) {
         super();
+        super.setUserID(username);
 
-        //super.setUserID(username);
-        patients = new ArrayList<Patient>();
+        if (patients == null)
+            this.patients = new ArrayList<Patient>();
+        else
+            this.patients = patients;
     }
 
     public void addPatient(Patient p){
         patients.add(p);
     }
 
-    public Patient removePatient(Patient p){
-        patients.remove(p);
-        return p;
+    public boolean removePatient(Patient p) {
+        if (patients.remove(p)) {
+            notifyObservers();
+            return true;
+        }
+
+        return false;
     }
 
-    public ArrayList<Patient> getPatients() {
+    public List<Patient> getPatients() {
         return patients;
     }
 
