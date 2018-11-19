@@ -4,21 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Region;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Debug;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +57,7 @@ public class BodyActivity extends AppCompatActivity {
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private DisplayMetrics dm;
+    private BottomNavigationView bnv;
     private boolean frontFacing = true;
     private boolean addingRecord = false;
 
@@ -71,16 +68,43 @@ public class BodyActivity extends AppCompatActivity {
         2. Get total ailments and display on screen
         3. Map current records to the body and draw
      */
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.settings:
+                    return true;
+                case R.id.gps:
+                    return true;
+                case R.id.body:
+                    return true;
+                case R.id.gallery:
+                    return true;
+                case R.id.list:
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bodyView = (ImageView) findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) findViewById(R.id.bodyConstraintLayout);
         dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) findViewById(R.id.rotateButton);
+        bnv = (BottomNavigationView) findViewById(R.id.navigation);
         addButton = (ImageButton) findViewById(R.id.addButton);
         viewAllButton = (ImageButton) findViewById(R.id.viewAllButton);
         totalText = (TextView) findViewById(R.id.totalText);

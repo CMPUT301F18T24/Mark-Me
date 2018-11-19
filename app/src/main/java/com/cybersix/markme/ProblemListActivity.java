@@ -1,8 +1,13 @@
 package com.cybersix.markme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,8 +60,10 @@ public class ProblemListActivity extends ListActivity {
                 // a problem
                 // open problem creation activity with an intent and then let that handle
                 // itself
-                // Intent intent = new Intent(this, ProblemCreationActivity.activity)
-                // startActivity(intent);
+                Intent intent = new Intent(v.getContext(), ProblemActivityCreation.class);
+                startActivity(intent);
+                // TODO: talk to friends about how to notify data? Is this through the controller?
+                problemListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -78,6 +85,7 @@ public class ProblemListActivity extends ListActivity {
                 Intent intent = new Intent(view.getContext(), RecordListActivity.class);
                 intent.putExtra("EXTRA_PROBLEM_INDEX", position);
                 startActivity(intent);
+                problemListAdapter.notifyDataSetChanged();
                 // TODO: for now the resulting activity will show preset data but the later version
                 // TODO: will show the records related to the problem
             }
@@ -91,5 +99,6 @@ public class ProblemListActivity extends ListActivity {
         // set up the array adapter with the list of problems
         problemListAdapter = new ArrayAdapter<ProblemModel>(this, R.layout.list_item, controllerInstance.problems);
         problemListView.setAdapter(problemListAdapter);
+        problemListAdapter.notifyDataSetChanged();
     }
 }

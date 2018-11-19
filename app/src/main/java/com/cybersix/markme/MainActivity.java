@@ -10,7 +10,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent i = new Intent(this,BodyActivity.class);
+        Intent i = new Intent(this,ProblemListActivity.class);
         this.startActivity(i);
     }
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         // send the intent to the problem list view
-        Intent intent = new Intent(this, ProblemListActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ProblemListActivity.class);
+//        startActivity(intent);
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/title_settings" />
+
+    <item
+        android:id="@+id/gps"
+        android:icon="@drawable/ic_gps"
+        android:title="@string/title_GPS" />
+
+    <item
+        android:id="@+id/body"
+        android:icon="@drawable/ic_body"
+        android:title="@string/title_Body" />
+    <item
+        android:id="@+id/gallery"
+        android:icon="@drawable/ic_gallery"
+        android:title="@string/title_Gallery" />
+    <item
+        android:id="@+id/list"
+        android:icon="@drawable/ic_list"
+        android:title="@string/title_List" />
+
+</menu>
