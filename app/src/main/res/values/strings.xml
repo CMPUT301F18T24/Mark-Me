@@ -56,5 +56,8 @@
     <string name="channel_name">channelName</string>
     <string name="channel_description">channelDesc</string>
     <string name="set_a_notification_reminder">Set a notification reminder</string>
+    <string name="view_photos">View Photos</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="delete">Delete</string>
 
 </resources>

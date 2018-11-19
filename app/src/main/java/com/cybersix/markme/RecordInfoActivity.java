@@ -44,6 +44,12 @@ public class RecordInfoActivity extends AppCompatActivity {
     private final static int REQUEST_CODE_PHOTO = 1;
     private final static int REQUEST_CODE_MAP = 2;
 
+    public void openPhotos(View view){
+        Intent i = new Intent(RecordInfoActivity.this,Gallery.class);
+        i.putExtra(Gallery.EXTRA_MESSAGE,Gallery.RECORD_MODE);
+        startActivity(i);
+    }
+
 
 
     // record activity will be linked with the photo gallery and being able to add photos, but the
