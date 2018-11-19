@@ -39,6 +39,7 @@ public class RecordModel {
         photos = new ArrayList<Bitmap>(10);
         this.title = title;
         this.description = desc;
+        this.bodyLocation = new BodyLocation(EBodyPart.UNLISTED); //By default unlisted
         this.timestamp = new Date();
     }
 

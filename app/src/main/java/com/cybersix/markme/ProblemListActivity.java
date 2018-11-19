@@ -82,6 +82,7 @@ public class ProblemListActivity extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
+                controllerInstance.setSelectedProblem(position);
                 Intent intent = new Intent(view.getContext(), RecordListActivity.class);
                 intent.putExtra("EXTRA_PROBLEM_INDEX", position);
                 startActivity(intent);
