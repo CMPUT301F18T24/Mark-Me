@@ -3,8 +3,8 @@
     package="com.cybersix.markme">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -19,19 +19,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SignupActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".RecordInfoActivity"></activity>
-        <activity android:name=".LiveCameraActivity" android:exported="true"></activity>
-        <activity android:name=".ProblemActivityCreation" android:theme="@style/AppTheme.PopUp"></activity>
+        <activity android:name=".RecordInfoActivity" />
+        <activity
+            android:name=".LiveCameraActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProblemActivityCreation"
+            android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".UserAssignmentFragment" />
@@ -39,18 +44,24 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_map"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".UserActivityAddPopUp"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserActivityAddPopUp" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key"/>
-        <uses-library android:name="com.google.android.maps"
+            android:value="@string/google_maps_key" />
+
+        <uses-library
+            android:name="com.google.android.maps"
             android:required="true" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <activity android:name=".MapSelectActivity"></activity>
     </application>
+
 </manifest>
