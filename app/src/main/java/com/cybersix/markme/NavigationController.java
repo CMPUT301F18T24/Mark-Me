@@ -22,7 +22,7 @@ public class NavigationController {
                     switchToFragment(SettingsFragment.class);
                     return true;
                 case R.id.gps:
-                    switchToFragment(MapActivity.class);
+                    switchToFragment(MapFragment.class);
                     return true;
                 case R.id.body:
                     switchToFragment(BodyFragment.class);
@@ -60,6 +60,11 @@ public class NavigationController {
 
     public void setSelectedItem(int itemId) {
         mNavigationView.setSelectedItemId(itemId);
+    }
+
+    public void setSelectedItem(int itemId, Bundle bundle) {
+        setSelectedItem(itemId);
+        mFragment.setArguments(bundle);
     }
 
     public void switchToFragment(Class<? extends Fragment> clazz) {

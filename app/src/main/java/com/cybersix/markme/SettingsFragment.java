@@ -59,19 +59,19 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    public void openChangeLanguages() {
+    protected void openChangeLanguages() {
         NavigationController.getInstance().switchToFragment(LanguageHandlerFragment.class);
     }
 
-    public void openAccountSettings() {
+    protected void openAccountSettings() {
         NavigationController.getInstance().switchToFragment(AccountSettingsFragment.class);
     }
 
-    public void openUserAssignment() {
+    protected void openUserAssignment() {
         NavigationController.getInstance().switchToFragment(UserAssignmentFragment.class);
     }
 
-    public void openAbout() {
+    protected void openAbout() {
         NavigationController.getInstance().switchToFragment(AboutFragment.class);
     }
 }

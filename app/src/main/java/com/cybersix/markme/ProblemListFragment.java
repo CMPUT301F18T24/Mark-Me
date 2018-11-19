@@ -34,7 +34,7 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
-                startActivityForResult(i, REQUEST_CODE_ADD);
+                startActivity(i);
                 problemListAdapter.notifyDataSetChanged();
             }
         });
@@ -49,19 +49,12 @@ public class ProblemListFragment extends ListFragment {
                 bundle.putInt(EXTRA_PROBLEM_INDEX, position);
                 // TODO: for now the resulting activity will show preset data but the later version
                 // TODO: will show the records related to the problem
-                NavigationController.getInstance().switchToFragment(RecordListFragment.class, bundle);
+                NavigationController.getInstance()
+                        .switchToFragment(RecordListFragment.class, bundle);
             }
         });
 
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, controllerInstance.problems);
         getListView().setAdapter(problemListAdapter);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
-            problemListAdapter.notifyDataSetChanged();
-        }
     }
 }
