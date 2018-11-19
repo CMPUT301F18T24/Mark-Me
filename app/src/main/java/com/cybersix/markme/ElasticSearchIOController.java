@@ -186,6 +186,11 @@ public class ElasticSearchIOController {
         return new ArrayList<RecordModel>();
     }
 
+    public static List<Patient> getAssignedPatients(String username) {
+        // TODO: implement me
+        return new ArrayList<Patient>();
+    }
+
     public static void addRecords(ProblemModel problem) {
         setClient();
 

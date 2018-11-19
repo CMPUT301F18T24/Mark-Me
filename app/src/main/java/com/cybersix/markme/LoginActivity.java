@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (profileController.user.getUserType().compareTo("patient") == 0) {
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else if (profileController.user.getUserType().compareTo("care_provider") == 0) {
                     // Stub: Launch the patient list activity.
                 }

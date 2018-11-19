@@ -57,8 +57,8 @@ public class RecordInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_info);
         Intent i = getIntent();
-        recordIdx = i.getIntExtra("RecordIdx",0);
-        selectedRecord = recordController.selectedProblemRecords.get(recordIdx);
+        recordIdx = i.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX,0);
+        selectedRecord = ProblemController.getInstance().getSelectedProblem().getRecord(recordIdx);
         initAttributes();
         setListeners();
     }

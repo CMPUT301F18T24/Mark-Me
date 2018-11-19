@@ -13,7 +13,7 @@ public class NavigationController {
     private BottomNavigationView mNavigationView = null;
     private static NavigationController mNavigationController = null;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -22,6 +22,7 @@ public class NavigationController {
                     switchToFragment(SettingsFragment.class);
                     return true;
                 case R.id.gps:
+                    switchToFragment(MapActivity.class);
                     return true;
                 case R.id.body:
                     switchToFragment(BodyFragment.class);

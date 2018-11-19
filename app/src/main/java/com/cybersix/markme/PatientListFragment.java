@@ -14,14 +14,10 @@ public class PatientListFragment extends ListFragment {
         setupUI();
 
         String userid = UserProfileController.getInstance().user.getUserID();
-        try {
-            mCareProvider = new CareProvider(userid, CloudUtils.getAssignedPatients(userid));
-            Log.d("CareProvider", mCareProvider.getPatients().toString());
-            mArrayAdapter = new ArrayAdapter<Patient>(getActivity(), R.layout.list_item, mCareProvider.getPatients());
-            getListView().setAdapter(mArrayAdapter);
-        } catch (UserIDTooShortException e) {
-            e.printStackTrace();
-        }
+        mCareProvider = new CareProvider(userid, ElasticSearchIOController.getAssignedPatients(userid));
+        Log.d("CareProvider", mCareProvider.getPatients().toString());
+        mArrayAdapter = new ArrayAdapter<Patient>(getActivity(), R.layout.list_item, mCareProvider.getPatients());
+        getListView().setAdapter(mArrayAdapter);
     }
 
     protected void setupUI() {

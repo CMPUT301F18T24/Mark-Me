@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class RecordListFragment extends ListFragment {
     public static final String EXTRA_RECORD_INDEX = "RecordIdx";
     private ArrayAdapter<RecordModel> recordListAdapter;
-    private RecordController controllerInstance = RecordController.getInstance();
     private RecordController recordController = RecordController.getInstance();
     private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
 
@@ -35,6 +34,11 @@ public class RecordListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Bundle args = getArguments();
+        //Get selected part from intent
+        EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
+
         getTitle().setText("List of Records"); // Title should be title of problem
         getDetails().setText("List of records"); // Detail should be problem description
         getReturnButton().setOnClickListener(new View.OnClickListener() {
@@ -43,11 +47,6 @@ public class RecordListFragment extends ListFragment {
                 NavigationController.getInstance().switchToFragment(ProblemListFragment.class);
             }
         });
-
-
-        Bundle args = getArguments();
-        //Get selected part from intent
-        EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
 
         //If null, we want all records
         if(selectedPart == null){
@@ -66,7 +65,7 @@ public class RecordListFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, controllerInstance.records);
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordController.records);
         getListView().setAdapter(recordListAdapter);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

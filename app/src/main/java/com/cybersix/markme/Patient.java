@@ -7,7 +7,7 @@ public class Patient extends UserModel {
     private ArrayList<ProblemModel> problems;
     private ArrayList<CareProvider> providers;
 
-    public Patient(String userID, String password) throws UserIDTooShortException {
+    public Patient(String userID, String password) {
         super();
         super.setUserID(userID);
         super.setPassword(password);
