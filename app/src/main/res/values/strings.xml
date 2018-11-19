@@ -53,5 +53,8 @@
     <string name="semiColon">;</string>
     <string name="colon">:</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="channel_name">channelName</string>
+    <string name="channel_description">channelDesc</string>
+    <string name="set_a_notification_reminder">Set a notification reminder</string>
 
 </resources>
