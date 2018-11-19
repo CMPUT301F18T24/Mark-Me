@@ -12,7 +12,6 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -279,6 +278,9 @@ public class BodyFragment extends Fragment {
         }
     }
 
+    /*
+        Send to list view with selected records
+     */
     private void viewRecords(EBodyPart selectedPart){
         //If we have records for the clicked part
         if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
@@ -291,6 +293,9 @@ public class BodyFragment extends Fragment {
 
 
 
+    /*
+        turns on/off record adding mode
+     */
     private void newRecord(){
         /*
             TODO: Instantiate new record with body part and add
