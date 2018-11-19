@@ -71,13 +71,13 @@ public class RecordInfoActivity extends AppCompatActivity {
         bodyLocationSpinner = findViewById(R.id.bodyLocationSpinner);
         textViewComment = findViewById(R.id.commentTextView);
         editTextComment = findViewById(R.id.editTextComment);
-        editTextComment.setText(selectedRecord.getComment());
-        //TODO: Test this here
+        /*TODO: Test this here && Reactivate this check during integration
         if(UserProfileController.getInstance().user.getUserType().toLowerCase() == "care provider"){
             editTextComment.setEnabled(true);
         } else {
             editTextComment.setEnabled(false);
         }
+        */
         buttonSave = findViewById(R.id.buttonSaveChanges);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,11 +91,10 @@ public class RecordInfoActivity extends AppCompatActivity {
         recordTitleEdit.setText(selectedRecord.getTitle());
         editTextDescription.setText(selectedRecord.getDescription());
         if(selectedRecord.getComment() != null && selectedRecord.getComment() != ""){
-            textViewComment.setText(selectedRecord.getComment());
+            editTextComment.setText(selectedRecord.getComment());
         }
         bodyLocationSpinner.setAdapter(new ArrayAdapter<EBodyPart>(this,android.R.layout.simple_list_item_1,EBodyPart.values()));
         bodyLocationSpinner.setSelection(selectedRecord.getBodyLocation().getBodyPart().ordinal());
-
 
     }
 
@@ -132,7 +131,7 @@ public class RecordInfoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_CODE_PHOTO){
             if(resultCode == RESULT_OK){
-                byte[] photo = data.getByteArrayExtra("byte");
+                byte[] photo = data.getByteArrayExtra("image");
                 Bitmap photoMap = BitmapFactory.decodeByteArray(photo,0, photo.length);
                 addRecordPicture(photoMap);
             }

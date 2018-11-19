@@ -61,13 +61,7 @@ public class RecordCreationActivity extends AppCompatActivity {
             }
         });
 
-
-        if(selectedPart != null){
-            recordBodyLocation.setText("Body Location: " + selectedPart.toString());
-        } else {
-            recordBodyLocation.setText("Body Location: Unlisted");
-
-        }
+        recordBodyLocation.setText("Body Location: " + selectedPart.toString());
 
     }
 

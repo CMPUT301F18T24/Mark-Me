@@ -272,6 +272,9 @@ public class BodyActivity extends AppCompatActivity {
             addingRecord = false;
             userPromptText.setVisibility(View.INVISIBLE);
             Intent i = new Intent(this, RecordCreationActivity.class);
+            if(selectedPart == null){
+                selectedPart = EBodyPart.UNLISTED;
+            }
             i.putExtra("BodyPart",selectedPart);
             startActivity(i);
             finish();
@@ -303,9 +306,6 @@ public class BodyActivity extends AppCompatActivity {
     }
 
     private void viewRecords(EBodyPart selectedPart){
-        /*
-            TODO: Get records and send to list view
-         */
         //If we have records for the clicked part
         if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
             Intent i = new Intent(this, RecordListActivity.class);

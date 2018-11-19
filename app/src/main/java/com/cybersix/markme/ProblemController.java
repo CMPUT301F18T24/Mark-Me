@@ -65,7 +65,7 @@ public class ProblemController {
     public void createNewProblem(String title, String description) {
         try {
             ProblemModel newProblem = new ProblemModel(title, description);
-
+            newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
             instance.problems.add(newProblem);
         }
