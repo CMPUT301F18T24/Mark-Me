@@ -19,6 +19,13 @@
     <string name="ToggleCameraView">Toggle the camera view</string>
     <string name="faceView">FACE</string>
     <string name="frontView">FRONT</string>
+    <string name="add_text">add</string>
+    <string name="search_text">search</string>
+    <string name="empty_textview">List Title</string>
+    <string name="info_text">Details</string>
+    <string name="keyword_text">Filter</string>
+    <string name="show_text">Show</string>
+    <string name="hide_text">Hide</string>
     <string name="ProblemCreationTitle">Create a problem</string>
     <string name="ProblemCreationTitleText">Title (max. 30 characters)</string>
     <string name="ProblemCreationDescription">Enter description</string>
@@ -30,6 +37,7 @@
     <string name="title_Body">Body</string>
     <string name="title_Gallery">Gallery</string>
     <string name="title_List">List</string>
+    <string name="overlay_description">overlay</string>
     <string name="touch_a_location">Touch a Location</string>
     <string name="total">Total:</string>
     <string name="not_listed">Not Listed:</string>

@@ -55,8 +55,8 @@ public class RecordCreationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+//                startActivity(i);
                 finish();
             }
         });
@@ -82,8 +82,8 @@ public class RecordCreationActivity extends AppCompatActivity {
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
+//                startActivity(i);
                 finish();
             }
         });

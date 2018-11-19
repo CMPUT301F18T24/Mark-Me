@@ -58,7 +58,7 @@ public class RecordController {
 
     /**
      * This function will create a new record to add to the associated list of records to the controller
-     * @param title the title of the record
+     * @param title the getTitle of the record
      * @param description the description of the record
      * @param photos the list of photos to add for the record (optional)
      * @param bodyLocation the location on the body of the record (optional)

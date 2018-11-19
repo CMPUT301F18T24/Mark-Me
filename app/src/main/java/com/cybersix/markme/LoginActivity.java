@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
-
+        GuiUtils.setFullScreen(this);
         initUI();
 
     }
@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                 openSignupActivity();
             }
         });
-
     }
 
     // Launches the signup activity.
@@ -94,8 +93,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Launch the next activity depending on whether the user is a patient or care provider.
                 if (profileController.user.getUserType().compareTo("patient") == 0) {
-                    Intent intent = new Intent(this, ProblemListActivity.class);
+                    Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else if (profileController.user.getUserType().compareTo("care_provider") == 0) {
                     // Stub: Launch the patient list activity.
                 }

@@ -5,22 +5,21 @@ import java.util.Observable;
 import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
-
-    private String username;
-    private String email;
-    private String phone;
-    private String password;
-    private String userType;
+    public static final String USERID = "USERID";
+    private String username = null;
+    private String email = null;
+    private String phone = null;
+    private String password = null;
+    private String userType = null;
 
     @JestId
-    private String userID;
+    private String userID = null;
 
     public static final int MINIMUM_USERNAME_LENGTH = 8;
 
     // Need a default constructor to compile with Patient/Care Provider inheritance.
     public UserModel() { }
 
-    /*added a constructor*/
     public UserModel(String username, String password) throws UsernameTooShortException {
         if (username.length() < MINIMUM_USERNAME_LENGTH)
             throw new UsernameTooShortException();
@@ -53,7 +52,6 @@ public class UserModel extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
 
     public String getUsername() {
@@ -62,8 +60,9 @@ public class UserModel extends Observable {
 
     // Only accept two types of user types: "patient" ir "care_provider".
     public void setUserType(String userType) throws InvalidUserTypeException {
-
-        if (userType.equals("patient") || userType.equals("care_provider")) {
+        if (userType == null) {
+            this.userType = null;
+        } else if (userType.equals("patient") || userType.equals("care_provider")) {
             this.userType = userType;
         } else {
             throw new InvalidUserTypeException();
@@ -71,10 +70,9 @@ public class UserModel extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
-    public String getUserType(){
 
+    public String getUserType(){
         return this.userType;
     }
 
@@ -147,6 +145,12 @@ public class UserModel extends Observable {
         return this.password;
     }
 
+    public String toString() {
+        if (userID == null)
+            return "null";
+
+        return userID.toString();
+    }
 }
 
 class UsernameTooShortException extends Exception {}

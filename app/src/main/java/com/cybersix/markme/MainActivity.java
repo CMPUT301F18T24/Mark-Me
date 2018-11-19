@@ -1,21 +1,18 @@
 package com.cybersix.markme;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
+    private NavigationController mNavigationController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent i = new Intent(this,UserAssignmentActivity.class);
-        this.startActivity(i);
-    }
+        GuiUtils.setFullScreen(this);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        mNavigationController = NavigationController.getInstance(this);
+        mNavigationController.setSelectedItem(R.id.body);
     }
 }
