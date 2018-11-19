@@ -14,6 +14,7 @@ import java.util.ArrayList;
  *      TODO: this may involve some elastic searching and queries that should be handled by the controller
  */
 public class RecordListFragment extends ListFragment {
+    public static final String EXTRA_RECORD_INDEX = "RecordIdx";
     private ArrayAdapter<RecordModel> recordListAdapter;
     private RecordController controllerInstance = RecordController.getInstance();
     private RecordController recordController = RecordController.getInstance();
@@ -43,9 +44,10 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
-        Intent i = getIntent();
+
+        Bundle args = getArguments();
         //Get selected part from intent
-        EBodyPart selectedPart = (EBodyPart) i.getSerializableExtra("SelectedPart");
+        EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
 
         //If null, we want all records
         if(selectedPart == null){
@@ -70,7 +72,7 @@ public class RecordListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(getActivity(), RecordInfoActivity.class);
-                i.putExtra("RecordIdx",position);
+                i.putExtra(EXTRA_RECORD_INDEX, position);
                 startActivity(i);
             }
         });

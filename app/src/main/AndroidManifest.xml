@@ -34,7 +34,7 @@
         <activity android:name=".ProblemActivityCreation" android:theme="@style/AppTheme.PopUp"></activity>
         <activity android:name=".Reminder" />
         <activity android:name=".AccountSettingsActivity" />
-        <activity android:name=".UserAssignmentActivity" />
+        <activity android:name=".UserAssignmentFragment" />
         <activity android:name=".RecordCreationActivity" />
         <activity
             android:name=".MapActivity"

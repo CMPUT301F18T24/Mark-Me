@@ -87,6 +87,7 @@ public class BodyFragment extends Fragment {
         }
     }
 
+    public static final String EXTRA_SELECTED_PART = "SelectedPart";
     private ImageView bodyView;
     private PointView point;
     private ImageButton rotateButton;
@@ -127,8 +128,10 @@ public class BodyFragment extends Fragment {
 
         if(problemController.getSelectedProblem() == null){
             //Send to problem view
-            Intent i = new Intent(getActivity(), ProblemListActivity.class);
-            startActivity(i);
+            NavigationController.getInstance().switchToFragment(ProblemListFragment.class);
+
+//            Intent i = new Intent(getActivity(), ProblemListActivity.class);
+//            startActivity(i);
             //TODO: finish();
         }
     }
@@ -294,10 +297,10 @@ public class BodyFragment extends Fragment {
     private void viewRecords(EBodyPart selectedPart){
         //If we have records for the clicked part
         if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
-            Intent i = new Intent(getActivity(), RecordListActivity.class);
-            i.putExtra("SelectedPart",selectedPart);
-            startActivity(i);
-//            finish();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(EXTRA_SELECTED_PART, selectedPart);
+            NavigationController.getInstance()
+                    .switchToFragment(RecordListFragment.class, bundle);
         }
     }
 

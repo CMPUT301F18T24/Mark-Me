@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -66,6 +67,11 @@ public class NavigationController {
             createFragmentDynamically();
         else
             replaceFragment();
+    }
+
+    public void switchToFragment(Class<? extends Fragment> clazz, Bundle bundle) {
+        switchToFragment(clazz);
+        mFragment.setArguments(bundle);
     }
 
     private void createFragmentDynamically() {

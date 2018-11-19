@@ -18,6 +18,7 @@ public class ProblemListFragment extends ListFragment {
     // getProblems(); <- this will probably come from the controller
 
     public static final int REQUEST_CODE_ADD = 1;
+    public static final String EXTRA_PROBLEM_INDEX = "EXTRA_PROBLEM_INDEX";
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
@@ -43,9 +44,12 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                NavigationController.getInstance().switchToFragment(RecordListFragment.class);
+                controllerInstance.setSelectedProblem(position);
+                Bundle bundle = new Bundle();
+                bundle.putInt(EXTRA_PROBLEM_INDEX, position);
                 // TODO: for now the resulting activity will show preset data but the later version
                 // TODO: will show the records related to the problem
+                NavigationController.getInstance().switchToFragment(RecordListFragment.class, bundle);
             }
         });
 

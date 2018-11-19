@@ -13,6 +13,7 @@ public class SettingsFragment extends Fragment {
     private View mLanguageButton = null;
     private View mAccountButton = null;
     private View mAboutButton = null;
+    private View mAssignmentButton = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class SettingsFragment extends Fragment {
         mLanguageButton = getActivity().findViewById(R.id.language);
         mAccountButton = getActivity().findViewById(R.id.Account);
         mAboutButton = getActivity().findViewById(R.id.About);
+        mAssignmentButton = getActivity().findViewById(R.id.userAssignmentButton);
 
         mLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +50,13 @@ public class SettingsFragment extends Fragment {
                 openAbout();
             }
         });
+
+        mAssignmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUserAssignment();
+            }
+        });
     }
 
     public void openChangeLanguages() {
@@ -56,6 +65,10 @@ public class SettingsFragment extends Fragment {
 
     public void openAccountSettings() {
         NavigationController.getInstance().switchToFragment(AccountSettingsFragment.class);
+    }
+
+    public void openUserAssignment() {
+        NavigationController.getInstance().switchToFragment(UserAssignmentFragment.class);
     }
 
     public void openAbout() {
