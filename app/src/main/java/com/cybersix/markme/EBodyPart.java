@@ -14,20 +14,21 @@ public enum EBodyPart {
         should be multiplied against the width or height of the ImageView used to display the
         body to get a proper scaled X and Y coordinate
      */
-    LEFTHAND("Left Hand",new PointF(0.7649231f,0.5043793f), new PointF(0.83862305f,0.5434799f),true),
-    LEFTARM("Left Arm",new PointF(0.6341858f,0.29815674f), new PointF(0.8121948f,0.48286438f),true),
-    LEFTLEG("Left Leg",new PointF(0.5368347f,0.672493f), new PointF(0.6202698f,0.86013794f),true),
-    LEFTFOOT("Left Foot",new PointF(0.5368347f,0.86891174f), new PointF(0.70370483f,0.9158325f),true),
-    RIGHTHAND("Right Hand",new PointF(0.16131592f,0.49167633f), new PointF(0.23086548f,0.5473709f),true),
-    RIGHTARM("Right Arm",new PointF(0.18414307f,0.3022165f), new PointF(0.37176514f,0.48221472f),true),
-    RIGHTLEG("Right Leg",new PointF(0.3838501f,0.66661835f), new PointF(0.47146606f,0.8572006f),true),
-    RIGHTFOOT("Right Foot",new PointF(0.30596924f,0.8728409f), new PointF(0.45477295f,0.9158325f),true),
-    HEAD("Head",new PointF(0.3880005f,0.12615204f), new PointF(0.61608887f,0.23075104f),true),
-    NECK("Neck",new PointF(0.45895386f,0.24929047f), new PointF(0.5465698f,0.2796173f),true),
-    CHEST("Chest",new PointF(0.3880005f,0.29232025f), new PointF(0.6286316f,0.44574738f),true),
-    ABDOMEN("Abdomen",new PointF(0.3880005f,0.4486847f), new PointF(0.6244507f,0.6539154f),true),
-    UPPERBACK("Upper Back",new PointF(0.3880005f,0.29232025f), new PointF(0.6286316f,0.44574738f),false),
-    LOWERBACK("Lower Back",new PointF(0.3880005f,0.4486847f), new PointF(0.6244507f,0.6539154f),false);
+    LEFTHAND("Left Hand",new PointF(0.72598267f,0.50606865f), new PointF(0.7996826f,0.551845f),true),
+    LEFTARM("Left Arm",new PointF(0.61608887f,0.2983311f), new PointF(0.7690735f,0.49826485f),true),
+    LEFTLEG("Left Leg",new PointF(0.5326538f,0.6702532f), new PointF(0.59802246f,0.8601161f),true),
+    LEFTFOOT("Left Foot",new PointF(0.5368347f,0.86391174f), new PointF(0.6731262f,0.9158325f),true),
+    RIGHTHAND("Right Hand",new PointF(0.20858765f,0.49167633f), new PointF(0.2698059f,0.5473709f),true),
+    RIGHTARM("Right Arm",new PointF(0.23086548f,0.29232025f), new PointF(0.38576514f,0.48819405f),true),
+    RIGHTLEG("Right Leg",new PointF(0.3977356f,0.66661835f), new PointF(0.47146606f,0.8601161f),true),
+    RIGHTFOOT("Right Foot",new PointF(0.33099365f,0.8638409f), new PointF(0.47146606f,0.9158325f),true),
+    HEAD("Head",new PointF(0.3980005f,0.12315204f), new PointF(0.6000f,0.245f),true),
+    NECK("Neck",new PointF(0.45895386f,0.24929047f), new PointF(0.5415698f,0.2796173f),true),
+    CHEST("Chest",new PointF(0.3880005f,0.281f), new PointF(0.610f,0.44574738f),true),
+    ABDOMEN("Abdomen",new PointF(0.3880005f,0.4466847f), new PointF(0.610f,0.66f),true),
+    UPPERBACK("Upper Back",new PointF(0.3880005f,0.281f), new PointF(0.610f,0.44574738f),false),
+    LOWERBACK("Lower Back",new PointF(0.3880005f,0.4466847f), new PointF(0.610f,0.66f),false),
+    UNLISTED("Unlisted",new PointF(0,0), new PointF(0,0),true);
 
     private final String name;
     private final PointF p1;

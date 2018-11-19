@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,17 +16,18 @@
             android:layout_weight="7">
 
 
-            <ImageView
-                android:id="@+id/bodyView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_person_outline" />
+        <ImageView
+            android:id="@+id/bodyView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_person_outline" />
 
             <ImageButton
                 android:id="@+id/rotateButton"
@@ -100,6 +99,7 @@
         android:id="@+id/navigation"
 
         android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:layout_weight="1"
