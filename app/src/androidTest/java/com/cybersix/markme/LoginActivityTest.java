@@ -1,40 +1,34 @@
 package com.cybersix.markme;
 
-import com.robotium.solo.*;
-
 import android.support.test.rule.ActivityTestRule;
-import android.test.*;
-
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class LoginActivityTest {
 
-    private Solo solo;
-
     @Rule
-    public ActivityTestRule<LoginActivity> loginActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
-
-
-    public void setUp() throws Exception {
-        solo = new Solo(loginActivityTestRule.g);
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        solo.finishOpenedActivities();
-        super.tearDown();
-    }
+    public ActivityTestRule<LoginActivity> loginActivityTestRule =
+            new ActivityTestRule<>(LoginActivity.class);
 
 
     @Test
     public void changeTextTest() {
-        solo.waitForActivity("LoginActivity", 2000);
-        //Set default small timeout to 15425 milliseconds
-        Timeout.setSmallTimeout(15425);
-        //Enter the text: 'test@example.com'
-        solo.clearEditText((android.widget.EditText) solo.getView(R.id.usernameText));
-        solo.enterText((android.widget.EditText) solo.getView(R.id.usernameText), "wassap");
+        onView(withId(R.id.usernameText)).perform(typeText("wassap"));
+        onView(withId(R.id.usernameText)).check(matches(withText("wassap")));
+
     }
 }
