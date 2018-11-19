@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.content.Intent;
+import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -60,11 +61,7 @@ public class RecordListFragment extends ListFragment {
                 }
             }
         }
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         // set the adapter for the list activity
         recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
         getListView().setAdapter(recordListAdapter);
@@ -74,6 +71,15 @@ public class RecordListFragment extends ListFragment {
                 Intent i = new Intent(getActivity(), RecordInfoActivity.class);
                 i.putExtra(EXTRA_RECORD_INDEX, position);
                 startActivity(i);
+            }
+        });
+
+        getAddButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: What if we want to add a record with using the body?
+//                Intent i = new Intent(getActivity(), RecordCreationActivity.class);
+//                startActivity(i);
             }
         });
     }
