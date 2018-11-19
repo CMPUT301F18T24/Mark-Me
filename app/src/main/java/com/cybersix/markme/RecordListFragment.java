@@ -38,9 +38,10 @@ public class RecordListFragment extends ListFragment {
         Bundle args = getArguments();
         //Get selected part from intent
         EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
+        ProblemModel problemModel = ProblemController.getInstance().getSelectedProblem();
 
-        getTitle().setText("List of Records"); // Title should be title of problem
-        getDetails().setText("List of records"); // Detail should be problem description
+        getTitle().setText(problemModel.getTitle()); // Title should be title of problem
+        getDetails().setText(problemModel.getDescription()); // Detail should be problem description
         getReturnButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

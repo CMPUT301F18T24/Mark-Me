@@ -34,7 +34,7 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
-                startActivityForResult(i, REQUEST_CODE_ADD);
+                startActivity(i);
                 problemListAdapter.notifyDataSetChanged();
             }
         });
@@ -56,13 +56,5 @@ public class ProblemListFragment extends ListFragment {
 
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, controllerInstance.problems);
         getListView().setAdapter(problemListAdapter);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
-            problemListAdapter.notifyDataSetChanged();
-        }
     }
 }

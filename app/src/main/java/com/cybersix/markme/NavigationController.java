@@ -62,6 +62,11 @@ public class NavigationController {
         mNavigationView.setSelectedItemId(itemId);
     }
 
+    public void setSelectedItem(int itemId, Bundle bundle) {
+        setSelectedItem(itemId);
+        mFragment.setArguments(bundle);
+    }
+
     public void switchToFragment(Class<? extends Fragment> clazz) {
         setFragment(clazz);
         if (mFragmentManager.getFragments().size() == 0)
