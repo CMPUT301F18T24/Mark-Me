@@ -46,10 +46,13 @@ public class RecordController {
     // TODO: This function will be in charge of filling up some fake record data for the views
     private static void loadFakeData() {
         // This will fill up the list of records with fake records. There will be around 30 of them
+        Location l = new Location("Test Body Location");
+        l.setLatitude(53.5232);
+        l.setLongitude(-113.5263);
         for (int i = 0; i < 30; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
-            instance.createNewRecord(title, description, null, null, new BodyLocation(EBodyPart.CHEST));
+            instance.createNewRecord(title, description, null, l, new BodyLocation(EBodyPart.LEFTARM));
         }
     }
 

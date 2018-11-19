@@ -28,7 +28,7 @@
     <string name="title_settings">Settings</string>
     <string name="title_GPS">GPS</string>
     <string name="title_Body">Body</string>
-    <string name="title_Gallery">Gallary</string>
+    <string name="title_Gallery">Gallery</string>
     <string name="title_List">List</string>
     <string name="touch_a_location">Touch a Location</string>
     <string name="total">Total:</string>
@@ -52,4 +52,6 @@
     <string name="slash">/</string>
     <string name="semiColon">;</string>
     <string name="colon">:</string>
+    <string name="title_activity_map">MapActivity</string>
+
 </resources>
