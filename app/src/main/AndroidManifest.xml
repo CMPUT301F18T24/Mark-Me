@@ -59,7 +59,8 @@
 
         <activity android:name=".MapSelectActivity" />
         <activity android:name=".Gallery" />
-        <activity android:name=".deletePhoto"></activity>
+        <activity android:name=".deletePhoto" />
+        <activity android:name=".fullGallery"></activity>
     </application>
 
 </manifest>
