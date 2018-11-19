@@ -31,7 +31,7 @@ import static java.security.AccessController.getContext;
 
 
 //Credit: http://www.zoftino.com/android-mapview-tutorial
-public class MapActivity extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap gmap;
     private RecordController recordController = RecordController.getInstance();

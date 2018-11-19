@@ -106,13 +106,12 @@ public class BodyFragment extends Fragment {
     public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         bodyView = (ImageView) getActivity().findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
 
         if(problemController.getSelectedProblem() == null){
             //Send to problem view
-            NavigationController.getInstance().switchToFragment(ProblemListFragment.class);
+            NavigationController.getInstance().setSelectedItem(R.id.list);
 
 //            Intent i = new Intent(getActivity(), ProblemListActivity.class);
 //            startActivity(i);
@@ -288,7 +287,7 @@ public class BodyFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(EXTRA_SELECTED_PART, selectedPart);
             NavigationController.getInstance()
-                    .switchToFragment(RecordListFragment.class, bundle);
+                    .setSelectedItem(R.id.list, bundle);
         }
     }
 

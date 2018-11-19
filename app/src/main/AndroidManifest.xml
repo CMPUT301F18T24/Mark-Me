@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +40,7 @@
             android:name=".ProblemActivityCreation"
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
-        <activity android:name=".AccountSettingsActivity" />
-        <activity android:name=".UserAssignmentFragment" />
         <activity android:name=".RecordCreationActivity" />
-        <activity
-            android:name=".MapActivity"
-            android:label="@string/title_activity_map"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserActivityAddPopUp" />
 
         <meta-data
@@ -61,7 +57,10 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".MapSelectActivity"></activity>
+        <activity android:name=".MapSelectActivity" />
+        <activity android:name=".Gallery" />
+        <activity android:name=".deletePhoto" />
+        <activity android:name=".fullGallery"></activity>
     </application>
 
 </manifest>

@@ -38,6 +38,7 @@
                 android:layout_height="56dp"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:imeOptions="actionDone"
                 android:hint="@string/ProblemCreationTitleText" />
 
             <EditText
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:imeOptions="actionDone"
                 android:hint="@string/ProblemCreationDescription"
                 tools:layout_editor_absoluteX="37dp"
                 tools:layout_editor_absoluteY="101dp" />
