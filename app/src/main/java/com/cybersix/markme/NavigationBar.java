@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,19 +19,14 @@ public class NavigationBar extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.settings:
-//                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.gps:
-//                    mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.body:
-//                    mTextMessage.setText(R.string.title_notifications);
                     return true;
                 case R.id.gallery:
-//                    mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.list:
-//                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;

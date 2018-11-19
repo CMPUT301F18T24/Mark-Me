@@ -2,6 +2,8 @@ package com.cybersix.markme;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class UserProfileController {
 
     private static UserProfileController instance = null;
@@ -33,25 +35,54 @@ public class UserProfileController {
         }
     }
 
-    // Attempts to add a user to the UserModel.
-    // Inputs: userID, email, phone, password - User information
-    //         userType - The type of the user.
-    // Outputs: Returns true if added user was successful, false otherwise.
-    // TODO: This should save to the elastic search database.
-    public Boolean addUser(String userID, String email, String phone, String password, String userType) {
-
-        // Stub: Save new user to the database instead of setting the user model.
-        // Also check if user exists before saving to the database. Return false if it already esists.
-
+    // Attempts to set the user in the UserModel.
+    public void setUser(String userID, String username, String email, String phone, String password,
+                        String userType) {
         try {
             user.setUserID(userID);
+            user.setUsername(username);
             user.setEmail(email);
             user.setPhone(phone);
             user.setPassword(password);
             user.setUserType(userType);
+        } catch (Exception e) { // TODO: Can we handle specific exceptions?
+            Log.d("Vishal_ProfileCont", e.toString());
+        }
+    }
+
+    // Attempts to add a user to the elasticsearch database.
+    // Inputs: userID, email, phone, password - User information
+    //         userType - The type of the user.
+    // Outputs: Returns true if added user was successful, false otherwise.
+    // TODO: This should save to the elastic search database.
+    public Boolean addUser(String username, String email, String phone, String password, String userType) {
+
+        // Check if the user exists.
+        ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
+        try {
+            foundUsers = new ElasticSearchIOController.GetUserTask().execute(username).get();
+            Log.d("Vishal_ProfileCont", Integer.toString(foundUsers.size()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // If username exists, then send a fail.
+        if (foundUsers.size() > 0) {
+            return false;
+        }
+
+        try {
+            UserModel newUser = new UserModel();
+            newUser.setUsername(username);
+            newUser.setEmail(email);
+            newUser.setPhone(phone);
+            newUser.setPassword(password);
+            newUser.setUserType(userType);
+
+            new ElasticSearchIOController.AddUserTask().execute(newUser);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
-            Log.d("Vishal_UserProfileCont", e.toString());
+            Log.d("Vishal_ProfileCont", e.toString());
             return false;
         }
 
@@ -67,7 +98,7 @@ public class UserProfileController {
         // If the elastic search returned a result. Then confirm the password matches.
         // Note: Since we are searching by usernames exactly then we don't need to compare userIDs
         // a second time.
-        if (this.user.getUserID() != null) {
+        if (this.user.getUsername() != null) {
             if (this.user.getPassword().equals(password)) {
                 return true;
             }
