@@ -68,4 +68,9 @@
     <string name="search_button">Search</string>
     <string name="filter_edit_text">Enter keyword here</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="channel_name">channelName</string>
+    <string name="channel_description">channelDesc</string>
+    <string name="set_a_notification_reminder">Set a notification Reminder</string>
+    <string name="daily">Daily</string>
+    <string name="every_other_day">Every other day</string>
 </resources>
