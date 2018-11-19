@@ -1,28 +1,20 @@
 package com.cybersix.markme;
 
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class AccountSettingsFragment extends Fragment implements Observer {
+public class AccountSettingsActivity extends AppCompatActivity implements Observer {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        return inflater.inflate(R.layout.activity_account_settings, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        setContentView(R.layout.activity_account_settings);
 
         // Add the AccoutSettingsActivity view as an observer to the UserModel.
         UserProfileController profileController = UserProfileController.getInstance();
@@ -36,14 +28,14 @@ public class AccountSettingsFragment extends Fragment implements Observer {
         UserProfileController profileController = UserProfileController.getInstance();
 
         // Initialize the fields with the user's information
-        TextView usernameText = (TextView) getActivity().findViewById(R.id.usernameText);
-        TextView emailText = (TextView) getActivity().findViewById(R.id.emailText);
-        TextView phoneText = (TextView) getActivity().findViewById(R.id.phoneText);
-        Button saveButton = (Button) getActivity().findViewById(R.id.saveButton);
+        TextView usernameText = (TextView) findViewById(R.id.usernameText);
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
+        Button saveButton = (Button) findViewById(R.id.saveButton);
 
         // Fill the textboxes with information
         // TODO: These extra calls to the controller could be avoided if model was its own object.
-        usernameText.setText(profileController.user.getUsername());
+        usernameText.setText(profileController.user.getUserID());
         emailText.setText(profileController.user.getEmail());
         phoneText.setText(profileController.user.getPhone());
 
@@ -53,7 +45,7 @@ public class AccountSettingsFragment extends Fragment implements Observer {
         saveButton.setVisibility(View.GONE);
 
         // Add an onClick for the edit contact information button
-        Button editContactsButton = (Button) getActivity().findViewById(R.id.editContactButton);
+        Button editContactsButton = (Button) findViewById(R.id.editContactButton);
         editContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,8 +71,8 @@ public class AccountSettingsFragment extends Fragment implements Observer {
 
     // Update the contact information fields using the updated values from the model.
     public void updateContactInformationFields(UserModel model) {
-        TextView emailText = (TextView) getActivity().findViewById(R.id.emailText);
-        TextView phoneText = (TextView) getActivity().findViewById(R.id.phoneText);
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
 
         emailText.setText(model.getEmail());
         phoneText.setText(model.getPhone());
@@ -91,8 +83,8 @@ public class AccountSettingsFragment extends Fragment implements Observer {
 
         UserProfileController profileController = UserProfileController.getInstance();
 
-        TextView emailText = (TextView) getActivity().findViewById(R.id.emailText);
-        TextView phoneText = (TextView) getActivity().findViewById(R.id.phoneText);
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
 
         // Edit the contact information.
         profileController.editContactInformation(emailText.getText().toString(),
@@ -103,11 +95,11 @@ public class AccountSettingsFragment extends Fragment implements Observer {
         phoneText.setEnabled(false);
 
         // Hide the save button
-        Button saveButton = (Button) getActivity().findViewById(R.id.saveButton);
+        Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setVisibility(View.GONE);
 
         // And show the edit contact info button.
-        Button editContactsButton = (Button) getActivity().findViewById(R.id.editContactButton);
+        Button editContactsButton = (Button) findViewById(R.id.editContactButton);
         editContactsButton.setVisibility(View.VISIBLE);
 
     }
@@ -117,17 +109,17 @@ public class AccountSettingsFragment extends Fragment implements Observer {
     public void enableChangingContactInformation() {
 
         // Enable changing the contact information.
-        TextView emailText = (TextView) getActivity().findViewById(R.id.emailText);
-        TextView phoneText = (TextView) getActivity().findViewById(R.id.phoneText);
+        TextView emailText = (TextView) findViewById(R.id.emailText);
+        TextView phoneText = (TextView) findViewById(R.id.phoneText);
         emailText.setEnabled(true);
         phoneText.setEnabled(true);
 
         // Show the save button
-        Button saveButton = (Button) getActivity().findViewById(R.id.saveButton);
+        Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setVisibility(View.VISIBLE);
 
         // And hide the edit contact info button.
-        Button editContactsButton = (Button) getActivity().findViewById(R.id.editContactButton);
+        Button editContactsButton = (Button) findViewById(R.id.editContactButton);
         editContactsButton.setVisibility(View.GONE);
 
     }

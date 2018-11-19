@@ -1,9 +1,13 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Jose: I will have to set this up also to be able to get a list of records based off of a problem
@@ -12,6 +16,8 @@ import android.widget.ArrayAdapter;
 public class RecordListFragment extends ListFragment {
     private ArrayAdapter<RecordModel> recordListAdapter;
     private RecordController controllerInstance = RecordController.getInstance();
+    private RecordController recordController = RecordController.getInstance();
+    private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
 
     // create the problem info pop-up for the activity
     public class ProblemPopUp extends AppCompatActivity {
@@ -36,6 +42,22 @@ public class RecordListFragment extends ListFragment {
                 NavigationController.getInstance().switchToFragment(ProblemListFragment.class);
             }
         });
+
+        Intent i = getIntent();
+        //Get selected part from intent
+        EBodyPart selectedPart = (EBodyPart) i.getSerializableExtra("SelectedPart");
+
+        //If null, we want all records
+        if(selectedPart == null){
+            recordsToDisplay = recordController.selectedProblemRecords;
+        } else {
+            //Otherwise we filter out for just the selected part
+            for(RecordModel r : recordController.selectedProblemRecords){
+                if(r.getBodyLocation().getBodyPart() == selectedPart){
+                    recordsToDisplay.add(r);
+                }
+            }
+        }
     }
 
     @Override
@@ -44,5 +66,13 @@ public class RecordListFragment extends ListFragment {
         // set the adapter for the list activity
         recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, controllerInstance.records);
         getListView().setAdapter(recordListAdapter);
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), RecordInfoActivity.class);
+                i.putExtra("RecordIdx",position);
+                startActivity(i);
+            }
+        });
     }
 }

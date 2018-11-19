@@ -14,12 +14,16 @@
  */
 package com.cybersix.markme;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
+    private static ProblemModel selectedProblem = null;
     public ArrayList<ProblemModel> problems;
 
     /**
@@ -61,7 +65,7 @@ public class ProblemController {
     public void createNewProblem(String title, String description) {
         try {
             ProblemModel newProblem = new ProblemModel(title, description);
-
+            newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
             instance.problems.add(newProblem);
         }
@@ -120,6 +124,43 @@ public class ProblemController {
         list of problems
          */
         instance.problems = problems;
+    }
+
+    public void setSelectedProblem(ProblemModel problem){
+        selectedProblem = problem;
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+    }
+
+    public void setSelectedProblem(int index){
+        selectedProblem = problems.get(index);
+        //Fill record controllers selected records when new selected problem is set
+        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+    }
+
+    public ArrayList<RecordModel> getSelectedProblemRecords(){
+        return selectedProblem.getRecords();
+    }
+
+    public ProblemModel getSelectedProblem(){
+        return selectedProblem;
+    }
+
+    public void UpdateSelectedProblemRecord(RecordModel rm, int idx){
+        selectedProblem.getRecord(idx).setTitle(rm.getTitle());
+        selectedProblem.getRecord(idx).setDescription(rm.getDescription());
+        selectedProblem.getRecord(idx).setBodyLocation(rm.getBodyLocation());
+        selectedProblem.getRecord(idx).setComment(rm.getComment());
+    }
+
+    public void AddSelectedProblemRecordPhoto(Bitmap b, int idx){
+        try{
+            selectedProblem.getRecord(idx).addPhoto(b);
+        } catch (TooManyPhotosException e){
+            Log.d("Warning", "Too many photos. Photo not added");
+        } catch (PhotoTooLargeException e){
+            Log.d("Warning", "Photo too large. Photo not added");
+        }
     }
 
 }

@@ -16,6 +16,7 @@
             android:layout_height="0dp"
             android:clickable="true"
             android:src="@drawable/ic_person_outline"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

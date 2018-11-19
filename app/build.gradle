@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
+
     }
     buildTypes {
         release {
@@ -29,5 +31,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'org.jetbrains:annotations-java5:15.0'
-    implementation 'io.searchbox:jest-droid:2.0.0'
+    implementation files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 }
