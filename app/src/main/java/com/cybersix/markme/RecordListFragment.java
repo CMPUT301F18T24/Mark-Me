@@ -65,7 +65,7 @@ public class RecordListFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordController.records);
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
         getListView().setAdapter(recordListAdapter);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

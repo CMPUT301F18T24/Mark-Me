@@ -5,39 +5,25 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Debug;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 
 public class BodyFragment extends Fragment {
@@ -98,8 +84,6 @@ public class BodyFragment extends Fragment {
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private ProblemController problemController = ProblemController.getInstance();
-    private DisplayMetrics dm;
-    private BottomNavigationView bnv;
     private boolean frontFacing = true;
     private int listedCount = 0;
     private int unlistedCount = 0;
@@ -115,7 +99,8 @@ public class BodyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        return inflater.inflate(R.layout.activity_body, container, false);
+        View root = inflater.inflate(R.layout.activity_body, container, false);
+        return root;
     }
 
     @Override
@@ -134,23 +119,31 @@ public class BodyFragment extends Fragment {
 //            startActivity(i);
             //TODO: finish();
         }
+
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume(){
+        super.onResume();
+        GuiUtils.setFullScreen(getActivity());
         listedCount = 0;
         unlistedCount = 0;
         problemController = ProblemController.getInstance();
         initAttributes();
         setListeners();
-
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                drawRecords();
+                totalText.setText("Total: " + Integer.toString(listedCount));
+                notListedText.setText("Not Listed: " + Integer.toString(unlistedCount));
+            }
+        });
     }
 
     private void initAttributes() {
         bodyView = (ImageView) getActivity().findViewById(R.id.bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
-        dm = getResources().getDisplayMetrics();
         rotateButton = (ImageButton) getActivity().findViewById(R.id.rotateButton);
         addButton = (ImageButton) getActivity().findViewById(R.id.addButton);
         viewAllButton = (ImageButton) getActivity().findViewById(R.id.viewAllButton);
@@ -167,6 +160,7 @@ public class BodyFragment extends Fragment {
         //TODO: Remove this check here
         if(problemController.getSelectedProblem() != null){
             //Add existing records to body mappings
+            Log.d("records",problemController.getSelectedProblemRecords().toString());
             for(RecordModel r : problemController.getSelectedProblemRecords()){
                 ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
                 records.add(r);
@@ -232,16 +226,6 @@ public class BodyFragment extends Fragment {
 
         //We must wait for the layout to be drawn and measured to use getHeight and getWidth
         // So we listen for the API to tell us measurements are done and then we can draw
-        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                drawRecords();
-                totalText.setText("Total: " + Integer.toString(listedCount));
-                notListedText.setText("Not Listed: " + Integer.toString(unlistedCount));
-            }
-        });
     }
 
     private void reverse(){
@@ -275,8 +259,12 @@ public class BodyFragment extends Fragment {
     */
     private void drawRecords(){
         for(EBodyPart bp: recordParts.keySet()){
-            listedCount += recordParts.get(bp).size();
-            if(bp != null && recordParts.get(bp).size() > 0){
+            if(bp != EBodyPart.UNLISTED){
+                listedCount += recordParts.get(bp).size();
+            } else {
+                unlistedCount += recordParts.get(bp).size();
+            }
+            if(recordParts.get(bp).size() > 0){
                 //Get p1 and p2 of the body part
                 PointF p1 = bp.getP1();
                 PointF p2 = bp.getP2();
@@ -286,10 +274,8 @@ public class BodyFragment extends Fragment {
                 float w = bodyView.getWidth();
 
                 //Create new view and add to layout
-                HighlightView highlight = new HighlightView(getContext(), null,p1.x*w,p1.y*h,p2.x*w,p2.y*h);
+                HighlightView highlight = new HighlightView(getActivity(), null,p1.x*w,p1.y*h,p2.x*w,p2.y*h);
                 bodyConstraintLayout.addView(highlight);
-            } else {
-                unlistedCount += recordParts.get(bp).size();
             }
         }
     }
