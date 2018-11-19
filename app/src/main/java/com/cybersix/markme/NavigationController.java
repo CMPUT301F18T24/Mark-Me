@@ -22,7 +22,7 @@ public class NavigationController {
                     switchToFragment(SettingsFragment.class);
                     return true;
                 case R.id.gps:
-                    switchToFragment(MapActivity.class);
+                    switchToFragment(MapFragment.class);
                     return true;
                 case R.id.body:
                     switchToFragment(BodyFragment.class);
