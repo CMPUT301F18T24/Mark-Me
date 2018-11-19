@@ -18,6 +18,9 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,9 +49,7 @@ public class RecordController {
     // TODO: This function will be in charge of filling up some fake record data for the views
     private static void loadFakeData() {
         // This will fill up the list of records with fake records. There will be around 30 of them
-        Location l = new Location("Test Body Location");
-        l.setLatitude(53.5232);
-        l.setLongitude(-113.5263);
+        LatLng l = new LatLng(53.5232,-113.5263);
         for (int i = 0; i < 30; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
@@ -63,7 +64,7 @@ public class RecordController {
      * @param photos the list of photos to add for the record (optional)
      * @param bodyLocation the location on the body of the record (optional)
      */
-    public RecordModel createNewRecord(String title, String description, ArrayList<Bitmap> photos, Location location,
+    public RecordModel createNewRecord(String title, String description, ArrayList<Bitmap> photos, LatLng location,
                                 BodyLocation bodyLocation) {
         // This will need to be modified as soon as the gelocation stuff is handled
         //GeoLocationRecord location = null
@@ -110,7 +111,7 @@ public class RecordController {
      * @param newComment
      */
     public void editRecord(int index, String newTitle, String newDescription, ArrayList<Bitmap> newPhotos,
-                           BodyLocation newBodyLocation, Location newLocation, String newComment) {
+                           BodyLocation newBodyLocation, LatLng newLocation, String newComment) {
 
         // edit the record information
         RecordModel record = instance.records.get(index);
@@ -165,6 +166,10 @@ public class RecordController {
         ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
     }
 
+    public ArrayList<RecordModel> getSelectedProblemRecords(){
+        return ProblemController.getInstance().getSelectedProblemRecords();
+    }
+
     public void addRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblemRecords.get(idx).addPhoto(b);
@@ -174,6 +179,11 @@ public class RecordController {
         } catch (PhotoTooLargeException e){
             Log.d("Warning", "Photo too large. Photo not added");
         }
+    }
+
+    public void addRecordLocation(LatLng loc, int idx){
+        selectedProblemRecords.get(idx).setMapLocation(loc);
+        ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
     }
 
 }

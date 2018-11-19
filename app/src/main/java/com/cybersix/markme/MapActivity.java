@@ -71,7 +71,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback, GoogleM
         //Add markers for all records
         for(RecordModel r : recordController.records)
         {
-            LatLng ln = new LatLng(r.getMapLocation().getLatitude(),r.getMapLocation().getLongitude());
+            LatLng ln = new LatLng(r.getMapLocation().latitude,r.getMapLocation().longitude);
             MarkerOptions mo = new MarkerOptions();
             mo.position(ln);
             mo.title(r.getTitle());

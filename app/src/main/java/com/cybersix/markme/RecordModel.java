@@ -3,6 +3,8 @@ package com.cybersix.markme;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +19,7 @@ public class RecordModel {
     private String comment;
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
-    private Location mapLocation;
+    private LatLng mapLocation;
 
     public String getRecordID() {
         return recordID;
@@ -137,7 +139,7 @@ public class RecordModel {
      * set map location
      * @param mapLocation
      */
-    public void setMapLocation(Location mapLocation) {
+    public void setMapLocation(LatLng mapLocation) {
         this.mapLocation = mapLocation;
     }
 
@@ -145,7 +147,7 @@ public class RecordModel {
      * gets the map location
      * @return map location
      */
-    public Location getMapLocation() {
+    public LatLng getMapLocation() {
         return mapLocation;
     }
 

@@ -27,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class RecordInfoActivity extends AppCompatActivity {
 
     private EditText recordTitleEdit;
@@ -125,8 +127,8 @@ public class RecordInfoActivity extends AppCompatActivity {
         recordController.addRecordPhoto(photo,recordIdx);
     }
 
-    private void addRecordLocation(){
-        //TODO Send to map, return with lat/long
+    private void addRecordLocation(LatLng loc){
+        recordController.addRecordLocation(loc,recordIdx);
     }
 
     @Override
