@@ -39,16 +39,7 @@
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
         <activity android:name=".RecordCreationActivity" />
-<<<<<<< HEAD
         <activity android:name=".UserActivityAddPopUp"></activity>
-=======
-        <activity
-            android:name=".MapActivity"
-            android:label="@string/title_activity_map"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UserActivityAddPopUp" />
-
->>>>>>> master
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
