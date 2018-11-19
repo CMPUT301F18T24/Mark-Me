@@ -14,6 +14,9 @@
  */
 package com.cybersix.markme;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -147,7 +150,17 @@ public class ProblemController {
         selectedProblem.getRecord(idx).setTitle(rm.getTitle());
         selectedProblem.getRecord(idx).setDescription(rm.getDescription());
         selectedProblem.getRecord(idx).setBodyLocation(rm.getBodyLocation());
+        selectedProblem.getRecord(idx).setComment(rm.getComment());
+    }
 
+    public void AddSelectedProblemRecordPhoto(Bitmap b, int idx){
+        try{
+            selectedProblem.getRecord(idx).addPhoto(b);
+        } catch (TooManyPhotosException e){
+            Log.d("Warning", "Too many photos. Photo not added");
+        } catch (PhotoTooLargeException e){
+            Log.d("Warning", "Photo too large. Photo not added");
+        }
     }
 
 }

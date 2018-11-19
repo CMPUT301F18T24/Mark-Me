@@ -9,6 +9,8 @@
 package com.cybersix.markme;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,14 +29,22 @@ public class RecordInfoActivity extends AppCompatActivity {
 
     private EditText recordTitleEdit;
     private EditText editTextDescription;
+    private EditText editTextComment;
     private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private Button buttonSave;
+    private Button viewPhotos;
+    private Button addPhoto;
 
     private RecordModel selectedRecord;
     private RecordController recordController = RecordController.getInstance();
 
     private int recordIdx = 0;
+    //Below vars are used in async activity data returns
+    private final static int REQUEST_CODE_PHOTO = 1;
+    private final static int REQUEST_CODE_MAP = 2;
+
+
 
     // record activity will be linked with the photo gallery and being able to add photos, but the
     // user should be able to view all of the information
@@ -50,13 +60,24 @@ public class RecordInfoActivity extends AppCompatActivity {
         recordIdx = i.getIntExtra("RecordIdx",0);
         selectedRecord = recordController.selectedProblemRecords.get(recordIdx);
         initAttributes();
+        setListeners();
     }
 
     private void initAttributes(){
         recordTitleEdit = findViewById(R.id.recordTitleEdit);
         editTextDescription = findViewById(R.id.editTextDescription);
+        addPhoto = findViewById(R.id.buttonAddPhoto);
+        viewPhotos = findViewById(R.id.buttonViewPhotos);
         bodyLocationSpinner = findViewById(R.id.bodyLocationSpinner);
         textViewComment = findViewById(R.id.commentTextView);
+        editTextComment = findViewById(R.id.editTextComment);
+        editTextComment.setText(selectedRecord.getComment());
+        //TODO: Test this here
+        if(UserProfileController.getInstance().user.getUserType().toLowerCase() == "care provider"){
+            editTextComment.setEnabled(true);
+        } else {
+            editTextComment.setEnabled(false);
+        }
         buttonSave = findViewById(R.id.buttonSaveChanges);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,14 +99,48 @@ public class RecordInfoActivity extends AppCompatActivity {
 
     }
 
+    private void setListeners(){
+        //TODO: Setup view photos and map button
+        addPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Create overlays for screen and send in intent
+                Intent i = new Intent(RecordInfoActivity.this,LiveCameraActivity.class);
+                // getIntent().putExtra()
+                startActivityForResult(i, REQUEST_CODE_PHOTO);
+            }
+        });
+    }
+
     private void saveRecordEdits(){
         String title = recordTitleEdit.getText().toString();
-        String desc = recordTitleEdit.getText().toString();
+        String desc = editTextDescription.getText().toString();
+        String comment = editTextComment.getText().toString();
         EBodyPart bodyPart = (EBodyPart) bodyLocationSpinner.getSelectedItem();
-        recordController.saveRecordChanges(title,desc,new BodyLocation(bodyPart), recordIdx);
+        recordController.saveRecordChanges(title,desc,comment,new BodyLocation(bodyPart), recordIdx);
     }
 
-    private void addRecordPicture(){
-
+    private void addRecordPicture(Bitmap photo){
+        recordController.addRecordPhoto(photo,recordIdx);
     }
+
+    private void addRecordLocation(){
+        //TODO Send to map, return with lat/long
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_CODE_PHOTO){
+            if(resultCode == RESULT_OK){
+                byte[] photo = data.getByteArrayExtra("byte");
+                Bitmap photoMap = BitmapFactory.decodeByteArray(photo,0, photo.length);
+                addRecordPicture(photoMap);
+            }
+        }
+        else if(requestCode == REQUEST_CODE_MAP){
+
+        }
+    }
+
+
 }

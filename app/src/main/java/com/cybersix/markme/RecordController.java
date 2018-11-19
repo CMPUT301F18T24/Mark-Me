@@ -154,11 +154,23 @@ public class RecordController {
 
     }
 
-    public void saveRecordChanges(String title, String desc, BodyLocation bl, int idx){
+    public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
         selectedProblemRecords.get(idx).setTitle(title);
         selectedProblemRecords.get(idx).setDescription(desc);
         selectedProblemRecords.get(idx).setBodyLocation(bl);
+        selectedProblemRecords.get(idx).setComment(comment);
         ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
+    }
+
+    public void addRecordPhoto(Bitmap b, int idx){
+        try{
+            selectedProblemRecords.get(idx).addPhoto(b);
+            ProblemController.getInstance().AddSelectedProblemRecordPhoto(b,idx);
+        } catch (TooManyPhotosException e){
+            Log.d("Warning", "Too many photos. Photo not added");
+        } catch (PhotoTooLargeException e){
+            Log.d("Warning", "Photo too large. Photo not added");
+        }
     }
 
 }
