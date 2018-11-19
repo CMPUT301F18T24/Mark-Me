@@ -35,7 +35,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Observ
 
         // Fill the textboxes with information
         // TODO: These extra calls to the controller could be avoided if model was its own object.
-        usernameText.setText(profileController.user.getUserID());
+        usernameText.setText(profileController.user.getUsername());
         emailText.setText(profileController.user.getEmail());
         phoneText.setText(profileController.user.getPhone());
 

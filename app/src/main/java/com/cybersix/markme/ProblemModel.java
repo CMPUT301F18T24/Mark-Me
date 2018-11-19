@@ -7,11 +7,24 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TimeZone;
 
+import io.searchbox.annotations.JestId;
+
 public class ProblemModel extends Observable {
     private ArrayList<RecordModel> records;
     private String title;
     private String description;
     private Date started;
+
+    public String getProblemID() {
+        return problemID;
+    }
+
+    public void setProblemID(String problemID) {
+        this.problemID = problemID;
+    }
+
+    @JestId
+    private String problemID;
 
     public static final int MAX_TITLE_LENGTH = 30;
     public static final int MAX_DESCRIPTION_LENGTH = 300;
@@ -97,6 +110,11 @@ public class ProblemModel extends Observable {
 
         records.add(record);
         notifyObservers();
+    }
+
+    // Note: Temporary bug fix.
+    public void initializeRecordModel() {
+        this.records = new ArrayList<RecordModel>();
     }
 
     /**
