@@ -47,21 +47,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Debug purposes:
-        Button debug = (Button) findViewById(R.id.debug);
-        debug.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAccountSettingsActivity();
-            }
-        });
-
-    }
-
-    // DEBUG ONLY - launches the openAccountSettingsActivity.
-    public void openAccountSettingsActivity() {
-        Intent intent = new Intent(this, AccountSettingsActivity.class);
-        startActivity(intent);
     }
 
     // Launches the signup activity.
@@ -106,7 +91,14 @@ public class LoginActivity extends AppCompatActivity {
                                           foundUsers.get(0).getUserType());
 
                 Log.d("Vishal_Login_Activity", "Successful Login.");
-                // Stub: Put code here for after login...
+
+                // Launch the next activity depending on whether the user is a patient or care provider.
+                if (profileController.user.getUserType().compareTo("patient") == 0) {
+                    Intent intent = new Intent(this, ProblemListActivity.class);
+                    startActivity(intent);
+                } else if (profileController.user.getUserType().compareTo("care_provider") == 0) {
+                    // Stub: Launch the patient list activity.
+                }
 
             } else {
                 // Clear password box.
