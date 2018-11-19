@@ -22,8 +22,8 @@ public class LanguageHandlerFragment extends Fragment {
     }
 
     public void french(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
 
+        NavigationController.getInstance().switchToFragment(BodyFragment.class);
 
     }
 }
