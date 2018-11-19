@@ -58,6 +58,21 @@ public class UserActivityAddPopUp extends AppCompatActivity {
         Button searchFilter = (Button) findViewById(R.id.searchButton2);
         Button assignUserButton = (Button) findViewById(R.id.addAssignUserButton);
 
+        // TODO: Will be removed once server functionality is implemented
+        for (int i = 0; i < 15; i++){
+            String tempUsername = "UserPerson" + Integer.toString(i);
+            String tempPassword = "1234";
+            String tempID = "Fake ID " + Integer.toString(i);
+            try {
+                UserModel tempUser = new UserModel(tempUsername, tempPassword);
+                tempUser.setUserID(tempID);
+                users.add(tempUser);
+            }
+            catch (Exception e) {
+                // do nothing
+            }
+        }
+
 
         searchFilter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +97,7 @@ public class UserActivityAddPopUp extends AppCompatActivity {
         super.onStart();
 
         // set up the list and the adapter
+        // TODO: Get the users from the server
         // users = IOUtilityController.getUsers();
         usersAdapter = new ArrayAdapter<UserModel>(this, R.layout.list_item, users);
         usersListView.setAdapter(usersAdapter);

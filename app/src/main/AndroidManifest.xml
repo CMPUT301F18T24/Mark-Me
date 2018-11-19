@@ -41,7 +41,8 @@
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
         <activity android:name=".RecordCreationActivity" />
-        <activity android:name=".UserActivityAddPopUp" />
+        <activity android:name=".UserActivityAddPopUp"
+                  android:theme="@style/AppTheme.PopUp"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

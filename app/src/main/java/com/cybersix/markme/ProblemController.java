@@ -24,6 +24,7 @@ public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
     private static ProblemModel selectedProblem = null;
+    private UserProfileController userInstance;
     public ArrayList<ProblemModel> problems;
 
     /**
@@ -37,7 +38,7 @@ public class ProblemController {
     public static ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
-            uploadFakeData();
+            //uploadFakeData();
         }
         return instance;
     }
@@ -106,11 +107,10 @@ public class ProblemController {
      * is stored on the user profile controller
      * @return will return a list of problems that the user has
      */
-    public ArrayList<ProblemModel> loadProblemData() {
-        // TODO: will need to add elastic search functionality. For now it will always return a
-        // TODO: set amount of data that will be uploaded first by the save
-
-        return instance.problems;
+    public void loadProblemData() {
+        // TODO: test this works
+        userInstance = UserProfileController.getInstance();
+        this.problems =  (ArrayList<ProblemModel>) ElasticSearchIOController.getProblems(userInstance.user.getUserID());
     }
 
     /**

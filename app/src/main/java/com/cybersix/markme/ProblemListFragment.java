@@ -54,7 +54,14 @@ public class ProblemListFragment extends ListFragment {
             }
         });
 
+        controllerInstance.loadProblemData();
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, controllerInstance.problems);
         getListView().setAdapter(problemListAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        problemListAdapter.notifyDataSetChanged();
     }
 }

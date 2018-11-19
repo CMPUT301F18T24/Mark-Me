@@ -44,6 +44,21 @@ public class UserAssignmentFragment extends Fragment {
         Button removeButton = (Button) getActivity().findViewById(R.id.removeUserButton);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.assignedUserLIstView);
 
+        // TODO: Will be removed once server functionality is implemented
+        for (int i = 0; i < 15; i++){
+            String tempUsername = "UserPerson" + Integer.toString(i);
+            String tempPassword = "1234";
+            String tempID = "Fake ID " + Integer.toString(i);
+            try {
+                UserModel tempUser = new UserModel(tempUsername, tempPassword);
+                tempUser.setUserID(tempID);
+                userList.add(tempUser);
+            }
+            catch (Exception e) {
+                // do nothing
+            }
+        }
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +87,8 @@ public class UserAssignmentFragment extends Fragment {
         // The list will have a "Select is on" mode where the user can select one of the patient
         // items
 
-        // TODO: load the list of assigned users from the server
+        // TODO: load the list of assigned users from the server. For now it is just fake data created
+        // TODO: from onCreate
         // userList = IOUtilityController.getUsers();
         userListAdapter = new ArrayAdapter<UserModel>(getContext(), R.layout.list_item, userList);
         assignedUserListView.setAdapter(userListAdapter);
