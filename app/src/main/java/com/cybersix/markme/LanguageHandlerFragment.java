@@ -54,10 +54,10 @@ public class LanguageHandlerFragment extends Fragment {
     }
 
     public void change_to_english(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
+        NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 
     public void change_to_french(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
+        NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 }
