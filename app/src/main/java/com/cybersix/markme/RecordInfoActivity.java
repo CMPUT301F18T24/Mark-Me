@@ -70,6 +70,7 @@ public class RecordInfoActivity extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
+            java.util.ArrayList<RecordModel> test = RecordController.getInstance().selectedProblemRecords;
             selectedRecord =RecordController.getInstance().selectedProblemRecords.get(recordIdx);
         } else {
             //We have a map record

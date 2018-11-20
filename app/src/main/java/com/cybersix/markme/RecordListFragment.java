@@ -87,4 +87,10 @@ public class RecordListFragment extends ListFragment {
             }
         });
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recordListAdapter.notifyDataSetChanged();
+    }
 }
