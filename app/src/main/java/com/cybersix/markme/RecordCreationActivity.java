@@ -2,6 +2,7 @@ package com.cybersix.markme;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +14,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class RecordCreationActivity extends AppCompatActivity {
+import java.io.ByteArrayOutputStream;
 
+public class RecordCreationActivity extends AppCompatActivity {
     EBodyPart selectedPart = null;
     private EditText recordAddTitleText;
     private EditText recordAddDescText;
@@ -55,14 +57,12 @@ public class RecordCreationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
-//                startActivity(i);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });
 
         recordBodyLocation.setText("Body Location: " + selectedPart.toString());
-
     }
 
     private void newRecordAlert(){
@@ -73,17 +73,16 @@ public class RecordCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //TODO: Send to edit records instead of prev screen
-                Intent i = new Intent(RecordCreationActivity.this, RecordInfoActivity.class);
-                i.putExtra("RecordIdx",problemController.getSelectedProblemRecords().size() - 1);
-                startActivity(i);
+                Intent data = new Intent();
+                data.putExtra(RecordListFragment.EXTRA_RECORD_INDEX, problemController.getSelectedProblemRecords().size()-1);
+                setResult(RESULT_OK, data);
                 finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Intent i = new Intent(RecordCreationActivity.this, BodyActivity.class);
-//                startActivity(i);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });
