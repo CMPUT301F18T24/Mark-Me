@@ -30,6 +30,11 @@ public class LiveCameraActivityTest {
     public ActivityTestRule<LiveCameraActivity> mActivityRule =
             new ActivityTestRule<>(LiveCameraActivity.class);
 
+    /**
+     * NOTE: These tests might fail if emulator is not focused!??!?! 3:24PM
+     * Sending to Google's issue tracker.
+     */
+
     @Test
     public void testCameraDeviceToggle() {
         CameraPreview cameraPreview = mActivityRule.getActivity().getCameraPreview();
@@ -66,6 +71,9 @@ public class LiveCameraActivityTest {
         Intent intent = new Intent();
         intent.putExtra(LiveCameraActivity.OVERLAY_RESOURCE_ID, R.drawable.body_upright);
         LiveCameraActivity camera = mActivityRule.launchActivity(intent);
+
+        onView(withId(R.id.overlayView))
+                .check(matches(isDisplayed()));
 
         Drawable realDrawable = camera.getResources().getDrawable(R.drawable.body_upright);
         Bitmap realBitmap = Bitmap.createBitmap(realDrawable.getIntrinsicWidth(), realDrawable.getIntrinsicHeight(), Bitmap.Config.ALPHA_8);

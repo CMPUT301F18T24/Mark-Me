@@ -80,14 +80,14 @@ public class ProblemControllerTest {
     public void testLoadProblemData() {
         // This test will ensure that the correct problems that were loaded to the cloud have been
         // received
-
+        fail("Implementation needed");
         //save for elasticsearch
     }
 
     @Test
     public void testSaveProblemData(){
         // This test will ensure that the problem data will save to the elastic search cloud
-
+        fail("Implementation needed");
         // save for elastic search
     }
 }
