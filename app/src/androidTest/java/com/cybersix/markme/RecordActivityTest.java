@@ -1,9 +1,12 @@
 package com.cybersix.markme;
 
+import org.junit.Test;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.EspressoKey;
 import android.support.test.espresso.action.GeneralClickAction;
 import android.support.test.rule.ActivityTestRule;
@@ -20,10 +23,13 @@ import android.support.v4.app.Fragment;
 import com.cybersix.markme.BodyFragment;
 import com.cybersix.markme.MainActivity;
 
+import java.lang.reflect.Array;
 import java.security.spec.ECField;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
@@ -42,7 +48,7 @@ import static org.junit.Assert.assertTrue;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 
-public class BodyActivityTest {
+public class RecordActivityTest {
 
     NavigationController nav;
 
@@ -56,43 +62,32 @@ public class BodyActivityTest {
         ProblemController.getInstance().setSelectedProblem(0);
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_layout,new BodyFragment())
+                .replace(R.id.fragment_layout,new ProblemListFragment())
                 .commitAllowingStateLoss();
     }
 
-    /*
-        Use Cases: 7,5
-     */
-    @Test
-    public void testAddNewRecord() {
-
-        int numRecordsOld = RecordController.getInstance().getSelectedProblemRecords().size();
-        onView(withId(R.id.addButton)).perform(click());
-        onView(withId(R.id.bodyView)).perform(click());
-
-        //Confirm the next view has been presented
-        onView(withId(R.id.buttonAddRecord)).check(matches(isDisplayed()));
-        //Click Add
-        onView(withId(R.id.buttonAddRecord)).perform(click());
-        int numRecordsNew = RecordController.getInstance().getSelectedProblemRecords().size();
-
-        assertTrue(numRecordsNew == numRecordsOld+1);
-        mainActivityTestRule.getActivity().setResult(Activity.RESULT_CANCELED);
-        mainActivityTestRule.getActivity().finish();
-    }
 
     /*
-        Use Cases: 29
+        Use Cases: 6
     */
     @Test
-    public void testViewRecords() {
+    public void testViewRecordInfo(){
 
-        onView(withId(R.id.viewAllButton)).perform(click());
+        //Perform click, set data values
+        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
+        onView(withId(R.id.mainListView)).perform(click());
 
-        //Assert text in list view is being displayed
-        onView(withId(R.id.totalText)).check(matches(isDisplayed()));
+        //Send to next view
+        Bundle b = new Bundle();
+        b.putSerializable(RecordListFragment.EXTRA_RECORD_INDEX,null);
+        Fragment f = new RecordListFragment();
+        f.setArguments(b);
+        mainActivityTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_layout,f)
+                .commitAllowingStateLoss();
 
+        //Assert list view is being displayed
+        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
     }
-
-
 }
