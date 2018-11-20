@@ -70,10 +70,12 @@ public class ProblemController {
             newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
             this.problems.add(newProblem);
+            // also add it to the server
+            new ElasticSearchIOController.AddProblemTask().execute(newProblem);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
-            String message = e.getMessage();
+            e.printStackTrace();
 
         }
 

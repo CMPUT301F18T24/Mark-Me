@@ -101,8 +101,10 @@ public class ProblemActivityCreation extends AppCompatActivity {
         switch (consistency){
             case "d" :
                 scheduleNotification(this, 86400000, 12);
+                break;
             case "b" :
                 scheduleNotification(this, 172800000, 12);
+                break;
             case "w" :
                 scheduleNotification(this, 604800000, 12);
         }
