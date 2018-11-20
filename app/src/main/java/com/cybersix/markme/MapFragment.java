@@ -40,10 +40,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         g_map = root.findViewById(R.id.g_map);
         g_map.onCreate(savedInstanceState);
         g_map.onResume();
+        recordController.addRecordLists();
 
         try{
             MapsInitializer.initialize(root.getContext());
             g_map.getMapAsync(this);
+
         } catch (Exception e){
             e.printStackTrace();
         }
