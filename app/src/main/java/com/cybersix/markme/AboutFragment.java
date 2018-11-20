@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class AboutFragment extends Fragment {
     @Override
@@ -17,6 +18,17 @@ public class AboutFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("About Mark-Me");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
     }
 
 }

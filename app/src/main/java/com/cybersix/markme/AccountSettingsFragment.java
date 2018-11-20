@@ -69,6 +69,16 @@ public class AccountSettingsFragment extends Fragment implements Observer {
             }
         });
 
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("About Mark-Me");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
     }
 
     @Override
