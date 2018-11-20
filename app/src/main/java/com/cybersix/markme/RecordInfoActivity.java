@@ -8,10 +8,12 @@
  */
 package com.cybersix.markme;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class RecordInfoActivity extends AppCompatActivity {
 
@@ -123,8 +127,8 @@ public class RecordInfoActivity extends AppCompatActivity {
         recordController.addRecordPhoto(photo,recordIdx);
     }
 
-    private void addRecordLocation(){
-        //TODO Send to map, return with lat/long
+    private void addRecordLocation(LatLng loc){
+        recordController.addRecordLocation(loc,recordIdx);
     }
 
     @Override
@@ -139,6 +143,26 @@ public class RecordInfoActivity extends AppCompatActivity {
         else if(requestCode == REQUEST_CODE_MAP){
 
         }
+    }
+
+    private void newLocationAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Record Added!");
+        builder.setMessage("Would you like to add a Photo or Location to the Record?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        builder.show();
     }
 
 

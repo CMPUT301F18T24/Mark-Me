@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.content.Intent;
+import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,9 +39,10 @@ public class RecordListFragment extends ListFragment {
         Bundle args = getArguments();
         //Get selected part from intent
         EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
+        ProblemModel problemModel = ProblemController.getInstance().getSelectedProblem();
 
-        getTitle().setText("List of Records"); // Title should be title of problem
-        getDetails().setText("List of records"); // Detail should be problem description
+        getTitle().setText(problemModel.getTitle()); // Title should be title of problem
+        getDetails().setText(problemModel.getDescription()); // Detail should be problem description
         getReturnButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,13 +61,9 @@ public class RecordListFragment extends ListFragment {
                 }
             }
         }
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordController.records);
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
         getListView().setAdapter(recordListAdapter);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,6 +71,15 @@ public class RecordListFragment extends ListFragment {
                 Intent i = new Intent(getActivity(), RecordInfoActivity.class);
                 i.putExtra(EXTRA_RECORD_INDEX, position);
                 startActivity(i);
+            }
+        });
+
+        getAddButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: What if we want to add a record with using the body?
+//                Intent i = new Intent(getActivity(), RecordCreationActivity.class);
+//                startActivity(i);
             }
         });
     }

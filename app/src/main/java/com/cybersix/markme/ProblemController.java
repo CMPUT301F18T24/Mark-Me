@@ -126,12 +126,6 @@ public class ProblemController {
         instance.problems = problems;
     }
 
-    public void setSelectedProblem(ProblemModel problem){
-        selectedProblem = problem;
-        //Fill record controllers selected records when new selected problem is set
-        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
-    }
-
     public void setSelectedProblem(int index){
         selectedProblem = problems.get(index);
         //Fill record controllers selected records when new selected problem is set
@@ -151,6 +145,7 @@ public class ProblemController {
         selectedProblem.getRecord(idx).setDescription(rm.getDescription());
         selectedProblem.getRecord(idx).setBodyLocation(rm.getBodyLocation());
         selectedProblem.getRecord(idx).setComment(rm.getComment());
+        selectedProblem.getRecord(idx).setMapLocation(rm.getMapLocation());
     }
 
     public void AddSelectedProblemRecordPhoto(Bitmap b, int idx){

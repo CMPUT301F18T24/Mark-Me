@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CareProviderTest {
 
@@ -13,7 +14,7 @@ public class CareProviderTest {
         Patient pat = new Patient("guy44","password!");
         Patient pat2 = new Patient("guy4412123","password!");
         care.addPatient(pat);
-        ArrayList<Patient> getPatients =  care.getPatients();
+        List<Patient> getPatients =  care.getPatients();
         assertEquals(pat,getPatients.get(0));
 
         care.addPatient(pat2);
@@ -30,7 +31,7 @@ public class CareProviderTest {
         Patient pat2 = new Patient("guy4412123","password!");
         care.addPatient(pat);
         care.addPatient(pat2);
-        ArrayList<Patient> getPatients =  care.getPatients();
+        List<Patient> getPatients =  care.getPatients();
         assertEquals(pat,getPatients.get(0));
         assertEquals(pat2,getPatients.get(1));
     }
