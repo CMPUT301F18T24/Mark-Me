@@ -47,4 +47,5 @@ public class LoginActivityTest {
         intended(hasComponent(MainActivity.class.getName()));
 
     }
+
 }
