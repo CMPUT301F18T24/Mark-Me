@@ -32,6 +32,7 @@ import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -68,7 +69,7 @@ public class RecordActivityTest {
 
 
     /*
-        Use Cases: 6
+        Use Cases: 6, 8
     */
     @Test
     public void testViewRecordInfo(){
@@ -89,5 +90,43 @@ public class RecordActivityTest {
 
         //Assert list view is being displayed
         onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
+        onView(withId(R.id.mainListView)).perform(click());
+
+        Bundle p = new Bundle();
+        p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
+        Fragment g = new RecordInfoActivity();
+        g.setArguments(p);
+        //Move to record info
+        mainActivityTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_layout,g)
+                .commitAllowingStateLoss();
+        onView(withId(R.id.recordTitleEdit)).check(matches(isDisplayed()));
+        //Type text nd save
+        onView(withId(R.id.recordTitleEdit)).perform(typeText("record"));
+        onView(withId(R.id.buttonSaveChanges)).perform(click());
     }
+
+    @Test
+    public void viewRecordPhotos(){
+        fail("Implementation required");
+    }
+
+    @Test
+    public void viewRecordLocation(){
+        Intent i = new Intent();
+        i.putExtra()
+        g.setArguments(p);
+        //Move to record info
+        mainActivityTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_layout,g)
+                .commitAllowingStateLoss();
+        onView(withId(R.id.recordTitleEdit)).check(matches(isDisplayed()));
+        //Type text nd save
+        onView(withId(R.id.buttonViewLocation)).perform(click());
+        onView(withId(R.id.g_map_select)).check(matches(isDisplayed()));
+        onView(withId(R.id.g_map_select)).perform(longClick());
+ }
+
 }

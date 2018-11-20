@@ -42,6 +42,9 @@ public class LiveCameraActivityTest {
         assertEquals(cameraPreview.getCurrentView(), CameraPreview.CAMERA_FRONT_VIEW);
     }
 
+    /*
+        Use Cases: 15
+     */
     @Test
     public void testPhotoIsTaken() {
         onView(withId(R.id.captureCameraButton))
