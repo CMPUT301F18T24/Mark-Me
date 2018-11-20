@@ -93,4 +93,10 @@ public class RecordListFragment extends ListFragment {
         super.onStart();
         recordListAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recordListAdapter.notifyDataSetChanged();
+    }
 }
