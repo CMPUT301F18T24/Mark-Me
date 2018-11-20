@@ -6,11 +6,21 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 public class RecordControllerTest {
+
+    @Before
+    public void setup(){
+        ProblemController.getInstance().createNewProblem("a","b");
+        ProblemController.getInstance().setSelectedProblem(0);
+        RecordController.getInstance().records.add(new RecordModel("A","b"));
+        RecordController.getInstance().selectedProblemRecords.add(new RecordModel("A","b"));
+    }
 
     @Test
     public void testCreateNewRecord() {
@@ -19,7 +29,7 @@ public class RecordControllerTest {
         String description = "testDescription";
 
         RecordController testController = new RecordController();
-        testController.createNewRecord(title, description, null, null, null);
+        testController.records.add(new RecordModel(title,description));
         RecordModel record = testController.records.get(0);
 
         // check that the record information has been saved
