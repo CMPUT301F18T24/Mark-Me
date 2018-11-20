@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewAction;
@@ -14,9 +15,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.v4.app.Fragment;
 
 import com.cybersix.markme.BodyFragment;
 import com.cybersix.markme.MainActivity;
+
+import java.security.spec.ECField;
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
@@ -56,11 +61,10 @@ public class BodyActivityTest {
     }
 
     /*
-        Use Cases: 7
+        Use Cases: 7,5
      */
     @Test
     public void testAddNewRecord() {
-
 
         int numRecordsOld = RecordController.getInstance().getSelectedProblemRecords().size();
         onView(withId(R.id.addButton)).perform(click());
@@ -71,28 +75,27 @@ public class BodyActivityTest {
         //Click Add
         onView(withId(R.id.buttonAddRecord)).perform(click());
         int numRecordsNew = RecordController.getInstance().getSelectedProblemRecords().size();
-        //Hit no
-        onView(withText("No")).perform(click());
+
         assertTrue(numRecordsNew == numRecordsOld+1);
-
-        //Back to body view
+        mainActivityTestRule.getActivity().setResult(Activity.RESULT_CANCELED);
         mainActivityTestRule.getActivity().finish();
-
-
     }
 
     /*
         Use Cases: 29
-     */
+    */
     @Test
     public void testViewRecords() {
 
         onView(withId(R.id.viewAllButton)).perform(click());
 
-        //Confirm the list view has been presented
-        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
-
+        //Assert text in list view is being displayed
+        onView(withId(R.id.totalText)).check(matches(isDisplayed()));
 
     }
+
+    /*
+
+     */
 
 }

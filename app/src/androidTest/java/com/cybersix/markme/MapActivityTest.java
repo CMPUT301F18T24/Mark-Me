@@ -68,7 +68,7 @@ public class MapActivityTest {
 
 
         //Confirm displayed
-        onView(withId(R.id.g_map).matches(isDisplayed());
+        onView(withId(R.id.g_map)).check(matches(isDisplayed()));
 
     }
 

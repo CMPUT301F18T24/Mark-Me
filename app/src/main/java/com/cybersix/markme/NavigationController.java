@@ -99,7 +99,7 @@ public class NavigationController {
         mFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_layout, mFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     private Fragment getFragment(){
