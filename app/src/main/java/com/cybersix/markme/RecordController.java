@@ -97,6 +97,8 @@ public class RecordController {
         // instance.records.add(record); dont need this since we just update the selected problem
         ProblemController.getInstance().getSelectedProblem().addRecord(record);
         new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        // Update the selected problems list
+        instance.selectedProblemRecords = ProblemController.getInstance().getSelectedProblemRecords();
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
 
