@@ -38,7 +38,7 @@ public class RecordModel {
      * @param desc
      */
     public RecordModel(String title, String desc){
-        photos = new ArrayList<Bitmap>(10);
+        photos = new ArrayList<Bitmap>();
         this.title = title;
         this.description = desc;
         this.bodyLocation = new BodyLocation(EBodyPart.UNLISTED); //By default unlisted
