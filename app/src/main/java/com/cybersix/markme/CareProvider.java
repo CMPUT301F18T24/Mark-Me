@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This class has functions for adding, removing and getting patients to a list
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Curtis Goud, Rizwan Qureshi
+ */
 package com.cybersix.markme;
 
 import java.util.ArrayList;

@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * handles the language change
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ */
 package com.cybersix.markme;
 
 import android.os.Bundle;
