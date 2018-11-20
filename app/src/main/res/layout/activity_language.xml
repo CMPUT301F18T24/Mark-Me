@@ -41,20 +41,18 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/language"
+            android:id="@+id/english_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:onClick="english"
             android:text="@string/english"
             app:layout_constraintStart_toEndOf="@+id/titleTextView" />
 
         <Button
-            android:id="@+id/Account"
+            android:id="@+id/french_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:onClick="french"
             android:text="@string/french"
             app:layout_constraintStart_toEndOf="@+id/titleTextView" />
 
