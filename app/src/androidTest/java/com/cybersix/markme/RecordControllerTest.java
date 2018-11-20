@@ -38,7 +38,7 @@ public class RecordControllerTest {
         String commentEdit = "This is a comment that is added to the record";
         ArrayList<Bitmap> editPhotos = new ArrayList<Bitmap>(14);
         BodyLocation editBodyLocation = new BodyLocation(EBodyPart.LEFTARM);
-        LatLng editLocation = new LatLng(-53,155);
+        LatLng editLocation = new LatLng(10, 10);
 
         RecordController testController = new RecordController();
         testController.createNewRecord(title, description, null, null, null);

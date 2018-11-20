@@ -1,3 +1,19 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This activity handles registering an account for a user. It validates the user's input before
+ * creating a new user profile in the ES database.
+ *
+ * Todo: The errors returned upon failed registration are not very verbose, it needs more work to
+ * make the errors more intuitive.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 
 import android.support.v7.app.AppCompatActivity;

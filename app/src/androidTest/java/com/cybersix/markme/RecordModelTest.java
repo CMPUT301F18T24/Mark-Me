@@ -16,6 +16,25 @@ import static org.junit.Assert.*;
 public class RecordModelTest {
 
     @Test
+    public void testCreateAndGetRecordModel() {
+        String title = "myTitle";
+        String description = "The best app!";
+
+        // Construct the record model.
+        RecordModel recordModel = new RecordModel(title, description);
+
+        // Ensure the contructor fields were properly initialized.
+        assertEquals(recordModel.getTitle(), title);
+        assertEquals(recordModel.getDescription(), description);
+        assertEquals(recordModel.getPhotos(), new ArrayList<Bitmap>());
+        assertEquals(recordModel.getBodyLocation().getBodyPart(), EBodyPart.UNLISTED);
+
+        // Can only test that a date was initialized, not when.
+        assertEquals(recordModel.getTimestamp().getClass(), Date.class);
+
+    }
+
+    @Test
     public void testSetTitle() {
         String title = "getTitle";
         String newTitle = "new getTitle";
@@ -97,8 +116,8 @@ public class RecordModelTest {
     @Test
     public void testSetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        LatLng gpOld = new LatLng(55,-155);
-        LatLng gpNew = new LatLng(55,-152);
+        LatLng gpOld = new LatLng(10, 10);
+        LatLng gpNew = new LatLng(20, 20);
         rm.setMapLocation(gpOld);
         assertEquals(rm.getMapLocation(),gpOld);
         rm.setMapLocation(gpNew);
@@ -108,7 +127,7 @@ public class RecordModelTest {
     @Test
     public void testGetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        LatLng gp = new LatLng(55,-155);
+        LatLng gp = new LatLng(20, 20);
         rm.setMapLocation(gp);
         LatLng getMapLoc = rm.getMapLocation();
         assertEquals(getMapLoc,gp);

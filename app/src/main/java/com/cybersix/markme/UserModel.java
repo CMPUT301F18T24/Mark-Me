@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This model stores the data of the user of the application.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 //Click the class or method you want to test, then press Ctrl+Shift+T (⇧⌘T).
 

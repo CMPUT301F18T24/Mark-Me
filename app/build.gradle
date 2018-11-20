@@ -34,4 +34,5 @@ dependencies {
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }

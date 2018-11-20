@@ -17,7 +17,7 @@ public class UserModelTest {
             UserModel userModel = new UserModel(userID,pass);
 
             // Ensure the userID and password were created.
-            assertEquals(userID, userModel.getUserID());
+            assertEquals(userID, userModel.getUsername());
             assertEquals(pass, userModel.getPassword());
 
         } catch (UsernameTooShortException e) {
@@ -33,10 +33,10 @@ public class UserModelTest {
         try {
             String userID = "12345678";
             String pass = "dorsaMaster";
-            UserModel userModel = new UserModel(userID,pass);
+            UserModel userModel = new UserModel(userID, pass);
 
             // Ensure the userID and password were created.
-            assertEquals(userID, userModel.getUserID());
+            assertEquals(userID, userModel.getUsername());
             assertEquals(pass,userModel.getPassword());
         } catch (UsernameTooShortException e) {
             fail();
@@ -46,7 +46,7 @@ public class UserModelTest {
         try {
             String userID = "1234567";
             String pass = "dorsaMaster";
-            UserModel userModel = new UserModel(userID,pass);
+            UserModel userModel = new UserModel(userID, pass);
 
             fail(); // Shouldn't get this far
         } catch (UsernameTooShortException e) {
@@ -63,7 +63,7 @@ public class UserModelTest {
     }
 
     @Test
-    public void testAddEmail() {
+    public void testSetEmail() {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
@@ -98,8 +98,22 @@ public class UserModelTest {
 
     }
 
+
     @Test
-    public void testAddPhoneNumber() {
+    public void testGetPhoneNumber() {
+
+        try {
+            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            userModel.setPhone("123-456-7890");
+            assertEquals("123-456-7890", userModel.getPhone());
+        } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    public void testSetPhoneNumber() {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
@@ -122,13 +136,28 @@ public class UserModelTest {
     }
 
     @Test
-    public void testGetPhoneNumber() {
-
+    public void testEditUserModel() {
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            // Setup model.
+            UserModel userModel = new UserModel("12345678","warudo");
+            userModel.setEmail("joseph@joestar.com");
             userModel.setPhone("123-456-7890");
-            assertEquals("123-456-7890", userModel.getPhone());
-        } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
+
+            // Edit the model.
+            userModel.setEmail("dio@oregano.com");
+            userModel.setPhone("098-456-1234");
+            userModel.setUsername("mynewusername");
+            userModel.setPassword("itwasmyallalong");
+
+            // Check if they're the same.
+            assertEquals(userModel.getEmail(), "dio@oregano.com");
+            assertEquals(userModel.getPhone(), "098-456-1234");
+            assertEquals(userModel.getPassword(), "itwasmyallalong");
+            assertEquals(userModel.getUsername(), "mynewusername");
+
+
+        } catch (UsernameTooShortException | InvalidEmailAddressException |
+                 InvalidPhoneNumberException e) {
             fail();
         }
 
