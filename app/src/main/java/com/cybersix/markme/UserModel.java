@@ -17,6 +17,7 @@ import java.util.Observable;
 import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
+
     public static final String USERID = "USERID";
     private String username = null;
     private String email = null;
@@ -29,7 +30,9 @@ public class UserModel extends Observable {
 
     public static final int MINIMUM_USERNAME_LENGTH = 8;
 
-    // Need a default constructor to compile with Patient/Care Provider inheritance.
+    /**
+     * Need a default constructor to compile with Patient/Care Provider inheritance.
+     */
     public UserModel() { }
 
     public UserModel(String username, String password) throws UsernameTooShortException {
@@ -41,6 +44,7 @@ public class UserModel extends Observable {
     }
 
     /**
+     * Grabs the userID
      * @return The userID which is the ID of the entry in the elastic search database.
      */
     public String getUserID() {
@@ -54,6 +58,11 @@ public class UserModel extends Observable {
         this.userID = userID;
     }
 
+    /**
+     * Sets the username using the string input
+     * @param username
+     * @throws UsernameTooShortException
+     */
     public void setUsername(String username) throws UsernameTooShortException {
 
         if (username.length() < MINIMUM_USERNAME_LENGTH) {
@@ -66,11 +75,21 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     *
+     * @return the user name
+     */
     public String getUsername() {
         return username;
     }
 
     // Only accept two types of user types: "patient" ir "care_provider".
+
+    /**
+     * sets the user type
+     * @param userType
+     * @throws InvalidUserTypeException
+     */
     public void setUserType(String userType) throws InvalidUserTypeException {
         if (userType == null) {
             this.userType = null;
@@ -84,10 +103,19 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Returns the type of the user
+     * @return type of the user
+     */
     public String getUserType(){
         return this.userType;
     }
 
+    /**
+     * sets the email using the string given
+     * @param email
+     * @throws InvalidEmailAddressException
+     */
     public void setEmail(String email) throws InvalidEmailAddressException {
         if (!isValidEmail(email))
             throw new InvalidEmailAddressException();
@@ -98,6 +126,11 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * checks for the validity of the email address
+     * @param email
+     * @return boolean true is the email valid, and false if invalid
+     */
     static public boolean isValidEmail(String email) {
         if (email == null || !email.contains("@"))
             return false;
@@ -105,10 +138,19 @@ public class UserModel extends Observable {
         return true;
     }
 
+    /**
+     * gets the email address
+     * @return email
+     */
     public String getEmail(){
         return this.email;
     }
 
+    /**
+     * sets the phone as a string
+     * @param phone
+     * @throws InvalidPhoneNumberException
+     */
     public void setPhone(String phone) throws InvalidPhoneNumberException {
         if (!isValidPhone(phone))
             throw new InvalidPhoneNumberException();
@@ -119,6 +161,11 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * checks for the validity of the phone number and makes sure it is in the right format
+     * @param phone
+     * @return true is phone is valid, false if invalid
+     */
     static public boolean isValidPhone(String phone) {
         if (phone == null)
             return false;
@@ -142,10 +189,18 @@ public class UserModel extends Observable {
         return true;
     }
 
+    /**
+     * gets the phone number
+     * @return string of the phone number
+     */
     public String getPhone(){
         return this.phone;
     }
 
+    /**
+     * sets the string password
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
 
@@ -153,10 +208,18 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * gets the password
+     * @return string of the password
+     */
     public String getPassword(){
         return this.password;
     }
 
+    /**
+     * creates a unique id by adding the userID to username
+     * @return UserID+Username as a string
+     */
     public String toString() {
         if (userID == null)
             return "null";
@@ -164,6 +227,7 @@ public class UserModel extends Observable {
         return userID.toString() + ": " + username.toString();
     }
 }
+
 
 class UsernameTooShortException extends Exception {}
 class InvalidEmailAddressException extends Exception {}
