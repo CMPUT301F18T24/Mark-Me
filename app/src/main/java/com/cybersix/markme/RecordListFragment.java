@@ -35,6 +35,7 @@ public class RecordListFragment extends ListFragment {
     private ArrayAdapter<RecordModel> recordListAdapter;
     private RecordController recordController = RecordController.getInstance();
     private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
+    private EBodyPart selectedPart;
 
 
     @Override
@@ -43,7 +44,7 @@ public class RecordListFragment extends ListFragment {
 
         Bundle args = getArguments();
         //Get selected part from intent
-        EBodyPart selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
+        selectedPart = (EBodyPart) args.getSerializable(BodyFragment.EXTRA_SELECTED_PART);
         ProblemModel problemModel = ProblemController.getInstance().getSelectedProblem();
 
         getTitle().setText(problemModel.getTitle()); // Title should be title of problem
@@ -55,7 +56,15 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
-        recordsToDisplay = recordController.selectedProblemRecords;
+        if(selectedPart == null){
+            recordsToDisplay = recordController.selectedProblemRecords;
+        } else {
+            for(RecordModel r:recordController.selectedProblemRecords){
+                if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
+                    recordsToDisplay.add(r);
+                }
+            }
+        }
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,7 +100,16 @@ public class RecordListFragment extends ListFragment {
         // this function will update the records to display onto the list everytime the fragemnent
         // is called
         // set the adapter for the list activity
-        recordsToDisplay = recordController.selectedProblemRecords;
+        recordsToDisplay = new ArrayList<RecordModel>();
+        if(selectedPart == null){
+            recordsToDisplay = recordController.selectedProblemRecords;
+        } else {
+            for(RecordModel r:recordController.selectedProblemRecords){
+                if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
+                    recordsToDisplay.add(r);
+                }
+            }
+        }
         recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
         getListView().setAdapter(recordListAdapter);
         recordListAdapter.notifyDataSetChanged();
