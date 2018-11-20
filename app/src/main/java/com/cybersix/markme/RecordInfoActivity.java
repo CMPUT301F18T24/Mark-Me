@@ -31,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import static android.app.Activity.RESULT_OK;
 
 public class RecordInfoActivity extends Fragment {

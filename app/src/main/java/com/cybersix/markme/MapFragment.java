@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         {
             //Only if they have a location
             if(r.getMapLocation() != null){
-                LatLng ln = new LatLng(r.getMapLocation().getLatitude(),r.getMapLocation().getLongitude());
+                LatLng ln = new LatLng(r.getMapLocation().latitude,r.getMapLocation().longitude);
 
                 //Tag here is used to get marker data
                 googleMap.addMarker(new MarkerOptions().position(ln)
