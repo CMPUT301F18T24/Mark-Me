@@ -93,7 +93,8 @@ public class RecordController {
         record.setTimestamp(new Date());
 
         // finally add the record to the record list
-        records.add(record);
+        this.records.add(record);
+        //new ElasticSearchIOController.AddRecordTask().execute(record);
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
 
