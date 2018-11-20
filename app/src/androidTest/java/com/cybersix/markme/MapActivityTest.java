@@ -37,7 +37,7 @@ import static org.junit.Assert.assertTrue;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 
-public class BodyActivityTest {
+public class MapActivityTest {
 
     NavigationController nav;
 
@@ -51,47 +51,24 @@ public class BodyActivityTest {
         ProblemController.getInstance().setSelectedProblem(0);
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_layout,new BodyFragment())
+                .replace(R.id.fragment_layout,new MapFragment())
                 .commitAllowingStateLoss();
     }
 
-    /*
-        Use Cases: 7
-     */
-    @Test
-    public void testAddNewRecord() {
-
-
-        int numRecordsOld = RecordController.getInstance().getSelectedProblemRecords().size();
-        onView(withId(R.id.addButton)).perform(click());
-        onView(withId(R.id.bodyView)).perform(click());
-
-        //Confirm the next view has been presented
-        onView(withId(R.id.buttonAddRecord)).check(matches(isDisplayed()));
-        //Click Add
-        onView(withId(R.id.buttonAddRecord)).perform(click());
-        int numRecordsNew = RecordController.getInstance().getSelectedProblemRecords().size();
-        //Hit no
-        onView(withText("No")).perform(click());
-        assertTrue(numRecordsNew == numRecordsOld+1);
-
-        //Back to body view
-        mainActivityTestRule.getActivity().finish();
-
-
-    }
 
     /*
-        Use Cases: 29
+        Use Case: 19
      */
     @Test
-    public void testViewRecords() {
+    public void testMapAllRecords(){
 
-        onView(withId(R.id.viewAllButton)).perform(click());
+        //Init data
+        RecordController.getInstance();
+        ProblemController.getInstance();
 
-        //Confirm the list view has been presented
-        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
 
+        //Confirm displayed
+        onView(withId(R.id.g_map).matches(isDisplayed());
 
     }
 
