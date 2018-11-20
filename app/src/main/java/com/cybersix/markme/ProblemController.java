@@ -17,6 +17,7 @@ package com.cybersix.markme;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -68,7 +69,7 @@ public class ProblemController {
             ProblemModel newProblem = new ProblemModel(title, description);
             newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
-            instance.problems.add(newProblem);
+            this.problems.add(newProblem);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -110,7 +111,14 @@ public class ProblemController {
     public void loadProblemData() {
         // TODO: test this works
         userInstance = UserProfileController.getInstance();
-        this.problems =  (ArrayList<ProblemModel>) ElasticSearchIOController.getProblems(userInstance.user.getUserID());
+        try {
+            this.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+            Log.d("Jose-Problems", "The system successfully got problems from userID: " +
+                    userInstance.user.getUserID());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
