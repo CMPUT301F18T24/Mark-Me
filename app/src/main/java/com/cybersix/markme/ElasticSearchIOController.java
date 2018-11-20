@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -350,10 +351,10 @@ class NewRecord {
     private String comment;
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
-    private Location mapLocation;
+    private LatLng mapLocation;
 
     public NewRecord(String title, String description, Date timestamp, String comment,
-                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, Location mapLocation,
+                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, LatLng mapLocation,
                      String problemID, String userID) {
         this.title = title;
         this.description = description;

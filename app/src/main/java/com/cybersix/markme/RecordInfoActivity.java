@@ -142,8 +142,8 @@ public class RecordInfoActivity extends Fragment {
         recordController.addRecordPhoto(photo,recordIdx);
     }
 
-    private void addRecordLocation(){
-        //TODO Send to map, return with lat/long
+    private void addRecordLocation(LatLng loc){
+        recordController.addRecordLocation(loc,recordIdx);
     }
 
     @Override

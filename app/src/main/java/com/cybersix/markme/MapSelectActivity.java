@@ -1,5 +1,7 @@
 package com.cybersix.markme;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -44,5 +46,26 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapClick(LatLng latLng) {
 
+    }
+
+
+    private void newLocationAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Record Added!");
+        builder.setMessage("Would you like to add a Photo or Location to the Record?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        builder.show();
     }
 }
