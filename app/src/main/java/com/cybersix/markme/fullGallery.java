@@ -33,18 +33,23 @@ public class fullGallery extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_full_gallery, container, false);
-        Bitmap b0 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_gallery);
-        Bitmap b1 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_body);
+//        Bitmap b0 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_gallery);
+//        Bitmap b1 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_body);
         bitmaps = new Bitmap[2000];
-        bitmaps[0]= b0;
-        bitmaps[1]= b1;
-        bitmaps[2]= b0;
-        bitmaps[3]= b1;
+//        bitmaps[0]= b0;
+//        bitmaps[1]= b1;
+//        bitmaps[2]= b0;
+//        bitmaps[3]= b1;
 
         counter = 0;
-        int size  = RecordController.getInstance().selectedProblemRecords.size();
+        int size;
+        if(RecordController.getInstance().selectedProblemRecords==null){
+            size=0;
+        }else{
+            size  = RecordController.getInstance().selectedProblemRecords.size();
+        }
 
-       for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             int recordSize  = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().size();
             for (int j = 0; j < recordSize; j++) {
                 this.bitmaps[counter] = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().get(j);
