@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.media.Image;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -95,8 +97,8 @@ public class RecordModelTest {
     @Test
     public void testSetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        Location gpOld = new Location("prov");
-        Location gpNew = new Location("prov2");
+        LatLng gpOld = new LatLng(55,-155);
+        LatLng gpNew = new LatLng(55,-152);
         rm.setMapLocation(gpOld);
         assertEquals(rm.getMapLocation(),gpOld);
         rm.setMapLocation(gpNew);
@@ -106,9 +108,9 @@ public class RecordModelTest {
     @Test
     public void testGetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
-        Location gp = new Location("prov");
+        LatLng gp = new LatLng(55,-155);
         rm.setMapLocation(gp);
-        Location getMapLoc = rm.getMapLocation();
+        LatLng getMapLoc = rm.getMapLocation();
         assertEquals(getMapLoc,gp);
     }
 
