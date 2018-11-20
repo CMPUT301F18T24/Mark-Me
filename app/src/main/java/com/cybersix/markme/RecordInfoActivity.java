@@ -47,7 +47,7 @@ public class RecordInfoActivity extends Fragment {
     private RecordModel selectedRecord;
     private RecordController recordController = RecordController.getInstance();
 
-    private int recordIdx = 0;
+    private int recordIdx = -1;
     //Below vars are used in async activity data returns
     private final static int REQUEST_CODE_PHOTO = 1;
     private final static int REQUEST_CODE_MAP = 2;
@@ -62,8 +62,15 @@ public class RecordInfoActivity extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle b = getArguments();
-        recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
-        selectedRecord = ProblemController.getInstance().getSelectedProblem().getRecord(recordIdx);
+        recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
+        //We have a selected problem record
+        if(recordIdx >= 0){
+            selectedRecord = ProblemController.getInstance().getSelectedProblem().getRecord(recordIdx);
+        } else {
+            //We have a map record
+            recordIdx = b.getInt("MapRecordIdx",-1);
+            selectedRecord = RecordController.getInstance().records.get(recordIdx);
+        }
         initAttributes();
         setListeners();
     }
@@ -85,7 +92,7 @@ public class RecordInfoActivity extends Fragment {
         textViewComment = getActivity().findViewById(R.id.commentTextView);
         editTextComment = getActivity().findViewById(R.id.editTextComment);
         /*TODO: Test this here && Reactivate this check during integration
-        if(UserProfileController.getInstance().user.getUserType().toLowerCase() == "care provider"){
+        if(UserProfileController.getInstance().user.getUserType().toLowerCase() == "care_provider"){
             editTextComment.setEnabled(true);
         } else {
             editTextComment.setEnabled(false);

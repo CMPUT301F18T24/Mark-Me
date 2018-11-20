@@ -290,8 +290,7 @@ public class BodyFragment extends Fragment {
         if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
             Bundle bundle = new Bundle();
             bundle.putSerializable(EXTRA_SELECTED_PART, selectedPart);
-            NavigationController.getInstance()
-                    .setSelectedItem(R.id.list, bundle);
+            NavigationController.getInstance().switchToFragment(RecordListFragment.class,bundle);
         }
     }
 
@@ -320,7 +319,6 @@ public class BodyFragment extends Fragment {
             Bundle b = new Bundle();
             int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
             b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
-
             NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
         }
     }

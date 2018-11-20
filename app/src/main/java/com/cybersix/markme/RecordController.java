@@ -38,7 +38,7 @@ public class RecordController {
     public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
-           // loadFakeData();
+            loadFakeData();
         }
         return instance;
     }
@@ -49,7 +49,7 @@ public class RecordController {
         Location l = new Location("Test Body Location");
         l.setLatitude(53.5232);
         l.setLongitude(-113.5263);
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 1; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
             instance.createNewRecord(title, description, null, l, new BodyLocation(EBodyPart.UNLISTED));

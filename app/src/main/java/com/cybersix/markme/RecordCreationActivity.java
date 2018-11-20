@@ -63,7 +63,6 @@ public class RecordCreationActivity extends AppCompatActivity {
         });
 
         recordBodyLocation.setText("Body Location: " + selectedPart.toString());
-
     }
 
     private void newRecordAlert(){
@@ -76,7 +75,6 @@ public class RecordCreationActivity extends AppCompatActivity {
                 //TODO: Send to edit records instead of prev screen
                 Intent data = new Intent();
                 data.putExtra(RecordListFragment.EXTRA_RECORD_INDEX, problemController.getSelectedProblemRecords().size()-1);
-
                 setResult(RESULT_OK, data);
                 finish();
             }
@@ -84,7 +82,7 @@ public class RecordCreationActivity extends AppCompatActivity {
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                setResult(RESULT_OK);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });
