@@ -30,4 +30,8 @@ public class MainActivity extends FragmentActivity {
         super.onResume();
         GuiUtils.setFullScreen(this);
     }
+
+    NavigationController getNavigationController() {
+        return mNavigationController;
+    }
 }

@@ -53,7 +53,6 @@ public class LiveCameraActivity extends AppCompatActivity {
         cameraPreview.setOnCaptureListener(new OnCaptureListener() {
                     @Override
                     public void onCapture(Bitmap bitmap) {
-                        Log.i("Rizwan", "Captured.");
                         Intent data = new Intent();
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();

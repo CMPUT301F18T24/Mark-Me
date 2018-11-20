@@ -12,7 +12,6 @@
  */
 package com.cybersix.markme;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

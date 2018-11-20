@@ -148,7 +148,7 @@ public class NavigationController {
                 .commitAllowingStateLoss();
     }
 
-    private Fragment getFragment(){
+    public Fragment getFragment(){
         return mFragment;
     }
 }
