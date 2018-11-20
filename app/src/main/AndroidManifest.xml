@@ -21,8 +21,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,18 +36,19 @@
             android:exported="true"></receiver>
         <activity
             android:name=".SignupActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".LoginActivity" />
         <activity android:name=".RecordInfoActivity" />
         <activity
             android:name=".LiveCameraActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ProblemActivityCreation"
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
-        <activity android:name=".RecordCreationActivity" />
-        <activity android:name=".UserActivityAddPopUp"
-                  android:theme="@style/AppTheme.PopUp"/>
+        <activity android:name=".RecordCreationActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".UserActivityAddPopUp" android:theme="@style/AppTheme.NoActionBar"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -60,10 +62,14 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+<<<<<<< HEAD
         <activity android:name=".MapSelectActivity" />
         <activity android:name=".Gallery" />
+=======
+
+        <activity android:name=".MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
+>>>>>>> master
         <activity android:name=".deletePhoto" />
-        <activity android:name=".fullGallery"></activity>
     </application>
 
 </manifest>

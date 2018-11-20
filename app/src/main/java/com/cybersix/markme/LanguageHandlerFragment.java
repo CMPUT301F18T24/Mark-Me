@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class LanguageHandlerFragment extends Fragment {
 
@@ -19,12 +20,21 @@ public class LanguageHandlerFragment extends Fragment {
 
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
 
-        View mEnglishButton = getActivity().findViewById(R.id.enlish_button);
+        title.setText("Select Your Language");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
+
+        View mEnglishButton = getActivity().findViewById(R.id.english_button);
         View mFrenchButton = getActivity().findViewById(R.id.french_button);
 
 
@@ -41,20 +51,13 @@ public class LanguageHandlerFragment extends Fragment {
                 change_to_french(v);
             }
         });
-
     }
-
-
-
 
     public void change_to_english(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
+        NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 
-
-
     public void change_to_french(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
-
+        NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 }
