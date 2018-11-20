@@ -41,7 +41,7 @@ public class RecordController {
     public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
-            loadFakeData();
+            //loadFakeData();
         }
         return instance;
     }
