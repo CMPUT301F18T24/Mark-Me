@@ -59,20 +59,20 @@ public class BodyActivityTest {
     @Test
     public void testAddNewRecord() {
 
-        //Login with an existing account.
 
-        // Type the username and password.
+        int numRecordsOld = RecordController.getInstance().getSelectedProblemRecords().size();
         onView(withId(R.id.addButton)).perform(click());
         onView(withId(R.id.bodyView)).perform(click());
 
+        //Confirm the next view has been presented
         onView(withId(R.id.buttonAddRecord)).check(matches(isDisplayed()));
+        //Click Add
         onView(withId(R.id.buttonAddRecord)).perform(click());
-
+        int numRecordsNew = RecordController.getInstance().getSelectedProblemRecords().size();
+        //Hit no
         onView(withText("No")).perform(click());
-        // Hit the login button.
+        assertTrue(numRecordsNew == numRecordsOld+1);
 
-        // Check if MainActivity
-        //intended(hasComponent(MainActivity.class.getName()));
 
     }
 
