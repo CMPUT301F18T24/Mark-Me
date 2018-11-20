@@ -24,21 +24,21 @@ public class SignupActivityTest {
     @Test
     public void testAccountCreation() {
 
-        // Generate a random username.
+        // Generate a random username. TODO: Maybe I can generate string hashes for our tests?
         int min = 0;
         int max = 99999999;
         int username = new Random().nextInt((max - min) + 1) + min;
 
-        //Login with an existing account.
-
         // Type the username and password.
-        onView(withId(R.id.usernameText)).perform(typeText("testtest"));
+        onView(withId(R.id.emailText)).perform(typeText("test@test"));
+        onView(withId(R.id.usernameText)).perform(typeText(Integer.toString(username)));
         onView(withId(R.id.passwordText)).perform(typeText("hihi"));
+        onView(withId(R.id.phoneText)).perform(typeText("7880-123-4567"));
 
-        // Hit the login button.
-        onView(withId(R.id.loginButton)).perform(click());
+        // Hit the signup button.
+        onView(withId(R.id.signupButton)).perform(click());
 
-        // Check if MainActivity
+        // Check if we returned back to loginActivity
         intended(hasComponent(MainActivity.class.getName()));
 
     }
