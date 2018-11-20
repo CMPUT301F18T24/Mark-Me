@@ -46,6 +46,7 @@ public class RecordInfoActivity extends Fragment {
     private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private Button buttonSave;
+    private Button viewLocation;
     private Button viewPhotos;
     private Button addPhoto;
 
@@ -93,6 +94,7 @@ public class RecordInfoActivity extends Fragment {
         recordTitleEdit = getActivity().findViewById(R.id.recordTitleEdit);
         editTextDescription = getActivity().findViewById(R.id.editTextDescription);
         addPhoto = getActivity().findViewById(R.id.buttonAddPhoto);
+        viewLocation = getActivity().findViewById(R.id.buttonViewLocation);
         viewPhotos = getActivity().findViewById(R.id.buttonViewPhotos);
         bodyLocationSpinner = getActivity().findViewById(R.id.bodyLocationSpinner);
         textViewComment = getActivity().findViewById(R.id.commentTextView);
@@ -134,6 +136,15 @@ public class RecordInfoActivity extends Fragment {
                 startActivityForResult(i, REQUEST_CODE_PHOTO);
             }
         });
+
+        viewLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),MapSelectActivity.class);
+                i.putExtra("startLoc",selectedRecord.getMapLocation());
+                startActivityForResult(i, REQUEST_CODE_MAP);
+            }
+        });
     }
 
     private void saveRecordEdits(){
@@ -162,29 +173,11 @@ public class RecordInfoActivity extends Fragment {
             }
         }
         else if(requestCode == REQUEST_CODE_MAP){
-
+            if(resultCode == RESULT_OK){
+                LatLng loc = (LatLng) data.getParcelableExtra("locations");
+                LatLng ln = new LatLng(loc.latitude,loc.longitude);
+                addRecordLocation(ln);
+            }
         }
     }
-
-    private void newLocationAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Record Added!");
-        builder.setMessage("Would you like to add a Photo or Location to the Record?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        AlertDialog dialog = builder.create();
-        builder.show();
-    }
-
-
 }
