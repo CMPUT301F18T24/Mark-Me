@@ -11,12 +11,14 @@
  * Copyright Notice
  * @author Jose Ramirez
  * @see com.cybersix.markme.ProblemModel
+ * @see com.cybersix.markme.ProblemListFragment
  */
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,6 +26,7 @@ public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
     private static ProblemModel selectedProblem = null;
+    private UserProfileController userInstance;
     public ArrayList<ProblemModel> problems;
 
     /**
@@ -37,7 +40,7 @@ public class ProblemController {
     public static ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
-            uploadFakeData();
+            //uploadFakeData();
         }
         return instance;
     }
@@ -68,10 +71,12 @@ public class ProblemController {
             newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
             instance.problems.add(newProblem);
+            // also add it to the server
+            new ElasticSearchIOController.AddProblemTask().execute(newProblem);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
-            String message = e.getMessage();
+            e.printStackTrace();
 
         }
 
@@ -106,11 +111,25 @@ public class ProblemController {
      * is stored on the user profile controller
      * @return will return a list of problems that the user has
      */
-    public ArrayList<ProblemModel> loadProblemData() {
-        // TODO: will need to add elastic search functionality. For now it will always return a
-        // TODO: set amount of data that will be uploaded first by the save
+    public void loadProblemData() {
+        // TODO: test this works
+        userInstance = UserProfileController.getInstance();
+        try {
+            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
 
-        return instance.problems;
+            // TODO: This is a temporary fix for the null error given with problem records from the
+            // TODO: server
+            for (ProblemModel problem : instance.problems) {
+                if (problem.getRecords() == null){
+                    problem.initializeRecordModel();
+                }
+            }
+            Log.d("Jose-Problems", "The system successfully got problems from userID: " +
+                    userInstance.user.getUserID());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -121,7 +140,7 @@ public class ProblemController {
     public void saveProblemData(ArrayList<ProblemModel> problems) {
         /*
         TODO: will need to add elastic search functionality. For now it will just update the current
-        list of problems
+        list of problems. THIS IS SPECIFICALLY FOR EDITS
          */
         instance.problems = problems;
     }
@@ -129,10 +148,12 @@ public class ProblemController {
     public void setSelectedProblem(int index){
         selectedProblem = problems.get(index);
         //Fill record controllers selected records when new selected problem is set
-        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+        RecordController.getInstance().selectedProblemRecords = getSelectedProblemRecords();
     }
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){
+        // using the selected problem's problem ID, we get all of the records
+        selectedProblem.setRecords(RecordController.getInstance().loadRecordData(selectedProblem));
         return selectedProblem.getRecords();
     }
 

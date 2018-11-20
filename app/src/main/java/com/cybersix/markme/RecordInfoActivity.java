@@ -1,10 +1,13 @@
 /**
  * Jose: This is the main activity that will display all of the records' information that has
- *       been selected by the user
+ *       been selected by the user.
  *
  * Date: 2018-11-10
  *
  * Copyright Notice
+ * @author Jose Ramirez
+ * @editor Curtis Goud
+ * @see com.cybersix.markme.RecordListFragment
  */
 package com.cybersix.markme;
 
@@ -68,7 +71,8 @@ public class RecordInfoActivity extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
-            selectedRecord = ProblemController.getInstance().getSelectedProblem().getRecord(recordIdx);
+            java.util.ArrayList<RecordModel> test = RecordController.getInstance().selectedProblemRecords;
+            selectedRecord =RecordController.getInstance().selectedProblemRecords.get(recordIdx);
         } else {
             //We have a map record
             recordIdx = b.getInt("MapRecordIdx",-1);
