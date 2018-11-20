@@ -62,13 +62,8 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-<<<<<<< HEAD
-        <activity android:name=".MapSelectActivity" />
         <activity android:name=".Gallery" />
-=======
-
         <activity android:name=".MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
->>>>>>> master
         <activity android:name=".deletePhoto" />
     </application>
 
