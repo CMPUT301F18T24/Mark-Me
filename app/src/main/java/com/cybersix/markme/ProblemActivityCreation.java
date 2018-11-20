@@ -101,15 +101,13 @@ public class ProblemActivityCreation extends AppCompatActivity {
             }
         });
         AlertDialog dialog = builder.create();
-        switch (consistency){
-            case "d" :
-                scheduleNotification(this, 86400000, 12);
-            case "b" :
-                scheduleNotification(this, 172800000, 12);
-            case "w" :
-                scheduleNotification(this, 604800000, 12);
-            default:
-                break;
+        if(consistency.equalsIgnoreCase("d")){
+            scheduleNotification(this, 86400000, 12);
+        }else if(consistency.equalsIgnoreCase("b")){
+            scheduleNotification(this, 172800000, 12);
+
+        }else if(consistency.equalsIgnoreCase("w")){
+            scheduleNotification(this, 604800000, 12);
         }
         dialog.show();
 
