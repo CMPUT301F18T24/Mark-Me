@@ -80,4 +80,8 @@ public class LiveCameraActivity extends AppCompatActivity {
     public CameraPreview getCameraPreview() {
         return cameraPreview;
     }
+
+    public ImageView getOverlayView() {
+        return overlayView;
+    }
 }

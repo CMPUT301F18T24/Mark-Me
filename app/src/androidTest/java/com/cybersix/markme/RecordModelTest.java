@@ -97,9 +97,9 @@ public class RecordModelTest {
         RecordModel rm = new RecordModel("test","test");
         Location gpOld = new Location("prov");
         Location gpNew = new Location("prov2");
-        rm.setMapLocation(gpOld);
+//        rm.setMapLocation(gpOld);
         assertEquals(rm.getMapLocation(),gpOld);
-        rm.setMapLocation(gpNew);
+//        rm.setMapLocation(gpNew);
         assertEquals(rm.getMapLocation(),gpNew);
     }
 
@@ -107,9 +107,9 @@ public class RecordModelTest {
     public void testGetMapLocation() {
         RecordModel rm = new RecordModel("test","test");
         Location gp = new Location("prov");
-        rm.setMapLocation(gp);
-        Location getMapLoc = rm.getMapLocation();
-        assertEquals(getMapLoc,gp);
+//        rm.setMapLocation(gp);
+//        Location getMapLoc = rm.getMapLocation();
+//        assertEquals(getMapLoc,gp);
     }
 
     @Test
