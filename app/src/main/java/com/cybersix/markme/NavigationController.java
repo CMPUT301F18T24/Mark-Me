@@ -101,4 +101,8 @@ public class NavigationController {
                 .replace(R.id.fragment_layout, mFragment)
                 .commit();
     }
+
+    private Fragment getFragment(){
+        return mFragment;
+    }
 }

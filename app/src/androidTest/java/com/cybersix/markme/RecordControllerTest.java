@@ -3,6 +3,8 @@ package com.cybersix.markme;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -36,7 +38,7 @@ public class RecordControllerTest {
         String commentEdit = "This is a comment that is added to the record";
         ArrayList<Bitmap> editPhotos = new ArrayList<Bitmap>(14);
         BodyLocation editBodyLocation = new BodyLocation(EBodyPart.LEFTARM);
-        Location editLocation = new Location("testProviders");
+        LatLng editLocation = new LatLng(-53,155);
 
         RecordController testController = new RecordController();
         testController.createNewRecord(title, description, null, null, null);
