@@ -13,6 +13,6 @@ public class deletePhoto extends AppCompatActivity {
     }
 
     public void deleteImage(View view) {
-        //delete from the server
+        NavigationController.getInstance().switchToFragment(BodyFragment.class);
     }
 }
