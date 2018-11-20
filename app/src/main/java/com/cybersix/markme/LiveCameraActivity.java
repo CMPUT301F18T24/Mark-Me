@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,10 +53,11 @@ public class LiveCameraActivity extends AppCompatActivity {
         cameraPreview.setOnCaptureListener(new OnCaptureListener() {
                     @Override
                     public void onCapture(Bitmap bitmap) {
+                        Log.i("Rizwan", "Captured.");
                         Intent data = new Intent();
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                         byte[] bytes = stream.toByteArray();
                         data.putExtra("image", bytes);
 
