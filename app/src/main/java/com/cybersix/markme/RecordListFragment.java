@@ -55,21 +55,8 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
-        //If null, we want all records
-        if(selectedPart == null){
-            recordsToDisplay = recordController.selectedProblemRecords;
-        } else {
-            //Otherwise we filter out for just the selected part
-            for(RecordModel r : recordController.selectedProblemRecords){
-                if(r.getBodyLocation().getBodyPart() == selectedPart){
-                    recordsToDisplay.add(r);
-                }
-            }
-        }
+        recordsToDisplay = recordController.selectedProblemRecords;
 
-        // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
-        getListView().setAdapter(recordListAdapter);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -91,12 +78,22 @@ public class RecordListFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        recordListAdapter.notifyDataSetChanged();
+        update();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        update();
+//    }
+
+    private void update() {
+        // this function will update the records to display onto the list everytime the fragemnent
+        // is called
+        // set the adapter for the list activity
+        recordsToDisplay = recordController.selectedProblemRecords;
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+        getListView().setAdapter(recordListAdapter);
         recordListAdapter.notifyDataSetChanged();
     }
 }
