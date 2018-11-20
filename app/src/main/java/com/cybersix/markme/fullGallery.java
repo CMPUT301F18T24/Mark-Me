@@ -42,15 +42,15 @@ public class fullGallery extends Fragment {
         bitmaps[3]= b1;
 
         counter = 0;
-//        int size  = RecordController.getInstance().selectedProblemRecords.size();
-//
-//        for (int i = 0; i < size; i++) {
-//            int recordSize  = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().size();
-//            for (int j = 0; j < recordSize; j++) {
-//                this.bitmaps[counter] = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().get(j);
-//                counter++;
-//            }
-//        }
+        int size  = RecordController.getInstance().selectedProblemRecords.size();
+
+       for (int i = 0; i < size; i++) {
+            int recordSize  = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().size();
+            for (int j = 0; j < recordSize; j++) {
+                this.bitmaps[counter] = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().get(j);
+                counter++;
+            }
+        }
 
         GridView gridView = view.findViewById(R.id.gridview);
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity(), this.bitmaps);
