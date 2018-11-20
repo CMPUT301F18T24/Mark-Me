@@ -2,6 +2,7 @@ package com.cybersix.markme;
 
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.EspressoKey;
 import android.support.test.rule.ActivityTestRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,7 +39,9 @@ public class LoginActivityTest {
 
         // Type the username and password.
         onView(withId(R.id.usernameText)).perform(typeText("testtest"));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.passwordText)).perform(typeText("hihi"));
+        Espresso.closeSoftKeyboard();
 
         // Hit the login button.
         onView(withId(R.id.loginButton)).perform(click());

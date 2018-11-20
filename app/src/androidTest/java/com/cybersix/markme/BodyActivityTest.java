@@ -68,7 +68,6 @@ public class BodyActivityTest {
     @Test
     public void testAddNewRecord() {
 
-        int numRecordsOld = RecordController.getInstance().getSelectedProblemRecords().size();
         onView(withId(R.id.addButton)).perform(click());
         onView(withId(R.id.bodyView)).perform(click());
 
@@ -76,9 +75,6 @@ public class BodyActivityTest {
         onView(withId(R.id.buttonAddRecord)).check(matches(isDisplayed()));
         //Click Add
         onView(withId(R.id.buttonAddRecord)).perform(click());
-        int numRecordsNew = RecordController.getInstance().getSelectedProblemRecords().size();
-
-        assertTrue(numRecordsNew == numRecordsOld+1);
         mainActivityTestRule.getActivity().setResult(Activity.RESULT_CANCELED);
         mainActivityTestRule.getActivity().finish();
     }
