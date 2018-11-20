@@ -1,3 +1,6 @@
+/**
+ * the class care provider is to create patients, remove them and get a list
+ */
 package com.cybersix.markme;
 
 import java.util.ArrayList;

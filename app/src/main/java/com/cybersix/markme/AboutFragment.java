@@ -1,3 +1,6 @@
+/**
+ * The activity that includes the about of the app
+ */
 package com.cybersix.markme;
 
 import android.os.Bundle;

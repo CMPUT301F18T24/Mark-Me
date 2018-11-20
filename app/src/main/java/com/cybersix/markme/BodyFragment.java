@@ -1,3 +1,6 @@
+/**
+ * It handles the records and the problems based on the body parts
+ */
 package com.cybersix.markme;
 
 import android.content.Context;

@@ -1,3 +1,6 @@
+/**
+ * Delete a single image after ckicking on it from the gallery
+ */
 package com.cybersix.markme;
 
 import android.support.v7.app.AppCompatActivity;

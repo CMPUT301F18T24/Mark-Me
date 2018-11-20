@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * To implement the full gallery and to grab all the information
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 
 import android.support.annotation.Nullable;

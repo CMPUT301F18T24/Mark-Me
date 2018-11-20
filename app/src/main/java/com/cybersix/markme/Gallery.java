@@ -1,3 +1,13 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * Gallery to grab all the info from the server
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;

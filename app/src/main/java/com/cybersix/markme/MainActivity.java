@@ -1,3 +1,14 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * 
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ */
 package com.cybersix.markme;
 
 import android.support.v4.app.FragmentActivity;

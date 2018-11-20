@@ -1,3 +1,6 @@
+/**
+ * where the point sof the body is defined and associated with a body part
+ */
 package com.cybersix.markme;
 import android.graphics.Path;
 import android.graphics.PointF;

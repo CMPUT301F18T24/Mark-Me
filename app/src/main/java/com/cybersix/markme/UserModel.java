@@ -18,6 +18,7 @@ import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
 
+
     public static final String USERID = "USERID";
     private String username = null;
     private String email = null;
@@ -228,9 +229,23 @@ public class UserModel extends Observable {
     }
 }
 
-
+/**
+ * Throws an exception that the username is too short
+ */
 class UsernameTooShortException extends Exception {}
+
+/**
+ * throws an excpetoin that the email address is invalid
+ */
 class InvalidEmailAddressException extends Exception {}
+
+/**
+ * throws an exception the phone number is invalid
+ */
 class InvalidPhoneNumberException extends Exception {}
+
+/**
+ * throws an exception if the user is invalid
+ */
 class InvalidUserTypeException extends Exception {}
 

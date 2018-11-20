@@ -1,3 +1,6 @@
+/**
+ * gets and sets different body parts
+ */
 package com.cybersix.markme;
 
 

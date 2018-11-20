@@ -1,3 +1,6 @@
+/**
+ * Includes the account settings to update contact information, save new and enable changing contact info
+ */
 package com.cybersix.markme;
 
 import android.support.annotation.Nullable;
