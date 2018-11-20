@@ -52,6 +52,16 @@ public class CareProviderTest {
     }
 
     @Test
+    public void testRemovePatientFromEmptyList() {
+        CareProvider care = new CareProvider("Steve");
+        Patient pat = new Patient("guy44","password!");
+
+        assertEquals(care.getPatients().size(), 0); // Check empty before
+        care.removePatient(pat);
+        assertEquals(care.getPatients().size(), 0); // Check empty after
+    }
+
+    @Test
     public void testHasPatient(){
         CareProvider care = new CareProvider("Steve");
         Patient pat = new Patient("guy44","password!");

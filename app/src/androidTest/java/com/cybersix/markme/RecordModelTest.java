@@ -16,6 +16,25 @@ import static org.junit.Assert.*;
 public class RecordModelTest {
 
     @Test
+    public void testCreateAndGetRecordModel() {
+        String title = "myTitle";
+        String description = "The best app!";
+
+        // Construct the record model.
+        RecordModel recordModel = new RecordModel(title, description);
+
+        // Ensure the contructor fields were properly initialized.
+        assertEquals(recordModel.getTitle(), title);
+        assertEquals(recordModel.getDescription(), description);
+        assertEquals(recordModel.getPhotos(), new ArrayList<Bitmap>());
+        assertEquals(recordModel.getBodyLocation().getBodyPart(), EBodyPart.UNLISTED);
+
+        // Can only test that a date was initialized, not when.
+        assertEquals(recordModel.getTimestamp().getClass(), Date.class);
+
+    }
+
+    @Test
     public void testSetTitle() {
         String title = "getTitle";
         String newTitle = "new getTitle";

@@ -84,6 +84,19 @@ public class PatientTest {
     }
 
     @Test
+    public void testRemoveProblemFromEmptyList() {
+        Patient pat = new Patient("guy4asd41","pasasd123swor123d!");
+        try{
+            ProblemModel pm = new ProblemModel("ma123jor issue!","");
+            assertEquals(pat.getProblems().size(), 0); // Check empty before
+            pat.removeProblem(pm);
+            assertEquals(pat.getProblems().size(), 0); // Check empty after
+        } catch(Exception e){
+            fail();
+        }
+    }
+
+    @Test
     public void testAddCareProvider() {
         Patient pat = new Patient("guy44","password!");
         CareProvider careProv = new CareProvider("Joe");
@@ -126,6 +139,16 @@ public class PatientTest {
 
         pat.removeCareProvider(careProv2);
         assertTrue(!pat.getCareProviders().contains(careProv2));
+    }
+
+    @Test
+    public void testRemoveCareProviderFromEmptyList() {
+        Patient pat = new Patient("guy44","password!");
+        CareProvider careProv = new CareProvider("Joe");
+
+        assertEquals(pat.getCareProviders().size(), 0); // Check empty before
+        pat.removeCareProvider(careProv);
+        assertEquals(pat.getCareProviders().size(), 0); // Check empty after
     }
 
 }

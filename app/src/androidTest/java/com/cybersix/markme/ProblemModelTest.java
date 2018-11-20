@@ -11,6 +11,31 @@ import static org.junit.Assert.*;
 public class ProblemModelTest {
 
     @Test
+    public void testCreateAndGetProblemModel() {
+        String title = "myTitle";
+        String description = "The best app!";
+
+        try {
+            // Construct the problem model.
+            ProblemModel problemModel = new ProblemModel(title, description);
+
+            // Ensure the contructor fields were properly initialized.
+            assertEquals(problemModel.getTitle(), title);
+            assertEquals(problemModel.getDescription(), description);
+
+            // Can only test that a date was initialized, not when.
+            assertEquals(problemModel.getDateStarted().getClass(), Date.class);
+
+            // Check that the records arrayList<> was initialized
+            assertEquals(problemModel.getRecords(), new ArrayList<RecordModel>());
+
+        } catch (Exception e) {
+            fail("We should have gotten the null pointer exception");
+        }
+
+    }
+
+    @Test
     public void testCreateProblem() {
         try {
             ProblemModel problem = new ProblemModel(null, null);
@@ -129,7 +154,7 @@ public class ProblemModelTest {
             title = "less than 30 chars";
             assertTrue(title.length() <= ProblemModel.MAX_TITLE_LENGTH);
             problem.setTitle(title);
-            assertTrue(true);
+            assertEquals(problem.getTitle(), title);
         } catch (Exception e) {
             fail("Setting a character less than MAX_TITLE_LENGTH did not work.");
         }
@@ -173,8 +198,8 @@ public class ProblemModelTest {
             problem = new ProblemModel(title, description);
             description = "less than 300 chars";
             assertTrue(description.length() <= ProblemModel.MAX_TITLE_LENGTH);
-            problem.setDescription(title);
-            assertTrue(true);
+            problem.setDescription(description);
+            assertEquals(problem.getDescription(), description);
         } catch (Exception e) {
             fail("No exception should have occurred");
         }
