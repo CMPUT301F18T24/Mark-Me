@@ -15,10 +15,16 @@ public class ProblemModel extends Observable {
     private String description;
     private Date started;
 
+    /**
+     * @return The problemID, from elastic search database.
+     */
     public String getProblemID() {
         return problemID;
     }
 
+    /**
+     * @param problemID The problemID, from elastic search database.
+     */
     public void setProblemID(String problemID) {
         this.problemID = problemID;
     }

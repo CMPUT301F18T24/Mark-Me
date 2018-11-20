@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This activity displays a view of the user's body and
+ * allows users to add records to their problems.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Curtis Goud, Rizwan Qureshi
+ */
 package com.cybersix.markme;
 
 import android.content.Context;

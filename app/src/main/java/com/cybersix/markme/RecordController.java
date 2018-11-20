@@ -195,4 +195,10 @@ public class RecordController {
         ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
     }
 
+    public void addRecordLists(){
+        for (ProblemModel p: ProblemController.getInstance().problems){
+            records.addAll(p.getRecords());
+        }
+    }
+
 }

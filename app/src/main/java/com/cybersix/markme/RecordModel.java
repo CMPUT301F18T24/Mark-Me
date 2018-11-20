@@ -21,10 +21,16 @@ public class RecordModel {
     private BodyLocation bodyLocation;
     private LatLng mapLocation;
 
+    /**
+     * @return The recordID, from elastic search database.
+     */
     public String getRecordID() {
         return recordID;
     }
 
+    /**
+     * @param recordID The recordID, from elastic search database.
+     */
     public void setRecordID(String recordID) {
         this.recordID = recordID;
     }
