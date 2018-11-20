@@ -20,14 +20,6 @@ import org.junit.runner.RunWith;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.v4.app.Fragment;
 
-import com.cybersix.markme.BodyFragment;
-import com.cybersix.markme.MainActivity;
-
-import java.lang.reflect.Array;
-import java.security.spec.ECField;
-import java.util.ArrayList;
-import java.util.List;
-
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -42,12 +34,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 
 public class RecordActivityTest {
 
@@ -60,7 +47,9 @@ public class RecordActivityTest {
     @Before
     public void setup(){
         nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
+        ProblemController.getInstance().createNewProblem("title","desc");
         ProblemController.getInstance().setSelectedProblem(0);
+        ProblemController.getInstance().getSelectedProblemRecords().add(new RecordModel("a","v"));
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout,new ProblemListFragment())
@@ -112,21 +101,19 @@ public class RecordActivityTest {
         fail("Implementation required");
     }
 
+    /*
+        Use cases: 17, 18
+     */
     @Test
     public void viewRecordLocation(){
-        Intent i = new Intent();
-        i.putExtra()
-        g.setArguments(p);
-        //Move to record info
-        mainActivityTestRule.getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_layout,g)
-                .commitAllowingStateLoss();
-        onView(withId(R.id.recordTitleEdit)).check(matches(isDisplayed()));
-        //Type text nd save
-        onView(withId(R.id.buttonViewLocation)).perform(click());
+        Intent i = new Intent(mainActivityTestRule.getActivity(),MapSelectActivity.class);
+        i.putExtra(RecordListFragment.EXTRA_RECORD_INDEX,0);
+        mainActivityTestRule.getActivity().startActivity(i);
+        //Check map has been displayed
         onView(withId(R.id.g_map_select)).check(matches(isDisplayed()));
+
+        //Perform click to add location
         onView(withId(R.id.g_map_select)).perform(longClick());
- }
+    }
 
 }

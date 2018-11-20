@@ -53,7 +53,9 @@ public class BodyActivityTest {
     @Before
     public void setup(){
         nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
+        ProblemController.getInstance().createNewProblem("title","desc");
         ProblemController.getInstance().setSelectedProblem(0);
+        RecordController.getInstance().selectedProblemRecords.add(new RecordModel("a","b"));
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout,new BodyFragment())
