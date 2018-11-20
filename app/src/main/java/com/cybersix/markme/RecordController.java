@@ -94,8 +94,8 @@ public class RecordController {
         record.setTimestamp(new Date());
 
         // finally add the record to the record list
-        this.records.add(record);
-        //new ElasticSearchIOController.AddRecordTask().execute(record);
+        instance.records.add(record);
+        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
 
@@ -150,8 +150,13 @@ public class RecordController {
     }
 
     public ArrayList<RecordModel> loadRecordData(ProblemModel problemModel) {
-
-        return problemModel.getRecords();
+        try {
+            return new ElasticSearchIOController.GetRecordTask().execute(problemModel.getProblemID()).get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<RecordModel>();
+        }
     }
 
 

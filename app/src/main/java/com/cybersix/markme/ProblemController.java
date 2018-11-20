@@ -69,7 +69,7 @@ public class ProblemController {
             ProblemModel newProblem = new ProblemModel(title, description);
             newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
-            this.problems.add(newProblem);
+            instance.problems.add(newProblem);
             // also add it to the server
             new ElasticSearchIOController.AddProblemTask().execute(newProblem);
         }
@@ -114,7 +114,7 @@ public class ProblemController {
         // TODO: test this works
         userInstance = UserProfileController.getInstance();
         try {
-            this.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
             Log.d("Jose-Problems", "The system successfully got problems from userID: " +
                     userInstance.user.getUserID());
         }
@@ -131,7 +131,7 @@ public class ProblemController {
     public void saveProblemData(ArrayList<ProblemModel> problems) {
         /*
         TODO: will need to add elastic search functionality. For now it will just update the current
-        list of problems
+        list of problems. THIS IS SPECIFICALLY FOR EDITS
          */
         instance.problems = problems;
     }
@@ -139,11 +139,12 @@ public class ProblemController {
     public void setSelectedProblem(int index){
         selectedProblem = problems.get(index);
         //Fill record controllers selected records when new selected problem is set
-        RecordController.getInstance().selectedProblemRecords = selectedProblem.getRecords();
+        RecordController.getInstance().selectedProblemRecords = getSelectedProblemRecords();
     }
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){
-        return selectedProblem.getRecords();
+        // using the selected problem's problem ID, we get all of the records
+        return RecordController.getInstance().loadRecordData(selectedProblem);
     }
 
     public ProblemModel getSelectedProblem(){

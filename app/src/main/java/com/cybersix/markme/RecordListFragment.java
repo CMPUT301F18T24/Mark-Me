@@ -20,17 +20,6 @@ public class RecordListFragment extends ListFragment {
     private RecordController recordController = RecordController.getInstance();
     private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
 
-    // create the problem info pop-up for the activity
-    public class ProblemPopUp extends AppCompatActivity {
-
-        // the problem pop-up will display the problem information related by the user
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_problem_pop_up); // will need to intent test this
-
-        }
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
