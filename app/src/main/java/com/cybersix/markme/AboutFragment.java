@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * The activity that includes the about of the app.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ */
 package com.cybersix.markme;
 
 import android.os.Bundle;

@@ -29,9 +29,17 @@ public class UserModel extends Observable {
 
     public static final int MINIMUM_USERNAME_LENGTH = 8;
 
-    // Need a default constructor to compile with Patient/Care Provider inheritance.
+    /**
+     * Need a default constructor to compile with Patient/Care Provider inheritance.
+     */
     public UserModel() { }
 
+    /**
+     *
+     * @param username Username of the user.
+     * @param password Password of the user.
+     * @throws UsernameTooShortException Throws exception if username is less than 8 chars.
+     */
     public UserModel(String username, String password) throws UsernameTooShortException {
         if (username.length() < MINIMUM_USERNAME_LENGTH)
             throw new UsernameTooShortException();
@@ -54,6 +62,10 @@ public class UserModel extends Observable {
         this.userID = userID;
     }
 
+    /**
+     * @param username The username of the user.
+     * @throws UsernameTooShortException
+     */
     public void setUsername(String username) throws UsernameTooShortException {
 
         if (username.length() < MINIMUM_USERNAME_LENGTH) {
@@ -66,11 +78,18 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @return The username
+     */
     public String getUsername() {
         return username;
     }
 
-    // Only accept two types of user types: "patient" ir "care_provider".
+
+    /**
+     * @param userType Only accepts 2 types of user: patient and care_provider
+     * @throws InvalidUserTypeException Throws exception if type provided does not match required,
+     */
     public void setUserType(String userType) throws InvalidUserTypeException {
         if (userType == null) {
             this.userType = null;
@@ -84,10 +103,17 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @return The user type
+     */
     public String getUserType(){
         return this.userType;
     }
 
+    /**
+     * @param email The email of the user, must be in the format: ...@...
+     * @throws InvalidEmailAddressException
+     */
     public void setEmail(String email) throws InvalidEmailAddressException {
         if (!isValidEmail(email))
             throw new InvalidEmailAddressException();
@@ -98,6 +124,10 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @param email The email to check.
+     * @return Returns true if email is valid, false otherwise.
+     */
     static public boolean isValidEmail(String email) {
         if (email == null || !email.contains("@"))
             return false;
@@ -105,10 +135,17 @@ public class UserModel extends Observable {
         return true;
     }
 
+    /**
+     * @return The email address of the user.
+     */
     public String getEmail(){
         return this.email;
     }
 
+    /**
+     * @param phone - The phone number of the user, must be in the following format: XXX-XXX-XXXX
+     * @throws InvalidPhoneNumberException Throws exception if phone number does not meet the requirements.
+     */
     public void setPhone(String phone) throws InvalidPhoneNumberException {
         if (!isValidPhone(phone))
             throw new InvalidPhoneNumberException();
@@ -119,6 +156,11 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Checks if phone is valid.
+     * @param phone - The phone to check.
+     * @return Returns true if phone # is valid, false otherwise.
+     */
     static public boolean isValidPhone(String phone) {
         if (phone == null)
             return false;
@@ -142,10 +184,16 @@ public class UserModel extends Observable {
         return true;
     }
 
+    /**
+     * @return The phone number of the user.
+     */
     public String getPhone(){
         return this.phone;
     }
 
+    /**
+     * @param password The password of the user.
+     */
     public void setPassword(String password) {
         this.password = password;
 
@@ -153,10 +201,16 @@ public class UserModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @return The password of the user.
+     */
     public String getPassword(){
         return this.password;
     }
 
+    /**
+     * @return Returns a string representation of the usermodel object,
+     */
     public String toString() {
         if (userID == null)
             return "null";

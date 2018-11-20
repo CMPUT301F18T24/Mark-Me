@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * Enumerable data class for all body parts.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ */
 package com.cybersix.markme;
 import android.graphics.Path;
 import android.graphics.PointF;
