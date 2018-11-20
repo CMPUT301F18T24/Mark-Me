@@ -10,7 +10,7 @@ import java.util.TimeZone;
 import io.searchbox.annotations.JestId;
 
 public class ProblemModel extends Observable {
-    private ArrayList<RecordModel> records;
+    private ArrayList<RecordModel> records ;
     private String title;
     private String description;
     private Date started;
@@ -112,6 +112,8 @@ public class ProblemModel extends Observable {
         notifyObservers();
     }
 
+    // TODO: this is a quick fix [records] for a NULL problem with the records as it is null from the
+    // TODO: server but should just be an arraylist of size 0
     // Note: Temporary bug fix.
     public void initializeRecordModel() {
         this.records = new ArrayList<RecordModel>();
@@ -159,6 +161,14 @@ public class ProblemModel extends Observable {
      */
     public ArrayList<RecordModel> getRecords() {
         return records;
+    }
+
+    /**
+     * Sets all of the records
+     * @param records
+     */
+    public void setRecords(ArrayList<RecordModel> records) {
+        this.records = records;
     }
 
     /**

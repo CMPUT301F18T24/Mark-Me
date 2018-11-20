@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Problem List Fragment that will display all of the problems associated to the user
+ *
+ * Date: 2018-11-11
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @see com.cybersix.markme.ListFragment
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;
@@ -5,6 +18,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -21,6 +36,7 @@ public class ProblemListFragment extends ListFragment {
     public static final String EXTRA_PROBLEM_INDEX = "EXTRA_PROBLEM_INDEX";
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
+    private ArrayList<ProblemModel> localList = new ArrayList<>();
     private ProblemController controllerInstance = ProblemController.getInstance();
 
     @Override
@@ -35,6 +51,7 @@ public class ProblemListFragment extends ListFragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
                 startActivity(i);
+                update();
             }
         });
 
@@ -50,15 +67,25 @@ public class ProblemListFragment extends ListFragment {
                 // TODO: will show the records related to the problem
                 NavigationController.getInstance()
                         .switchToFragment(RecordListFragment.class, bundle);
+
+
             }
         });
 
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, controllerInstance.problems);
+        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
         getListView().setAdapter(problemListAdapter);
+        update();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        update();
+    }
+
+    private void update() {
+        controllerInstance.loadProblemData();
+        localList.clear();
+        localList.addAll(controllerInstance.problems);
         problemListAdapter.notifyDataSetChanged();
     }
 }

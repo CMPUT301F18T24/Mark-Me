@@ -1,10 +1,14 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,6 +63,17 @@ public class LiveCameraActivityTest {
 
     @Test
     public void testOverlayDisplayed() {
-        fail("Implementation required");
+        Intent intent = new Intent();
+        intent.putExtra(LiveCameraActivity.OVERLAY_RESOURCE_ID, R.drawable.body_upright);
+        LiveCameraActivity camera = mActivityRule.launchActivity(intent);
+
+        Drawable realDrawable = camera.getResources().getDrawable(R.drawable.body_upright);
+        Bitmap realBitmap = Bitmap.createBitmap(realDrawable.getIntrinsicWidth(), realDrawable.getIntrinsicHeight(), Bitmap.Config.ALPHA_8);
+
+        Drawable overlayDrawable = camera.getOverlayView().getDrawable();
+        Bitmap overlayBitmap = Bitmap.createBitmap(overlayDrawable.getIntrinsicWidth(), overlayDrawable.getIntrinsicHeight(), Bitmap.Config.ALPHA_8);
+
+        assertTrue(realBitmap.getByteCount() == overlayBitmap.getByteCount());
+        assertTrue(0.75 == camera.getOverlayView().getAlpha());
     }
 }

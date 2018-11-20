@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 // This activity will be a place holder for the settings activity that is based from the storyboard
 // on the github repo
@@ -29,6 +30,12 @@ public class SettingsFragment extends Fragment {
         mAccountButton = getActivity().findViewById(R.id.Account);
         mAboutButton = getActivity().findViewById(R.id.About);
         mAssignmentButton = getActivity().findViewById(R.id.userAssignmentButton);
+
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("Settings");
+        returnButton.setVisibility(View.GONE);
 
         mLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override

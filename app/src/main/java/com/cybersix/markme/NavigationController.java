@@ -1,3 +1,15 @@
+/**
+ * This file contains the NavigationController.
+ *
+ * Its primary purpose is to allow easier navigation between the different
+ * fragments within the app. Currently the controller guarantees that only "main" navigation
+ * can exist at a time. Thus, the controller gives a mini API for easing the switching
+ * between fragments.
+ *
+ * Since it is closely related to the bottom navigation view, the controller also
+ * implements the logic behind the view's on click selection scheme.
+ */
+
 package com.cybersix.markme;
 
 import android.os.Bundle;
@@ -44,6 +56,13 @@ public class NavigationController {
         mNavigationView.setOnNavigationItemSelectedListener(mListener);
     }
 
+    /**
+     * Used to create the first, and only instance of the NavigationController.
+     * It can only be instantiated by the MainActivity since this is the only activity
+     * which consists of a Navigation Bar.
+     * @param activity
+     * @return the singleton instance
+     */
     public static NavigationController getInstance(MainActivity activity) {
         if (mNavigationController == null)
             mNavigationController = new NavigationController(
@@ -54,19 +73,41 @@ public class NavigationController {
         return mNavigationController;
     }
 
+    /**
+     * @return the singleton instance
+     */
     public static NavigationController getInstance() {
         return mNavigationController;
     }
 
+    /**
+     * Progmatically selects an item on the navigation bar with the given resource Id.
+     * @param itemId
+     */
     public void setSelectedItem(int itemId) {
         mNavigationView.setSelectedItemId(itemId);
     }
 
+    /**
+     * Progmatically selects an item on the navigation bar with the given resource Id.
+     * Once an item is selected, the given bundle is sent to the Fragment corresponding
+     * to that item.
+     * @param itemId
+     * @param bundle
+     */
     public void setSelectedItem(int itemId, Bundle bundle) {
         setSelectedItem(itemId);
         mFragment.setArguments(bundle);
     }
 
+    /**
+     * Switches the current fragment, if it exists, with a new fragment.
+     * If a fragment does not already exist, it is created dynamically.
+     *
+     * NOTE: We try to ensure that only one fragment can exist at a time via
+     * this controller.
+     * @param clazz
+     */
     public void switchToFragment(Class<? extends Fragment> clazz) {
         setFragment(clazz);
         if (mFragmentManager.getFragments().size() == 0)
@@ -75,6 +116,11 @@ public class NavigationController {
             replaceFragment();
     }
 
+    /**
+     * Sends the given bundle to the newly switched Fragment.
+     * @param clazz
+     * @param bundle
+     */
     public void switchToFragment(Class<? extends Fragment> clazz, Bundle bundle) {
         switchToFragment(clazz);
         mFragment.setArguments(bundle);

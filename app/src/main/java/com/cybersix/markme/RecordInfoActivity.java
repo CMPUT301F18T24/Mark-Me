@@ -1,10 +1,13 @@
 /**
  * Jose: This is the main activity that will display all of the records' information that has
- *       been selected by the user
+ *       been selected by the user.
  *
  * Date: 2018-11-10
  *
  * Copyright Notice
+ * @author Jose Ramirez
+ * @editor Curtis Goud
+ * @see com.cybersix.markme.RecordListFragment
  */
 package com.cybersix.markme;
 
@@ -43,6 +46,7 @@ public class RecordInfoActivity extends Fragment {
     private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private Button buttonSave;
+    private Button viewLocation;
     private Button viewPhotos;
     private Button addPhoto;
 
@@ -67,7 +71,8 @@ public class RecordInfoActivity extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
-            selectedRecord = ProblemController.getInstance().getSelectedProblem().getRecord(recordIdx);
+            java.util.ArrayList<RecordModel> test = RecordController.getInstance().selectedProblemRecords;
+            selectedRecord =RecordController.getInstance().selectedProblemRecords.get(recordIdx);
         } else {
             //We have a map record
             recordIdx = b.getInt("MapRecordIdx",-1);
@@ -86,9 +91,21 @@ public class RecordInfoActivity extends Fragment {
     //       a case for checking who the user is
 
     private void initAttributes(){
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("Record Info");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().setSelectedItem(R.id.body);
+            }
+        });
+
         recordTitleEdit = getActivity().findViewById(R.id.recordTitleEdit);
         editTextDescription = getActivity().findViewById(R.id.editTextDescription);
         addPhoto = getActivity().findViewById(R.id.buttonAddPhoto);
+        viewLocation = getActivity().findViewById(R.id.buttonViewLocation);
         viewPhotos = getActivity().findViewById(R.id.buttonViewPhotos);
         bodyLocationSpinner = getActivity().findViewById(R.id.bodyLocationSpinner);
         textViewComment = getActivity().findViewById(R.id.commentTextView);
@@ -108,8 +125,6 @@ public class RecordInfoActivity extends Fragment {
             }
         });
 
-
-
         recordTitleEdit.setText(selectedRecord.getTitle());
         editTextDescription.setText(selectedRecord.getDescription());
         if(selectedRecord.getComment() != null && selectedRecord.getComment() != ""){
@@ -128,6 +143,15 @@ public class RecordInfoActivity extends Fragment {
                 Intent i = new Intent(getActivity(),LiveCameraActivity.class);
                 // getIntent().putExtra()
                 startActivityForResult(i, REQUEST_CODE_PHOTO);
+            }
+        });
+
+        viewLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),MapSelectActivity.class);
+                i.putExtra("startLoc",selectedRecord.getMapLocation());
+                startActivityForResult(i, REQUEST_CODE_MAP);
             }
         });
     }
@@ -158,29 +182,11 @@ public class RecordInfoActivity extends Fragment {
             }
         }
         else if(requestCode == REQUEST_CODE_MAP){
-
+            if(resultCode == RESULT_OK){
+                LatLng loc = (LatLng) data.getParcelableExtra("locations");
+                LatLng ln = new LatLng(loc.latitude,loc.longitude);
+                addRecordLocation(ln);
+            }
         }
     }
-
-    private void newLocationAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Record Added!");
-        builder.setMessage("Would you like to add a Photo or Location to the Record?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        AlertDialog dialog = builder.create();
-        builder.show();
-    }
-
-
 }
