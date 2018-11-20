@@ -164,6 +164,14 @@ public class ProblemModel extends Observable {
     }
 
     /**
+     * Sets all of the records
+     * @param records
+     */
+    public void setRecords(ArrayList<RecordModel> records) {
+        this.records = records;
+    }
+
+    /**
      * changes the date to a string
      * @return string of the date
      */

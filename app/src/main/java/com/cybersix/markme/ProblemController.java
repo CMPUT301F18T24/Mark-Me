@@ -153,7 +153,8 @@ public class ProblemController {
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){
         // using the selected problem's problem ID, we get all of the records
-        return RecordController.getInstance().loadRecordData(selectedProblem);
+        selectedProblem.setRecords(RecordController.getInstance().loadRecordData(selectedProblem));
+        return selectedProblem.getRecords();
     }
 
     public ProblemModel getSelectedProblem(){
