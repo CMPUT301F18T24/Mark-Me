@@ -68,9 +68,9 @@ public class RecordListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), RecordInfoActivity.class);
-                i.putExtra(EXTRA_RECORD_INDEX, position);
-                startActivity(i);
+                Bundle b = new Bundle();
+                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
+                NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
             }
         });
 
@@ -78,8 +78,7 @@ public class RecordListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: What if we want to add a record with using the body?
-//                Intent i = new Intent(getActivity(), RecordCreationActivity.class);
-//                startActivity(i);
+
             }
         });
     }
