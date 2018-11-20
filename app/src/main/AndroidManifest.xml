@@ -49,7 +49,6 @@
         <activity android:name=".Reminder" />
         <activity android:name=".RecordCreationActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".UserActivityAddPopUp" android:theme="@style/AppTheme.NoActionBar"/>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -63,7 +62,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
+        <activity android:name=".Gallery" />
         <activity android:name=".MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".deletePhoto" />
     </application>

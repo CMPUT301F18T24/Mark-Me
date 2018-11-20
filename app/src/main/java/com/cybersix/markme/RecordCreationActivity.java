@@ -48,7 +48,8 @@ public class RecordCreationActivity extends AppCompatActivity {
                 String desc = recordAddDescText.getText().toString();
                 BodyLocation bl = new BodyLocation(selectedPart);
                 RecordModel record = recordController.createNewRecord(title,desc,null,null,bl);
-                problemController.getSelectedProblem().addRecord(record);
+                // problemController.getSelectedProblem().addRecord(record); Jose: Moved this segment
+                //                                                           into the recordControllor function
                 newRecordAlert();
             }
         });
@@ -74,7 +75,7 @@ public class RecordCreationActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //TODO: Send to edit records instead of prev screen
                 Intent data = new Intent();
-                data.putExtra(RecordListFragment.EXTRA_RECORD_INDEX, problemController.getSelectedProblemRecords().size()-1);
+                data.putExtra(RecordListFragment.EXTRA_RECORD_INDEX, recordController.selectedProblemRecords.size()-1);
                 setResult(RESULT_OK, data);
                 finish();
             }

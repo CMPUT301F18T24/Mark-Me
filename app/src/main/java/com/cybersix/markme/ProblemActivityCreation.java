@@ -1,31 +1,45 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Problem Creation pop up for the user to create a new problem to start tracking
+ *
+ * Date: 2018-11-12
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @see com.cybersix.markme.ProblemModel
+ * @see com.cybersix.markme.ProblemListFragment
+ */
 package com.cybersix.markme;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.os.Build;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+    import android.app.AlarmManager;
+    import android.app.Notification;
+    import android.app.NotificationChannel;
+    import android.app.NotificationManager;
+    import android.app.PendingIntent;
+    import android.content.Context;
+    import android.content.DialogInterface;
+    import android.content.Intent;
+    import android.media.RingtoneManager;
+    import android.os.Build;
+    import android.os.SystemClock;
+    import android.support.v4.app.NotificationCompat;
+    import android.support.v7.app.AlertDialog;
+    import android.support.v7.app.AppCompatActivity;
+    import android.os.Bundle;
+    import android.util.DisplayMetrics;
+    import android.view.Gravity;
+    import android.view.View;
+    import android.view.WindowManager;
+    import android.widget.Button;
+    import android.widget.EditText;
+    import android.widget.RadioButton;
+    import android.widget.RadioGroup;
+    import android.widget.TextView;
 
-import org.w3c.dom.Text;
+    import org.w3c.dom.Text;
 
 public class ProblemActivityCreation extends AppCompatActivity {
     private String consistency;
@@ -101,7 +115,6 @@ public class ProblemActivityCreation extends AppCompatActivity {
             }
         });
         AlertDialog dialog = builder.create();
-
         if(consistency.equalsIgnoreCase("d")){
             scheduleNotification(this, 86400000, 12);
         }else if(consistency.equalsIgnoreCase("b")){
@@ -110,19 +123,6 @@ public class ProblemActivityCreation extends AppCompatActivity {
         }else if(consistency.equalsIgnoreCase("w")){
             scheduleNotification(this, 604800000, 12);
         }
-//        switch (consistency){
-//            case "d" :
-//                scheduleNotification(this, 86400000, 12);
-//                break;
-//            case "b" :
-//                scheduleNotification(this, 172800000, 12);
-//                break;
-//            case "w" :
-//                scheduleNotification(this, 604800000, 12);
-//                break;
-//            default:
-//                break;
-//        }
         dialog.show();
 
 

@@ -41,7 +41,7 @@ public class RecordController {
     public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
-            loadFakeData();
+            //loadFakeData();
         }
         return instance;
     }
@@ -94,7 +94,11 @@ public class RecordController {
         record.setTimestamp(new Date());
 
         // finally add the record to the record list
-        records.add(record);
+        // instance.records.add(record); dont need this since we just update the selected problem
+        ProblemController.getInstance().getSelectedProblem().addRecord(record);
+        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        // Update the selected problems list
+        instance.selectedProblemRecords = ProblemController.getInstance().getSelectedProblem().getRecords();
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
 
@@ -149,8 +153,13 @@ public class RecordController {
     }
 
     public ArrayList<RecordModel> loadRecordData(ProblemModel problemModel) {
-
-        return problemModel.getRecords();
+        try {
+            return new ElasticSearchIOController.GetRecordTask().execute(problemModel.getProblemID()).get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<RecordModel>();
+        }
     }
 
 
