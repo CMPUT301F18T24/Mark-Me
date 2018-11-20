@@ -1,3 +1,19 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This list fragment will display all of the possible records associated to a problem that the user
+ * has selected.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-12
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @editor Curtis Goud
+ * @see com.cybersix.markme.RecordModel
+ * @see com.cybersix.markme.RecordCreationActivity
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;
@@ -20,17 +36,6 @@ public class RecordListFragment extends ListFragment {
     private RecordController recordController = RecordController.getInstance();
     private ArrayList<RecordModel> recordsToDisplay = new ArrayList<>();
 
-    // create the problem info pop-up for the activity
-    public class ProblemPopUp extends AppCompatActivity {
-
-        // the problem pop-up will display the problem information related by the user
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_problem_pop_up); // will need to intent test this
-
-        }
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,27 +55,14 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
-        //If null, we want all records
-        if(selectedPart == null){
-            recordsToDisplay = recordController.selectedProblemRecords;
-        } else {
-            //Otherwise we filter out for just the selected part
-            for(RecordModel r : recordController.selectedProblemRecords){
-                if(r.getBodyLocation().getBodyPart() == selectedPart){
-                    recordsToDisplay.add(r);
-                }
-            }
-        }
+        recordsToDisplay = recordController.selectedProblemRecords;
 
-        // set the adapter for the list activity
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
-        getListView().setAdapter(recordListAdapter);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), RecordInfoActivity.class);
-                i.putExtra(EXTRA_RECORD_INDEX, position);
-                startActivity(i);
+                Bundle b = new Bundle();
+                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
+                NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
             }
         });
 
@@ -78,9 +70,30 @@ public class RecordListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: What if we want to add a record with using the body?
-//                Intent i = new Intent(getActivity(), RecordCreationActivity.class);
-//                startActivity(i);
+
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        update();
+    }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        update();
+//    }
+
+    private void update() {
+        // this function will update the records to display onto the list everytime the fragemnent
+        // is called
+        // set the adapter for the list activity
+        recordsToDisplay = recordController.selectedProblemRecords;
+        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+        getListView().setAdapter(recordListAdapter);
+        recordListAdapter.notifyDataSetChanged();
     }
 }

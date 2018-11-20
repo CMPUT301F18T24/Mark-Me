@@ -16,7 +16,7 @@ public class AccountSettingsFragment extends Fragment implements Observer {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.activity_account_settings, container, false);
     }
 
@@ -69,6 +69,16 @@ public class AccountSettingsFragment extends Fragment implements Observer {
             }
         });
 
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("About Mark-Me");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
     }
 
     @Override

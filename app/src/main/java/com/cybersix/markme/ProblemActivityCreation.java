@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Problem Creation pop up for the user to create a new problem to start tracking
+ *
+ * Date: 2018-11-12
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @see com.cybersix.markme.ProblemModel
+ * @see com.cybersix.markme.ProblemListFragment
+ */
 package com.cybersix.markme;
 
     import android.app.AlarmManager;
@@ -101,15 +115,13 @@ public class ProblemActivityCreation extends AppCompatActivity {
             }
         });
         AlertDialog dialog = builder.create();
-        switch (consistency){
-            case "d" :
-                scheduleNotification(this, 86400000, 12);
-            case "b" :
-                scheduleNotification(this, 172800000, 12);
-            case "w" :
-                scheduleNotification(this, 604800000, 12);
-            default:
-                break;
+        if(consistency.equalsIgnoreCase("d")){
+            scheduleNotification(this, 86400000, 12);
+        }else if(consistency.equalsIgnoreCase("b")){
+            scheduleNotification(this, 172800000, 12);
+
+        }else if(consistency.equalsIgnoreCase("w")){
+            scheduleNotification(this, 604800000, 12);
         }
         dialog.show();
 

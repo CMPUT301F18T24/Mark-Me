@@ -161,7 +161,7 @@ public class UserModel extends Observable {
         if (userID == null)
             return "null";
 
-        return userID.toString();
+        return userID.toString() + ": " + username.toString();
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- * Jose: This is the generic list activity that will be shared amoung the problems activity
+ * Jose: This is the generic list fragment that will be shared among the problems activity
  *       and the records activity
  *
  *  Description: This will be the base activity for the list view for both the problems list
@@ -33,7 +33,7 @@ public class ListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.activity_list, container, false);
     }
 

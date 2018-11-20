@@ -41,7 +41,7 @@ public class RecordController {
     public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
-           // loadFakeData();
+            //loadFakeData();
         }
         return instance;
     }
@@ -50,7 +50,7 @@ public class RecordController {
     private static void loadFakeData() {
         // This will fill up the list of records with fake records. There will be around 30 of them
         LatLng l = new LatLng(53.5232,-113.5263);
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 1; i++) {
             String title = "Fake Record Title " + Integer.toString(i);
             String description = "Fake record descriptions for title " + Integer.toString(i);
             instance.createNewRecord(title, description, null, l, new BodyLocation(EBodyPart.UNLISTED));
@@ -94,7 +94,11 @@ public class RecordController {
         record.setTimestamp(new Date());
 
         // finally add the record to the record list
-        records.add(record);
+        // instance.records.add(record); dont need this since we just update the selected problem
+        ProblemController.getInstance().getSelectedProblem().addRecord(record);
+        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        // Update the selected problems list
+        instance.selectedProblemRecords = ProblemController.getInstance().getSelectedProblem().getRecords();
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
 
@@ -149,8 +153,13 @@ public class RecordController {
     }
 
     public ArrayList<RecordModel> loadRecordData(ProblemModel problemModel) {
-
-        return problemModel.getRecords();
+        try {
+            return new ElasticSearchIOController.GetRecordTask().execute(problemModel.getProblemID()).get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<RecordModel>();
+        }
     }
 
 
