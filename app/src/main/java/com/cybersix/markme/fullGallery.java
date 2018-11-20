@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 
 public class fullGallery extends Fragment {
 
@@ -67,8 +71,25 @@ public class fullGallery extends Fragment {
                 Bitmap bitmap = fullGallery.this.bitmaps[position];
                 Intent intent = new Intent(getActivity().getBaseContext(),
                         deletePhoto.class);
-                intent.putExtra(PHOTO_CONTENT, bitmap);
-                getActivity().startActivity(intent);
+
+                try {
+                    //Write file
+                    String filename = "bitmap.png";
+                    FileOutputStream stream = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                    //Cleanup
+                    stream.close();
+                    bitmap.recycle();
+
+                    //Pop intent
+                    intent.putExtra(PHOTO_CONTENT, filename);
+                    getActivity().startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         return view;
