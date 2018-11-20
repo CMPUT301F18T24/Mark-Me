@@ -1,3 +1,13 @@
+/**
+ * This activity should be used to take photos using the phone's camera.
+ *
+ * It's meant to give easy access to the captured photo by returning the bitmap
+ * through the resulting intent.
+ *
+ * Passing an intent containing the resource id of an @drawable will overlay
+ * that @drawable on top of the TextureView containing the camera's output.
+ */
+
 package com.cybersix.markme;
 
 import android.content.Intent;
