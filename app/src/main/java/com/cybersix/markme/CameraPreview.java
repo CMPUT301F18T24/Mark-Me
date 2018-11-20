@@ -1,3 +1,17 @@
+/**
+ * The following code is based off of:
+ *  https://android.jlelse.eu/the-least-you-can-do-with-camera2-api-2971c8c81b8b
+ * Which was authored by:
+ *  Mateusz Dziubek
+ *
+ * The code was translated into an easy to use object
+ * for later convenience.
+ *
+ * Ideally the developer should use the LiveCameraActivity class instead. However,
+ * if he wishes to output the camera's bitmap stream into a TextureView, then
+ * the CameraPreview object will do it for you.
+ **/
+
 package com.cybersix.markme;
 
 import android.Manifest;
@@ -24,13 +38,6 @@ import android.view.TextureView;
 import android.view.View;
 
 import java.util.Collections;
-
-/**
- * The following code is based off of:
- *  https://android.jlelse.eu/the-least-you-can-do-with-camera2-api-2971c8c81b8b
- * Which was authored by:
- *  Mateusz Dziubek
- **/
 
 public class CameraPreview {
     static public final int CAMERA_FACE_VIEW = 1;

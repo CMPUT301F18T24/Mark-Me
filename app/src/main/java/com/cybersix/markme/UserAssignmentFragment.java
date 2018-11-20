@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,17 @@ public class UserAssignmentFragment extends Fragment {
             public void onClick(View v) {
                 // the user has selected a user from the list view and wants to remove the user
                 removeUser();
+            }
+        });
+
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("Assign Myself");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().switchToFragment(SettingsFragment.class);
             }
         });
     }

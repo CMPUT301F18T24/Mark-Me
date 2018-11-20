@@ -45,7 +45,7 @@ public class RecordControllerTest {
             // now we edit the created record
             testController.editRecord(0, titleEdit, descriptionEdit, editPhotos, editBodyLocation,
                     editLocation, commentEdit);
-            // get the record
+//            // get the record
             RecordModel record = testController.records.get(0);
             assertEquals(record.getTitle(), titleEdit);
             assertEquals(record.getDescription(), descriptionEdit);
