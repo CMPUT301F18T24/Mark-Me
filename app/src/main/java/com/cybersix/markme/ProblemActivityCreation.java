@@ -31,12 +31,15 @@ public class ProblemActivityCreation extends AppCompatActivity {
     private String consistency;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem_creation);
         createNotificationChannel();
         GuiUtils.setFullScreen(this);
+        consistency = "n";
+
 
         // get the display metrics for the edit popup window
         DisplayMetrics dm = new DisplayMetrics();
@@ -107,6 +110,8 @@ public class ProblemActivityCreation extends AppCompatActivity {
                 break;
             case "w" :
                 scheduleNotification(this, 604800000, 12);
+            default:
+                break;
         }
         dialog.show();
 

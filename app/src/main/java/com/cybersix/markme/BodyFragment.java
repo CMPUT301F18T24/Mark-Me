@@ -97,7 +97,7 @@ public class BodyFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreateView(inflater,container,savedInstanceState);
         View root = inflater.inflate(R.layout.activity_body, container, false);
         return root;
     }
