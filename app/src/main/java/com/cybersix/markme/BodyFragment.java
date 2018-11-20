@@ -2,6 +2,8 @@ package com.cybersix.markme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +26,8 @@ import android.widget.TextView;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.app.Activity.RESULT_OK;
 
 public class BodyFragment extends Fragment {
     private class PointView extends View {
@@ -72,6 +76,7 @@ public class BodyFragment extends Fragment {
         }
     }
 
+    public static final int REQUEST_RECORD_INFO = 1;
     public static final String EXTRA_SELECTED_PART = "SelectedPart";
     private ImageView bodyView;
     private PointView point;
@@ -97,7 +102,7 @@ public class BodyFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.activity_body, container, false);
         return root;
     }
@@ -247,8 +252,7 @@ public class BodyFragment extends Fragment {
                 selectedPart = EBodyPart.UNLISTED;
             }
             i.putExtra("BodyPart",selectedPart);
-            startActivity(i);
-//            finish();
+            startActivityForResult(i, REQUEST_RECORD_INFO);
         }
     }
 
@@ -286,8 +290,7 @@ public class BodyFragment extends Fragment {
         if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
             Bundle bundle = new Bundle();
             bundle.putSerializable(EXTRA_SELECTED_PART, selectedPart);
-            NavigationController.getInstance()
-                    .setSelectedItem(R.id.list, bundle);
+            NavigationController.getInstance().switchToFragment(RecordListFragment.class,bundle);
         }
     }
 
@@ -308,6 +311,16 @@ public class BodyFragment extends Fragment {
             addingRecord = false;
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_RECORD_INFO && resultCode == RESULT_OK){
+            Bundle b = new Bundle();
+            int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
+            b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
+            NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
+        }
     }
 
 }
