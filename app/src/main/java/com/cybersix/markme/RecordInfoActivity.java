@@ -86,6 +86,17 @@ public class RecordInfoActivity extends Fragment {
     //       a case for checking who the user is
 
     private void initAttributes(){
+        TextView title = getActivity().findViewById(R.id.fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.returnButton);
+
+        title.setText("Record Info");
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationController.getInstance().setSelectedItem(R.id.body);
+            }
+        });
+
         recordTitleEdit = getActivity().findViewById(R.id.recordTitleEdit);
         editTextDescription = getActivity().findViewById(R.id.editTextDescription);
         addPhoto = getActivity().findViewById(R.id.buttonAddPhoto);
@@ -107,8 +118,6 @@ public class RecordInfoActivity extends Fragment {
                 saveRecordEdits();
             }
         });
-
-
 
         recordTitleEdit.setText(selectedRecord.getTitle());
         editTextDescription.setText(selectedRecord.getDescription());
