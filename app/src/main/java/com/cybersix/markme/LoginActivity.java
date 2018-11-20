@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This activity handles validating a user's credentials by querying the ES database and ensuring
+ * the username/password are correct.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;

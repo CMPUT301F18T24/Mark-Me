@@ -1,3 +1,15 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This controller handles creating and editing the UserModel.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ */
 package com.cybersix.markme;
 
 import android.util.Log;
@@ -87,24 +99,5 @@ public class UserProfileController {
         }
 
     }
-
-    // Checks if the userID and corresponding password exists.
-    // TODO: This should search the elasticsearch database for the user.
-    // This method is a stub, the current implementation helps test user registration.
-//    public Boolean isUserValid(String username, String password) {
-//
-//        // Stub: Search elasticSearch database for a user....
-//
-//        // If the elastic search returned a result. Then confirm the password matches.
-//        // Note: Since we are searching by usernames exactly then we don't need to compare userIDs
-//        // a second time.
-//        if (this.user.getUsername() != null) {
-//            if (this.user.getPassword().equals(password)) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
 
 }
