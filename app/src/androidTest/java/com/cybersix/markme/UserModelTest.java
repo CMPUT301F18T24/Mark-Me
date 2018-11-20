@@ -59,7 +59,7 @@ public class UserModelTest {
     public void testGetPasswordHash() {
         // Note: Since we have not implemented encryption algorithms, we cannot test password
         // hashes yet.
-        fail();
+        fail("Not implemented");
     }
 
     @Test
