@@ -50,17 +50,17 @@ public class LiveCameraActivity extends AppCompatActivity {
         cameraPreview.setToggleViewButton(toggleViewButton);
         cameraPreview.setCaptureButton(captureButton);
         cameraPreview.setOnCaptureListener(new OnCaptureListener() {
-            @Override
-            public void onCapture(Bitmap bitmap) {
-                Intent data = new Intent();
+                    @Override
+                    public void onCapture(Bitmap bitmap) {
+                        Intent data = new Intent();
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] bytes = stream.toByteArray();
-                data.putExtra("image", bytes);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] bytes = stream.toByteArray();
+                        data.putExtra("image", bytes);
 
-                setResult(RESULT_OK, data);
-                finish();
+                        setResult(RESULT_OK, data);
+                        finish();
             }
         });
     }
