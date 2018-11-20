@@ -24,7 +24,6 @@ public class RecordCreationActivity extends AppCompatActivity {
     private Button buttonCancelRecord;
     private Button buttonAddRecord;
     private RecordController recordController = RecordController.getInstance();
-    private ProblemController problemController = ProblemController.getInstance();
 
 
     @Override
