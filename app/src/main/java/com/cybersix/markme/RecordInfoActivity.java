@@ -1,10 +1,13 @@
 /**
  * Jose: This is the main activity that will display all of the records' information that has
- *       been selected by the user
+ *       been selected by the user.
  *
  * Date: 2018-11-10
  *
  * Copyright Notice
+ * @author Jose Ramirez
+ * @editor Curtis Goud
+ * @see com.cybersix.markme.RecordListFragment
  */
 package com.cybersix.markme;
 

@@ -1,3 +1,19 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This list fragment will display all of the possible records associated to a problem that the user
+ * has selected.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-12
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @editor Curtis Goud
+ * @see com.cybersix.markme.RecordModel
+ * @see com.cybersix.markme.RecordCreationActivity
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;

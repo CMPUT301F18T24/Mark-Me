@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Problem List Fragment that will display all of the problems associated to the user
+ *
+ * Date: 2018-11-11
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @see com.cybersix.markme.ListFragment
+ */
 package com.cybersix.markme;
 
 import android.content.Intent;

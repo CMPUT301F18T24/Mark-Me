@@ -1,4 +1,6 @@
 /**
+ * CMPUT 301 Team 24
+ *
  * This activity will be in charge of letting the user (patient) assign another user to their account
  * to view on their progress
  *
@@ -7,7 +9,7 @@
  * Date: 2018-11-18
  *
  * Copyright Notice
- *
+ * @author Jose Ramirez
  */
 package com.cybersix.markme;
 

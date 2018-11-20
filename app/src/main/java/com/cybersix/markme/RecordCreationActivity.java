@@ -48,7 +48,8 @@ public class RecordCreationActivity extends AppCompatActivity {
                 String desc = recordAddDescText.getText().toString();
                 BodyLocation bl = new BodyLocation(selectedPart);
                 RecordModel record = recordController.createNewRecord(title,desc,null,null,bl);
-                problemController.getSelectedProblem().addRecord(record);
+                // problemController.getSelectedProblem().addRecord(record); Jose: Moved this segment
+                //                                                           into the recordControllor function
                 newRecordAlert();
             }
         });

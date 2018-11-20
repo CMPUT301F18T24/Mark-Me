@@ -94,7 +94,8 @@ public class RecordController {
         record.setTimestamp(new Date());
 
         // finally add the record to the record list
-        instance.records.add(record);
+        // instance.records.add(record); dont need this since we just update the selected problem
+        ProblemController.getInstance().getSelectedProblem().addRecord(record);
         new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;

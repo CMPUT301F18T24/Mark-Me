@@ -11,6 +11,7 @@
  * Copyright Notice
  * @author Jose Ramirez
  * @see com.cybersix.markme.ProblemModel
+ * @see com.cybersix.markme.ProblemListFragment
  */
 package com.cybersix.markme;
 
@@ -115,6 +116,14 @@ public class ProblemController {
         userInstance = UserProfileController.getInstance();
         try {
             instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+
+            // TODO: This is a temporary fix for the null error given with problem records from the
+            // TODO: server
+            for (ProblemModel problem : instance.problems) {
+                if (problem.getRecords() == null){
+                    problem.initializeRecordModel();
+                }
+            }
             Log.d("Jose-Problems", "The system successfully got problems from userID: " +
                     userInstance.user.getUserID());
         }

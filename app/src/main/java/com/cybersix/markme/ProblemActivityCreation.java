@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Problem Creation pop up for the user to create a new problem to start tracking
+ *
+ * Date: 2018-11-12
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Jose Ramirez
+ * @see com.cybersix.markme.ProblemModel
+ * @see com.cybersix.markme.ProblemListFragment
+ */
 package com.cybersix.markme;
 
     import android.app.AlarmManager;

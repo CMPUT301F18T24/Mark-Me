@@ -1,4 +1,6 @@
 /**
+ * CMPUT 301 Team 24
+ *
  * Patient assignment activity is to be a separate activity entirely under the settings activity.
  *
  * Version 0.1
@@ -6,6 +8,7 @@
  * Date: 2018-11-18
  *
  * Copyright Notice
+ * @author Jose Ramirez
  */
 package com.cybersix.markme;
 
