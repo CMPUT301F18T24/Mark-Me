@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -143,6 +144,15 @@ public class RecordInfoActivity extends Fragment {
                 Intent i = new Intent(getActivity(),LiveCameraActivity.class);
                 // getIntent().putExtra()
                 startActivityForResult(i, REQUEST_CODE_PHOTO);
+            }
+        });
+
+        viewPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(fullGallery.GALLERY_MODE, recordIdx);
+                NavigationController.getInstance().switchToFragment(fullGallery.class,bundle);
             }
         });
 
