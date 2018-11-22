@@ -1,31 +1,19 @@
 package com.cybersix.markme;
 
 import org.junit.Test;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.action.EspressoKey;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.v4.app.Fragment;
 
-import static android.support.test.espresso.Espresso.closeSoftKeyboard;
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -64,8 +52,8 @@ public class RecordActivityTest {
     public void testViewRecordInfo(){
 
         //Perform click, set data values
-        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
-        onView(withId(R.id.mainListView)).perform(click());
+        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_list_mainListView)).perform(click());
 
         //Send to next view
         Bundle b = new Bundle();
@@ -78,12 +66,12 @@ public class RecordActivityTest {
                 .commitAllowingStateLoss();
 
         //Assert list view is being displayed
-        onView(withId(R.id.mainListView)).check(matches(isDisplayed()));
-        onView(withId(R.id.mainListView)).perform(click());
+        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_list_mainListView)).perform(click());
 
         Bundle p = new Bundle();
         p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
-        Fragment g = new RecordInfoActivity();
+        Fragment g = new RecordInfoFragment();
         g.setArguments(p);
         //Move to record info
         mainActivityTestRule.getActivity().getSupportFragmentManager()

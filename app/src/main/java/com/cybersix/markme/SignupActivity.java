@@ -58,9 +58,9 @@ public class SignupActivity extends AppCompatActivity {
         UserProfileController profileController = UserProfileController.getInstance();
 
         // Get the signup information.
-        TextView usernameText = (TextView) findViewById(R.id.usernameText);
-        TextView emailText = (TextView) findViewById(R.id.emailText);
-        TextView phoneText = (TextView) findViewById(R.id.phoneText);
+        TextView usernameText = (TextView) findViewById(R.id.fragment_account_settings_usernameText);
+        TextView emailText = (TextView) findViewById(R.id.fragment_account_settings_email);
+        TextView phoneText = (TextView) findViewById(R.id.fragment_account_settings_phoneText);
         TextView passwordText = (TextView) findViewById(R.id.passwordText);
 
         // Create a user of type patient by default.

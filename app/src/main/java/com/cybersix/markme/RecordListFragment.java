@@ -16,10 +16,7 @@
  */
 package com.cybersix.markme;
 
-import android.content.Intent;
-import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,7 +68,7 @@ public class RecordListFragment extends ListFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
                 b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
-                NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
+                NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
             }
         });
 

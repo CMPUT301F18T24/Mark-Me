@@ -12,14 +12,12 @@ package com.cybersix.markme;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class Gallery extends Fragment implements View.OnClickListener {
 
@@ -58,7 +56,7 @@ public class Gallery extends Fragment implements View.OnClickListener {
             int size  = RecordController.getInstance().selectedProblemRecords.get(recordId).getPhotos().size();
             imageGet(size);
         }else{
-            Intent intent = new Intent(getContext(), fullGallery.class);
+            Intent intent = new Intent(getContext(), FullGalleryFragment.class);
             startActivity(intent);
         }
     }

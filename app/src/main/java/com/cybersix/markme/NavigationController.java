@@ -40,7 +40,7 @@ public class NavigationController {
                     switchToFragment(BodyFragment.class);
                     return true;
                 case R.id.gallery:
-                    switchToFragment(fullGallery.class);
+                    switchToFragment(FullGalleryFragment.class);
                     return true;
                 case R.id.list:
                     switchToFragment(ProblemListFragment.class);

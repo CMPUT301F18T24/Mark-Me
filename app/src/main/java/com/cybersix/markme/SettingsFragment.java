@@ -19,7 +19,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.activity_settings, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
@@ -31,8 +31,8 @@ public class SettingsFragment extends Fragment {
         mAboutButton = getActivity().findViewById(R.id.About);
         mAssignmentButton = getActivity().findViewById(R.id.userAssignmentButton);
 
-        TextView title = getActivity().findViewById(R.id.fragmentTitle);
-        View returnButton = getActivity().findViewById(R.id.returnButton);
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
         title.setText("Settings");
         returnButton.setVisibility(View.GONE);

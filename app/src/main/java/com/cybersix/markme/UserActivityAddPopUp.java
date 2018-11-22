@@ -58,7 +58,7 @@ public class UserActivityAddPopUp extends AppCompatActivity {
         // set up any buttons that will be used
         usersListView = (ListView) findViewById(R.id.CareProvideList);
         Button searchFilter = (Button) findViewById(R.id.searchButton2);
-        Button assignUserButton = (Button) findViewById(R.id.addAssignUserButton);
+        Button assignUserButton = (Button) findViewById(R.id.fragment_user_assignment_addAssignUserButton);
 
         // TODO: Will be removed once server functionality is implemented
         for (int i = 0; i < 15; i++){

@@ -50,8 +50,8 @@ public class BodyActivityTest {
     @Test
     public void testAddNewRecord() {
 
-        onView(withId(R.id.addButton)).perform(click());
-        onView(withId(R.id.bodyView)).perform(click());
+        onView(withId(R.id.fragment_body_addButton)).perform(click());
+        onView(withId(R.id.fragment_body_bodyView)).perform(click());
 
         //Confirm the next view has been presented
         onView(withId(R.id.buttonAddRecord)).check(matches(isDisplayed()));
@@ -67,10 +67,10 @@ public class BodyActivityTest {
     @Test
     public void testViewRecords() {
 
-        onView(withId(R.id.viewAllButton)).perform(click());
+        onView(withId(R.id.fragment_body_viewAllButton)).perform(click());
 
         //Assert text in list view is being displayed
-        onView(withId(R.id.totalText)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_body_totalText)).check(matches(isDisplayed()));
 
     }
 

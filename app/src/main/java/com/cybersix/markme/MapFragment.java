@@ -3,7 +3,6 @@ package com.cybersix.markme;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         int idx = (int) marker.getTag();
         Bundle b = new Bundle();
         b.putInt("MapRecordIdx", idx);
-        NavigationController.getInstance().switchToFragment(RecordInfoActivity.class,b);
+        NavigationController.getInstance().switchToFragment(RecordInfoFragment.class,b);
         return true;
     }
 

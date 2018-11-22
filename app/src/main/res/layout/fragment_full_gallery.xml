@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridview"
+        android:id="@+id/fragment_full_gallery_gridview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:columnWidth="90dp"

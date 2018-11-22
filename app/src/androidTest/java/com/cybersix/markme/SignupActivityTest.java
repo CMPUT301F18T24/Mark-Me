@@ -1,7 +1,6 @@
 package com.cybersix.markme;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -32,10 +31,10 @@ public class SignupActivityTest {
         int username = new Random().nextInt((max - min) + 1) + min;
 
         // Type the username and password.
-        onView(withId(R.id.emailText)).perform(typeText("test@test"));
-        onView(withId(R.id.usernameText)).perform(typeText(Integer.toString(username)));
+        onView(withId(R.id.fragment_account_settings_email)).perform(typeText("test@test"));
+        onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText(Integer.toString(username)));
         onView(withId(R.id.passwordText)).perform(typeText("hihi"));
-        onView(withId(R.id.phoneText)).perform(typeText("780-123-4567"));
+        onView(withId(R.id.fragment_account_settings_phoneText)).perform(typeText("780-123-4567"));
 
         Espresso.closeSoftKeyboard();
 

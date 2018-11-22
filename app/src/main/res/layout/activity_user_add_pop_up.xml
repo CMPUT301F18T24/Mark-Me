@@ -52,14 +52,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/addAssignUserButton"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_user_assignment_addAssignUserButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchButton2" />
 
     <Button
-        android:id="@+id/addAssignUserButton"
+        android:id="@+id/fragment_user_assignment_addAssignUserButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
