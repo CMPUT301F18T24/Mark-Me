@@ -23,12 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListFragment extends Fragment {
-    private TextView mTitle = null;
-    private TextView mDetails = null;
-    private View mReturnButton = null;
-    private View mAddButton = null;
-    private EditText mSearchField = null;
-    private ListView mListView = null;
+    ListObserver listObserver = null;
+    ListController listController = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,54 +36,14 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mTitle = getActivity().findViewById(R.id.fragment_list_titleTextView);
-        mDetails = getActivity().findViewById(R.id.fragment_list_descriptionTextView);
-        mReturnButton = getActivity().findViewById(R.id.fragment_list_returnButton);
-        mAddButton = getActivity().findViewById(R.id.fragment_list_addButton);
-        mSearchField = getActivity().findViewById(R.id.fragment_list_seachField);
-        mListView = getActivity().findViewById(R.id.fragment_list_mainListView);
-        mReturnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                mActivity.finish();
-            }
-        });
-    }
+        listController = new ListController();
+        listObserver = new ListObserver(listController);
 
-    public TextView getTitle() {
-        return mTitle;
-    }
-
-    public TextView getDetails() {
-        return mDetails;
-    }
-
-    public View getReturnButton() {
-        return mReturnButton;
-    }
-
-    public View getAddButton() {
-        return mAddButton;
-    }
-
-    public EditText getSearchField() {
-        return mSearchField;
-    }
-
-    public ListView getListView() {
-        return mListView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        mTitle = null;
-        mDetails = null;
-        mReturnButton = null;
-        mAddButton = null;
-        mSearchField = null;
-        mListView = null;
-        mReturnButton = null;
+        listObserver.setTitleView((TextView) getView().findViewById(R.id.fragment_list_titleTextView));
+        listObserver.setDetailView((TextView) getView().findViewById(R.id.fragment_list_descriptionTextView));
+        listObserver.setReturnButton(getActivity().findViewById(R.id.fragment_list_returnButton));
+        listObserver.setAddButton(getActivity().findViewById(R.id.fragment_list_addButton));
+        listObserver.setSearchField((EditText) getActivity().findViewById(R.id.fragment_list_seachField));
+        listObserver.setListView((ListView) getActivity().findViewById(R.id.fragment_list_mainListView));
     }
 }

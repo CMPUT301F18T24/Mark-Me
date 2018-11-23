@@ -111,7 +111,7 @@ public class ProblemController {
      */
     public void loadProblemData() {
         // TODO: test this works
-        userInstance = UserProfileController.getInstance();
+        userInstance = new UserProfileController(null);
         try {
 //            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
 

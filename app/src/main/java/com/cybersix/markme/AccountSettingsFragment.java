@@ -16,19 +16,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Observable;
-import java.util.Observer;
-
 public class AccountSettingsFragment extends Fragment {
     UserModel userModel = null;
-    UserView userView = null;
+    UserObserver userObserver = null;
     UserProfileController userController = null;
 
     @Override
@@ -47,9 +43,9 @@ public class AccountSettingsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Add the AccoutSettingsActivity view as an observer to the UserModel.
-        userController = UserProfileController.getInstance();
         userModel = ((MainActivity) getActivity()).getUser();
-        userView = new UserView();
+        userController = new UserProfileController(userModel);
+        userObserver = new UserObserver(userController);
 
         initUI();
     }
@@ -57,14 +53,15 @@ public class AccountSettingsFragment extends Fragment {
     public void initUI() {
         // Fill the textboxes with information
         // TODO: These extra calls to the controller could be avoided if model was its own object.
-        userView.setUsernameView((TextView) getActivity().findViewById(R.id.fragment_account_settings_usernameText));
-        userView.setEmailView((TextView) getActivity().findViewById(R.id.fragment_account_settings_email));
-        userView.setPhoneView((TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText));
-        userModel.addView(userView);
+        userObserver.setUsernameView((TextView) getActivity().findViewById(R.id.fragment_account_settings_usernameText));
+        userObserver.setEmailView((TextView) getActivity().findViewById(R.id.fragment_account_settings_email));
+        userObserver.setPhoneView((TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText));
+        userObserver.setModifierButton(getActivity().findViewById(R.id.fragment_account_settings_saveButton));
+        userModel.addView(userObserver);
 
         // Disable the contact information textboxs.
-        userView.getEmailView().setEnabled(false);
-        userView.getPhoneView().setEnabled(false);
+        userObserver.getEmailView().setEnabled(false);
+        userObserver.getPhoneView().setEnabled(false);
 
         // Add an onClick for the edit contact information button
         Button editContactsButton = (Button) getActivity().findViewById(R.id.fragment_account_settings_editContactButton);
@@ -75,10 +72,9 @@ public class AccountSettingsFragment extends Fragment {
             }
         });
 
-        Button saveButton = getActivity().findViewById(R.id.fragment_account_settings_saveButton);
-        saveButton.setVisibility(View.GONE);
+        userObserver.getModifierButton().setVisibility(View.GONE);
         // Add an onClick for the save button
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        userObserver.setOnModifierPressed(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveNewContactInformation();
@@ -99,12 +95,9 @@ public class AccountSettingsFragment extends Fragment {
 
     // Try to save the new contact information provided by the user.
     public void saveNewContactInformation() {
-        userController.modifyModel(userModel, userView);
-        userController.updateRemoteModel(userModel);
-
         // Disable the contact info text fields again.
-        userView.getEmailView().setEnabled(false);
-        userView.getPhoneView().setEnabled(false);
+        userObserver.getEmailView().setEnabled(false);
+        userObserver.getPhoneView().setEnabled(false);
 
         // Hide the save button
         Button saveButton = (Button) getActivity().findViewById(R.id.fragment_account_settings_saveButton);
@@ -118,8 +111,8 @@ public class AccountSettingsFragment extends Fragment {
     // Enable changing the contact info text boxes, show the save button and hide the edit
     // contact information button.
     public void enableChangingContactInformation() {
-        userView.getEmailView().setEnabled(true);
-        userView.getPhoneView().setEnabled(true);
+        userObserver.getEmailView().setEnabled(true);
+        userObserver.getPhoneView().setEnabled(true);
 
         // Show the save button
         Button saveButton = (Button) getActivity().findViewById(R.id.fragment_account_settings_saveButton);
@@ -133,10 +126,10 @@ public class AccountSettingsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        userModel.deleteView(userView);
+        userModel.deleteView(userObserver);
 
         userController = null;
         userModel = null;
-        userView = null;
+        userObserver = null;
     }
 }

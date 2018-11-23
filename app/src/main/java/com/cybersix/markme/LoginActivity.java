@@ -16,42 +16,42 @@ package com.cybersix.markme;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class LoginActivity extends AppCompatActivity {
-    UserModel userModel = new UserModel();
-    UserView userView = new UserView();
-    UserProfileController userController = UserProfileController.getInstance();
+    UserModel userModel = null;
+    UserObserver userObserver = null;
+    UserProfileController userController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         GuiUtils.setFullScreen(this);
-        initUI();
 
-        userView.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
-        userModel.addObserver(userView);
+        userModel = new UserModel();
+        userController = new UserProfileController(userModel);
+        userObserver = new UserObserver(userController);
+
+        initUI();
     }
 
     // Initializes onClick listeners for UI elements.
     // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
+        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
+        userObserver.setModifierButton(findViewById(R.id.loginButton));
         // Add an onClick listener that validates login information
-        Button loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        userObserver.setOnModifierPressed(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userController.modifyModel(userModel, userView);
                 checkLogin();
             }
         });
 
+        userModel.addObserver(userObserver);
         // Add an onClick listener that takes the user to the signup Activity.
         Button signupButton = (Button) findViewById(R.id.signupButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -74,18 +74,12 @@ public class LoginActivity extends AppCompatActivity {
     // Assumes that the user model has been loaded with user info.
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
-        UserModel foundUser = userController.findUser(userModel.getUsername());
         // If we got exactly one username returned.
-        if (foundUser != null) {
-            // Launch the next activity depending on whether the user is a patient or care provider.
-            if (foundUser.getUserType().compareTo(Patient.class.getSimpleName()) == 0) {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, foundUser.getUsername());
-                startActivity(intent);
-                finish();
-            } else if (foundUser.getUserType().compareTo(CareProvider.class.getSimpleName()) == 0) {
-                // Stub: Launch the patient list activity.
-            }
+        if (userController.userExists()) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
+            startActivity(intent);
+            finish();
         }
     }
 

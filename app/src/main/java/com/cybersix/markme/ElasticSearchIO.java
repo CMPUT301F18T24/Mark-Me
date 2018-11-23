@@ -17,17 +17,17 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 
-public class ElasticSearchController implements UserModelIO {
-    private static ElasticSearchController instance = null;
+public class ElasticSearchIO implements UserModelIO {
+    private static ElasticSearchIO instance = null;
     private JestDroidClient client = null;
 
-    private ElasticSearchController() {
+    private ElasticSearchIO() {
         setClient();
     }
 
-    public static ElasticSearchController getInstance() {
+    public static ElasticSearchIO getInstance() {
         if (instance == null)
-            instance = new ElasticSearchController();
+            instance = new ElasticSearchIO();
 
         return instance;
     }

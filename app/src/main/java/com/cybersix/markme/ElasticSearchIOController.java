@@ -209,7 +209,7 @@ public class ElasticSearchIOController {
     public static void addRecords(UserModel user, ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = new UserProfileController(null);
 
         for (RecordModel record : problem.getRecords()) {
 

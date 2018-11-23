@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        mUser = UserProfileController.getInstance().findUser(username);
+        mUser = ElasticSearchIO.getInstance().findUser(username);
 
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.body);

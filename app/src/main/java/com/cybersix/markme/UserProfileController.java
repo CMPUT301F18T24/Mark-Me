@@ -12,35 +12,23 @@
  */
 package com.cybersix.markme;
 
-import android.util.Log;
-
-import java.util.ArrayList;
+import android.support.annotation.NonNull;
 
 public class UserProfileController {
-    private static UserProfileController instance = null;
-    private UserModel currentUser = null;
-    private UserModelIO io = (UserModelIO) ElasticSearchController.getInstance();
+    private UserModel model = null;
+    private UserModelIO io = (UserModelIO) ElasticSearchIO.getInstance();
 
-    // Is the controller a singleton, or is the model a singleton?
-    protected UserProfileController() {
-        currentUser = new UserModel();
+    public UserProfileController(@NonNull UserModel user) {
+        this.model = user;
     }
 
-    // Lazy construction of instance.
-    public static UserProfileController getInstance() {
-        if (instance == null) {
-            instance = new UserProfileController();
-        }
-        return instance;
+    public void modifyModel(UserObserver view) {
+        modifyUsername(view);
+        modifyEmail(view);
+        modifyPhone(view);
     }
 
-    public void modifyModel(UserModel model, UserView view) {
-        modifyUsername(model, view);
-        modifyEmail(model, view);
-        modifyPhone(model, view);
-    }
-
-    protected void modifyPhone(UserModel model, UserView view) {
+    protected void modifyPhone(UserObserver view) {
         if (model == null || view == null || view.getPhoneView() == null)
             return;
 
@@ -51,7 +39,7 @@ public class UserProfileController {
         }
     }
 
-    protected void modifyUsername(UserModel model, UserView view) {
+    protected void modifyUsername(UserObserver view) {
         if (model == null || view == null || view.getUsernameView() == null)
             return;
 
@@ -62,7 +50,7 @@ public class UserProfileController {
         }
     }
 
-    protected void modifyEmail(UserModel model, UserView view) {
+    protected void modifyEmail(UserObserver view) {
         if (model == null || view == null || view.getEmailView() == null)
             return;
 
@@ -73,20 +61,20 @@ public class UserProfileController {
         }
     }
 
-    public void updateRemoteModel(UserModel model) {
+    public void updateRemoteModel() {
         // TODO: Update the model information on elastic search
     }
 
-    // Attempts to add a user to the elasticsearch database.
+    // Attempts to add a model to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information
-    //         userType - The type of the user.
-    // Outputs: Returns true if added user was successful, false otherwise.
+    //         userType - The type of the model.
+    // Outputs: Returns true if added model was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public boolean addUser(UserModel newUser) {
-        return io.addUser(newUser);
+    public boolean addUser() {
+        return io.addUser(model);
     }
 
-    public UserModel findUser(String username) {
-        return io.findUser(username);
+    public boolean userExists() {
+        return io.findUser(model.getUsername()) != null;
     }
 }
