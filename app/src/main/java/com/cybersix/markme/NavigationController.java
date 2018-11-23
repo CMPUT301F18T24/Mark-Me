@@ -43,7 +43,7 @@ public class NavigationController {
                     switchToFragment(FullGalleryFragment.class);
                     return true;
                 case R.id.list:
-                    switchToFragment(ProblemListFragment.class);
+                    switchToListFragment(ProblemModel.class);
                     return true;
             }
             return false;
@@ -126,11 +126,24 @@ public class NavigationController {
         mFragment.setArguments(bundle);
     }
 
+    public <T extends DataModel> void switchToListFragment (Class<T> clazz) {
+        switchToListFragment(clazz, new Bundle());
+    }
+
+    public <T extends DataModel> void switchToListFragment (Class<T> clazz, Bundle bundle) {
+        mFragment = new ListFragment<T>();
+        if (mFragmentManager.getFragments().size() == 0)
+            createFragmentDynamically();
+        else
+            replaceFragment();
+        mFragment.setArguments(bundle);
+    }
+
     private void createFragmentDynamically() {
         mFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_layout, mFragment)
-                .commitAllowingStateLoss();
+                .commit();
     }
 
     private void setFragment(Class<? extends Fragment> clazz) {
@@ -141,11 +154,16 @@ public class NavigationController {
         }
     }
 
+    public void setFragment(@NonNull Fragment fragment) {
+        mFragment = fragment;
+        replaceFragment();
+    }
+
     private void replaceFragment() {
         mFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_layout, mFragment)
-                .commitAllowingStateLoss();
+                .commit();
     }
 
     public Fragment getFragment(){

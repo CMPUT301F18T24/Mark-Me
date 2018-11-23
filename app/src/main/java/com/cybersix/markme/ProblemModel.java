@@ -1,19 +1,27 @@
 package com.cybersix.markme;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Observable;
 import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class ProblemModel extends Observable {
+public class ProblemModel extends Observable implements DataModel {
     private ArrayList<RecordModel> records ;
     private String title;
     private String description;
     private Date started;
+
+    @JestId
+    private String problemID;
+
+    public static final int MAX_TITLE_LENGTH = 30;
+    public static final int MAX_DESCRIPTION_LENGTH = 300;
 
     /**
      * @return The problemID, from elastic search database.
@@ -28,12 +36,6 @@ public class ProblemModel extends Observable {
     public void setProblemID(String problemID) {
         this.problemID = problemID;
     }
-
-    @JestId
-    private String problemID;
-
-    public static final int MAX_TITLE_LENGTH = 30;
-    public static final int MAX_DESCRIPTION_LENGTH = 300;
 
     /***
      * constructs the problem model
@@ -186,6 +188,18 @@ public class ProblemModel extends Observable {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
         return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
+    }
+
+    @Override
+    public Fragment getDataFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ListFragment.EXTRA_TITLE, getTitle());
+        bundle.putString(ListFragment.EXTRA_DESCRIPTION, getDescription());
+
+        Fragment fragment = new ListFragment<RecordModel>();
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 }
 

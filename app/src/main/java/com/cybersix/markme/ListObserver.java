@@ -2,6 +2,7 @@ package com.cybersix.markme;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,8 +17,6 @@ public class ListObserver implements Observer {
     private View addButton = null;
     private EditText searchField = null;
     private ListView listView = null;
-
-    private ListObserver previous = null, next = null;
     private ListController controller = null;
 
     ListObserver(@NonNull ListController controller) {
@@ -70,10 +69,20 @@ public class ListObserver implements Observer {
 
     public void setListView(ListView listView) {
         this.listView = listView;
+
+        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                controller.displayModelInfo(position);
+            }
+        });
     }
 
     @Override
     public void update(Observable o, Object arg) {
+        ListModel model = (ListModel) o;
 
+        titleView.setText(model.getTitle());
+        detailView.setText(model.getDetails());
     }
 }

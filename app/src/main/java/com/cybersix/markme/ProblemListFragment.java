@@ -43,38 +43,38 @@ public class ProblemListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getTitle().setText("List of Problems");
-
-        // set the on click listeners
-        getAddButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
-                startActivity(i);
-                update();
-            }
-        });
+//        getTitle().setText("List of Problems");
+//
+//        // set the on click listeners
+//        getAddButton().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
+//                startActivity(i);
+//                update();
+//            }
+//        });
 
         // we are going to set the listener for the list view
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // the user is going to select the problem that they want to view
-                controllerInstance.setSelectedProblem(position);
-                Bundle bundle = new Bundle();
-                bundle.putInt(EXTRA_PROBLEM_INDEX, position);
-                // TODO: for now the resulting activity will show preset data but the later version
-                // TODO: will show the records related to the problem
-                NavigationController.getInstance()
-                        .switchToFragment(RecordListFragment.class, bundle);
+//        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // the user is going to select the problem that they want to view
+//                controllerInstance.setSelectedProblem(position);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt(EXTRA_PROBLEM_INDEX, position);
+//                // TODO: for now the resulting activity will show preset data but the later version
+//                // TODO: will show the records related to the problem
+//                NavigationController.getInstance()
+//                        .switchToFragment(RecordListFragment.class, bundle);
+//
+//
+//            }
+//        });
 
-
-            }
-        });
-
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
-        getListView().setAdapter(problemListAdapter);
-        update();
+//        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
+//        getListView().setAdapter(problemListAdapter);
+//        update();
     }
 
     @Override

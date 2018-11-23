@@ -1,18 +1,19 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
-import android.location.Location;
+import android.support.v4.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Observable;
 import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class RecordModel {
+public class RecordModel extends Observable implements DataModel {
     private String title;
     private String description;
     private Date timestamp;
@@ -189,6 +190,10 @@ public class RecordModel {
         return this.getTitle() + " - " + bodyPart + " | " + format.format(this.getTimestamp());
     }
 
+    @Override
+    public Fragment getDataFragment() {
+        return new RecordInfoFragment();
+    }
 }
 
 /**

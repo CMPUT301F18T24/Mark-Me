@@ -22,9 +22,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListFragment extends Fragment {
-    ListObserver listObserver = null;
-    ListController listController = null;
+public class ListFragment<T extends DataModel> extends Fragment {
+    public static final String EXTRA_ITEM_LAYOUT = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_ITEM_LAYOUT";
+    public static final String EXTRA_TITLE = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_TITLE";
+    public static final String EXTRA_DESCRIPTION = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_DESCR";
+
+    private ListObserver listObserver = null;
+    private ListController listController = null;
+    private ListModel<T> listModel = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +41,16 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        listController = new ListController();
+        Bundle args = getArguments();
+        String title = args.getString(EXTRA_TITLE, "List Title");
+        String details = args.getString(EXTRA_DESCRIPTION, "List Description");
+        int layoutId = args.getInt(EXTRA_ITEM_LAYOUT, R.layout.list_item);
+
+        listModel = new ListModel<>(getActivity(), layoutId);
+        listModel.setTitle(title);
+        listModel.setDetails(details);
+
+        listController = new ListController(listModel);
         listObserver = new ListObserver(listController);
 
         listObserver.setTitleView((TextView) getView().findViewById(R.id.fragment_list_titleTextView));
@@ -45,5 +59,7 @@ public class ListFragment extends Fragment {
         listObserver.setAddButton(getActivity().findViewById(R.id.fragment_list_addButton));
         listObserver.setSearchField((EditText) getActivity().findViewById(R.id.fragment_list_seachField));
         listObserver.setListView((ListView) getActivity().findViewById(R.id.fragment_list_mainListView));
+
+        listModel.addObserver(listObserver);
     }
 }

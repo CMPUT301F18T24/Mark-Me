@@ -13,15 +13,15 @@ public class PatientListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setupUI();
 
-        mCareProvider = (CareProvider) ((MainActivity) getActivity()).getUser();
-        Log.d("CareProvider", mCareProvider.getPatients().toString());
-        mArrayAdapter = new ArrayAdapter<Patient>(getActivity(), R.layout.list_item, mCareProvider.getPatients());
-        getListView().setAdapter(mArrayAdapter);
+//        mCareProvider = (CareProvider) ((MainActivity) getActivity()).getUser();
+//        Log.d("CareProvider", mCareProvider.getPatients().toString());
+//        mArrayAdapter = new ArrayAdapter<Patient>(getActivity(), R.layout.list_item, mCareProvider.getPatients());
+//        getListView().setAdapter(mArrayAdapter);
     }
 
     protected void setupUI() {
-        getTitle().setText("My Patients");
-        getDetails().setText("A list or your assigned patients.");
+//        getTitle().setText("My Patients");
+//        getDetails().setText("A list or your assigned patients.");
     }
 
 }
