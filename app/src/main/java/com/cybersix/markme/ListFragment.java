@@ -22,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListFragment<T extends ListItemModel> extends Fragment {
+public class ListFragment<T extends ListItemModel & ModelFactory<T>> extends Fragment {
     public static final String EXTRA_ITEM_LAYOUT = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_ITEM_LAYOUT";
     public static final String EXTRA_TITLE = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_TITLE";
     public static final String EXTRA_DESCRIPTION = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_DESCR";

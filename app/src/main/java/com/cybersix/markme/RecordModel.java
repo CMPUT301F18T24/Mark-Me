@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 
@@ -13,7 +14,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class RecordModel extends Observable implements ListItemModel {
+public class RecordModel extends Observable implements ListItemModel, ModelFactory<RecordModel> {
     private String title;
     private String description;
     private Date timestamp;
@@ -193,6 +194,16 @@ public class RecordModel extends Observable implements ListItemModel {
     @Override
     public Fragment getDisplayFragment() {
         return new RecordInfoFragment();
+    }
+
+    @Override
+    public Intent getItemCreationIntent() {
+        return null;
+    }
+
+    @Override
+    public RecordModel create() {
+        return null;
     }
 }
 

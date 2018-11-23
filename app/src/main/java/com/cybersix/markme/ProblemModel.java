@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -11,7 +12,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class ProblemModel extends Observable implements ListItemModel {
+public class ProblemModel extends Observable implements ListItemModel, ModelFactory<ProblemModel> {
     private ArrayList<RecordModel> records ;
     private String title;
     private String description;
@@ -22,20 +23,6 @@ public class ProblemModel extends Observable implements ListItemModel {
 
     public static final int MAX_TITLE_LENGTH = 30;
     public static final int MAX_DESCRIPTION_LENGTH = 300;
-
-    /**
-     * @return The problemID, from elastic search database.
-     */
-    public String getProblemID() {
-        return problemID;
-    }
-
-    /**
-     * @param problemID The problemID, from elastic search database.
-     */
-    public void setProblemID(String problemID) {
-        this.problemID = problemID;
-    }
 
     /***
      * constructs the problem model
@@ -52,6 +39,20 @@ public class ProblemModel extends Observable implements ListItemModel {
 
         this.started = new Date();
         this.records = new ArrayList<RecordModel>();
+    }
+
+    /**
+     * @return The problemID, from elastic search database.
+     */
+    public String getProblemID() {
+        return problemID;
+    }
+
+    /**
+     * @param problemID The problemID, from elastic search database.
+     */
+    public void setProblemID(String problemID) {
+        this.problemID = problemID;
     }
 
     /**
@@ -200,6 +201,21 @@ public class ProblemModel extends Observable implements ListItemModel {
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public Intent getItemCreationIntent() {
+        return null;
+    }
+
+    @Override
+    public ProblemModel create() {
+        try {
+            return new ProblemModel("","");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

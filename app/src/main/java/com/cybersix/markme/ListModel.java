@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ListModel<T extends ListItemModel> extends Observable {
+public class ListModel<T extends ListItemModel & ModelFactory<T>> extends Observable {
     private String title = null;
     private String details = null;
     private ArrayList<T> list = null;

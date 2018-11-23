@@ -12,5 +12,5 @@ public interface ListItemModel {
     /**
      * @return An intent for creating the data model through user input.
      */
-//    Intent createDataModel();
+    Intent getItemCreationIntent();
 }
