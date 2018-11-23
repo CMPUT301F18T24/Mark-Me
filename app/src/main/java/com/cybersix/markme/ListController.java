@@ -11,12 +11,12 @@ public class ListController {
         this.model = model;
     }
 
-    public void displayModelInfo(int position) {
-        DataModel info = model.get(position);
-        NavigationController.getInstance().setFragment(info.getDataFragment());
+    public void displayListItem(int position) {
+        ListItemModel event = model.get(position);
+        NavigationController.getInstance().setFragment(event.getDisplayEvent());
     }
 
-    public void addModel() {
+    public void addListItem() {
 
     }
 }

@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class RecordModel extends Observable implements DataModel {
+public class RecordModel extends Observable implements ListItemModel {
     private String title;
     private String description;
     private Date timestamp;
@@ -191,7 +191,7 @@ public class RecordModel extends Observable implements DataModel {
     }
 
     @Override
-    public Fragment getDataFragment() {
+    public Fragment getDisplayEvent() {
         return new RecordInfoFragment();
     }
 }

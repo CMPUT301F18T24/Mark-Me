@@ -53,6 +53,13 @@ public class ListObserver implements Observer {
 
     public void setAddButton(View addButton) {
         this.addButton = addButton;
+
+        this.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.addListItem();
+            }
+        });
     }
 
     public EditText getSearchField() {
@@ -73,7 +80,7 @@ public class ListObserver implements Observer {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                controller.displayModelInfo(position);
+                controller.displayListItem(position);
             }
         });
     }

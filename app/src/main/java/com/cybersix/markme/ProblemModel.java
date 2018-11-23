@@ -11,7 +11,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class ProblemModel extends Observable implements DataModel {
+public class ProblemModel extends Observable implements ListItemModel {
     private ArrayList<RecordModel> records ;
     private String title;
     private String description;
@@ -191,7 +191,7 @@ public class ProblemModel extends Observable implements DataModel {
     }
 
     @Override
-    public Fragment getDataFragment() {
+    public Fragment getDisplayEvent() {
         Bundle bundle = new Bundle();
         bundle.putString(ListFragment.EXTRA_TITLE, getTitle());
         bundle.putString(ListFragment.EXTRA_DESCRIPTION, getDescription());

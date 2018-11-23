@@ -126,11 +126,11 @@ public class NavigationController {
         mFragment.setArguments(bundle);
     }
 
-    public <T extends DataModel> void switchToListFragment (Class<T> clazz) {
+    public <T extends ListItemModel> void switchToListFragment (Class<T> clazz) {
         switchToListFragment(clazz, new Bundle());
     }
 
-    public <T extends DataModel> void switchToListFragment (Class<T> clazz, Bundle bundle) {
+    public <T extends ListItemModel> void switchToListFragment (Class<T> clazz, Bundle bundle) {
         mFragment = new ListFragment<T>();
         if (mFragmentManager.getFragments().size() == 0)
             createFragmentDynamically();
