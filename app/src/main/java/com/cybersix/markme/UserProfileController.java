@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class UserProfileController {
     private static UserProfileController instance = null;
     private UserModel currentUser = null;
+    private UserModelIO io = (UserModelIO) ElasticSearchController.getInstance();
 
     // Is the controller a singleton, or is the model a singleton?
     protected UserProfileController() {
@@ -82,45 +83,10 @@ public class UserProfileController {
     // Outputs: Returns true if added user was successful, false otherwise.
     // TODO: This should save to the elastic search database.
     public boolean addUser(UserModel newUser) {
-
-        // Check if the user exists.
-        ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
-        try {
-            foundUsers = new ElasticSearchIOController.GetUserTask().execute(newUser.getUsername()).get();
-            Log.d("Vishal_ProfileCont", Integer.toString(foundUsers.size()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // If username exists, then send a fail.
-        if (foundUsers.size() > 0) {
-            return false;
-        }
-
-        try {
-            new ElasticSearchIOController.AddUserTask().execute(newUser);
-            return true;
-        } catch (Exception e) { // TODO: Can we handle specific exceptions?
-            Log.d("Vishal_ProfileCont", e.toString());
-            return false;
-        }
-
+        return io.addUser(newUser);
     }
 
     public UserModel findUser(String username) {
-        // Search elasticsearch database for the username.
-        ArrayList<UserModel> foundUsers;
-        try {
-            foundUsers = new ElasticSearchIOController.GetUserTask()
-                    .execute(username).get();
-            if (!foundUsers.isEmpty())
-                return foundUsers.get(0);
-            Log.d("Vishal_Login_Activity", Integer.toString(foundUsers.size()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return io.findUser(username);
     }
-
 }

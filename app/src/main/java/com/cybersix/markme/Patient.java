@@ -3,13 +3,16 @@ package com.cybersix.markme;
 import java.util.ArrayList;
 
 public class Patient extends UserModel {
-
     private ArrayList<ProblemModel> problems;
     private ArrayList<CareProvider> providers;
 
-    public Patient(String userID, String password) {
-        super();
-        super.setUserID(userID);
+    public Patient() {
+
+    }
+
+    public Patient(String username) throws UsernameTooShortException {
+        super.setUsername(username);
+
         problems = new ArrayList<ProblemModel>();
         providers = new ArrayList<CareProvider>();
     }

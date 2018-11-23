@@ -34,7 +34,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         GuiUtils.setFullScreen(this);
 
-        userModel = new UserModel();
+        userModel = new Patient();
         userView = new UserView();
         userController = UserProfileController.getInstance();
 

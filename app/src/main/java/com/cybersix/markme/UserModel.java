@@ -23,6 +23,7 @@ public class UserModel extends Observable {
     private String username = null;
     private String email = null;
     private String phone = null;
+    private final String type = getClass().getSimpleName();
 
     @JestId
     private String userID = null;
@@ -82,7 +83,7 @@ public class UserModel extends Observable {
      * @return The user type
      */
     public String getUserType(){
-        return this.getClass().getSimpleName();
+        return type;
     }
 
     /**

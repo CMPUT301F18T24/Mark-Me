@@ -77,11 +77,10 @@ public class LoginActivity extends AppCompatActivity {
         UserModel foundUser = userController.findUser(userModel.getUsername());
         // If we got exactly one username returned.
         if (foundUser != null) {
-            // Tell the controller to update the usermodel.
-            Log.d("Vishal_Login_Activity", "Successful Login.");
             // Launch the next activity depending on whether the user is a patient or care provider.
             if (foundUser.getUserType().compareTo(Patient.class.getSimpleName()) == 0) {
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, foundUser.getUsername());
                 startActivity(intent);
                 finish();
             } else if (foundUser.getUserType().compareTo(CareProvider.class.getSimpleName()) == 0) {

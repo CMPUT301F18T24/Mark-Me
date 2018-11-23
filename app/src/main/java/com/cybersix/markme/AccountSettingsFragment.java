@@ -12,9 +12,11 @@
  */
 package com.cybersix.markme;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,11 @@ public class AccountSettingsFragment extends Fragment {
     UserModel userModel = null;
     UserView userView = null;
     UserProfileController userController = null;
+
+    @Override
+    public void onCreate(@NonNull Bundle savedBundleInstance) {
+        super.onCreate(savedBundleInstance);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class AccountSettingsFragment extends Fragment {
         userView.setEmailView((TextView) getActivity().findViewById(R.id.fragment_account_settings_email));
         userView.setPhoneView((TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText));
         userModel.addObserver(userView);
+        Log.v("Rizwan", userView.getEmailView().getText().toString());
 
         // Disable the contact information textboxs.
         userView.getEmailView().setEnabled(false);
