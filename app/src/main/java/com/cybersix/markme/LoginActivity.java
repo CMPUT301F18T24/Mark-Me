@@ -24,6 +24,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
+    UserModel userModel = new UserModel();
+    UserView userView = new UserView();
+    UserProfileController userController = UserProfileController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         GuiUtils.setFullScreen(this);
         initUI();
 
+        userView.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
+        userModel.addObserver(userView);
     }
 
     // Initializes onClick listeners for UI elements.
@@ -42,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userController.modifyModel(userModel, userView);
                 checkLogin();
             }
         });
@@ -68,34 +74,17 @@ public class LoginActivity extends AppCompatActivity {
     // Assumes that the user model has been loaded with user info.
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
-
-        UserProfileController profileController = UserProfileController.getInstance();
-        TextView userText = (TextView) findViewById(R.id.fragment_account_settings_usernameText);
-        TextView passText = (TextView) findViewById(R.id.passwordText);
-        ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
-
-        // Search elasticsearch database for the username.
-        try {
-            foundUsers = new ElasticSearchIOController.GetUserTask()
-                    .execute(userText.getText().toString()).get();
-            Log.d("Vishal_Login_Activity", Integer.toString(foundUsers.size()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        UserModel foundUser = userController.findUser(userModel.getUsername());
         // If we got exactly one username returned.
-        if (foundUsers.size() == 1) {
+        if (foundUser != null) {
             // Tell the controller to update the usermodel.
-            profileController.setUser(foundUsers.get(0));
-
             Log.d("Vishal_Login_Activity", "Successful Login.");
-
             // Launch the next activity depending on whether the user is a patient or care provider.
-            if (profileController.getUser().getUserType().compareTo(Patient.class.getSimpleName()) == 0) {
+            if (foundUser.getUserType().compareTo(Patient.class.getSimpleName()) == 0) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            } else if (profileController.getUser().getUserType().compareTo(CareProvider.class.getSimpleName()) == 0) {
+            } else if (foundUser.getUserType().compareTo(CareProvider.class.getSimpleName()) == 0) {
                 // Stub: Launch the patient list activity.
             }
         }

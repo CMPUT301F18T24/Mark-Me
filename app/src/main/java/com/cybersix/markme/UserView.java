@@ -6,14 +6,42 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class UserView implements Observer {
-    private TextView username = null;
-    private TextView phone = null;
-    private TextView email = null;
+    private TextView usernameView = null;
+    private TextView phoneView = null;
+    private TextView emailView = null;
+
+    public UserView() {
+
+    }
 
     public UserView(TextView username, TextView phone, TextView email) {
-        this.username = username;
-        this.phone = phone;
-        this.email = email;
+        this.usernameView = username;
+        this.phoneView = phone;
+        this.emailView = email;
+    }
+
+    public TextView getUsernameView() {
+        return usernameView;
+    }
+
+    public void setUsernameView(TextView usernameView) {
+        this.usernameView = usernameView;
+    }
+
+    public TextView getPhoneView() {
+        return phoneView;
+    }
+
+    public void setPhoneView(TextView phoneView) {
+        this.phoneView = phoneView;
+    }
+
+    public TextView getEmailView() {
+        return emailView;
+    }
+
+    public void setEmailView(TextView emailView) {
+        this.emailView = emailView;
     }
 
     public void update(Observable o, Object arg) {
@@ -25,20 +53,20 @@ public class UserView implements Observer {
     }
 
     public void updateUsername(String username) {
-        if (this.username == null || username == null)
+        if (this.usernameView == null || username == null)
             return;
-        this.username.setText(username);
+        this.usernameView.setText(username);
     }
 
     public void updatePhone(String phone) {
-        if (this.phone == null || phone == null)
+        if (this.phoneView == null || phone == null)
             return;
-        this.phone.setText(phone);
+        this.phoneView.setText(phone);
     }
 
     public void updateEmail(String email) {
-        if (this.email == null || email == null)
+        if (this.emailView == null || email == null)
             return;
-        this.email.setText(email);
+        this.emailView.setText(email);
     }
 }

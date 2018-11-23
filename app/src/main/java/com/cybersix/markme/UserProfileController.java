@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class UserProfileController {
     private static UserProfileController instance = null;
-    private UserModel user;
+    private UserModel currentUser = null;
 
     // Is the controller a singleton, or is the model a singleton?
     protected UserProfileController() {
-        user = new UserModel();
+        currentUser = new UserModel();
     }
 
     // Lazy construction of instance.
@@ -33,20 +33,64 @@ public class UserProfileController {
         return instance;
     }
 
+    public void modifyModel(UserModel model, UserView view) {
+        modifyUsername(model, view);
+        modifyEmail(model, view);
+        modifyPhone(model, view);
+    }
+
+    protected void modifyPhone(UserModel model, UserView view) {
+        if (model == null || view == null)
+            return;
+
+        try {
+            model.setPhone(view.getPhoneView().getText().toString());
+        } catch (InvalidPhoneNumberException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void modifyUsername(UserModel model, UserView view) {
+        if (model == null || view == null)
+            return;
+
+        try {
+            model.setUsername(view.getUsernameView().getText().toString());
+        } catch (UsernameTooShortException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void modifyEmail(UserModel model, UserView view) {
+        if (model == null || view == null)
+            return;
+
+        try {
+            model.setEmail(view.getEmailView().getText().toString());
+        } catch (InvalidEmailAddressException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Attempts to change a user's contact information.
     // Inputs: email, phone - Contact information
     // Outputs: Returns true if contact information was successfully changed, false otherwise.
-    public void editContactInformation(String email, String phone) {
-
+    public void editUserEmail(UserModel user, String email) {
+        try {
+            user.setEmail(email);
+            // TODO: elastic search email modifier here.
+        } catch (InvalidEmailAddressException e) {
+            e.printStackTrace();
+        }
     }
 
-    // Attempts to set the user in the UserModel.
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
-
-    public UserModel getUser() {
-        return this.user;
+    public void editUserPhone(UserModel user, String phone) {
+        try {
+            user.setPhone(phone);
+            // TODO: elastic search phone modifier here.
+        } catch (InvalidPhoneNumberException e) {
+            e.printStackTrace();
+        }
     }
 
     // Attempts to add a user to the elasticsearch database.
@@ -54,7 +98,7 @@ public class UserProfileController {
     //         userType - The type of the user.
     // Outputs: Returns true if added user was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public Boolean addUser(UserModel newUser) {
+    public boolean addUser(UserModel newUser) {
 
         // Check if the user exists.
         ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
@@ -78,6 +122,22 @@ public class UserProfileController {
             return false;
         }
 
+    }
+
+    public UserModel findUser(String username) {
+        // Search elasticsearch database for the username.
+        ArrayList<UserModel> foundUsers;
+        try {
+            foundUsers = new ElasticSearchIOController.GetUserTask()
+                    .execute(username).get();
+            if (!foundUsers.isEmpty())
+                return foundUsers.get(0);
+            Log.d("Vishal_Login_Activity", Integer.toString(foundUsers.size()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
