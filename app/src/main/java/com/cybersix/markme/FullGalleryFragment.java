@@ -7,19 +7,20 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class fullGallery extends Fragment {
-
+public class FullGalleryFragment extends Fragment {
     public static final String PHOTO_CONTENT = "ca.cybersix.photo";
     public static final String GALLERY_MODE = "ca.cybersix.gallerymode";
     private boolean galleryViewMode;
@@ -28,7 +29,7 @@ public class fullGallery extends Fragment {
     private Bitmap bitmaps[];
     private int counter;
 
-    public fullGallery() {
+    public FullGalleryFragment() {
         // Required empty public constructor
     }
 
@@ -87,14 +88,14 @@ public class fullGallery extends Fragment {
 //        bitmaps[3]= b1;
 
 
-        GridView gridView = view.findViewById(R.id.gridview);
+        GridView gridView = view.findViewById(R.id.fragment_full_gallery_gridview);
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity(), this.bitmaps);
         gridView.setAdapter(imageAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bitmap bitmap = fullGallery.this.bitmaps[position];
+                Bitmap bitmap = FullGalleryFragment.this.bitmaps[position];
                 Intent intent = new Intent(getActivity().getBaseContext(),
                         deletePhoto.class);
 
@@ -114,10 +115,12 @@ public class fullGallery extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
+
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
+
         return view;
     }
 }

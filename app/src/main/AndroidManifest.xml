@@ -38,7 +38,7 @@
             android:name=".SignupActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".RecordInfoActivity" />
+        <activity android:name=".RecordInfoFragment" />
         <activity
             android:name=".LiveCameraActivity"
             android:theme="@style/AppTheme.NoActionBar"

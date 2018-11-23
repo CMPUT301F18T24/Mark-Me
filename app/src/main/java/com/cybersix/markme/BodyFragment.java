@@ -113,7 +113,7 @@ public class BodyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.activity_body, container, false);
+        View root = inflater.inflate(R.layout.fragment_body, container, false);
         return root;
     }
 
@@ -121,7 +121,7 @@ public class BodyFragment extends Fragment {
     public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        bodyView = (ImageView) getActivity().findViewById(R.id.bodyView);
+        bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
 
         if(problemController.getSelectedProblem() == null){
@@ -155,14 +155,14 @@ public class BodyFragment extends Fragment {
     }
 
     private void initAttributes() {
-        bodyView = (ImageView) getActivity().findViewById(R.id.bodyView);
+        bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
-        rotateButton = (ImageButton) getActivity().findViewById(R.id.rotateButton);
-        addButton = (ImageButton) getActivity().findViewById(R.id.addButton);
-        viewAllButton = (ImageButton) getActivity().findViewById(R.id.viewAllButton);
-        totalText = (TextView) getActivity().findViewById(R.id.totalText);
-        notListedText = (TextView) getActivity().findViewById(R.id.notListedText);
-        userPromptText = (TextView) getActivity().findViewById(R.id.userPromptText);
+        rotateButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_rotateButton);
+        addButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_addButton);
+        viewAllButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_viewAllButton);
+        totalText = (TextView) getActivity().findViewById(R.id.fragment_body_totalText);
+        notListedText = (TextView) getActivity().findViewById(R.id.fragment_body_notListedText);
+        userPromptText = (TextView) getActivity().findViewById(R.id.fragment_body_userPromptText);
 
         //Init mapping dict
         recordParts.put(null,new ArrayList<RecordModel>());
@@ -329,7 +329,7 @@ public class BodyFragment extends Fragment {
             Bundle b = new Bundle();
             int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
             b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
-            NavigationController.getInstance().switchToFragment(RecordInfoActivity.class, b);
+            NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
         }
     }
 

@@ -33,19 +33,19 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.activity_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mTitle = getActivity().findViewById(R.id.titleTextView);
-        mDetails = getActivity().findViewById(R.id.descriptionTextView);
-        mReturnButton = getActivity().findViewById(R.id.returnButton);
-        mAddButton = getActivity().findViewById(R.id.addButton);
-        mSearchField = getActivity().findViewById(R.id.seachField);
-        mListView = getActivity().findViewById(R.id.mainListView);
+        mTitle = getActivity().findViewById(R.id.fragment_list_titleTextView);
+        mDetails = getActivity().findViewById(R.id.fragment_list_descriptionTextView);
+        mReturnButton = getActivity().findViewById(R.id.fragment_list_returnButton);
+        mAddButton = getActivity().findViewById(R.id.fragment_list_addButton);
+        mSearchField = getActivity().findViewById(R.id.fragment_list_seachField);
+        mListView = getActivity().findViewById(R.id.fragment_list_mainListView);
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

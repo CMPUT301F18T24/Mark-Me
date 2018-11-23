@@ -15,11 +15,9 @@ package com.cybersix.markme;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class LanguageHandlerFragment extends Fragment {
@@ -28,15 +26,15 @@ public class LanguageHandlerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.activity_language, container, false);
+        return inflater.inflate(R.layout.fragment_language, container, false);
 
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TextView title = getActivity().findViewById(R.id.fragmentTitle);
-        View returnButton = getActivity().findViewById(R.id.returnButton);
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
         title.setText("Select Your Language");
         returnButton.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +44,8 @@ public class LanguageHandlerFragment extends Fragment {
             }
         });
 
-        View mEnglishButton = getActivity().findViewById(R.id.english_button);
-        View mFrenchButton = getActivity().findViewById(R.id.french_button);
+        View mEnglishButton = getActivity().findViewById(R.id.fragment_language_english_button);
+        View mFrenchButton = getActivity().findViewById(R.id.fragment_language_french_button);
 
 
         mEnglishButton.setOnClickListener(new View.OnClickListener() {

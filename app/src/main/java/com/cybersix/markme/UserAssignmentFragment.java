@@ -15,7 +15,6 @@ package com.cybersix.markme;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,16 +36,16 @@ public class UserAssignmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.activity_user_assignment, container, false);
+        return inflater.inflate(R.layout.fragment_user_assignment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // set up all of the buttons that are used within this activity
-        Button addButton = (Button) getActivity().findViewById(R.id.addAssignUserButton);
-        Button removeButton = (Button) getActivity().findViewById(R.id.removeUserButton);
-        assignedUserListView = (ListView) getActivity().findViewById(R.id.assignedUserLIstView);
+        Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
+        Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
+        assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
 
         // TODO: Will be removed once server functionality is implemented
         for (int i = 0; i < 15; i++){
@@ -80,8 +79,8 @@ public class UserAssignmentFragment extends Fragment {
             }
         });
 
-        TextView title = getActivity().findViewById(R.id.fragmentTitle);
-        View returnButton = getActivity().findViewById(R.id.returnButton);
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
         title.setText("Assign Myself");
         returnButton.setOnClickListener(new View.OnClickListener() {

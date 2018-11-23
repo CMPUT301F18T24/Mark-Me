@@ -11,35 +11,29 @@
  */
 package com.cybersix.markme;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import static android.app.Activity.RESULT_OK;
 
-public class RecordInfoActivity extends Fragment {
+public class RecordInfoFragment extends Fragment {
 
     private EditText recordTitleEdit;
     private EditText editTextDescription;
@@ -62,7 +56,7 @@ public class RecordInfoActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.activity_record_info, container, false);
+        return inflater.inflate(R.layout.fragment_record_info, container, false);
     }
 
     @Override
@@ -92,8 +86,8 @@ public class RecordInfoActivity extends Fragment {
     //       a case for checking who the user is
 
     private void initAttributes(){
-        TextView title = getActivity().findViewById(R.id.fragmentTitle);
-        View returnButton = getActivity().findViewById(R.id.returnButton);
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
         title.setText("Record Info");
         returnButton.setOnClickListener(new View.OnClickListener() {
@@ -151,8 +145,8 @@ public class RecordInfoActivity extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(fullGallery.GALLERY_MODE, recordIdx);
-                NavigationController.getInstance().switchToFragment(fullGallery.class,bundle);
+                bundle.putInt(FullGalleryFragment.GALLERY_MODE, recordIdx);
+                NavigationController.getInstance().switchToFragment(FullGalleryFragment.class, bundle);
             }
         });
 

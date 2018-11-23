@@ -1,21 +1,16 @@
 package com.cybersix.markme;
 
-import android.content.Intent;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.action.EspressoKey;
-import android.support.test.rule.ActivityTestRule;
+
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import static android.support.test.espresso.Espresso.closeSoftKeyboard;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasImeAction;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.fail;
@@ -38,7 +33,7 @@ public class LoginActivityTest {
         //Login with an existing account.
 
         // Type the username and password.
-        onView(withId(R.id.usernameText)).perform(typeText("testtest"));
+        onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText("testtest"));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.passwordText)).perform(typeText("hihi"));
         Espresso.closeSoftKeyboard();

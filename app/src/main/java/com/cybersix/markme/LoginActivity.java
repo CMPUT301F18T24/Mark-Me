@@ -14,8 +14,6 @@
 package com.cybersix.markme;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -75,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     public void checkLogin() {
 
         UserProfileController profileController = UserProfileController.getInstance();
-        TextView userText = (TextView) findViewById(R.id.usernameText);
+        TextView userText = (TextView) findViewById(R.id.fragment_account_settings_usernameText);
         TextView passText = (TextView) findViewById(R.id.passwordText);
         ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
 

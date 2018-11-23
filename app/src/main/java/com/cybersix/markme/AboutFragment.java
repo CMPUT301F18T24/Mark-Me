@@ -24,15 +24,15 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        return inflater.inflate(R.layout.activity_about, container, false);
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView title = getActivity().findViewById(R.id.fragmentTitle);
-        View returnButton = getActivity().findViewById(R.id.returnButton);
+        TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
+        View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
         title.setText("About Mark-Me");
         returnButton.setOnClickListener(new View.OnClickListener() {

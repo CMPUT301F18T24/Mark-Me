@@ -9,19 +9,19 @@
     tools:context=".ListFragment">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/fragment_list_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/titlebar"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_account_settings_titlebar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/fragment_list_titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,13 +34,13 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:typeface="sans"
-            app:layout_constraintBottom_toTopOf="@+id/titlebar"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_account_settings_titlebar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/descriptionTextView"
+            android:id="@+id/fragment_list_descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -54,7 +54,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/mainListView"
+        android:id="@+id/fragment_list_mainListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -63,20 +63,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_account_settings_titlebar" />
 
     <LinearLayout
-        android:id="@+id/titlebar"
+        android:id="@+id/fragment_list_selectionbar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_list_titlebar">
 
         <ImageView
-            android:id="@+id/returnButton"
+            android:id="@+id/fragment_list_returnButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -88,7 +88,7 @@
             android:src="?attr/homeAsUpIndicator" />
 
         <ImageView
-            android:id="@+id/addButton"
+            android:id="@+id/fragment_list_addButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -100,7 +100,7 @@
             android:src="@android:drawable/ic_menu_add" />
 
         <ImageView
-            android:id="@+id/searchIcon"
+            android:id="@+id/fragment_list_searchIcon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -112,7 +112,7 @@
             android:src="@android:drawable/ic_menu_search" />
 
         <EditText
-            android:id="@+id/seachField"
+            android:id="@+id/fragment_list_seachField"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
