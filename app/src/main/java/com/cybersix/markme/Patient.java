@@ -10,7 +10,6 @@ public class Patient extends UserModel {
     public Patient(String userID, String password) {
         super();
         super.setUserID(userID);
-        super.setmPassword(password);
         problems = new ArrayList<ProblemModel>();
         providers = new ArrayList<CareProvider>();
     }
@@ -39,9 +38,5 @@ public class Patient extends UserModel {
     public CareProvider removeCareProvider(CareProvider careProv){
         providers.remove(careProv);
         return careProv;
-    }
-
-    public String getPatientID(){
-        return this.getmUsername();
     }
 }

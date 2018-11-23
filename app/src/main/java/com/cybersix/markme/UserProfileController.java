@@ -40,7 +40,7 @@ public class UserProfileController {
     }
 
     protected void modifyPhone(UserModel model, UserView view) {
-        if (model == null || view == null)
+        if (model == null || view == null || view.getPhoneView() == null)
             return;
 
         try {
@@ -51,7 +51,7 @@ public class UserProfileController {
     }
 
     protected void modifyUsername(UserModel model, UserView view) {
-        if (model == null || view == null)
+        if (model == null || view == null || view.getUsernameView() == null)
             return;
 
         try {
@@ -62,7 +62,7 @@ public class UserProfileController {
     }
 
     protected void modifyEmail(UserModel model, UserView view) {
-        if (model == null || view == null)
+        if (model == null || view == null || view.getEmailView() == null)
             return;
 
         try {
@@ -72,25 +72,8 @@ public class UserProfileController {
         }
     }
 
-    // Attempts to change a user's contact information.
-    // Inputs: email, phone - Contact information
-    // Outputs: Returns true if contact information was successfully changed, false otherwise.
-    public void editUserEmail(UserModel user, String email) {
-        try {
-            user.setEmail(email);
-            // TODO: elastic search email modifier here.
-        } catch (InvalidEmailAddressException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void editUserPhone(UserModel user, String phone) {
-        try {
-            user.setPhone(phone);
-            // TODO: elastic search phone modifier here.
-        } catch (InvalidPhoneNumberException e) {
-            e.printStackTrace();
-        }
+    public void updateRemoteModel(UserModel model) {
+        // TODO: Update the model information on elastic search
     }
 
     // Attempts to add a user to the elasticsearch database.

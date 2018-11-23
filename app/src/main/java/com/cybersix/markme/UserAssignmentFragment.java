@@ -53,7 +53,7 @@ public class UserAssignmentFragment extends Fragment {
             String tempPassword = "1234";
             String tempID = "Fake ID " + Integer.toString(i);
             try {
-                UserModel tempUser = new UserModel(tempUsername, tempPassword);
+                UserModel tempUser = new UserModel(tempUsername);
                 tempUser.setUserID(tempID);
                 userList.add(tempUser);
             }

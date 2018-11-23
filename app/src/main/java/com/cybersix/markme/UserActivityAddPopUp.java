@@ -66,7 +66,7 @@ public class UserActivityAddPopUp extends AppCompatActivity {
             String tempPassword = "1234";
             String tempID = "Fake ID " + Integer.toString(i);
             try {
-                UserModel tempUser = new UserModel(tempUsername, tempPassword);
+                UserModel tempUser = new UserModel(tempUsername);
                 tempUser.setUserID(tempID);
                 users.add(tempUser);
             }

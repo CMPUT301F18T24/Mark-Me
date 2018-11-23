@@ -10,16 +10,23 @@
  */
 package com.cybersix.markme;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 public class MainActivity extends FragmentActivity {
+    public static String EXTRA_CURRENT_USERNAME = "COM_CYBERSIX_MARKME_CURRENT_USERNAME";
     private NavigationController mNavigationController = null;
+    private UserModel mUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
+        mUser = UserProfileController.getInstance().findUser(username);
 
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.body);
@@ -33,5 +40,9 @@ public class MainActivity extends FragmentActivity {
 
     NavigationController getNavigationController() {
         return mNavigationController;
+    }
+
+    UserModel getUser() {
+        return mUser;
     }
 }

@@ -24,59 +24,55 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SignupActivity extends AppCompatActivity {
+    UserModel userModel = null;
+    UserProfileController userController = null;
+    UserView userView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         GuiUtils.setFullScreen(this);
-        initUI();
 
+        userModel = new UserModel();
+        userView = new UserView();
+        userController = UserProfileController.getInstance();
+
+        initUI();
     }
 
     // Initializes onClick listeners for UI elements.
     // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
+        // Get the signup information.
+        userView.setUsernameView((TextView) findViewById(R.id.fragment_account_settings_usernameText));
+        userView.setEmailView((TextView) findViewById(R.id.fragment_account_settings_email));
+        userView.setPhoneView((TextView) findViewById(R.id.fragment_account_settings_phoneText));
+        TextView passwordText = (TextView) findViewById(R.id.passwordText);
 
         // Add an onClick listener that validates signup information
         Button signupButton = (Button) findViewById(R.id.signupButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userController.modifyModel(userModel, userView);
                 checkRegistration();
             }
         });
-
     }
 
     // Checks the info the user provided and creates a new account if the info is valid,
     // or lets the user know if the info is not valid.
     // TODO: I need server integration to test if a user already exists.
     public void checkRegistration() {
-
-        // Get the ccntroller.
-        UserProfileController profileController = UserProfileController.getmInstance();
-
-        // Get the signup information.
-        TextView usernameText = (TextView) findViewById(R.id.fragment_account_settings_usernameText);
-        TextView emailText = (TextView) findViewById(R.id.fragment_account_settings_email);
-        TextView phoneText = (TextView) findViewById(R.id.fragment_account_settings_phoneText);
-        TextView passwordText = (TextView) findViewById(R.id.passwordText);
-
         // Create a user of type patient by default.
-        if (profileController.addUser(usernameText.getText().toString(),
-                                      emailText.getText().toString(),
-                                      phoneText.getText().toString(),
-                                      passwordText.getText().toString(), "patient")) {
-
-            // If successful, return to the signup activity.
-            this.finish();
+        if (userController.addUser(userModel)) {
+            finish();
         } else {
             // Notify the user that registration was unsuccessful.
             // TODO: Can we let the user know exactly what went wrong?
             Toast toast = Toast.makeText(this, "Registration failed!", Toast.LENGTH_SHORT);
             toast.show();
         }
-
     }
 }

@@ -111,9 +111,9 @@ public class ProblemController {
      */
     public void loadProblemData() {
         // TODO: test this works
-        userInstance = UserProfileController.getmInstance();
+        userInstance = UserProfileController.getInstance();
         try {
-            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
 
             // TODO: This is a temporary fix for the null error given with problem records from the
             // TODO: server
@@ -122,8 +122,8 @@ public class ProblemController {
                     problem.initializeRecordModel();
                 }
             }
-            Log.d("Jose-Problems", "The system successfully got problems from userID: " +
-                    userInstance.user.getUserID());
+//            Log.d("Jose-Problems", "The system successfully got problems from userID: " +
+//                    userInstance.user.getUserID());
         }
         catch (Exception e) {
             e.printStackTrace();

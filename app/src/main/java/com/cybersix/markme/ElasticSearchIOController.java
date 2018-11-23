@@ -91,11 +91,11 @@ public class ElasticSearchIOController {
 
         // Create a data class to save to elastic search. This lets us avoid saving the extra
         // information contained in the usermodel.
-        NewUser newUser = new NewUser(user.getmUsername(),
-                                      user.getmEmail(),
-                                      user.getmPhone(),
-                                      user.getmPassword(),
-                                      user.getmUserType());
+        NewUser newUser = new NewUser(user.getUsername(),
+                                      user.getEmail(),
+                                      user.getPhone(),
+                                      "",
+                                      user.getUserType());
 
         Index index = new Index.Builder(newUser)
                         .index("cmput301f18t24test")
@@ -148,17 +148,17 @@ public class ElasticSearchIOController {
         return new ArrayList<ProblemModel>();
     }
 
-    public static void addProblem(ProblemModel problem) {
+    public static void addProblem(UserModel user, ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getmInstance();
+        UserProfileController profileController = UserProfileController.getInstance();
 
         // Create a data class to save to elastic search. This lets us avoid saving the extra
         // information contained in the problemModel.
         NewProblem newProblem = new NewProblem(problem.getTitle(),
                                                problem.getDescription(),
                                                problem.getDateStarted(),
-                                               profileController.user.getUserID());
+                                               user.getUserID());
 
         Index index = new Index.Builder(newProblem)
                 .index("cmput301f18t24test")
@@ -208,10 +208,10 @@ public class ElasticSearchIOController {
         return new ArrayList<Patient>();
     }
 
-    public static void addRecords(ProblemModel problem) {
+    public static void addRecords(UserModel user, ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getmInstance();
+        UserProfileController profileController = UserProfileController.getInstance();
 
         for (RecordModel record : problem.getRecords()) {
 
@@ -220,8 +220,7 @@ public class ElasticSearchIOController {
             NewRecord newRecord = new NewRecord(record.getTitle(),
                     record.getDescription(), record.getTimestamp(), record.getComment(),
                     record.getPhotos(), record.getBodyLocation(), record.getMapLocation(),
-                    problem.getProblemID(), profileController.user.getUserID());
-
+                    problem.getProblemID(), user.getUserID());
 
             Index index = new Index.Builder(newRecord)
                     .index("cmput301f18t24test")
@@ -285,7 +284,7 @@ public class ElasticSearchIOController {
 
         protected Void doInBackground(ProblemModel... params) {
             for (ProblemModel problem : params) {
-                addProblem(problem);
+//                addProblem(problem);
             }
 
             return null;
@@ -314,7 +313,7 @@ public class ElasticSearchIOController {
 
         protected Void doInBackground(ProblemModel... params) {
             for (ProblemModel problem : params) {
-                addRecords(problem);
+//                addRecords(problem);
             }
 
             return null;

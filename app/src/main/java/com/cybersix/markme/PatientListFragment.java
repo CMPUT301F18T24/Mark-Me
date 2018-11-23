@@ -13,8 +13,7 @@ public class PatientListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setupUI();
 
-        String userid = UserProfileController.getmInstance().user.getUserID();
-        mCareProvider = new CareProvider(userid, ElasticSearchIOController.getAssignedPatients(userid));
+        mCareProvider = (CareProvider) ((MainActivity) getActivity()).getUser();
         Log.d("CareProvider", mCareProvider.getPatients().toString());
         mArrayAdapter = new ArrayAdapter<Patient>(getActivity(), R.layout.list_item, mCareProvider.getPatients());
         getListView().setAdapter(mArrayAdapter);
