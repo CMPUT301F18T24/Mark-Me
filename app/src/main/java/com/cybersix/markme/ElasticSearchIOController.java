@@ -18,7 +18,6 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -92,11 +91,11 @@ public class ElasticSearchIOController {
 
         // Create a data class to save to elastic search. This lets us avoid saving the extra
         // information contained in the usermodel.
-        NewUser newUser = new NewUser(user.getUsername(),
-                                      user.getEmail(),
-                                      user.getPhone(),
-                                      user.getPassword(),
-                                      user.getUserType());
+        NewUser newUser = new NewUser(user.getmUsername(),
+                                      user.getmEmail(),
+                                      user.getmPhone(),
+                                      user.getmPassword(),
+                                      user.getmUserType());
 
         Index index = new Index.Builder(newUser)
                         .index("cmput301f18t24test")
@@ -152,7 +151,7 @@ public class ElasticSearchIOController {
     public static void addProblem(ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
 
         // Create a data class to save to elastic search. This lets us avoid saving the extra
         // information contained in the problemModel.
@@ -212,7 +211,7 @@ public class ElasticSearchIOController {
     public static void addRecords(ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
 
         for (RecordModel record : problem.getRecords()) {
 

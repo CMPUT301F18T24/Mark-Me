@@ -106,7 +106,7 @@ public class RecordInfoFragment extends Fragment {
         textViewComment = getActivity().findViewById(R.id.commentTextView);
         editTextComment = getActivity().findViewById(R.id.editTextComment);
         /*TODO: Test this here && Reactivate this check during integration
-        if(UserProfileController.getInstance().user.getUserType().toLowerCase() == "care_provider"){
+        if(UserProfileController.getmInstance().user.getmUserType().toLowerCase() == "care_provider"){
             editTextComment.setEnabled(true);
         } else {
             editTextComment.setEnabled(false);

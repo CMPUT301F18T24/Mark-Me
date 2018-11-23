@@ -18,16 +18,14 @@ import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
     public static final String USERID = "USERID";
+    public static final int MINIMUM_USERNAME_LENGTH = 8;
+
     private String username = null;
     private String email = null;
     private String phone = null;
-    private String password = null;
-    private String userType = null;
 
     @JestId
     private String userID = null;
-
-    public static final int MINIMUM_USERNAME_LENGTH = 8;
 
     /**
      * Need a default constructor to compile with Patient/Care Provider inheritance.
@@ -37,15 +35,10 @@ public class UserModel extends Observable {
     /**
      *
      * @param username Username of the user.
-     * @param password Password of the user.
      * @throws UsernameTooShortException Throws exception if username is less than 8 chars.
      */
-    public UserModel(String username, String password) throws UsernameTooShortException {
-        if (username.length() < MINIMUM_USERNAME_LENGTH)
-            throw new UsernameTooShortException();
-
-        this.username = username;
-        this.password = password;
+    public UserModel(String username) throws UsernameTooShortException {
+        setUsername(username);
     }
 
     /**
@@ -85,29 +78,11 @@ public class UserModel extends Observable {
         return username;
     }
 
-
-    /**
-     * @param userType Only accepts 2 types of user: patient and care_provider
-     * @throws InvalidUserTypeException Throws exception if type provided does not match required,
-     */
-    public void setUserType(String userType) throws InvalidUserTypeException {
-        if (userType == null) {
-            this.userType = null;
-        } else if (userType.equals("patient") || userType.equals("care_provider")) {
-            this.userType = userType;
-        } else {
-            throw new InvalidUserTypeException();
-        }
-
-        setChanged();
-        notifyObservers();
-    }
-
     /**
      * @return The user type
      */
     public String getUserType(){
-        return this.userType;
+        return this.getClass().getSimpleName();
     }
 
     /**
@@ -189,23 +164,6 @@ public class UserModel extends Observable {
      */
     public String getPhone(){
         return this.phone;
-    }
-
-    /**
-     * @param password The password of the user.
-     */
-    public void setPassword(String password) {
-        this.password = password;
-
-        setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * @return The password of the user.
-     */
-    public String getPassword(){
-        return this.password;
     }
 
     /**

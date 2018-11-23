@@ -55,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
     public void checkRegistration() {
 
         // Get the ccntroller.
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
 
         // Get the signup information.
         TextView usernameText = (TextView) findViewById(R.id.fragment_account_settings_usernameText);

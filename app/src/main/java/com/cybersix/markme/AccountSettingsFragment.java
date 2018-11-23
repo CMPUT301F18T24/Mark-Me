@@ -37,7 +37,7 @@ public class AccountSettingsFragment extends Fragment implements Observer {
         super.onActivityCreated(savedInstanceState);
 
         // Add the AccoutSettingsActivity view as an observer to the UserModel.
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
         profileController.user.addObserver(this);
 
         initUI();
@@ -45,7 +45,7 @@ public class AccountSettingsFragment extends Fragment implements Observer {
 
     public void initUI() {
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
 
         // Initialize the fields with the user's information
         TextView usernameText = (TextView) getActivity().findViewById(R.id.fragment_account_settings_usernameText);
@@ -104,14 +104,14 @@ public class AccountSettingsFragment extends Fragment implements Observer {
         TextView emailText = (TextView) getActivity().findViewById(R.id.fragment_account_settings_email);
         TextView phoneText = (TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText);
 
-        emailText.setText(model.getEmail());
-        phoneText.setText(model.getPhone());
+        emailText.setText(model.getmEmail());
+        phoneText.setText(model.getmPhone());
     }
 
     // Try to save the new contact information provided by the user.
     public void saveNewContactInformation() {
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = UserProfileController.getmInstance();
 
         TextView emailText = (TextView) getActivity().findViewById(R.id.fragment_account_settings_email);
         TextView phoneText = (TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText);

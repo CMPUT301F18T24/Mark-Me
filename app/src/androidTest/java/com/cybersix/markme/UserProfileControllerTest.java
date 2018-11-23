@@ -7,7 +7,7 @@ public class UserProfileControllerTest {
 
     @Test
     public void testGetInstance() {
-        UserProfileController controller = UserProfileController.getInstance();
+        UserProfileController controller = UserProfileController.getmInstance();
         assertNotEquals(controller, null);
     }
 
@@ -25,7 +25,7 @@ public class UserProfileControllerTest {
 
         try {
 
-            UserProfileController controller = UserProfileController.getInstance();
+            UserProfileController controller = UserProfileController.getmInstance();
 
             // Add our user to the usermodel.
             controller.addUser(userID, email, pass, phone, userType);

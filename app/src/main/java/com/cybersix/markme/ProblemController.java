@@ -18,9 +18,7 @@ package com.cybersix.markme;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ProblemController {
     // set up the controller instance with lazy construction
@@ -113,7 +111,7 @@ public class ProblemController {
      */
     public void loadProblemData() {
         // TODO: test this works
-        userInstance = UserProfileController.getInstance();
+        userInstance = UserProfileController.getmInstance();
         try {
             instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
 

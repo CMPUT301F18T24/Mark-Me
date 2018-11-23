@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_activity);
+        setContentView(R.layout.activity_login);
         GuiUtils.setFullScreen(this);
         initUI();
 
@@ -38,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     // Initializes onClick listeners for UI elements.
     // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
-
         // Add an onClick listener that validates login information
         Button loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -87,49 +85,20 @@ public class LoginActivity extends AppCompatActivity {
 
         // If we got exactly one username returned.
         if (foundUsers.size() == 1) {
+            // Tell the controller to update the usermodel.
+            profileController.setUser(foundUsers.get(0));
 
-            // Check if the password match.
-            if (foundUsers.get(0).getPassword().compareTo(passText.getText().toString()) == 0) {
+            Log.d("Vishal_Login_Activity", "Successful Login.");
 
-                // Tell the controller to update the usermodel.
-                profileController.setUser(foundUsers.get(0).getUserID(),
-                                          foundUsers.get(0).getUsername(),
-                                          foundUsers.get(0).getEmail(),
-                                          foundUsers.get(0).getPhone(),
-                                          foundUsers.get(0).getPassword(),
-                                          foundUsers.get(0).getUserType());
-
-                Log.d("Vishal_Login_Activity", "Successful Login.");
-
-                // Launch the next activity depending on whether the user is a patient or care provider.
-                if (profileController.user.getUserType().compareTo("patient") == 0) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else if (profileController.user.getUserType().compareTo("care_provider") == 0) {
-                    // Stub: Launch the patient list activity.
-                }
-
-            } else {
-                // Clear password box.
-                passText.setText("");
-
-                // Notify user that login failed.
-                Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
-                toast.show();
+            // Launch the next activity depending on whether the user is a patient or care provider.
+            if (profileController.getUser().getUserType().compareTo(Patient.class.getSimpleName()) == 0) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (profileController.getUser().getUserType().compareTo(CareProvider.class.getSimpleName()) == 0) {
+                // Stub: Launch the patient list activity.
             }
-
-        } else {
-
-            // Clear password box.
-            passText.setText("");
-
-            // Notify user that login failed.
-            Toast toast = Toast.makeText(this, "Invalid login information!", Toast.LENGTH_SHORT);
-            toast.show();
-
         }
-
     }
 
 }

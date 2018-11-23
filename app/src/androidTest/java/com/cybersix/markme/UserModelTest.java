@@ -17,8 +17,8 @@ public class UserModelTest {
             UserModel userModel = new UserModel(userID,pass);
 
             // Ensure the userID and password were created.
-            assertEquals(userID, userModel.getUsername());
-            assertEquals(pass, userModel.getPassword());
+            assertEquals(userID, userModel.getmUsername());
+            assertEquals(pass, userModel.getmPassword());
 
         } catch (UsernameTooShortException e) {
             fail();
@@ -36,8 +36,8 @@ public class UserModelTest {
             UserModel userModel = new UserModel(userID, pass);
 
             // Ensure the userID and password were created.
-            assertEquals(userID, userModel.getUsername());
-            assertEquals(pass,userModel.getPassword());
+            assertEquals(userID, userModel.getmUsername());
+            assertEquals(pass,userModel.getmPassword());
         } catch (UsernameTooShortException e) {
             fail();
         }
@@ -67,7 +67,7 @@ public class UserModelTest {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setEmail("joseph@world.com");
+            userModel.setmEmail("joseph@world.com");
         } catch (UsernameTooShortException | InvalidEmailAddressException e) {
             fail();
         }
@@ -75,7 +75,7 @@ public class UserModelTest {
         // Try with an invalid email format
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setEmail("josephgibberish.ca");
+            userModel.setmEmail("josephgibberish.ca");
             fail(); // Shouldn't get this far.
         } catch (UsernameTooShortException e) {
             fail();
@@ -90,8 +90,8 @@ public class UserModelTest {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setEmail("joseph@world.com");
-            assertEquals("joseph@world.com", userModel.getEmail());
+            userModel.setmEmail("joseph@world.com");
+            assertEquals("joseph@world.com", userModel.getmEmail());
         } catch (UsernameTooShortException | InvalidEmailAddressException e) {
             fail();
         }
@@ -104,8 +104,8 @@ public class UserModelTest {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setPhone("123-456-7890");
-            assertEquals("123-456-7890", userModel.getPhone());
+            userModel.setmPhone("123-456-7890");
+            assertEquals("123-456-7890", userModel.getmPhone());
         } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
             fail();
         }
@@ -117,7 +117,7 @@ public class UserModelTest {
 
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setPhone("123-456-7890");
+            userModel.setmPhone("123-456-7890");
         } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
             fail();
         }
@@ -125,7 +125,7 @@ public class UserModelTest {
         // Try with an invalid phone format
         try {
             UserModel userModel = new UserModel("12345678","dorsaMaster");
-            userModel.setPhone("38-124-4219");
+            userModel.setmPhone("38-124-4219");
             fail(); // Shouldn't get this far.
         } catch (UsernameTooShortException e) {
             fail();
@@ -140,20 +140,20 @@ public class UserModelTest {
         try {
             // Setup model.
             UserModel userModel = new UserModel("12345678","warudo");
-            userModel.setEmail("joseph@joestar.com");
-            userModel.setPhone("123-456-7890");
+            userModel.setmEmail("joseph@joestar.com");
+            userModel.setmPhone("123-456-7890");
 
             // Edit the model.
-            userModel.setEmail("dio@oregano.com");
-            userModel.setPhone("098-456-1234");
-            userModel.setUsername("mynewusername");
-            userModel.setPassword("itwasmyallalong");
+            userModel.setmEmail("dio@oregano.com");
+            userModel.setmPhone("098-456-1234");
+            userModel.setmUsername("mynewusername");
+            userModel.setmPassword("itwasmyallalong");
 
             // Check if they're the same.
-            assertEquals(userModel.getEmail(), "dio@oregano.com");
-            assertEquals(userModel.getPhone(), "098-456-1234");
-            assertEquals(userModel.getPassword(), "itwasmyallalong");
-            assertEquals(userModel.getUsername(), "mynewusername");
+            assertEquals(userModel.getmEmail(), "dio@oregano.com");
+            assertEquals(userModel.getmPhone(), "098-456-1234");
+            assertEquals(userModel.getmPassword(), "itwasmyallalong");
+            assertEquals(userModel.getmUsername(), "mynewusername");
 
 
         } catch (UsernameTooShortException | InvalidEmailAddressException |

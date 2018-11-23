@@ -17,9 +17,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class UserProfileController {
-
     private static UserProfileController instance = null;
-    public UserModel user; // TODO: Should this be public?
+    private UserModel user;
 
     // Is the controller a singleton, or is the model a singleton?
     protected UserProfileController() {
@@ -37,29 +36,17 @@ public class UserProfileController {
     // Attempts to change a user's contact information.
     // Inputs: email, phone - Contact information
     // Outputs: Returns true if contact information was successfully changed, false otherwise.
-    public Boolean editContactInformation(String email, String phone) {
-        try {
-            user.setEmail(email);
-            user.setPhone(phone);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void editContactInformation(String email, String phone) {
+
     }
 
     // Attempts to set the user in the UserModel.
-    public void setUser(String userID, String username, String email, String phone, String password,
-                        String userType) {
-        try {
-            user.setUserID(userID);
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPhone(phone);
-            user.setPassword(password);
-            user.setUserType(userType);
-        } catch (Exception e) { // TODO: Can we handle specific exceptions?
-            Log.d("Vishal_ProfileCont", e.toString());
-        }
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public UserModel getUser() {
+        return this.user;
     }
 
     // Attempts to add a user to the elasticsearch database.
@@ -67,12 +54,12 @@ public class UserProfileController {
     //         userType - The type of the user.
     // Outputs: Returns true if added user was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public Boolean addUser(String username, String email, String phone, String password, String userType) {
+    public Boolean addUser(UserModel newUser) {
 
         // Check if the user exists.
         ArrayList<UserModel> foundUsers = new ArrayList<UserModel>();
         try {
-            foundUsers = new ElasticSearchIOController.GetUserTask().execute(username).get();
+            foundUsers = new ElasticSearchIOController.GetUserTask().execute(newUser.getUsername()).get();
             Log.d("Vishal_ProfileCont", Integer.toString(foundUsers.size()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,13 +71,6 @@ public class UserProfileController {
         }
 
         try {
-            UserModel newUser = new UserModel();
-            newUser.setUsername(username);
-            newUser.setEmail(email);
-            newUser.setPhone(phone);
-            newUser.setPassword(password);
-            newUser.setUserType(userType);
-
             new ElasticSearchIOController.AddUserTask().execute(newUser);
             return true;
         } catch (Exception e) { // TODO: Can we handle specific exceptions?
