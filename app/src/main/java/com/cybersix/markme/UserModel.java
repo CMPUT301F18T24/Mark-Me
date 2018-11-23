@@ -14,6 +14,8 @@ package com.cybersix.markme;
 //Click the class or method you want to test, then press Ctrl+Shift+T (⇧⌘T).
 
 import java.util.Observable;
+import java.util.Observer;
+
 import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
@@ -175,6 +177,20 @@ public class UserModel extends Observable {
             return "null";
 
         return userID.toString() + ": " + username.toString();
+    }
+
+    public void addView(UserView view) {
+        addObserver(view);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void deleteView(UserView view) {
+        deleteObserver(view);
+
+        setChanged();
+        notifyObservers();
     }
 }
 

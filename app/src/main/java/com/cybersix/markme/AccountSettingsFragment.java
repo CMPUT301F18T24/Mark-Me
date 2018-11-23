@@ -60,8 +60,7 @@ public class AccountSettingsFragment extends Fragment {
         userView.setUsernameView((TextView) getActivity().findViewById(R.id.fragment_account_settings_usernameText));
         userView.setEmailView((TextView) getActivity().findViewById(R.id.fragment_account_settings_email));
         userView.setPhoneView((TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText));
-        userModel.addObserver(userView);
-        Log.v("Rizwan", userView.getEmailView().getText().toString());
+        userModel.addView(userView);
 
         // Disable the contact information textboxs.
         userView.getEmailView().setEnabled(false);
@@ -134,8 +133,7 @@ public class AccountSettingsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        userModel.deleteObserver(userView);
+        userModel.deleteView(userView);
 
         userController = null;
         userModel = null;
