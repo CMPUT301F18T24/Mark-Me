@@ -191,7 +191,7 @@ public class ProblemModel extends Observable implements ListItemModel {
     }
 
     @Override
-    public Fragment getDisplayEvent() {
+    public Fragment getDisplayFragment() {
         Bundle bundle = new Bundle();
         bundle.putString(ListFragment.EXTRA_TITLE, getTitle());
         bundle.putString(ListFragment.EXTRA_DESCRIPTION, getDescription());

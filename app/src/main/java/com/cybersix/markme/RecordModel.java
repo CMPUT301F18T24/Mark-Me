@@ -191,7 +191,7 @@ public class RecordModel extends Observable implements ListItemModel {
     }
 
     @Override
-    public Fragment getDisplayEvent() {
+    public Fragment getDisplayFragment() {
         return new RecordInfoFragment();
     }
 }

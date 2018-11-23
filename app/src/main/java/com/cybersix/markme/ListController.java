@@ -12,8 +12,8 @@ public class ListController {
     }
 
     public void displayListItem(int position) {
-        ListItemModel event = model.get(position);
-        NavigationController.getInstance().setFragment(event.getDisplayEvent());
+        ListItemModel item = model.get(position);
+        NavigationController.getInstance().setFragment(item.getDisplayFragment());
     }
 
     public void addListItem() {
