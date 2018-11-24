@@ -41,7 +41,7 @@ package com.cybersix.markme;
 
     import org.w3c.dom.Text;
 
-public class ProblemActivityCreation extends AppCompatActivity {
+public class ProblemCreationActivity extends AppCompatActivity {
     private String consistency;
 
 
@@ -96,8 +96,8 @@ public class ProblemActivityCreation extends AppCompatActivity {
     private void saveProblem() {
         // saves the information of the problem
         // TODO: leave out the notification stuff for now as that is a WOW factor
-        EditText problemTitle = (EditText) findViewById(R.id.problemTitleText);
-        EditText problemDescription = (EditText) findViewById(R.id.problemDescText);
+        final EditText problemTitle = (EditText) findViewById(R.id.problemTitleText);
+        final EditText problemDescription = (EditText) findViewById(R.id.problemDescText);
 //        EditText problemNotifyTime = (EditText) findViewById(R.id.problemNotifyTime);
 
         ProblemController instance = ProblemController.getInstance();
@@ -110,7 +110,10 @@ public class ProblemActivityCreation extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                setResult(RESULT_OK);
+                Intent intent = new Intent();
+                intent.putExtra(ListFragment.EXTRA_TITLE, problemTitle.getText().toString());
+                intent.putExtra(ListFragment.EXTRA_DESCRIPTION, problemDescription.getText().toString());
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

@@ -44,7 +44,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true" />
         <activity
-            android:name=".ProblemActivityCreation"
+            android:name=".ProblemCreationActivity"
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
         <activity android:name=".RecordCreationActivity" android:theme="@style/AppTheme.NoActionBar"/>

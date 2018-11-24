@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -76,6 +77,7 @@ public class ListObserver implements Observer {
 
     public void setListView(ListView listView) {
         this.listView = listView;
+        Log.i("ListObserver", ((Object) this.listView).toString());
 
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

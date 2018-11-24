@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class ProblemModel extends Observable implements ListItemModel, ModelFactory<ProblemModel> {
+public class ProblemModel extends Observable implements ListItemModel {
     private ArrayList<RecordModel> records ;
     private String title;
     private String description;
@@ -23,6 +24,14 @@ public class ProblemModel extends Observable implements ListItemModel, ModelFact
 
     public static final int MAX_TITLE_LENGTH = 30;
     public static final int MAX_DESCRIPTION_LENGTH = 300;
+
+    /***
+     * constructs the problem model
+     */
+    public ProblemModel() {
+        this.started = new Date();
+        this.records = new ArrayList<RecordModel>();
+    }
 
     /***
      * constructs the problem model
@@ -204,18 +213,18 @@ public class ProblemModel extends Observable implements ListItemModel, ModelFact
     }
 
     @Override
-    public Intent getItemCreationIntent() {
-        return null;
+    public Intent getItemCreationIntent(Context context) {
+        return new Intent(context, ProblemCreationActivity.class);
     }
 
     @Override
-    public ProblemModel create() {
+    public void set(Object ... params) {
         try {
-            return new ProblemModel("","");
-        } catch (Exception e) {
+            setTitle((String) params[0]);
+            setDescription((String) params[1]);
+        } catch (TitleTooLongException | DescriptionTooLongException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
 

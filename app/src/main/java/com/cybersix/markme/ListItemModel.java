@@ -1,5 +1,6 @@
 package com.cybersix.markme;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
@@ -12,5 +13,11 @@ public interface ListItemModel {
     /**
      * @return An intent for creating the data model through user input.
      */
-    Intent getItemCreationIntent();
+    Intent getItemCreationIntent(Context context);
+
+    /**
+     * Sets the attributes of the Model with the given params
+     * @param params
+     */
+    public void set(Object ... params);
 }

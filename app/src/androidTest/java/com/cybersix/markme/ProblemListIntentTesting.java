@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -36,7 +35,7 @@ public class ProblemListIntentTesting {
     public void testProblemCreationIntent(){
         // setup
         mainActivity = mActivityRule.getActivity();
-        Intent i = new Intent(mainActivity, ProblemActivityCreation.class);
+        Intent i = new Intent(mainActivity, ProblemCreationActivity.class);
         mainActivity.startActivity(i);
 
         // click on add Problem button

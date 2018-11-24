@@ -49,7 +49,7 @@ public class ProblemListFragment extends ListFragment {
 //        getAddButton().setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), ProblemActivityCreation.class);
+//                Intent i = new Intent(getActivity(), ProblemCreationActivity.class);
 //                startActivity(i);
 //                update();
 //            }

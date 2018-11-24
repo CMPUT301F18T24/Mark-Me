@@ -2,24 +2,28 @@ package com.cybersix.markme;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ListModel<T extends ListItemModel & ModelFactory<T>> extends Observable {
+public class ListModel<T extends ListItemModel> extends Observable {
     private String title = null;
     private String details = null;
     private ArrayList<T> list = null;
     private ArrayAdapter<T> adapter = null;
+    private final Class<T> type;
 
-    ListModel(Context context, int layoutId) {
-        this.list = new ArrayList<>();
-        this.adapter = new ArrayAdapter<>(context, layoutId, this.list);
+    ListModel(Context context, int layoutId, Class<T> clazz) {
+        this.list = new ArrayList<T>();
+        this.adapter = new ArrayAdapter<T>(context, layoutId, this.list);
+        this.type = clazz;
     }
 
-    public void addObserver(@NonNull ListObserver observer) {
+    public void addObserver(ListObserver observer) {
         addObserver((Observer) observer);
         observer.getListView().setAdapter(this.adapter);
 
@@ -50,12 +54,12 @@ public class ListModel<T extends ListItemModel & ModelFactory<T>> extends Observ
     }
 
     public void add(@NonNull T item) {
-        this.list.add(item);
+        this.adapter.add(item);
         this.adapter.notifyDataSetChanged();
     }
 
     public void delete(@NonNull T item) {
-        this.list.remove(item);
+        this.adapter.remove(item);
         this.adapter.notifyDataSetChanged();
     }
 
@@ -63,6 +67,41 @@ public class ListModel<T extends ListItemModel & ModelFactory<T>> extends Observ
         if (this.list.isEmpty())
             return null;
 
-        return this.list.get(position);
+        return this.adapter.getItem(position);
+    }
+
+    public List<T> getAll() {
+        return this.list;
+    }
+
+    public int size() {
+        return this.list.size();
+    }
+
+    public T back() {
+        return get(this.list.size() - 1);
+    }
+
+    public T addNewItem() {
+        T item = createItem();
+        if (item != null)
+            add(item);
+
+        return item;
+    }
+
+    public void refresh() {
+        setChanged();
+        notifyObservers();
+        this.adapter.notifyDataSetChanged();
+    }
+
+    private T createItem() {
+        try {
+            return type.newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

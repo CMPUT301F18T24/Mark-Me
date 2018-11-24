@@ -12,9 +12,12 @@
  */
 package com.cybersix.markme;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +25,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListFragment<T extends ListItemModel & ModelFactory<T>> extends Fragment {
+public class ListFragment<T extends ListItemModel> extends Fragment {
     public static final String EXTRA_ITEM_LAYOUT = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_ITEM_LAYOUT";
     public static final String EXTRA_TITLE = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_TITLE";
     public static final String EXTRA_DESCRIPTION = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_DESCR";
+    public static final String EXTRA_CLASS = "COM_CYBERSIX_MARKME_LIST_FRAGMEMT_CLASS";
+    public static final int REQUEST_CODE_ADD = 1;
 
     private ListObserver listObserver = null;
     private ListController listController = null;
@@ -44,9 +49,10 @@ public class ListFragment<T extends ListItemModel & ModelFactory<T>> extends Fra
         Bundle args = getArguments();
         String title = args.getString(EXTRA_TITLE, "List Title");
         String details = args.getString(EXTRA_DESCRIPTION, "List Description");
+        Class<T> clazz = (Class<T>) args.getSerializable(EXTRA_CLASS);
         int layoutId = args.getInt(EXTRA_ITEM_LAYOUT, R.layout.list_item);
 
-        listModel = new ListModel<>(getActivity(), layoutId);
+        listModel = new ListModel<>(getActivity(), layoutId, clazz);
         listModel.setTitle(title);
         listModel.setDetails(details);
 
@@ -62,4 +68,21 @@ public class ListFragment<T extends ListItemModel & ModelFactory<T>> extends Fra
 
         listModel.addObserver(listObserver);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        switch (requestCode) {
+            case REQUEST_CODE_ADD:
+                if (resultCode == Activity.RESULT_OK) {
+                    String title = intent.getStringExtra(EXTRA_TITLE);
+                    String description = intent.getStringExtra(EXTRA_DESCRIPTION);
+                    listModel.back().set(title, description);
+                    listModel.refresh();
+                } else {
+                    listModel.delete(listModel.back());
+                }
+                break;
+        }
+    }
+
 }

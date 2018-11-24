@@ -1,13 +1,12 @@
 package com.cybersix.markme;
 
-import android.support.annotation.NonNull;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 public class ListController {
     ListModel model = null;
-    Fragment prev = null, next = null;
 
-    ListController(@NonNull ListModel model) {
+    ListController(ListModel model) {
         this.model = model;
     }
 
@@ -17,6 +16,9 @@ public class ListController {
     }
 
     public void addListItem() {
-
+        Fragment fragment = NavigationController.getInstance().getFragment();
+        ListItemModel item = model.addNewItem();
+        Intent intent = item.getItemCreationIntent(fragment.getContext());
+        fragment.startActivityForResult(intent, ListFragment.REQUEST_CODE_ADD);
     }
 }

@@ -131,6 +131,7 @@ public class NavigationController {
     }
 
     public <T extends ListItemModel> void switchToListFragment (Class<T> clazz, Bundle bundle) {
+        bundle.putSerializable(ListFragment.EXTRA_CLASS, clazz);
         mFragment = new ListFragment<T>();
         if (mFragmentManager.getFragments().size() == 0)
             createFragmentDynamically();
