@@ -52,31 +52,31 @@ public class FullGalleryFragment extends Fragment {
 
         if(getArguments()!=null) {
             int problemIndex = getArguments().getInt(GALLERY_MODE);
-            if (RecordController.getInstance().selectedProblemRecords.get(problemIndex) == null) {
+            if (RecordController.getInstance().getSelectedProblemRecords().get(problemIndex) == null) {
                 size = 0;
             } else {
-                size = RecordController.getInstance().selectedProblemRecords.get(problemIndex).getPhotos().size();
+                size = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().size();
             }
 
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().selectedProblemRecords.get(problemIndex).getPhotos().get(j);
+                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(j);
                     counter++;
                 }
             }
 
         }else{
 
-            if (RecordController.getInstance().selectedProblemRecords == null) {
+            if (RecordController.getInstance().getSelectedProblemRecords() == null) {
                 size = 0;
             } else {
-                size = RecordController.getInstance().selectedProblemRecords.size();
+                size = RecordController.getInstance().getSelectedProblemRecords().size();
             }
 
             for (int i = 0; i < size; i++) {
-                int recordSize = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().size();
+                int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
                 for (int j = 0; j < recordSize; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().get(j);
+                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j);
                     counter++;
                 }
             }

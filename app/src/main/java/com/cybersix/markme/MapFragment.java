@@ -15,9 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-
-
+import java.util.ArrayList;
 
 
 //Credit: http://www.zoftino.com/android-mapview-tutorial
@@ -25,6 +23,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private GoogleMap gmap;
     private RecordController recordController = RecordController.getInstance();
+    private ArrayList<RecordModel> records;
     private MapView g_map;
 
 
@@ -39,7 +38,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         g_map = root.findViewById(R.id.g_map);
         g_map.onCreate(savedInstanceState);
         g_map.onResume();
-        recordController.addRecordLists();
+        records = recordController.getAllRecords();
 
         try{
             MapsInitializer.initialize(root.getContext());
@@ -81,7 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         //Add markers for all records
         int idx = 0;
-        for(RecordModel r : recordController.records)
+        for(RecordModel r : records)
         {
             //Only if they have a location
             if(r.getMapLocation() != null){

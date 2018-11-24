@@ -82,10 +82,9 @@ public class ProblemListFragment extends ListFragment {
         update();
     }
 
-    private void update() {
+    public void update() {
         controllerInstance.loadProblemData();
-        localList.clear();
-        localList.addAll(controllerInstance.problems);
+        localList.addAll(controllerInstance.getProblems());
         problemListAdapter.notifyDataSetChanged();
     }
 }
