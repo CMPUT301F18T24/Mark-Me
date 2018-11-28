@@ -1,29 +1,20 @@
 package com.cybersix.markme;
 
-import android.content.Intent;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.EspressoKey;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.rule.ActivityTestRule;
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.cybersix.markme.BodyFragment;
-import com.cybersix.markme.MainActivity;
+import com.cybersix.markme.actvity.MainActivity;
+import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.controller.RecordController;
+import com.cybersix.markme.fragment.MapFragment;
 
-import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasImeAction;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;

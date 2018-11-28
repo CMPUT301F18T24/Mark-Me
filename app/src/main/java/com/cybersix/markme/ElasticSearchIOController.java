@@ -17,23 +17,22 @@
  */
 package com.cybersix.markme;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.model.Patient;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.UserModel;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
-import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 
 public class ElasticSearchIOController {

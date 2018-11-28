@@ -1,5 +1,9 @@
 package com.cybersix.markme;
 
+import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.model.UserModel;
+import com.cybersix.markme.observer.UserObserver;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -7,12 +11,12 @@ public class UserProfileControllerTest {
 
     @Test
     public void testGetInstance() {
-        UserProfileController controller = UserProfileController.getmInstance();
+        UserProfileController controller = new UserProfileController(new UserModel());
         assertNotEquals(controller, null);
     }
 
     @Test
-    public void testEditContactInformation() {
+    public void testEditContactInformation() throws UserModel.UsernameTooShortException {
 
         String userID = "vpTest123";
         String email = "vishal@email.com";
@@ -25,18 +29,14 @@ public class UserProfileControllerTest {
 
         try {
 
-            UserProfileController controller = UserProfileController.getmInstance();
-
-            // Add our user to the usermodel.
-            controller.addUser(userID, email, pass, phone, userType);
+            UserProfileController controller = new UserProfileController(new UserModel(userID));
 
             // Try editing the contact information
-            assertTrue(controller.editContactInformation(newEmail, newPhone));
-
+//            assertTrue(controller.modifyModel(new UserObserver(controller)).);
             // Check that changing contact info was successful.
-            assertEquals(newEmail, controller.user.getEmail());
-            assertEquals(newPhone, controller.user.getPhone());
-
+//            assertEquals(newEmail, controller.user.getEmail());
+//            assertEquals(newPhone, controller.user.getPhone());
+            fail("");
         } catch (Exception e) {
             fail();
         }

@@ -20,10 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".actvity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true" />
-        <activity android:name=".LoginActivity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".actvity.LoginActivity" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,20 +35,20 @@
             android:enabled="true"
             android:exported="true"></receiver>
         <activity
-            android:name=".SignupActivity"
+            android:name=".actvity.SignupActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".LoginActivity" />
-        <activity android:name=".RecordInfoFragment" />
+            android:parentActivityName=".actvity.LoginActivity" />
+        <activity android:name=".fragment.RecordInfoFragment" />
         <activity
-            android:name=".LiveCameraActivity"
+            android:name=".actvity.LiveCameraActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true" />
         <activity
-            android:name=".ProblemCreationActivity"
+            android:name=".actvity.ProblemCreationActivity"
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
-        <activity android:name=".RecordCreationActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".UserActivityAddPopUp" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".actvity.RecordCreationActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".actvity.UserActivityAddPopUp" android:theme="@style/AppTheme.NoActionBar"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -63,7 +63,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
         <activity android:name=".Gallery" />
-        <activity android:name=".MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".actvity.MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".deletePhoto" />
     </application>
 

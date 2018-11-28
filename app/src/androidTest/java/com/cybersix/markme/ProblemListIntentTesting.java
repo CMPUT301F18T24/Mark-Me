@@ -9,6 +9,13 @@ import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
+import com.cybersix.markme.actvity.MainActivity;
+import com.cybersix.markme.actvity.ProblemCreationActivity;
+import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.fragment.ProblemListFragment;
+import com.cybersix.markme.model.ProblemModel;
+
 import org.junit.Rule;
 import org.junit.Test;
 
