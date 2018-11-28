@@ -1,4 +1,4 @@
-package com.cybersix.markme.controller;
+package com.cybersix.markme.observer;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cybersix.markme.controller.ListController;
 import com.cybersix.markme.model.ListModel;
 
 import java.util.Observable;

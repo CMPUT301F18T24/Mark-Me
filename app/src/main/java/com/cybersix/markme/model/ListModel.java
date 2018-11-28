@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 
-import com.cybersix.markme.controller.ListObserver;
+import com.cybersix.markme.observer.ListObserver;
 
 import java.util.ArrayList;
 import java.util.List;

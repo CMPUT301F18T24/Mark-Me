@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cybersix.markme.controller.ListController;
-import com.cybersix.markme.controller.ListObserver;
+import com.cybersix.markme.observer.ListObserver;
 import com.cybersix.markme.R;
 import com.cybersix.markme.model.ListItemModel;
 import com.cybersix.markme.model.ListModel;
