@@ -154,7 +154,7 @@ public class NavigationController {
         mFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_layout, mFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     private void setFragment(Class<? extends Fragment> clazz) {
@@ -174,7 +174,7 @@ public class NavigationController {
         mFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_layout, mFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public Fragment getFragment(){
