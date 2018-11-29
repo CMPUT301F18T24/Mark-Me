@@ -33,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.controller.NavigationController;

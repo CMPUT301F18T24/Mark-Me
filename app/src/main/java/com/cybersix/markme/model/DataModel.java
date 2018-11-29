@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.cybersix.markme.ElasticSearchIOController;
+import com.cybersix.markme.actvity.MainActivity;
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.controller.UserProfileController;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -73,15 +76,15 @@ public class DataModel {
 
     public void loadProblemData(){
         // TODO: test this works
-        UserProfileController userInstance = UserProfileController.getInstance();
+//        UserProfileController userInstance = UserProfileController();
         try {
-            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
             for(ProblemModel p: instance.problems){
                 ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemID()).get();
                 p.addRecords(rm);
             }
-            Log.d("Jose-Problems", "The system successfully got problems from userID: " +
-                    userInstance.user.getUserID());
+            Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
+//                    userInstance.user.getUserID());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -95,9 +98,9 @@ public class DataModel {
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
-        } catch (TooManyPhotosException e){
+        } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
-        } catch (PhotoTooLargeException e){
+        } catch (RecordModel.PhotoTooLargeException e){
             Log.d("Warning", "Photo too large. Photo not added");
         }
     }
