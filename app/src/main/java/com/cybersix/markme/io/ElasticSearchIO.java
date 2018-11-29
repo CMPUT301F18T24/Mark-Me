@@ -33,6 +33,10 @@ public class ElasticSearchIO implements UserModelIO {
         return instance;
     }
 
+    public boolean isConnected() {
+        return true;
+    }
+
     /**
      * Create a singleton of the JestDroidClient.
      */
