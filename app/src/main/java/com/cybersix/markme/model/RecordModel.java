@@ -20,23 +20,6 @@ public class RecordModel extends Observable {
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
     private LatLng mapLocation;
-    @JestId
-    private String recordID;
-    private String problemId;
-
-    /**
-     * @return The recordID, from elastic search database.
-     */
-    public String getRecordId() {
-        return recordID;
-    }
-
-    /**
-     * @param recordID The recordID, from elastic search database.
-     */
-    public void setRecordId(String recordID) {
-        this.recordID = recordID;
-    }
 
     public String getProblemId() {
         return problemId;
@@ -44,6 +27,25 @@ public class RecordModel extends Observable {
 
     public void setProblemId(String problemId) {
         this.problemId = problemId;
+    }
+
+    private String problemId;
+
+    @JestId
+    private String recordId;
+
+    /**
+     * @return The recordId, from elastic search database.
+     */
+    public String getRecordId() {
+        return recordId;
+    }
+
+    /**
+     * @param recordID The recordId, from elastic search database.
+     */
+    public void setRecordId(String recordID) {
+        this.recordId = recordID;
     }
 
     /**

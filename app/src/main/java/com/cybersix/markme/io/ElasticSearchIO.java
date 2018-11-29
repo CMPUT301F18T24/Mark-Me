@@ -3,9 +3,13 @@ package com.cybersix.markme.io;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.cybersix.markme.adapter.ProblemDataAdapter;
+import com.cybersix.markme.adapter.RecordDataAdapter;
+import com.cybersix.markme.adapter.UserDataAdapter;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.model.UserModel;
+
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -71,20 +75,25 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addType(UserModel.class.getSimpleName())
                 .build();
 
+        ArrayList<UserModel> users = new ArrayList<UserModel>();
+
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                return result.getSourceAsObjectList(UserModel.class);
+                List<UserDataAdapter> userAdapter = result.getSourceAsObjectList(UserDataAdapter.class);
+                for (UserDataAdapter user: userAdapter) {
+                    users.add(user.get());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new ArrayList<UserModel>();
+        return users;
     }
 
     private void asyncAddProblem(ProblemModel problem) {
-        Index index = new Index.Builder(problem)
+        Index index = new Index.Builder(new ProblemDataAdapter(problem))
                 .index(INDEX)
                 .type(problem.getClass().getSimpleName())
                 .build();
@@ -109,26 +118,26 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private List<ProblemModel> asyncGetProblems(UserModel user) {
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
-                "{ \"userId\" : \"" + user.getUserId() + "\" }}}";
+                "{ \"patientId\" : \"" + user.getUserId() + "\" }}}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())
                 .build();
-
+        List<ProblemModel> problems = new ArrayList<ProblemModel>();
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                List<ProblemModel> problemList;
-                problemList = result.getSourceAsObjectList(ProblemModel.class);
-
-                return problemList;
+                List<ProblemDataAdapter> adapters = result.getSourceAsObjectList(ProblemDataAdapter.class);
+                for (ProblemDataAdapter problem : adapters) {
+                    problems.add( problem.get() );
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new ArrayList<ProblemModel>();
+        return problems;
     }
 
     /**
@@ -147,23 +156,24 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addType(ProblemModel.class.getSimpleName())
                 .build();
 
+        List<ProblemModel> problems = new ArrayList<ProblemModel>();
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                List<ProblemModel> problemList;
-                problemList = result.getSourceAsObjectList(ProblemModel.class);
-
-                return problemList;
+                List<ProblemDataAdapter> adapters = result.getSourceAsObjectList(ProblemDataAdapter.class);
+                for (ProblemDataAdapter problem : adapters) {
+                    problems.add( problem.get() );
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new ArrayList<ProblemModel>();
+        return problems;
     }
 
     private void asyncAddRecord(RecordModel record) {
-        Index index = new Index.Builder(record)
+        Index index = new Index.Builder(new RecordDataAdapter(record))
                 .index(INDEX)
                 .type(record.getClass().getSimpleName())
                 .build();
@@ -180,7 +190,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     private void asyncAddUser(UserModel user) {
-        Index index = new Index.Builder(user)
+        Index index = new Index.Builder(new UserDataAdapter(user))
                 .index(INDEX)
                 .type(UserModel.class.getSimpleName())
                 .build();
@@ -207,18 +217,21 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addType(RecordModel.class.getSimpleName())
                 .build();
 
+        ArrayList<RecordModel> recordList = new ArrayList<>();
+
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                List<RecordModel> recordList;
-                recordList = result.getSourceAsObjectList(RecordModel.class);
-                return recordList;
+                List<RecordDataAdapter> adapters = result.getSourceAsObjectList(RecordDataAdapter.class);
+                for (RecordDataAdapter r: adapters) {
+                    recordList.add(r.get());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new ArrayList<RecordModel>();
+        return recordList;
     }
 
     private List<RecordModel> asyncGetRecords(String recordId) {
@@ -231,18 +244,21 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addType(RecordModel.class.getSimpleName())
                 .build();
 
+        ArrayList<RecordModel> recordList = new ArrayList<>();
+
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                List<RecordModel> recordList;
-                recordList = result.getSourceAsObjectList(RecordModel.class);
-                return recordList;
+                List<RecordDataAdapter> adapters = result.getSourceAsObjectList(RecordDataAdapter.class);
+                for (RecordDataAdapter r: adapters) {
+                    recordList.add(r.get());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new ArrayList<RecordModel>();
+        return recordList;
     }
 
     @Override

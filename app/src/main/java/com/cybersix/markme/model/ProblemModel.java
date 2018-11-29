@@ -13,10 +13,10 @@ public class ProblemModel extends Observable {
     private String title;
     private String description;
     private Date started;
+    private String patientId;
 
     @JestId
     private String problemId;
-    private String patientId;
 
     public static final int MAX_TITLE_LENGTH = 30;
     public static final int MAX_DESCRIPTION_LENGTH = 300;
@@ -66,6 +66,15 @@ public class ProblemModel extends Observable {
      */
     public void setProblemId(String problemId) {
         this.problemId = problemId;
+    }
+
+
+    public Date getStarted() {
+        return started;
+    }
+
+    public void setStarted(Date started) {
+        this.started = started;
     }
 
     /**

@@ -30,6 +30,10 @@ public class Patient extends UserModel {
         notifyObservers();
     }
 
+    public void setProblems(ArrayList<ProblemModel> problems) {
+        this.problems = problems;
+    }
+
     public ArrayList<ProblemModel> getProblems() {
         return problems;
     }
