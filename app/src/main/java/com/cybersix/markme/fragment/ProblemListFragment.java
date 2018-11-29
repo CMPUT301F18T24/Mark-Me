@@ -20,13 +20,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.cybersix.markme.R;
+import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.actvity.ProblemCreationActivity;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.fragment.ListFragment;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Jose: this is what I am meant to fill out. I will have to make sure if anyone else is going
@@ -41,8 +45,9 @@ public class ProblemListFragment extends ListFragment {
     public static final String EXTRA_PROBLEM_INDEX = "EXTRA_PROBLEM_INDEX";
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
-    private ArrayList<ProblemModel> localList = new ArrayList<>();
+    private ArrayList<ProblemModel> localList = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
+    private Patient patient = null;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -55,8 +60,7 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ProblemCreationActivity.class);
-                startActivity(i);
-                update();
+                startActivityForResult(i, REQUEST_CODE_ADD);
             }
         });
 
@@ -78,6 +82,8 @@ public class ProblemListFragment extends ListFragment {
 
         });
 
+        patient = (Patient) ((MainActivity) getActivity()).getUser();
+        localList = patient.getProblems();
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
         getListView().setAdapter(problemListAdapter);
         update();
@@ -90,11 +96,12 @@ public class ProblemListFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        update();
+        if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK)
+            update();
     }
 
     public void update() {
-       // controllerInstance.loadProblemData();
+        controllerInstance.loadProblemData();
         localList.clear();
         localList.addAll(controllerInstance.getProblems());
         problemListAdapter.notifyDataSetChanged();

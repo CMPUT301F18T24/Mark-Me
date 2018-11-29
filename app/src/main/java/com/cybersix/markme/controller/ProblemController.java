@@ -19,6 +19,8 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.cybersix.markme.ElasticSearchIOController;
+import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.ProblemModelIO;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.RecordModel.PhotoTooLargeException;
 import com.cybersix.markme.model.RecordModel;

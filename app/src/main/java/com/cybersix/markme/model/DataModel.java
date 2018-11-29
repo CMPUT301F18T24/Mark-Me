@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.cybersix.markme.ElasticSearchIOController;
 import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.io.ElasticSearchIO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class DataModel {
     private static DataModel instance = null;
     private ArrayList<ProblemModel> problems;
     private ProblemModel selectedProblem;
+    private ElasticSearchIO io = ElasticSearchIO.getInstance();
 
     private DataModel(){
         problems = new ArrayList<ProblemModel>();
@@ -45,7 +47,7 @@ public class DataModel {
             // add the problem to the list of problems
             instance.problems.add(newProblem);
             // also add it to the server
-            new ElasticSearchIOController.AddProblemTask().execute(newProblem);
+            io.addProblem(newProblem);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -78,7 +80,7 @@ public class DataModel {
         try {
 //            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
             for(ProblemModel p: instance.problems){
-                ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemId()).get();
+                ArrayList<RecordModel> rm = io.getRecords(p);
                 p.addRecords(rm);
             }
             Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
@@ -135,7 +137,8 @@ public class DataModel {
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
         instance.selectedProblem.addRecord(record);
-        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        io.addRecord( record );
+//        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
     }
