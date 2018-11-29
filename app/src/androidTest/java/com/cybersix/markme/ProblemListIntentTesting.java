@@ -7,6 +7,8 @@ package com.cybersix.markme;
 
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -43,9 +45,10 @@ public class ProblemListIntentTesting {
         onView(withId(R.id.problemTitleText)).perform(typeText("My Problem"));
         onView(withId(R.id.problemDescText)).perform(typeText("My Description"));
         Espresso.closeSoftKeyboard();
+        onView(withId(R.id.problemSaveButton)).perform(ViewActions.scrollTo());
         onView(withId(R.id.problemSaveButton)).perform(click());
 
-        ProblemModel problem = ProblemController.getInstance().problems.get(ProblemController.getInstance().problems.size() - 1);
+        ProblemModel problem = ProblemController.getInstance().getProblems().get(ProblemController.getInstance().getProblems().size() - 1);
         assertEquals(problem.getTitle(), "My Problem");
         assertEquals(problem.getDescription(), "My Description");
 //        fail();

@@ -43,7 +43,7 @@ public class Gallery extends Fragment implements View.OnClickListener {
         Bundle extras = getActivity().getIntent().getExtras();
         if (extras != null){
             int recordId = extras.getInt(EXTRA_MESSAGE);
-            int size  = RecordController.getInstance().selectedProblemRecords.get(recordId).getPhotos().size();
+            int size  = RecordController.getInstance().getSelectedProblemRecords().get(recordId).getPhotos().size();
             imageGet(size);
         }else{
             Intent intent = new Intent(getContext(), FullGalleryFragment.class);
@@ -53,7 +53,7 @@ public class Gallery extends Fragment implements View.OnClickListener {
 
     private void imageGet(int size){
         for (int i=0;i< size; i++){
-            Bitmap bitmap = RecordController.getInstance().selectedProblemRecords.get(i).getPhotos().get(i);
+            Bitmap bitmap = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(i);
             bitmapArray[i] = bitmap;
             imageLoader(bitmap);
         }

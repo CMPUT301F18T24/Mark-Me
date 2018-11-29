@@ -70,6 +70,7 @@ public class ProblemListFragment extends ListFragment {
 
 
             }
+
         });
 
         problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
@@ -78,14 +79,19 @@ public class ProblemListFragment extends ListFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         update();
     }
 
-    private void update() {
-        controllerInstance.loadProblemData();
+    public void update() {
+       // controllerInstance.loadProblemData();
         localList.clear();
-        localList.addAll(controllerInstance.problems);
+        localList.addAll(controllerInstance.getProblems());
         problemListAdapter.notifyDataSetChanged();
     }
 }
