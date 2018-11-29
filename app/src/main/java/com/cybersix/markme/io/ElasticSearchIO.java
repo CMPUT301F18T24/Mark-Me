@@ -24,7 +24,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private static ElasticSearchIO instance = null;
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test";
-    private final String URI = "http://cmput301.softwareprocess.es:8080";
+    private final String URI = "http://cmput301.softwareprocess.es:8080/";
 
     private ElasticSearchIO() {
         setClient();
@@ -250,7 +250,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         // when adding a user, a query should be done
         // for the user's type. A factory should be used
         // to return the correct UserModel Instance
-
         try {
             ArrayList<UserModel> users = new FindUserTask().execute(username).get();
             if (!users.isEmpty())
@@ -267,9 +266,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         if (findUser(user.getUsername()) != null) {
             return false;
         }
-
-        // when adding a user, a query should be done
-        // for the user's type.
 
         try {
             new AddUserTask().execute(user).get();

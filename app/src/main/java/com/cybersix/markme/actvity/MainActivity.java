@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.cybersix.markme.model.Patient;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.UserFactory;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
@@ -33,6 +36,12 @@ public class MainActivity extends FragmentActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
         mUser = ElasticSearchIO.getInstance().findUser(username);
+
+        try {
+            mUser = UserFactory.inflateUser(mUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.body);
