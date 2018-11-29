@@ -75,13 +75,9 @@ public class DataModel {
         UserProfileController userInstance = UserProfileController.getInstance();
         try {
             instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
-
-            // TODO: This is a temporary fix for the null error given with problem records from the
-            // TODO: server
-            for (ProblemModel problem : instance.problems) {
-                if (problem.getRecords() == null){
-                    problem.initializeRecordModel();
-                }
+            for(ProblemModel p: instance.problems){
+                ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemID()).get();
+                p.addRecords(rm);
             }
             Log.d("Jose-Problems", "The system successfully got problems from userID: " +
                     userInstance.user.getUserID());

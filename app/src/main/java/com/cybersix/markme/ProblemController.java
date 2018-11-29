@@ -38,7 +38,7 @@ public class ProblemController {
     public static ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
-            //uploadFakeData();
+            instance.loadProblemData();
         }
         return instance;
     }
