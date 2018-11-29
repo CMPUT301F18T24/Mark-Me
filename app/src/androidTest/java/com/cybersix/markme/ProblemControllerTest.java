@@ -27,8 +27,8 @@ public class ProblemControllerTest {
             testController.createNewProblem(testTitle, testDescr);
 
             // Get all of the problems. (In this case there should only be one)
-            ArrayList<ProblemModel> testProblems = testController.problems;
-            ProblemModel resultProblem = testProblems.get(0);
+            ArrayList<ProblemModel> testProblems = testController.getProblems();
+            ProblemModel resultProblem = testProblems.get(testProblems.size()-1);
             assertEquals(resultProblem.getDateStarted(), testDate);
             assertEquals(resultProblem.getTitle(), testTitle);
             assertEquals(resultProblem.getDescription(), testDescr);
@@ -69,7 +69,7 @@ public class ProblemControllerTest {
             // test the edit function
             testController.editProblem(1, testTitleEdit, testDescrEdit);
             // get the problems and compare
-            ArrayList<ProblemModel> testProblems = testController.problems;
+            ArrayList<ProblemModel> testProblems = testController.getProblems();
             ProblemModel testProblem = testProblems.get(1);
             assertEquals(testProblem.getTitle(), testTitleEdit);
             assertEquals(testProblem.getDescription(), testDescrEdit);

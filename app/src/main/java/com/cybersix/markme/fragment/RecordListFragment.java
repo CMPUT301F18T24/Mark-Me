@@ -62,9 +62,9 @@ public class RecordListFragment extends ListFragment {
         });
 
         if(selectedPart == null){
-            recordsToDisplay = recordController.selectedProblemRecords;
+            recordsToDisplay = recordController.getSelectedProblemRecords();
         } else {
-            for(RecordModel r:recordController.selectedProblemRecords){
+            for(RecordModel r:recordController.getSelectedProblemRecords()){
                 if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
                     recordsToDisplay.add(r);
                 }
@@ -107,9 +107,9 @@ public class RecordListFragment extends ListFragment {
         // set the adapter for the list activity
         recordsToDisplay = new ArrayList<RecordModel>();
         if(selectedPart == null){
-            recordsToDisplay = recordController.selectedProblemRecords;
+            recordsToDisplay = recordController.getSelectedProblemRecords();
         } else {
-            for(RecordModel r:recordController.selectedProblemRecords){
+            for(RecordModel r:recordController.getSelectedProblemRecords()){
                 if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
                     recordsToDisplay.add(r);
                 }

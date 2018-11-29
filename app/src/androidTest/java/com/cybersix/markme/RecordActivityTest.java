@@ -46,7 +46,7 @@ public class RecordActivityTest {
         nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
         ProblemController.getInstance().createNewProblem("title","desc");
         ProblemController.getInstance().setSelectedProblem(0);
-        ProblemController.getInstance().getSelectedProblemRecords().add(new RecordModel("a","v"));
+        ProblemController.getInstance().getSelectedProblem().getRecords().add(new RecordModel("a","v"));
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout,new ProblemListFragment())
@@ -59,24 +59,6 @@ public class RecordActivityTest {
     */
     @Test
     public void testViewRecordInfo(){
-
-        //Perform click, set data values
-        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_list_mainListView)).perform(click());
-
-        //Send to next view
-        Bundle b = new Bundle();
-        b.putSerializable(RecordListFragment.EXTRA_RECORD_INDEX,null);
-        Fragment f = new RecordListFragment();
-        f.setArguments(b);
-        mainActivityTestRule.getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_layout,f)
-                .commitAllowingStateLoss();
-
-        //Assert list view is being displayed
-        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_list_mainListView)).perform(click());
 
         Bundle p = new Bundle();
         p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
@@ -92,12 +74,6 @@ public class RecordActivityTest {
         onView(withId(R.id.recordTitleEdit)).perform(typeText("record"));
         onView(withId(R.id.buttonSaveChanges)).perform(click());
     }
-
-    @Test
-    public void viewRecordPhotos(){
-        fail("Implementation required");
-    }
-
     /*
         Use cases: 17, 18
      */
@@ -112,5 +88,11 @@ public class RecordActivityTest {
         //Perform click to add location
         onView(withId(R.id.g_map_select)).perform(longClick());
     }
+
+    @Test
+    public void viewRecordPhotos(){
+        fail("Implementation required");
+    }
+
 
 }

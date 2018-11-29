@@ -22,8 +22,8 @@ public class RecordControllerTest {
     public void setup(){
         ProblemController.getInstance().createNewProblem("a","b");
         ProblemController.getInstance().setSelectedProblem(0);
-        RecordController.getInstance().records.add(new RecordModel("A","b"));
-        RecordController.getInstance().selectedProblemRecords.add(new RecordModel("A","b"));
+        RecordController.getInstance().getAllRecords().add(new RecordModel("A","b"));
+        RecordController.getInstance().getSelectedProblemRecords().add(new RecordModel("A","b"));
     }
 
     @Test
@@ -33,12 +33,11 @@ public class RecordControllerTest {
         String description = "testDescription";
 
         RecordController testController = RecordController.getInstance();
-        testController.records.add(new RecordModel(title,description));
-        RecordModel record = testController.records.get(0);
+        testController.getSelectedProblemRecords().add(new RecordModel(title,description));
 
         // check that the record information has been saved
-        assertEquals(record.getTitle(), title);
-        assertEquals(record.getDescription(), description);
+        assertEquals(testController.getSelectedProblemRecords().get(testController.getSelectedProblemRecords().size()-1).getTitle(), title);
+        assertEquals(testController.getSelectedProblemRecords().get(testController.getSelectedProblemRecords().size()-1).getDescription(), description);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class RecordControllerTest {
             testController.editRecord(0, titleEdit, descriptionEdit, editPhotos, editBodyLocation,
                     editLocation, commentEdit);
 //            // get the record
-            RecordModel record = testController.records.get(0);
+            RecordModel record = testController.getAllRecords().get(0);
             assertEquals(record.getTitle(), titleEdit);
             assertEquals(record.getDescription(), descriptionEdit);
             assertEquals(record.getComment(), commentEdit);

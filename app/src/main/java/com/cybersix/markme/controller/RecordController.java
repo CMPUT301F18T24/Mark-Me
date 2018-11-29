@@ -15,31 +15,24 @@
 package com.cybersix.markme.controller;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
+import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.EBodyPart;
-import com.cybersix.markme.ElasticSearchIOController;
-import com.cybersix.markme.model.RecordModel.PhotoTooLargeException;
 import com.cybersix.markme.model.RecordModel;
-import com.cybersix.markme.model.RecordModel.TooManyPhotosException;
-import com.cybersix.markme.model.ProblemModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RecordController {
     // set up the controller instance with lazy construction
     private static RecordController instance = null;
-    public ArrayList<RecordModel> records;
-    public ArrayList<RecordModel> selectedProblemRecords;
 
     /**
      * This contructor will set up the controller variable "problems"
      */
     protected RecordController() {
-        records = new ArrayList<RecordModel>();
+        DataModel.getInstance();
     }
 
     // Lazy construction of instance.
@@ -75,38 +68,8 @@ public class RecordController {
         //GeoLocationRecord location = null
         // expect bodylocation to be null sometimes
 
-        RecordModel record = new RecordModel(title, description);
-        if (photos != null) {
-            for (Bitmap photo : photos) {
-                try {
-                    record.addPhoto(photo);
-                }
-                catch (Exception e) {
-                    // display unable to save the photos
-                    String message = e.getMessage();
-                    return null;
-                }
-            }
-        }
-        // set the body location
-        if (bodyLocation != null) {
-            record.setBodyLocation(bodyLocation);
-        }
-        // set the map location
-        if (location != null) {
-            record.setMapLocation(location);
-        }
-        record.setTimestamp(new Date());
-
-        // finally add the record to the record list
-        // instance.records.add(record); dont need this since we just update the selected problem
-        ProblemController.getInstance().getSelectedProblem().addRecord(record);
-        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
-        // Update the selected problems list
-        instance.selectedProblemRecords = ProblemController.getInstance().getSelectedProblem().getRecords();
-        Log.d("Jose_CreateRecord", "Record successfully created");
-        return record;
-
+       RecordModel r = DataModel.getInstance().createNewRecord(title,description,photos,location,bodyLocation);
+       return r;
     }
 
     /**
@@ -121,89 +84,28 @@ public class RecordController {
      */
     public void editRecord(int index, String newTitle, String newDescription, ArrayList<Bitmap> newPhotos,
                            BodyLocation newBodyLocation, LatLng newLocation, String newComment) {
-
-        // edit the record information
-        RecordModel record = instance.records.get(index);
-        // set the new attributes
-        try {
-            if (newTitle != null || newTitle != "") {
-                record.setTitle(newTitle);
-            }
-            if (newDescription != null || newDescription != ""){
-                record.setDescription(newDescription);
-            }
-            if (newPhotos != null) {
-                for (Bitmap photo : newPhotos) {
-                    record.addPhoto(photo);
-                }
-            }
-            if (newBodyLocation != null) {
-                record.setBodyLocation(newBodyLocation);
-            }
-            if (newLocation != null) {
-                record.setMapLocation(newLocation);
-            }
-            if (newComment != null || newComment != "") {
-                record.setComment(newComment);
-            }
-            // we are done. Display a complete message
-            // TODO: implement a complete message for now put it in the log
-            Log.d("Jose_EditRecord","Successfully edited record");
-        }
-        catch (Exception e) {
-            // display an error for the description
-            String message = e.getMessage();
-            Log.d("Jose_EditRecord", message);
-        }
+        DataModel.getInstance().editRecord(index,newTitle,newDescription,newPhotos,newBodyLocation,newLocation,newComment);
     }
 
-    public ArrayList<RecordModel> loadRecordData(ProblemModel problemModel) {
-        try {
-            return new ElasticSearchIOController.GetRecordTask().execute(problemModel.getProblemID()).get();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return new ArrayList<RecordModel>();
-        }
-    }
-
-
-    public void saveRecordData(ArrayList<RecordModel> records) {
-
-    }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
-        selectedProblemRecords.get(idx).setTitle(title);
-        selectedProblemRecords.get(idx).setDescription(desc);
-        selectedProblemRecords.get(idx).setBodyLocation(bl);
-        selectedProblemRecords.get(idx).setComment(comment);
-        ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
+        DataModel.getInstance().saveRecordChanges(title,desc,comment,bl,idx);
     }
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){
-        return ProblemController.getInstance().getSelectedProblemRecords();
+        return DataModel.getInstance().getSelectedProblemRecords();
     }
 
     public void addRecordPhoto(Bitmap b, int idx){
-        try{
-            selectedProblemRecords.get(idx).addPhoto(b);
-            ProblemController.getInstance().AddSelectedProblemRecordPhoto(b,idx);
-        } catch (TooManyPhotosException e){
-            Log.d("Warning", "Too many photos. Photo not added");
-        } catch (PhotoTooLargeException e){
-            Log.d("Warning", "Photo too large. Photo not added");
-        }
+        DataModel.getInstance().addSelectedProblemRecordPhoto(b,idx);
     }
 
     public void addRecordLocation(LatLng loc, int idx){
-        selectedProblemRecords.get(idx).setMapLocation(loc);
-        ProblemController.getInstance().UpdateSelectedProblemRecord(selectedProblemRecords.get(idx),idx);
+        DataModel.getInstance().addRecordLocation(loc,idx);
     }
 
-    public void addRecordLists(){
-        for (ProblemModel p: ProblemController.getInstance().problems){
-            records.addAll(p.getRecords());
-        }
+    public ArrayList<RecordModel> getAllRecords(){
+        return DataModel.getInstance().getAllRecords();
     }
 
 }

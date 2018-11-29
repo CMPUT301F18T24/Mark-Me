@@ -106,6 +106,7 @@ public class BodyFragment extends Fragment {
     private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private ProblemController problemController = ProblemController.getInstance();
+    private RecordController recordController = RecordController.getInstance();
     private boolean frontFacing = true;
     private int listedCount = 0;
     private int unlistedCount = 0;
@@ -181,8 +182,8 @@ public class BodyFragment extends Fragment {
         //TODO: Remove this check here
         if(problemController.getSelectedProblem() != null){
             //Add existing records to body mappings
-            Log.d("records",problemController.getSelectedProblemRecords().toString());
-            for(RecordModel r : problemController.getSelectedProblemRecords()){
+            Log.d("records",recordController.getSelectedProblemRecords().toString());
+            for(RecordModel r : recordController.getSelectedProblemRecords()){
                 ArrayList<RecordModel> records = recordParts.get(r.getBodyLocation().getBodyPart());
                 records.add(r);
                 recordParts.put(r.getBodyLocation().getBodyPart(),records);
