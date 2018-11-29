@@ -1,11 +1,7 @@
 package com.cybersix.markme.model;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v4.app.Fragment;
 
-import com.cybersix.markme.fragment.RecordInfoFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -24,23 +20,31 @@ public class RecordModel extends Observable {
     private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
     private LatLng mapLocation;
+    @JestId
+    private String recordID;
+    private String problemId;
 
     /**
      * @return The recordID, from elastic search database.
      */
-    public String getRecordID() {
+    public String getRecordId() {
         return recordID;
     }
 
     /**
      * @param recordID The recordID, from elastic search database.
      */
-    public void setRecordID(String recordID) {
+    public void setRecordId(String recordID) {
         this.recordID = recordID;
     }
 
-    @JestId
-    private String recordID;
+    public String getProblemId() {
+        return problemId;
+    }
+
+    public void setProblemId(String problemId) {
+        this.problemId = problemId;
+    }
 
     /**
      * constructor of record model

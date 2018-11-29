@@ -24,7 +24,7 @@ public class CareProvider extends UserModel {
 
     public CareProvider(String username, List<Patient> patients) {
         super();
-        super.setUserID(username);
+        super.setUserId(username);
 
         if (patients == null)
             this.patients = new ArrayList<Patient>();

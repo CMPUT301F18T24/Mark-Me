@@ -4,9 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.cybersix.markme.ElasticSearchIOController;
-import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.controller.ProblemController;
-import com.cybersix.markme.controller.UserProfileController;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -78,13 +76,13 @@ public class DataModel {
         // TODO: test this works
 //        UserProfileController userInstance = UserProfileController();
         try {
-//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
+//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
             for(ProblemModel p: instance.problems){
-                ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemID()).get();
+                ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemId()).get();
                 p.addRecords(rm);
             }
             Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
-//                    userInstance.user.getUserID());
+//                    userInstance.user.getUserId());
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -105,7 +105,7 @@ public class ElasticSearchIOController {
 //            Log.d("Vishal", "addUser: " + result.isSucceeded() + " " + index.getId());
 //            if (result.isSucceeded()) {
 //                // Associate the ID with the original userModel object.
-//                user.setUserID(result.getId());
+//                user.setUserId(result.getId());
 //            }
 //        } catch (IOException e) {
 //            e.printStackTrace();
@@ -155,7 +155,7 @@ public class ElasticSearchIOController {
 //        NewProblem newProblem = new NewProblem(problem.getTitle(),
 //                                               problem.getDescription(),
 //                                               problem.getDateStarted(),
-//                                               user.getUserID());
+//                                               user.getUserId());
 //
 //        Index index = new Index.Builder(newProblem)
 //                .index("cmput301f18t24test")
@@ -166,12 +166,11 @@ public class ElasticSearchIOController {
 //            DocumentResult result = client.execute(index);
 //            if (result.isSucceeded()) {
 //                // Associate the ID with the original userModel object.
-//                problem.setProblemID(result.getId());
+//                problem.setProblemId(result.getId());
 //            }
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
     }
 
     public static List<RecordModel> getRecords(String problemID) {
@@ -212,33 +211,31 @@ public class ElasticSearchIOController {
 
         for (RecordModel record : problem.getRecords()) {
 
-            // Create a data class to save to elastic search. This lets us avoid saving the extra
-            // information contained in the problemModel.
+//             Create a data class to save to elastic search. This lets us avoid saving the extra
+//             information contained in the problemModel.
 //            NewRecord newRecord = new NewRecord(record.getTitle(),
 //                    record.getDescription(), record.getTimestamp(), record.getComment(),
 //                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation(),
-//                    problem.getProblemID(), user.getUserID());
+//                    problem.getProblemId(), user.getUserId());
 //
 //            Index index = new Index.Builder(newRecord)
 //                    .index("cmput301f18t24test")
 //                    .type("records")
 //                    .build();
-
+//
 //            try {
 //                DocumentResult result = client.execute(index);
 //                if (result.isSucceeded()) {
 //                    // Associate the ID with the original userModel object.
-//                    record.setRecordID(result.getId());
+//                    record.setRecordId(result.getId());
 //                }
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
         }
-
     }
 
     public static class GetProblemTask extends AsyncTask<String, Void, ArrayList<ProblemModel>> {
-
         protected ArrayList<ProblemModel> doInBackground(String... strings) {
             ArrayList<ProblemModel> problems = new ArrayList<ProblemModel>();
             for (String s: strings) {
@@ -246,7 +243,6 @@ public class ElasticSearchIOController {
             }
             return problems;
         }
-
     }
 
     /**

@@ -1,13 +1,5 @@
 package com.cybersix.markme.model;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-
-import com.cybersix.markme.fragment.ListFragment;
-import com.cybersix.markme.actvity.ProblemCreationActivity;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +15,8 @@ public class ProblemModel extends Observable {
     private Date started;
 
     @JestId
-    private String problemID;
+    private String problemId;
+    private String patientId;
 
     public static final int MAX_TITLE_LENGTH = 30;
     public static final int MAX_DESCRIPTION_LENGTH = 300;
@@ -53,18 +46,26 @@ public class ProblemModel extends Observable {
         this.records = new ArrayList<RecordModel>();
     }
 
-    /**
-     * @return The problemID, from elastic search database.
-     */
-    public String getProblemID() {
-        return problemID;
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     /**
-     * @param problemID The problemID, from elastic search database.
+     * @return The problemId, from elastic search database.
      */
-    public void setProblemID(String problemID) {
-        this.problemID = problemID;
+    public String getProblemId() {
+        return problemId;
+    }
+
+    /**
+     * @param problemId The problemId, from elastic search database.
+     */
+    public void setProblemId(String problemId) {
+        this.problemId = problemId;
     }
 
     /**
