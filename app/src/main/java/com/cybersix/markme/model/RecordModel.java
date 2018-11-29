@@ -16,7 +16,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class RecordModel extends Observable implements ListItemModel {
+public class RecordModel extends Observable {
     private String title;
     private String description;
     private Date timestamp;
@@ -191,22 +191,6 @@ public class RecordModel extends Observable implements ListItemModel {
             bodyPart = this.getBodyLocation().getBodyPart().name();
         }
         return this.getTitle() + " - " + bodyPart + " | " + format.format(this.getTimestamp());
-    }
-
-    @Override
-    public Fragment getDisplayFragment() {
-        return new RecordInfoFragment();
-    }
-
-    @Override
-    public Intent getItemCreationIntent(Context context) {
-        return null;
-    }
-
-    @Override
-    public void set(Object ... params) {
-        setTitle((String) params[0]);
-        setDescription((String) params[1]);
     }
 
     /**

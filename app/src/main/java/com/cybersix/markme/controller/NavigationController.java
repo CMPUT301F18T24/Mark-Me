@@ -22,11 +22,11 @@ import android.view.MenuItem;
 import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.fragment.MapFragment;
 import com.cybersix.markme.R;
+import com.cybersix.markme.fragment.ProblemListFragment;
 import com.cybersix.markme.fragment.SettingsFragment;
 import com.cybersix.markme.fragment.BodyFragment;
 import com.cybersix.markme.fragment.FullGalleryFragment;
 import com.cybersix.markme.fragment.ListFragment;
-import com.cybersix.markme.model.ListItemModel;
 import com.cybersix.markme.model.ProblemModel;
 
 public class NavigationController {
@@ -53,7 +53,7 @@ public class NavigationController {
                     switchToFragment(FullGalleryFragment.class);
                     return true;
                 case R.id.list:
-                    switchToListFragment(ProblemModel.class);
+                    switchToFragment(ProblemListFragment.class);
                     return true;
             }
             return false;
@@ -73,7 +73,7 @@ public class NavigationController {
      * @param activity
      * @return the singleton instance
      */
-    public static NavigationController getInstance(MainActivity activity) {
+    public static synchronized NavigationController getInstance(MainActivity activity) {
         if (mNavigationController == null)
             mNavigationController = new NavigationController(
                     activity.getSupportFragmentManager(),
@@ -133,20 +133,6 @@ public class NavigationController {
      */
     public void switchToFragment(Class<? extends Fragment> clazz, Bundle bundle) {
         switchToFragment(clazz);
-        mFragment.setArguments(bundle);
-    }
-
-    public <T extends ListItemModel> void switchToListFragment (Class<T> clazz) {
-        switchToListFragment(clazz, new Bundle());
-    }
-
-    public <T extends ListItemModel> void switchToListFragment (Class<T> clazz, Bundle bundle) {
-        bundle.putSerializable(ListFragment.EXTRA_CLASS, clazz);
-        mFragment = new ListFragment<T>();
-        if (mFragmentManager.getFragments().size() == 0)
-            createFragmentDynamically();
-        else
-            replaceFragment();
         mFragment.setArguments(bundle);
     }
 

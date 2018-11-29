@@ -41,7 +41,7 @@ public class ProblemController {
     }
 
     // Lazy construction of instance.
-    public static ProblemController getInstance() {
+    public static synchronized ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
             //uploadFakeData();

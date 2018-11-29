@@ -114,8 +114,6 @@ public class ProblemCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
-                intent.putExtra(ListFragment.EXTRA_TITLE, problemTitle.getText().toString());
-                intent.putExtra(ListFragment.EXTRA_DESCRIPTION, problemDescription.getText().toString());
                 setResult(RESULT_OK, intent);
                 finish();
             }

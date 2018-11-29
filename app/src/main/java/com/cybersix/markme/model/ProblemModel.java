@@ -16,7 +16,7 @@ import java.util.TimeZone;
 
 import io.searchbox.annotations.JestId;
 
-public class ProblemModel extends Observable implements ListItemModel {
+public class ProblemModel extends Observable {
     private ArrayList<RecordModel> records ;
     private String title;
     private String description;
@@ -201,33 +201,6 @@ public class ProblemModel extends Observable implements ListItemModel {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
         return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
-    }
-
-    @Override
-    public Fragment getDisplayFragment() {
-        Bundle bundle = new Bundle();
-        bundle.putString(ListFragment.EXTRA_TITLE, getTitle());
-        bundle.putString(ListFragment.EXTRA_DESCRIPTION, getDescription());
-
-        Fragment fragment = new ListFragment<RecordModel>();
-        fragment.setArguments(bundle);
-
-        return fragment;
-    }
-
-    @Override
-    public Intent getItemCreationIntent(Context context) {
-        return new Intent(context, ProblemCreationActivity.class);
-    }
-
-    @Override
-    public void set(Object ... params) {
-        try {
-            setTitle((String) params[0]);
-            setDescription((String) params[1]);
-        } catch (TitleTooLongException | DescriptionTooLongException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
