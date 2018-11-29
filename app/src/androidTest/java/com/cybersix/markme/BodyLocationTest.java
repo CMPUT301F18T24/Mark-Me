@@ -1,5 +1,8 @@
 package com.cybersix.markme;
 
+import com.cybersix.markme.model.BodyLocation;
+import com.cybersix.markme.model.EBodyPart;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

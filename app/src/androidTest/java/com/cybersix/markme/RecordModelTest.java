@@ -1,9 +1,12 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
-import android.location.Location;
-import android.media.Image;
 
+import com.cybersix.markme.model.BodyLocation;
+import com.cybersix.markme.model.EBodyPart;
+import com.cybersix.markme.model.RecordModel.PhotoTooLargeException;
+import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.RecordModel.TooManyPhotosException;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Test;

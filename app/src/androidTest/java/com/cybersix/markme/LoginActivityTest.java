@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
+import com.cybersix.markme.actvity.LoginActivity;
+import com.cybersix.markme.actvity.MainActivity;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;

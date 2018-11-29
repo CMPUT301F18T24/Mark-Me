@@ -1,5 +1,10 @@
 package com.cybersix.markme;
 
+import com.cybersix.markme.model.UserModel.InvalidEmailAddressException;
+import com.cybersix.markme.model.UserModel.InvalidPhoneNumberException;
+import com.cybersix.markme.model.UserModel;
+import com.cybersix.markme.model.UserModel.UsernameTooShortException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,16 +15,11 @@ public class UserModelTest {
     public void testCreateAndGetUserModel() {
 
         String userID = "Dorsa1234";
-        String pass = "dorsaMaster";
 
         try {
-
-            UserModel userModel = new UserModel(userID,pass);
-
+            UserModel userModel = new UserModel(userID);
             // Ensure the userID and password were created.
             assertEquals(userID, userModel.getUsername());
-            assertEquals(pass, userModel.getPassword());
-
         } catch (UsernameTooShortException e) {
             fail();
         }
@@ -32,12 +32,10 @@ public class UserModelTest {
         // Ensure userID is at least 8 characters.
         try {
             String userID = "12345678";
-            String pass = "dorsaMaster";
-            UserModel userModel = new UserModel(userID, pass);
+            UserModel userModel = new UserModel(userID);
 
             // Ensure the userID and password were created.
             assertEquals(userID, userModel.getUsername());
-            assertEquals(pass,userModel.getPassword());
         } catch (UsernameTooShortException e) {
             fail();
         }
@@ -45,9 +43,7 @@ public class UserModelTest {
         // Also, try with less than 8 characters.
         try {
             String userID = "1234567";
-            String pass = "dorsaMaster";
-            UserModel userModel = new UserModel(userID, pass);
-
+            UserModel userModel = new UserModel(userID);
             fail(); // Shouldn't get this far
         } catch (UsernameTooShortException e) {
             assertTrue(true);
@@ -66,7 +62,7 @@ public class UserModelTest {
     public void testSetEmail() {
 
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setEmail("joseph@world.com");
         } catch (UsernameTooShortException | InvalidEmailAddressException e) {
             fail();
@@ -74,7 +70,7 @@ public class UserModelTest {
 
         // Try with an invalid email format
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setEmail("josephgibberish.ca");
             fail(); // Shouldn't get this far.
         } catch (UsernameTooShortException e) {
@@ -89,7 +85,7 @@ public class UserModelTest {
     public void testGetEmail() {
 
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setEmail("joseph@world.com");
             assertEquals("joseph@world.com", userModel.getEmail());
         } catch (UsernameTooShortException | InvalidEmailAddressException e) {
@@ -103,7 +99,7 @@ public class UserModelTest {
     public void testGetPhoneNumber() {
 
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setPhone("123-456-7890");
             assertEquals("123-456-7890", userModel.getPhone());
         } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
@@ -116,7 +112,7 @@ public class UserModelTest {
     public void testSetPhoneNumber() {
 
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setPhone("123-456-7890");
         } catch (UsernameTooShortException | InvalidPhoneNumberException e) {
             fail();
@@ -124,7 +120,7 @@ public class UserModelTest {
 
         // Try with an invalid phone format
         try {
-            UserModel userModel = new UserModel("12345678","dorsaMaster");
+            UserModel userModel = new UserModel("12345678");
             userModel.setPhone("38-124-4219");
             fail(); // Shouldn't get this far.
         } catch (UsernameTooShortException e) {
@@ -139,7 +135,7 @@ public class UserModelTest {
     public void testEditUserModel() {
         try {
             // Setup model.
-            UserModel userModel = new UserModel("12345678","warudo");
+            UserModel userModel = new UserModel("12345678");
             userModel.setEmail("joseph@joestar.com");
             userModel.setPhone("123-456-7890");
 
@@ -147,12 +143,10 @@ public class UserModelTest {
             userModel.setEmail("dio@oregano.com");
             userModel.setPhone("098-456-1234");
             userModel.setUsername("mynewusername");
-            userModel.setPassword("itwasmyallalong");
 
             // Check if they're the same.
             assertEquals(userModel.getEmail(), "dio@oregano.com");
             assertEquals(userModel.getPhone(), "098-456-1234");
-            assertEquals(userModel.getPassword(), "itwasmyallalong");
             assertEquals(userModel.getUsername(), "mynewusername");
 
 

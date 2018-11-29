@@ -11,6 +11,15 @@ import org.junit.Rule;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.v4.app.Fragment;
 
+import com.cybersix.markme.actvity.MainActivity;
+import com.cybersix.markme.actvity.MapSelectActivity;
+import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.fragment.ProblemListFragment;
+import com.cybersix.markme.fragment.RecordInfoFragment;
+import com.cybersix.markme.fragment.RecordListFragment;
+import com.cybersix.markme.model.RecordModel;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
