@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.cybersix.markme.ImageAdapter;
 import com.cybersix.markme.R;
+import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.deletePhoto;
 
@@ -67,7 +68,7 @@ public class FullGalleryFragment extends Fragment {
 
         }else{
 
-            if (RecordController.getInstance().getSelectedProblemRecords() == null) {
+            if (ProblemController.getInstance().getSelectedProblem() == null || RecordController.getInstance().getSelectedProblemRecords() == null) {
                 size = 0;
             } else {
                 size = RecordController.getInstance().getSelectedProblemRecords().size();

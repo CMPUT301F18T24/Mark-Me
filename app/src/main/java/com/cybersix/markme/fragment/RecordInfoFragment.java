@@ -141,7 +141,7 @@ public class RecordInfoFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: Create overlays for screen and send in intent
                 Intent i = new Intent(getActivity(),LiveCameraActivity.class);
-                // getIntent().putExtra()
+                //i.putExtra();
                 startActivityForResult(i, REQUEST_CODE_PHOTO);
             }
         });
