@@ -120,8 +120,9 @@ public class BodyFragment extends Fragment {
     private int unlistedCount = 0;
     private boolean addingRecord = false;
     private HashMap<EBodyPart,ArrayList<RecordModel>> recordParts = new HashMap<EBodyPart,ArrayList<RecordModel>>();
-
-
+    private ArrayList<HighlightView> drawnViews = new ArrayList<HighlightView>();
+    private int screenHeight = 0;
+    private int screenWidth = 0;
 
     /*
         TODO:
@@ -137,6 +138,7 @@ public class BodyFragment extends Fragment {
     @Override
     public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        GuiUtils.setFullScreen(getActivity());
 
         bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
@@ -153,7 +155,6 @@ public class BodyFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        GuiUtils.setFullScreen(getActivity());
         listedCount = 0;
         unlistedCount = 0;
         problemController = ProblemController.getInstance();
@@ -173,6 +174,7 @@ public class BodyFragment extends Fragment {
 
             }
         });
+
     }
 
     private void initAttributes() {
@@ -300,12 +302,9 @@ public class BodyFragment extends Fragment {
         Draws an overlay for records on the screen
     */
     private void drawRecords(){
-        int maxCount = bodyConstraintLayout.getChildCount();
-        for(int i=0;i<maxCount;i++){
-            View v = bodyConstraintLayout.getChildAt(i);
-            if(v instanceof HighlightView){
-                bodyConstraintLayout.removeView(v);
-            }
+        //Clear all previously drawn views
+        for(HighlightView v: drawnViews){
+            bodyConstraintLayout.removeView(v);
         }
         for(EBodyPart bp: recordParts.keySet()){
             if(bp != EBodyPart.UNLISTED){
@@ -319,12 +318,17 @@ public class BodyFragment extends Fragment {
                 PointF p2 = bp.getP2();
 
                 //Need w/h to scale the x and y values dynamically to our screen
-                float h = bodyView.getHeight();
-                float w = bodyView.getWidth();
+                if(screenHeight == 0 || screenWidth == 0) {
+                    screenHeight = bodyConstraintLayout.getHeight();
+                    screenWidth = bodyConstraintLayout.getWidth();
+                }
+                float w = screenWidth;
+                float h = screenHeight;
 
                 //Create new view and add to layout
                 HighlightView highlight = new HighlightView(getActivity(), null,p1.x*w,p1.y*h,p2.x*w,p2.y*h);
                 bodyConstraintLayout.addView(highlight);
+                drawnViews.add(highlight);
             }
         }
     }
