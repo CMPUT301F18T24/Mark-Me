@@ -91,7 +91,6 @@ public class DataModel {
                 ArrayList<RecordModel> rm = p.getRecords();
                 p.addRecords(rm);
             }
-            Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
 //                    userInstance.user.getUserId());
         }
         catch (Exception e) {
@@ -148,7 +147,6 @@ public class DataModel {
         instance.selectedProblem.addRecord(record);
         io.addRecord( record );
 //        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
-        Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
     }
 
@@ -181,12 +179,10 @@ public class DataModel {
             }
             // we are done. Display a complete message
             // TODO: implement a complete message for now put it in the log
-            Log.d("Jose_EditRecord","Successfully edited record");
         }
         catch (Exception e) {
             // display an error for the description
             String message = e.getMessage();
-            Log.d("Jose_EditRecord", message);
         }
 
         io.addRecord(record);
@@ -203,7 +199,6 @@ public class DataModel {
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
-        Log.i("AddRecordLocation", "MapLocation Added");
         io.addRecord(selectedProblem.getRecord(idx));
     }
 

@@ -1,6 +1,7 @@
 package com.cybersix.markme.io;
 
 import com.cybersix.markme.adapter.ProblemDataAdapter;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.model.UserModel;
@@ -9,28 +10,26 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class DiskIO implements ProblemModelIO, RecordModelIO {
-    private static DiskIO instance = null;
-    private ArrayDeque<ProblemModel> pendingProblems = null;
-    private ArrayDeque<RecordModel> pendingRecords = null;
+public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
+    private static final String PROBLEM_FILENAME = "problem_queue.dat";
+    private static final String RECORD_FILENAME = "record_queue.dat";
+    private Patient currentUser = null;
 
-    private DiskIO() {
-        pendingProblems = new ArrayDeque<>();
-        pendingRecords = new ArrayDeque<>();
-    }
-
-    public static DiskIO getInstance() {
-        if (instance == null)
-            instance = new DiskIO();
-        return instance;
+    protected DiskIO(Patient currentUser) {
+        this.currentUser = currentUser;
     }
 
     /**
@@ -43,25 +42,42 @@ public class DiskIO implements ProblemModelIO, RecordModelIO {
      * lonelyTwitter: https://github.com/joshua2ua/lonelyTwitter
      * author: joshua
      */
-//    private void loadProblems() {
-//        try {
-////            FileInputStream fis = context.openFileInput();
-//            InputStreamReader isr = new InputStreamReader(fis);
-//            BufferedReader reader = new BufferedReader(isr);
-//
-//            GsonBuilder builder = new GsonBuilder();
-////            builder.registerTypeAdapter(ProblemModel.class, new EmotionSerializeAdapter());
-//            Gson gson = builder.create();
-//            Type typeList = new TypeToken<ArrayDeque<ProblemModel>>(){}.getType();
-//            pendingProblems = gson.fromJson(reader, typeList);
-//
-////            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void loadProblems() {
+        try {
+            InputStream fis = this.getClass().getClassLoader().getResourceAsStream(PROBLEM_FILENAME);//context.openFileInput();
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
+
+            Gson gson = new Gson();
+            Type typeList = new TypeToken<ArrayList<ProblemModel>>(){}.getType();
+            Patient loadedPatient = gson.fromJson(reader, typeList);
+            if (loadedPatient != null)
+                currentUser = loadedPatient;
+
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveProblems() {
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(PROBLEM_FILENAME));
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter writer = new BufferedWriter(osw);
+            Gson gson = new Gson();
+            gson.toJson(currentUser, writer);
+
+            writer.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public ProblemModel findProblem(String problemId) {
@@ -91,5 +107,28 @@ public class DiskIO implements ProblemModelIO, RecordModelIO {
     @Override
     public ArrayList<RecordModel> getRecords(ProblemModel problem) {
         return null;
+    }
+
+    @Override
+    public UserModel findUser(String username) {
+        if (currentUser != null && currentUser.getUsername().equals(username))
+            return currentUser;
+        else
+            return null;
+    }
+
+    @Override
+    public boolean addUser(UserModel user) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteUser(UserModel user) {
+        return false;
+    }
+
+    @Override
+    public void editUser(UserModel user) {
+
     }
 }
