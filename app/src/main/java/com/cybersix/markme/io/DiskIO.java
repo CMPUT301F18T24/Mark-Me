@@ -27,23 +27,23 @@ public class DiskIO implements ProblemModelIO, RecordModelIO, UserModelIO {
      * author: joshua
      */
     private void loadFromFile() {
-        try {
+//        try {
 //            FileInputStream fis = context.openFileInput(MainActivity.FILENAME);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader reader = new BufferedReader(isr);
+//            InputStreamReader isr = new InputStreamReader(fis);
+//            BufferedReader reader = new BufferedReader(isr);
 
-            GsonBuilder builder = new GsonBuilder();
+//            GsonBuilder builder = new GsonBuilder();
 //            builder.registerTypeAdapter(Emotion.class, new EmotionSerializeAdapter());
-            Gson gson = builder.create();
+//            Gson gson = builder.create();
 //            Type typeListEmotions = new TypeToken<ArrayList<Emotion>>(){}.getType();
 //            ArrayList<Patient> listOfEmotion = gson.fromJson(reader, typeListEmotions);
 
 //            fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
