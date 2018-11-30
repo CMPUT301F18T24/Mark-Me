@@ -116,7 +116,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(UserModel user) {
-        Log.i("GetProblem", "in async get Problems");
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
                 "{ \"patientId\" : \"" + user.getUserId() + "\" }}}";
@@ -152,7 +151,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
                 "{ \"problemId\" : \"" + problemId + "\" }}}";
-        Log.i("GetProblem", "in async get Problems");
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())
@@ -199,7 +197,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
 
         try {
             DocumentResult result = client.execute(index);
-            Log.d("Vishal", "addUser: " + result.isSucceeded() + " " + index.getId());
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 user.setUserId(result.getId());

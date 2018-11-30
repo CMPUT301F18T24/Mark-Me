@@ -13,6 +13,7 @@ package com.cybersix.markme.actvity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
@@ -35,10 +36,7 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        mUser = ElasticSearchIO.getInstance().findUser(username);
-        mData = DataModel.getInstance();
-        if (mUser.getUserType().equals(Patient.class.getSimpleName()))
-            mData.setSelectedPatient((Patient) mUser);
+        setUser(username);
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
     }
@@ -55,5 +53,19 @@ public class MainActivity extends FragmentActivity {
 
     public UserModel getUser() {
         return mUser;
+    }
+
+    public void setUser(UserModel user) {
+        mUser = user;
+    }
+
+    public void setUser(String username) {
+        mData = DataModel.getInstance();
+        if (username != null) {
+            Log.i("SetUser", username);
+            mUser = ElasticSearchIO.getInstance().findUser(username);
+            if (mUser.getUserType().equals(Patient.class.getSimpleName()))
+                mData.setSelectedPatient((Patient) mUser);
+        }
     }
 }

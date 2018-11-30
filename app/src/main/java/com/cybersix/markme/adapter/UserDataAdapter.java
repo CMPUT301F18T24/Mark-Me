@@ -51,7 +51,6 @@ public class UserDataAdapter {
     }
 
     public Patient getAsPatient() {
-        Log.i("UserAdapter", "In get As patient");
         Patient p = new Patient();
         p.setUserId(userId);
         try {

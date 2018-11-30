@@ -32,7 +32,6 @@ public class ProblemDataAdapter {
         ProblemModel p = new ProblemModel();
         p.setPatientId(patientId);
         p.setProblemId(problemId);
-        Log.i("ProblemAdapter", patientId);
         try {
             p.setTitle(title);
             p.setDescription(description);
