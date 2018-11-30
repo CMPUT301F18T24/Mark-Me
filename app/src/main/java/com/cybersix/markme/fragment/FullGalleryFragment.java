@@ -82,11 +82,6 @@ public class FullGalleryFragment extends Fragment {
             }
 
         }
-//        bitmaps[0]= b0;
-//        bitmaps[1]= b1;
-//        bitmaps[2]= b0;
-//        bitmaps[3]= b1;
-
 
         GridView gridView = view.findViewById(R.id.fragment_full_gallery_gridview);
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity(), this.bitmaps);

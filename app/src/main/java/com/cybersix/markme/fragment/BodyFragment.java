@@ -93,7 +93,7 @@ public class BodyFragment extends Fragment {
         protected void onDraw(Canvas canvas){
             super.onDraw(canvas);
             Paint p = new Paint();
-            p.setColor(Color.argb(35,0,0,255));
+            p.setColor(Color.argb(55,0,0,255));
             p.setStrokeWidth(12);
             canvas.drawRect(new RectF(x1,y1,x2,y2),p);
         }
