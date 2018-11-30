@@ -36,6 +36,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cybersix.markme.actvity.LiveCameraActivity;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.utils.GuiUtils;
@@ -139,20 +140,7 @@ public class BodyFragment extends Fragment {
 
         bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
-        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
-                // Assistance with drawing POST measurement
-                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                drawRecords();
-                totalText.setText("Total: " + Integer.toString(listedCount));
-                notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
-
-            }
-        });
 
         if(problemController.getSelectedProblem() == null){
             //Send to problem view
@@ -171,6 +159,20 @@ public class BodyFragment extends Fragment {
         problemController = ProblemController.getInstance();
         initAttributes();
         setListeners();
+        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
+                // Assistance with drawing POST measurement
+                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                drawRecords();
+                totalText.setText("Total: " + Integer.toString(listedCount));
+                notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
+
+            }
+        });
     }
 
     private void initAttributes() {
@@ -269,6 +271,7 @@ public class BodyFragment extends Fragment {
     }
 
     private void reverse(){
+        drawRecords();
         frontFacing = !frontFacing;
     }
 
@@ -310,7 +313,7 @@ public class BodyFragment extends Fragment {
             } else {
                 unlistedCount += recordParts.get(bp).size();
             }
-            if(recordParts.get(bp).size() >= 0 && bp.getFace() == frontFacing){
+            if(recordParts.get(bp).size() > 0 && bp.getFace() == frontFacing){
                 //Get p1 and p2 of the body part
                 PointF p1 = bp.getP1();
                 PointF p2 = bp.getP2();
