@@ -13,6 +13,8 @@
  */
 package com.cybersix.markme.actvity;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
         userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
         userObserver.setModifierButton(findViewById(R.id.loginButton));
@@ -81,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
         // If we got exactly one username returned.
-        if (userController.userExists()) {
+        if (userController.userExists(this.getApplicationContext())) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);

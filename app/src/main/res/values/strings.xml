@@ -74,4 +74,5 @@
     <string name="daily">Daily</string>
     <string name="every_other_day">Every other day</string>
     <string name="delete">Delete</string>
+    <string name="DontHaveAccountPromp">Don\'t have an account? Sign up now!</string>
 </resources>

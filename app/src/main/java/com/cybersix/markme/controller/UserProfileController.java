@@ -12,13 +12,21 @@
  */
 package com.cybersix.markme.controller;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.io.UserModelIO;
 import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.model.UserModel.*;
 import com.cybersix.markme.observer.UserObserver;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 public class UserProfileController {
     private UserModel model = null;
@@ -80,7 +88,32 @@ public class UserProfileController {
         return io.addUser(model);
     }
 
-    public boolean userExists() {
-        return io.findUser(model.getUsername()) != null;
+    // Checks locally for a password file, to see if an account has already been created.
+    // TODO: Move password file check to diskIO utils?
+    public boolean userExists(Context context) {
+
+        String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";
+        try (FileInputStream fis = context.openFileInput(filename)) {
+
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            isr.close();
+            String securityToken = sb.toString();
+            return io.findUser(securityToken) != null;
+
+        } catch (FileNotFoundException e) {
+            Log.d("UserProfileController: ", "Failed to find file.");
+        } catch (IOException e) {
+            Log.d("UserProfileController: ", "Failed to read file.");
+        }
+
+        return false;
+
     }
 }
