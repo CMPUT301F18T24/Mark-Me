@@ -87,6 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);
             finish();
+        } else { // Let user know they have to create an account.
+
         }
     }
 

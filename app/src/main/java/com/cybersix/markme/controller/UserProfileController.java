@@ -93,18 +93,18 @@ public class UserProfileController {
     public boolean userExists(Context context) {
 
         String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";
-        try (FileInputStream fis = context.openFileInput(filename)) {
+        try (FileInputStream input = context.openFileInput(filename)) {
 
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader bufferedReader = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
+            InputStreamReader reader = new InputStreamReader(input);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
+                stringBuilder.append(line);
             }
 
-            isr.close();
-            String securityToken = sb.toString();
+            input.close();
+            String securityToken = stringBuilder.toString();
             return io.findUser(securityToken) != null;
 
         } catch (FileNotFoundException e) {
@@ -113,6 +113,7 @@ public class UserProfileController {
             Log.d("UserProfileController: ", "Failed to read file.");
         }
 
+        // If file not found, then ask user to signup.
         return false;
 
     }
