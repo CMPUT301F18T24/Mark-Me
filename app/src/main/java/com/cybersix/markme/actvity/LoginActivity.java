@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else { // Let user know they have to create an account.
-
+            // TODO: Display login buttons, replace spinner.
         }
     }
 

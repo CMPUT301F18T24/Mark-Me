@@ -24,9 +24,11 @@ import com.cybersix.markme.observer.UserObserver;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.io.OutputStreamWriter;
 
 public class UserProfileController {
     private UserModel model = null;
@@ -84,12 +86,36 @@ public class UserProfileController {
     //         userType - The type of the model.
     // Outputs: Returns true if added model was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public boolean addUser() {
-        return io.addUser(model);
+    public boolean addUser(Context context) {
+
+        // If adding to elastic search was successful, write the username to the password file.
+        // TODO: Use the userID instead. We need to change the "login" function to use userID instead.
+        if (io.addUser(model)) {
+
+            String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";
+            try (FileOutputStream output = context.openFileOutput(filename, Context.MODE_PRIVATE)) {
+
+                OutputStreamWriter writer = new OutputStreamWriter(output);
+                writer.write(model.getUsername());
+                writer.close();
+
+                return true; // Everything was successful.
+
+            } catch (FileNotFoundException e) {
+                Log.d("UserProfileController: ", "Failed to find file.");
+            } catch (IOException e) {
+                Log.d("UserProfileController: ", "Failed to write to file.");
+            }
+
+        }
+
+        // And the elastic search DB.
+        return false;
     }
 
     // Checks locally for a password file, to see if an account has already been created.
     // TODO: Move password file check to diskIO utils?
+    // TODO: Uncouple the login button fro, the user observers
     public boolean userExists(Context context) {
 
         String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";

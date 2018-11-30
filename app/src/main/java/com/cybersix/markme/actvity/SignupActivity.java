@@ -48,7 +48,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
         // Get the signup information.
         userObserver.setUsernameView((TextView) findViewById(R.id.fragment_account_settings_usernameText));
@@ -68,7 +67,7 @@ public class SignupActivity extends AppCompatActivity {
 
     // Checks the info the user provided and creates a new account if the info is valid,
     // or lets the user know if the info is not valid.
-    // TODO: I need server integration to test if a user already exists.
+    // TODO: Replace hard coded literal with key-value pair.
     public void checkRegistration() {
         // Create a user of type patient by default.
         if (userController.addUser()) {
