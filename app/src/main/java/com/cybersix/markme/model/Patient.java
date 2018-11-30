@@ -25,6 +25,7 @@ public class Patient extends UserModel {
 
     public void addProblem(ProblemModel problem){
         problems.add(problem);
+        problem.setPatientId(this.getUserId());
 
         setChanged();
         notifyObservers();

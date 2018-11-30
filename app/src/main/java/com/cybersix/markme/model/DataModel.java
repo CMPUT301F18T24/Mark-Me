@@ -3,8 +3,6 @@ package com.cybersix.markme.model;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.cybersix.markme.ElasticSearchIOController;
-import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -13,12 +11,12 @@ import java.util.Date;
 
 public class DataModel {
     private static DataModel instance = null;
-    private ArrayList<ProblemModel> problems;
+    private Patient selectedPatient;
     private ProblemModel selectedProblem;
     private ElasticSearchIO io = ElasticSearchIO.getInstance();
 
     private DataModel(){
-        problems = new ArrayList<ProblemModel>();
+
     }
 
     public static DataModel getInstance(){
@@ -29,7 +27,9 @@ public class DataModel {
     }
 
     public void setSelectedProblem(int index){
-        selectedProblem = problems.get(index);
+        selectedProblem = selectedPatient.getProblems().get(index);
+
+        selectedProblem.setRecords( io.getRecords(selectedProblem) );
     }
 
     public ProblemModel getSelectedProblem(){
@@ -37,15 +37,13 @@ public class DataModel {
     }
 
     public ArrayList<ProblemModel> getProblems() {
-        return problems;
+        return selectedPatient.getProblems();
     }
 
-    public void createNewProblem(String title, String description) {
+    public void createNewProblem(ProblemModel newProblem) {
         try {
-            ProblemModel newProblem = new ProblemModel(title, description);
-            newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
-            instance.problems.add(newProblem);
+            selectedPatient.addProblem(newProblem);
             // also add it to the server
             io.addProblem(newProblem);
         }
@@ -56,9 +54,19 @@ public class DataModel {
 
     }
 
+    public Patient getSelectedPatient() {
+        return selectedPatient;
+    }
+
+    public void setSelectedPatient(Patient selectedPatient) {
+        this.selectedPatient = selectedPatient;
+
+        this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
+    }
+
     public void editProblem(int index, String newTitle, String newDescription) {
         // To find the problem, we compare the date as the date should be unique enough.
-        ProblemModel problem = instance.problems.get(index);
+        ProblemModel problem = selectedPatient.getProblems().get(index);
         // set the new getTitle and description
         try {
             // does references work here? Testing will check
@@ -79,8 +87,8 @@ public class DataModel {
 //        UserProfileController userInstance = UserProfileController();
         try {
 //            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
-            for(ProblemModel p: instance.problems){
-                ArrayList<RecordModel> rm = io.getRecords(p);
+            for(ProblemModel p: selectedPatient.getProblems()){
+                ArrayList<RecordModel> rm = p.getRecords();
                 p.addRecords(rm);
             }
             Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
@@ -179,6 +187,8 @@ public class DataModel {
             String message = e.getMessage();
             Log.d("Jose_EditRecord", message);
         }
+
+        io.addRecord(record);
     }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
@@ -194,7 +204,7 @@ public class DataModel {
 
     public ArrayList<RecordModel> getAllRecords() {
         ArrayList<RecordModel> rm = new ArrayList<>();
-        for(ProblemModel pm: problems){
+        for(ProblemModel pm: selectedPatient.getProblems()){
             rm.addAll(pm.getRecords());
         }
         return rm;

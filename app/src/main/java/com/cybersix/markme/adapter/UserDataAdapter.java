@@ -1,5 +1,7 @@
 package com.cybersix.markme.adapter;
 
+import android.util.Log;
+
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.CareProvider;
 import com.cybersix.markme.model.Patient;
@@ -42,14 +44,15 @@ public class UserDataAdapter {
     }
 
     public UserModel get() {
-        if (type == Patient.class.getSimpleName())
+        if (type.equals(Patient.class.getSimpleName()))
             return getAsPatient();
-        else if (type == CareProvider.class.getSimpleName())
+        else if (type.equals(CareProvider.class.getSimpleName()))
             return getAsCareProvider();
         return null;
     }
 
     public Patient getAsPatient() {
+        Log.i("UserAdapter", "In get As patient");
         Patient p = new Patient();
         p.setUserId(userId);
         try {
@@ -59,9 +62,6 @@ public class UserDataAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        p.setProblems( ElasticSearchIO.getInstance().getProblems(p) );
-
         return p;
     }
 

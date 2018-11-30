@@ -116,6 +116,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(UserModel user) {
+        Log.i("GetProblem", "in async get Problems");
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
                 "{ \"patientId\" : \"" + user.getUserId() + "\" }}}";
@@ -124,6 +125,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())
                 .build();
+
         List<ProblemModel> problems = new ArrayList<ProblemModel>();
         try {
             JestResult result = client.execute(search);
@@ -150,7 +152,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
                 "{ \"problemId\" : \"" + problemId + "\" }}}";
-
+        Log.i("GetProblem", "in async get Problems");
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())

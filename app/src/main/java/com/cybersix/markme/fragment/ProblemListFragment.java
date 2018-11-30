@@ -25,8 +25,11 @@ import com.cybersix.markme.actvity.ProblemCreationActivity;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.fragment.ListFragment;
+import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
 
@@ -43,11 +46,10 @@ public class ProblemListFragment extends ListFragment {
 
     public static final int REQUEST_CODE_ADD = 1;
     public static final String EXTRA_PROBLEM_INDEX = "EXTRA_PROBLEM_INDEX";
+    public static final String EXTRA_USERNAME = "EXTRA_USERNAME";
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
-    private ArrayList<ProblemModel> localList = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
-    private Patient patient = null;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -82,11 +84,8 @@ public class ProblemListFragment extends ListFragment {
 
         });
 
-        patient = (Patient) ((MainActivity) getActivity()).getUser();
-        localList = patient.getProblems();
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, localList);
+        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
         getListView().setAdapter(problemListAdapter);
-        update();
     }
 
     @Override
@@ -96,14 +95,18 @@ public class ProblemListFragment extends ListFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK)
-            update();
+        if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
+            update(
+                    intent.getStringExtra(ProblemCreationActivity.EXTRA_TITLE),
+                    intent.getStringExtra(ProblemCreationActivity.EXTRA_DESCRIPTION)
+            );
+        }
     }
 
-    public void update() {
-        controllerInstance.loadProblemData();
-        localList.clear();
-        localList.addAll(controllerInstance.getProblems());
+    public void update(String title, String description) {
+        ProblemController instance = ProblemController.getInstance();
+        instance.createNewProblem(title, description);
+//        controllerInstance.loadProblemData();
         problemListAdapter.notifyDataSetChanged();
     }
 }

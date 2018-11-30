@@ -140,6 +140,9 @@ public class ProblemModel extends Observable {
             return;
 
         records.add(record);
+        record.setProblemId(this.getProblemId());
+
+        setChanged();
         notifyObservers();
     }
 

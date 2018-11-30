@@ -71,7 +71,11 @@ public class ProblemController {
      * @author Jose Ramirez
      */
     public void createNewProblem(String title, String description) {
-        DataModel.getInstance().createNewProblem(title,description);
+        try {
+            DataModel.getInstance().createNewProblem(new ProblemModel(title, description));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

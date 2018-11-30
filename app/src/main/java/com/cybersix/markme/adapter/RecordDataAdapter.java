@@ -50,7 +50,7 @@ public class RecordDataAdapter {
             r.setTimestamp(timestamp);
             r.setComment(comment);
 
-            for (byte[] photo: photos) {
+            if (photos != null) for (byte[] photo: photos) {
                 r.addPhoto(BitmapFactory.decodeByteArray(photo, 0, photo.length));
             }
 

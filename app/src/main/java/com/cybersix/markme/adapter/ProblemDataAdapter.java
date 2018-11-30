@@ -1,5 +1,7 @@
 package com.cybersix.markme.adapter;
 
+import android.util.Log;
+
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
@@ -35,6 +37,7 @@ public class ProblemDataAdapter {
         ProblemModel p = new ProblemModel();
         p.setPatientId(patientId);
         p.setProblemId(problemId);
+        Log.i("ProblemAdapter", patientId);
         try {
             p.setTitle(title);
             p.setDescription(description);
@@ -42,9 +45,6 @@ public class ProblemDataAdapter {
         } catch (Exception e) {
 
         }
-
-        p.setRecords(ElasticSearchIO.getInstance().getRecords(p) );
-
         return p;
     }
 }

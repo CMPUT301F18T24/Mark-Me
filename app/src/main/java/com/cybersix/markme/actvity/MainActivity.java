@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.cybersix.markme.model.DataModel;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
@@ -24,6 +26,7 @@ public class MainActivity extends FragmentActivity {
     public static String EXTRA_CURRENT_USERNAME = "COM_CYBERSIX_MARKME_CURRENT_USERNAME";
     private NavigationController mNavigationController = null;
     private UserModel mUser = null;
+    private DataModel mData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +36,11 @@ public class MainActivity extends FragmentActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
         mUser = ElasticSearchIO.getInstance().findUser(username);
-
+        mData = DataModel.getInstance();
+        if (mUser.getUserType().equals(Patient.class.getSimpleName()))
+            mData.setSelectedPatient((Patient) mUser);
         mNavigationController = NavigationController.getInstance(this);
-        mNavigationController.setSelectedItem(R.id.body);
+        mNavigationController.setSelectedItem(R.id.list);
     }
 
     @Override
