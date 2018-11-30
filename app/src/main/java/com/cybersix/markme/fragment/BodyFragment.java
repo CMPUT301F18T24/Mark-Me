@@ -273,8 +273,9 @@ public class BodyFragment extends Fragment {
     }
 
     private void reverse(){
-        drawRecords();
         frontFacing = !frontFacing;
+        drawRecords();
+        //TODO: swap back/front image
     }
 
 
@@ -306,6 +307,7 @@ public class BodyFragment extends Fragment {
         for(HighlightView v: drawnViews){
             bodyConstraintLayout.removeView(v);
         }
+        drawnViews.clear();
         for(EBodyPart bp: recordParts.keySet()){
             if(bp != EBodyPart.UNLISTED){
                 listedCount += recordParts.get(bp).size();

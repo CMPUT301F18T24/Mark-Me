@@ -39,7 +39,7 @@ public enum EBodyPart {
     CHEST("Chest",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),true),
     ABDOMEN("Abdomen",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),true),
     UPPERBACK("Upper Back",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),false),
-    LOWERBACK("Lower Back",new PointF(0.33654785f,0.2376953f), new PointF(0.6731262f,0.5745396f),false),
+    LOWERBACK("Lower Back",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),false),
     UNLISTED("Unlisted",new PointF(0,0), new PointF(0,0),true);
 
     private final String name;
