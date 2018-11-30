@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".deletePhoto"
+    android:weightSum="8"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        tools:context=".PatientAssignmentActivity">
+
+
+        <ImageView
+            android:id="@+id/imageView_delete_photo"
+            android:layout_width="307dp"
+            android:layout_height="345dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/btn_star"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="1dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="304dp"
+            android:layout_height="48dp"
+            android:text="@string/delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView_delete_photo"
+            android:onClick="deleteImage"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="366dp" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

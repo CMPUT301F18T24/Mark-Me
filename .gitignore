@@ -2,12 +2,11 @@
 .ser
 .gradle
 /local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
+*.ser
+/.idea
 .idea/gradle.xml~master
 .idea/misc.xml~master

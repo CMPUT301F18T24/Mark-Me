@@ -1,13 +1,43 @@
 package com.cybersix.markme;
 
-import org.junit.Test;
-import org.junit.runner.Description;
+import com.cybersix.markme.model.ProblemModel.DescriptionTooLongException;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.ProblemModel.TitleTooLongException;
 
+import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.Assert.*;
 
 public class ProblemModelTest {
+
+    @Test
+    public void testCreateAndGetProblemModel() {
+        String title = "myTitle";
+        String description = "The best app!";
+
+        try {
+            // Construct the problem model.
+            ProblemModel problemModel = new ProblemModel(title, description);
+
+            // Ensure the contructor fields were properly initialized.
+            assertEquals(problemModel.getTitle(), title);
+            assertEquals(problemModel.getDescription(), description);
+
+            // Can only test that a date was initialized, not when.
+            assertEquals(problemModel.getDateStarted().getClass(), Date.class);
+
+            // Check that the records arrayList<> was initialized
+            assertEquals(problemModel.getRecords(), new ArrayList<RecordModel>());
+
+        } catch (Exception e) {
+            fail("We should have gotten the null pointer exception");
+        }
+
+    }
 
     @Test
     public void testCreateProblem() {
@@ -53,6 +83,30 @@ public class ProblemModelTest {
     }
 
     @Test
+    public void testGetRecords() {
+        // tests that all records are returned
+        ProblemModel problem = null;
+        try {
+            problem = new ProblemModel("", "");
+        } catch (Exception e) {
+            fail();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            RecordModel record = new RecordModel(Integer.toString(i), Integer.toString(i));
+            problem.addRecord(record);
+        }
+        ArrayList<RecordModel> records = problem.getRecords();
+
+        int i = 0;
+        for (RecordModel record : records) {
+            assertEquals(record.getTitle(), Integer.toString(i));
+            assertEquals(record.getDescription(), Integer.toString(i));
+            i++;
+        }
+    }
+
+    @Test
     public void testRemoveRecord() {
         RecordModel record = new RecordModel("","");
         ProblemModel problem = null;
@@ -90,13 +144,13 @@ public class ProblemModelTest {
             ProblemModel problem = new ProblemModel(title, description);
             assertEquals(title, problem.getTitle());
         } catch (Exception e) {
-            fail("We should have been able to get the same title from the ProblemModel");
+            fail("We should have been able to get the same getTitle from the ProblemModel");
         }
     }
 
     @Test
     public void testSetTitle() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         ProblemModel problem = null;
         try {
@@ -104,7 +158,7 @@ public class ProblemModelTest {
             title = "less than 30 chars";
             assertTrue(title.length() <= ProblemModel.MAX_TITLE_LENGTH);
             problem.setTitle(title);
-            assertTrue(true);
+            assertEquals(problem.getTitle(), title);
         } catch (Exception e) {
             fail("Setting a character less than MAX_TITLE_LENGTH did not work.");
         }
@@ -121,7 +175,7 @@ public class ProblemModelTest {
         } catch (TitleTooLongException e) {
             assertTrue(true);
         } catch (Exception e) {
-            fail("The title was too long, thus we should have gotten a TitleTooLongException");
+            fail("The getTitle was too long, thus we should have gotten a TitleTooLongException");
         }
     }
 
@@ -141,15 +195,15 @@ public class ProblemModelTest {
 
     @Test
     public void testSetDescription() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         ProblemModel problem = null;
         try {
             problem = new ProblemModel(title, description);
             description = "less than 300 chars";
             assertTrue(description.length() <= ProblemModel.MAX_TITLE_LENGTH);
-            problem.setDescription(title);
-            assertTrue(true);
+            problem.setDescription(description);
+            assertEquals(problem.getDescription(), description);
         } catch (Exception e) {
             fail("No exception should have occurred");
         }
@@ -172,7 +226,7 @@ public class ProblemModelTest {
 
     @Test
     public void testGetDateStarted() {
-        String title = "title";
+        String title = "getTitle";
         String description = "description";
         try {
             ProblemModel problem = new ProblemModel(title, description);

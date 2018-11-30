@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="67dp"
+                android:text="@string/ProblemCreationTitle"
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="78dp"
+                tools:layout_editor_absoluteY="30dp" />
+
+            <EditText
+                android:id="@+id/problemTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:imeOptions="actionDone"
+                android:hint="@string/ProblemCreationTitleText" />
+
+            <EditText
+                android:id="@+id/problemDescText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:imeOptions="actionDone"
+                android:hint="@string/ProblemCreationDescription"
+                tools:layout_editor_absoluteX="37dp"
+                tools:layout_editor_absoluteY="101dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="26dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_a_notification_reminder"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="61dp"
+                tools:layout_editor_absoluteY="142dp" />
+            <RadioGroup
+                android:id="@+id/reminder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily"
+                    android:tag="d"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="215dp"
+                    />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/every_other_day"
+                    android:tag="b"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="215dp" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weekly"
+                    android:tag="w"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="215dp" />
+            </RadioGroup>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/problemNotifyTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textAlignment="center"
+                tools:ignore="TextViewEdits" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="29dp" />
+
+            <Button
+                android:id="@+id/problemSaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_button" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
