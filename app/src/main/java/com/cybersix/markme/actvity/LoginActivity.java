@@ -16,6 +16,7 @@ package com.cybersix.markme.actvity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
         // If we got exactly one username returned.
+        Log.i("UserFound", "" + userController.userExists());
         if (userController.userExists()) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
