@@ -68,15 +68,13 @@ public class LiveCameraActivity extends AppCompatActivity {
                         // Empirical result: 75% seems to be working out well.
                         byte[] bytes = compressBitmap(bitmap, 75);
 
-                        // Debug purposes. Note: Comment out everything else to avoid crashes due
-                        // to stuff getting recycled.
+                        // Debug purposes. Use this for testing compression quality. Comment out
+                        // everything else to avoid crashes due to bitmaps getting recycled.
                         // compressionTest(bitmap, 10);
-
-                        Log.d("Vishal_Compressed", Integer.toString(bytes.length));
 
                         data.putExtra(EXTRA_IMAGE, bytes);
                         setResult(RESULT_OK, data);
-                        //finish();
+                        finish();
 
                     }
         });
@@ -101,7 +99,7 @@ public class LiveCameraActivity extends AppCompatActivity {
      * @param bitmap The raw bitmap to compress.
      * @param quality The quality to which we want to compress the bitmap.
      */
-    public void compressionTest(Bitmap bitmap, int quality) {
+    public void DEBUGONLY_compressionTest(Bitmap bitmap, int quality) {
         String filename = getApplicationContext().getFilesDir() + "/test_" + quality + ".jpeg";
         try (FileOutputStream out = new FileOutputStream(filename)) {
 
