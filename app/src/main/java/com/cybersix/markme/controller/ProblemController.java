@@ -33,7 +33,7 @@ public class ProblemController {
     }
 
     // Lazy construction of instance.
-    public static synchronized ProblemController getInstance() {
+    public static ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
             instance.loadProblemData();
