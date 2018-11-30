@@ -20,7 +20,6 @@ public class UserDataAdapter {
     private String type = null;
     private ArrayList<String> assignedPatients = new ArrayList<>();
     private ArrayList<String> assignedCareProvider = new ArrayList<>();
-    private ArrayList<String> problems = new ArrayList<>();
 
     @JestId
     public String userId = null;
@@ -91,9 +90,6 @@ public class UserDataAdapter {
     private void extractPatientInformation(Patient patient) {
         for (CareProvider c: patient.getCareProviders())
             assignedCareProvider.add(c.getUserId());
-
-        for (ProblemModel p: patient.getProblems())
-            problems.add(p.getProblemId());
     }
 
     private void extractCareProviderInformation(CareProvider careProvider) {

@@ -106,6 +106,7 @@ public class DataModel {
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
+            io.addRecord(selectedProblem.getRecord(idx));
         } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
         } catch (RecordModel.PhotoTooLargeException e){
@@ -196,6 +197,8 @@ public class DataModel {
         selectedProblem.getRecord(idx).setDescription(desc);
         selectedProblem.getRecord(idx).setBodyLocation(bl);
         selectedProblem.getRecord(idx).setComment(comment);
+
+        io.addRecord(selectedProblem.getRecord(idx));
     }
 
     public void addRecordLocation(LatLng loc, int idx){

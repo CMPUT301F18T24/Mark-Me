@@ -12,7 +12,6 @@ import java.util.Date;
 import io.searchbox.annotations.JestId;
 
 public class ProblemDataAdapter {
-    private ArrayList<String> recordIds = new ArrayList<>();
     private String title;
     private String description;
     private Date started;
@@ -27,10 +26,6 @@ public class ProblemDataAdapter {
         started = p.getDateStarted();
         patientId = p.getPatientId();
         problemId = p.getProblemId();
-
-        for (RecordModel record: p.getRecords()) {
-            recordIds.add(record.getRecordId());
-        }
     }
 
     public ProblemModel get() {
