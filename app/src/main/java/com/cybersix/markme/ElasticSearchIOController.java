@@ -17,28 +17,25 @@
  */
 package com.cybersix.markme;
 
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.model.Patient;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.UserModel;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
-import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 
 public class ElasticSearchIOController {
-
     private static JestDroidClient client = null;
 
     /**
@@ -88,32 +85,31 @@ public class ElasticSearchIOController {
     }
 
     public static void addUser(UserModel user) {
-        setClient();
-
-        // Create a data class to save to elastic search. This lets us avoid saving the extra
-        // information contained in the usermodel.
-        NewUser newUser = new NewUser(user.getUsername(),
-                                      user.getEmail(),
-                                      user.getPhone(),
-                                      user.getPassword(),
-                                      user.getUserType());
-
-        Index index = new Index.Builder(newUser)
-                        .index("cmput301f18t24test")
-                        .type("users")
-                        .build();
-
-        try {
-            DocumentResult result = client.execute(index);
-            Log.d("Vishal", "addUser: " + result.isSucceeded() + " " + index.getId());
-            if (result.isSucceeded()) {
-                // Associate the ID with the original userModel object.
-                user.setUserID(result.getId());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+//        setClient();
+//
+//        // Create a data class to save to elastic search. This lets us avoid saving the extra
+//        // information contained in the usermodel.
+//        NewUser newUser = new NewUser(user.getUsername(),
+//                                      user.getEmail(),
+//                                      user.getPhone(),
+//                                      "",
+//                                      user.getUserType());
+//
+//        Index index = new Index.Builder(newUser)
+//                        .index("cmput301f18t24test")
+//                        .type("users")
+//                        .build();
+//
+//        try {
+//            DocumentResult result = client.execute(index);
+//            Log.d("Vishal", "addUser: " + result.isSucceeded() + " " + index.getId());
+//            if (result.isSucceeded()) {
+//                // Associate the ID with the original userModel object.
+//                user.setUserID(result.getId());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -149,32 +145,32 @@ public class ElasticSearchIOController {
         return new ArrayList<ProblemModel>();
     }
 
-    public static void addProblem(ProblemModel problem) {
+    public static void addProblem(UserModel user, ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getInstance();
-
-        // Create a data class to save to elastic search. This lets us avoid saving the extra
-        // information contained in the problemModel.
-        NewProblem newProblem = new NewProblem(problem.getTitle(),
-                                               problem.getDescription(),
-                                               problem.getDateStarted(),
-                                               profileController.user.getUserID());
-
-        Index index = new Index.Builder(newProblem)
-                .index("cmput301f18t24test")
-                .type("problems")
-                .build();
-
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                // Associate the ID with the original userModel object.
-                problem.setProblemID(result.getId());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        UserProfileController profileController = UserProfileController.getInstance();
+//
+//        // Create a data class to save to elastic search. This lets us avoid saving the extra
+//        // information contained in the problemModel.
+//        NewProblem newProblem = new NewProblem(problem.getTitle(),
+//                                               problem.getDescription(),
+//                                               problem.getDateStarted(),
+//                                               user.getUserID());
+//
+//        Index index = new Index.Builder(newProblem)
+//                .index("cmput301f18t24test")
+//                .type("problems")
+//                .build();
+//
+//        try {
+//            DocumentResult result = client.execute(index);
+//            if (result.isSucceeded()) {
+//                // Associate the ID with the original userModel object.
+//                problem.setProblemID(result.getId());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -209,62 +205,36 @@ public class ElasticSearchIOController {
         return new ArrayList<Patient>();
     }
 
-    public static void addRecords(ProblemModel problem) {
+    public static void addRecords(UserModel user, ProblemModel problem) {
         setClient();
 
-        UserProfileController profileController = UserProfileController.getInstance();
+        UserProfileController profileController = new UserProfileController(null);
 
         for (RecordModel record : problem.getRecords()) {
 
             // Create a data class to save to elastic search. This lets us avoid saving the extra
             // information contained in the problemModel.
-            NewRecord newRecord = new NewRecord(record.getTitle(),
-                    record.getDescription(), record.getTimestamp(), record.getComment(),
-                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation(),
-                    problem.getProblemID(), profileController.user.getUserID());
+//            NewRecord newRecord = new NewRecord(record.getTitle(),
+//                    record.getDescription(), record.getTimestamp(), record.getComment(),
+//                    record.getPhotos(), record.getBodyLocation(), record.getMapLocation(),
+//                    problem.getProblemID(), user.getUserID());
+//
+//            Index index = new Index.Builder(newRecord)
+//                    .index("cmput301f18t24test")
+//                    .type("records")
+//                    .build();
 
-
-            Index index = new Index.Builder(newRecord)
-                    .index("cmput301f18t24test")
-                    .type("records")
-                    .build();
-
-            try {
-                DocumentResult result = client.execute(index);
-                if (result.isSucceeded()) {
-                    // Associate the ID with the original userModel object.
-                    record.setRecordID(result.getId());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                DocumentResult result = client.execute(index);
+//                if (result.isSucceeded()) {
+//                    // Associate the ID with the original userModel object.
+//                    record.setRecordID(result.getId());
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
-    }
-
-    /**
-     * Queries a list the elastic search database for a list of users. See also getUser().
-     */
-    public static class GetUserTask extends AsyncTask<String, Void, ArrayList<UserModel>> {
-
-        protected ArrayList<UserModel> doInBackground(String... strings) {
-            ArrayList<UserModel> users = new ArrayList<UserModel>();
-            for (String s: strings) {
-                users.addAll(getUser(s));
-            }
-            return users;
-        }
-    }
-
-    public static class AddUserTask extends AsyncTask<UserModel, Void, Void> {
-
-        protected Void doInBackground(UserModel... params) {
-            for (UserModel user : params) {
-                addUser(user);
-            }
-
-            return null;
-        }
     }
 
     public static class GetProblemTask extends AsyncTask<String, Void, ArrayList<ProblemModel>> {
@@ -286,7 +256,7 @@ public class ElasticSearchIOController {
 
         protected Void doInBackground(ProblemModel... params) {
             for (ProblemModel problem : params) {
-                addProblem(problem);
+//                addProblem(problem);
             }
 
             return null;
@@ -315,74 +285,12 @@ public class ElasticSearchIOController {
 
         protected Void doInBackground(ProblemModel... params) {
             for (ProblemModel problem : params) {
-                addRecords(problem);
+//                addRecords(problem);
             }
 
             return null;
         }
 
-    }
-
-}
-
-class NewUser {
-    private String username;
-    private String email;
-    private String phone;
-    private String password;
-    private String userType;
-
-    public NewUser(String username, String email, String phone, String password,
-                   String userType) {
-        this.username = username;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.userType = userType;
-    }
-}
-
-class NewProblem {
-
-    private String title;
-    private String description;
-    private Date started;
-    private String userID;
-
-    public NewProblem(String title, String description, Date started, String userID) {
-        this.title = title;
-        this.description = description;
-        this.started = started;
-        this.userID = userID;
-    }
-}
-
-class NewRecord {
-
-    private String problemID;
-    private String userID;
-
-    private String title;
-    private String description;
-    private Date timestamp;
-    private String comment;
-    private ArrayList<Bitmap> photos;
-    private BodyLocation bodyLocation;
-    private LatLng mapLocation;
-
-    public NewRecord(String title, String description, Date timestamp, String comment,
-                     ArrayList<Bitmap> photos, BodyLocation bodyLocation, LatLng mapLocation,
-                     String problemID, String userID) {
-        this.title = title;
-        this.description = description;
-        this.timestamp = timestamp;
-        this.comment = comment;
-        this.photos = photos;
-        this.bodyLocation = bodyLocation;
-        this.mapLocation = mapLocation;
-
-        this.problemID = problemID;
-        this.userID = userID;
     }
 
 }

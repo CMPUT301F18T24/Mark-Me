@@ -1,8 +1,12 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.controller.RecordController;
+import com.cybersix.markme.model.BodyLocation;
+import com.cybersix.markme.model.EBodyPart;
+import com.cybersix.markme.model.RecordModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import static org.junit.Assert.*;
@@ -28,7 +32,7 @@ public class RecordControllerTest {
         String title = "testTitle";
         String description = "testDescription";
 
-        RecordController testController = new RecordController();
+        RecordController testController = RecordController.getInstance();
         testController.getSelectedProblemRecords().add(new RecordModel(title,description));
 
         // check that the record information has been saved
@@ -49,7 +53,7 @@ public class RecordControllerTest {
         BodyLocation editBodyLocation = new BodyLocation(EBodyPart.LEFTARM);
         LatLng editLocation = new LatLng(10, 10);
 
-        RecordController testController = new RecordController();
+        RecordController testController = RecordController.getInstance();
         testController.createNewRecord(title, description, null, null, null);
 
         try {

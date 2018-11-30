@@ -11,7 +11,13 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
-import org.junit.Before;
+import com.cybersix.markme.actvity.MainActivity;
+import com.cybersix.markme.actvity.ProblemCreationActivity;
+import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.fragment.ProblemListFragment;
+import com.cybersix.markme.model.ProblemModel;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -38,7 +44,7 @@ public class ProblemListIntentTesting {
     public void testProblemCreationIntent(){
         // setup
         mainActivity = mActivityRule.getActivity();
-        Intent i = new Intent(mainActivity, ProblemActivityCreation.class);
+        Intent i = new Intent(mainActivity, ProblemCreationActivity.class);
         mainActivity.startActivity(i);
 
         // click on add Problem button

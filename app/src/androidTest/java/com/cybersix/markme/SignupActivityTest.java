@@ -3,6 +3,8 @@ package com.cybersix.markme;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
+import com.cybersix.markme.actvity.SignupActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 

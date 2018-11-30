@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.cybersix.markme.controller.RecordController;
+import com.cybersix.markme.fragment.FullGalleryFragment;
+
 public class Gallery extends Fragment implements View.OnClickListener {
 
     private ImageView imageView[];

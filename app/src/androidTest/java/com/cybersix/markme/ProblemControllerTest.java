@@ -3,6 +3,9 @@
  */
 package com.cybersix.markme;
 
+import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.model.ProblemModel;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -14,7 +17,7 @@ public class ProblemControllerTest {
     @Test
     public void testCreateNewProblem() {
         // This test will ensure that a new problem has been saved properly
-        ProblemController testController = new ProblemController();
+        ProblemController testController = ProblemController.getInstance();
         String testTitle = "Test";
         String testDescr = "Test Description";
         Date testDate = new Date();
@@ -41,7 +44,7 @@ public class ProblemControllerTest {
     @Test
     public void testEditProblem() {
         // This test will ensure that an existing problem has been edited properly
-        ProblemController testController = new ProblemController();
+        ProblemController testController = ProblemController.getInstance();
         // First problem
         String testTitle1 = "Test";
         String testDescr1 = "Test Description";

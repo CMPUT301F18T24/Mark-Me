@@ -1,7 +1,11 @@
 package com.cybersix.markme;
 
+import com.cybersix.markme.model.ProblemModel.DescriptionTooLongException;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.ProblemModel.TitleTooLongException;
+
 import org.junit.Test;
-import org.junit.runner.Description;
 
 import java.util.ArrayList;
 import java.util.Date;

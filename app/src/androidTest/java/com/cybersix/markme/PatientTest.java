@@ -1,5 +1,12 @@
 package com.cybersix.markme;
 
+import com.cybersix.markme.model.CareProvider;
+import com.cybersix.markme.model.ProblemModel.DescriptionTooLongException;
+import com.cybersix.markme.model.Patient;
+import com.cybersix.markme.model.ProblemModel;
+import com.cybersix.markme.model.ProblemModel.TitleTooLongException;
+import com.cybersix.markme.model.UserModel;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -10,8 +17,8 @@ public class PatientTest {
 
     @Test
     public void testAddProblem() {
-        Patient pat = new Patient("guy44","password!");
         try{
+            Patient pat = new Patient("guy44");
             ProblemModel pm = new ProblemModel("major issue","");
             ProblemModel pm2 = new ProblemModel("big problem","");
             pat.addProblem(pm);
@@ -32,8 +39,8 @@ public class PatientTest {
 
     @Test
     public void testGetProblem() {
-        Patient pat = new Patient("guy441","passwor123d!");
         try{
+            Patient pat = new Patient("guy441");
             ProblemModel pm = new ProblemModel("major issue!","");
             ProblemModel pm2 = new ProblemModel("big problem!","");
             pat.addProblem(pm);
@@ -56,8 +63,8 @@ public class PatientTest {
 
     @Test
     public void testRemoveProblem() {
-        Patient pat = new Patient("guy4asd41","pasasd123swor123d!");
         try{
+            Patient pat = new Patient("guy4asd41");
             ProblemModel pm = new ProblemModel("ma123jor issue!","");
             ProblemModel pm2 = new ProblemModel("big pr123oblem!","");
             pat.addProblem(pm);
@@ -85,8 +92,8 @@ public class PatientTest {
 
     @Test
     public void testRemoveProblemFromEmptyList() {
-        Patient pat = new Patient("guy4asd41","pasasd123swor123d!");
         try{
+            Patient pat = new Patient("guy4asd41");
             ProblemModel pm = new ProblemModel("ma123jor issue!","");
             assertEquals(pat.getProblems().size(), 0); // Check empty before
             pat.removeProblem(pm);
@@ -97,8 +104,8 @@ public class PatientTest {
     }
 
     @Test
-    public void testAddCareProvider() {
-        Patient pat = new Patient("guy44","password!");
+    public void testAddCareProvider() throws UserModel.UsernameTooShortException {
+        Patient pat = new Patient("guy44");
         CareProvider careProv = new CareProvider("Joe");
         CareProvider careProv2 = new CareProvider("Jorge");
 
@@ -110,8 +117,8 @@ public class PatientTest {
     }
 
     @Test
-    public void testGetCareProvider() {
-        Patient pat = new Patient("guy44","password!");
+    public void testGetCareProvider() throws UserModel.UsernameTooShortException {
+        Patient pat = new Patient("guy44");
         CareProvider careProv = new CareProvider("Joe");
         CareProvider careProv2 = new CareProvider("Jorge");
 
@@ -126,8 +133,8 @@ public class PatientTest {
     }
 
     @Test
-    public void testRemoveCareProvider() {
-        Patient pat = new Patient("guy44","password!");
+    public void testRemoveCareProvider() throws UserModel.UsernameTooShortException {
+        Patient pat = new Patient("guy44");
         CareProvider careProv = new CareProvider("Joe");
         CareProvider careProv2 = new CareProvider("Jorge");
 
@@ -142,8 +149,8 @@ public class PatientTest {
     }
 
     @Test
-    public void testRemoveCareProviderFromEmptyList() {
-        Patient pat = new Patient("guy44","password!");
+    public void testRemoveCareProviderFromEmptyList() throws UserModel.UsernameTooShortException {
+        Patient pat = new Patient("guy44");
         CareProvider careProv = new CareProvider("Joe");
 
         assertEquals(pat.getCareProviders().size(), 0); // Check empty before

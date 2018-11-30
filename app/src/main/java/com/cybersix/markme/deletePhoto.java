@@ -1,6 +1,5 @@
 package com.cybersix.markme;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
+import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.fragment.BodyFragment;
+
 import java.io.FileInputStream;
 
 public class deletePhoto extends AppCompatActivity {
