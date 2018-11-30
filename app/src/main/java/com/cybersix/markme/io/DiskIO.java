@@ -38,7 +38,7 @@ public class DiskIO implements ProblemModelIO, RecordModelIO, UserModelIO {
 //            Type typeListEmotions = new TypeToken<ArrayList<Emotion>>(){}.getType();
 //            ArrayList<Patient> listOfEmotion = gson.fromJson(reader, typeListEmotions);
 
-            fis.close();
+//            fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
