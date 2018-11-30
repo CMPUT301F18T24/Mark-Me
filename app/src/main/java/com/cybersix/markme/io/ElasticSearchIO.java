@@ -316,10 +316,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
 
     @Override
     public void addProblem(ProblemModel problem) {
-        if (findProblem(problem.getProblemId()) != null) {
-            return; // problem already exists!
-        }
-
         try {
             new AddProblemTask().execute(problem).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -350,10 +346,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
 
     @Override
     public void addRecord(RecordModel record) {
-        if (findRecord(record.getRecordId()) != null) {
-            return; // problem already exists!
-        }
-
         try {
             new AddRecordTask().execute(record).get();
         } catch (InterruptedException | ExecutionException e) {

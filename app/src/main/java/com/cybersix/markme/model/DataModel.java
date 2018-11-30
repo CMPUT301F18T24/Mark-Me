@@ -203,6 +203,8 @@ public class DataModel {
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
+        Log.i("AddRecordLocation", "MapLocation Added");
+        io.addRecord(selectedProblem.getRecord(idx));
     }
 
     public ArrayList<RecordModel> getAllRecords() {

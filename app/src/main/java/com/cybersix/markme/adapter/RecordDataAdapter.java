@@ -2,6 +2,7 @@ package com.cybersix.markme.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.RecordModel;
@@ -34,7 +35,7 @@ public class RecordDataAdapter {
 
         for (Bitmap photo : r.getPhotos()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             photos.add(stream.toByteArray());
         }
 
