@@ -15,16 +15,7 @@
  */
 package com.cybersix.markme.controller;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.cybersix.markme.ElasticSearchIOController;
-import com.cybersix.markme.io.ElasticSearchIO;
-import com.cybersix.markme.io.ProblemModelIO;
 import com.cybersix.markme.model.DataModel;
-import com.cybersix.markme.model.RecordModel.PhotoTooLargeException;
-import com.cybersix.markme.model.RecordModel;
-import com.cybersix.markme.model.RecordModel.TooManyPhotosException;
 import com.cybersix.markme.model.ProblemModel;
 
 import java.util.ArrayList;
