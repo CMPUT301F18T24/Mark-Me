@@ -13,9 +13,14 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -32,6 +37,11 @@ import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,8 +58,53 @@ public class ProblemListFragment extends ListFragment {
     public static final String EXTRA_PROBLEM_INDEX = "EXTRA_PROBLEM_INDEX";
     public static final String EXTRA_USERNAME = "EXTRA_USERNAME";
 
+
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
+    private List<String> ShowHist;
+    private ArrayAdapter<String> adapter;
+
+
+    private void saveHistory(String string){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        Long tsLong = System.currentTimeMillis();
+        String ts = tsLong.toString();
+        editor.putString(ts, string);
+        editor.apply();
+    }
+
+
+    public List<String> readHistory() {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        List<String> historyToShow = new ArrayList<String>();
+
+        ArrayList<ArrayList<String>> history = new ArrayList<ArrayList<String>>();
+        Map<String, ?> allEntries = sharedPref.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            String key = String.valueOf(entry.getKey());
+            String val = String.valueOf(entry.getValue());
+            history.add(new ArrayList<String>(Arrays.asList(key,val)));
+        }
+
+        Collections.sort(history, new Comparator<ArrayList<String>>() {
+            @Override
+            public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+                return o1.get(0).compareTo(o2.get(0));
+            }
+        });
+
+        Collections.reverse(history);
+
+        int size = (history.size() < 3) ? history.size() : 3;
+
+        for (int i = 0; i < size; i++) {
+            historyToShow.add(history.get(i).get(1));
+        }
+
+        return historyToShow;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -57,12 +112,35 @@ public class ProblemListFragment extends ListFragment {
 
         getTitle().setText("List of Problems");
 
+
+        ShowHist = new ArrayList<String>(readHistory());
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line,ShowHist);
+        getSearchField().setAdapter(adapter);
+
         // set the on click listeners
         getAddButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ProblemCreationActivity.class);
                 startActivityForResult(i, REQUEST_CODE_ADD);
+            }
+        });
+
+        getSearchButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String value = getSearchField().getText().toString();
+                saveHistory(value);
+                ShowHist.clear();
+                ShowHist.addAll(readHistory());
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        getSearchField().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSearchField().showDropDown();
             }
         });
 

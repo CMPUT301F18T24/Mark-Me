@@ -38,7 +38,6 @@
             android:name=".actvity.SignupActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".actvity.LoginActivity" />
-        <activity android:name=".fragment.RecordInfoFragment" />
         <activity
             android:name=".actvity.LiveCameraActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -62,7 +61,6 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <activity android:name=".Gallery" />
         <activity android:name=".actvity.MapSelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".deletePhoto" />
     </application>
