@@ -42,7 +42,7 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
      * lonelyTwitter: https://github.com/joshua2ua/lonelyTwitter
      * author: joshua
      */
-    private void loadProblems() {
+    private void load() {
         try {
             InputStream fis = this.getClass().getClassLoader().getResourceAsStream(PROBLEM_FILENAME);//context.openFileInput();
             InputStreamReader isr = new InputStreamReader(fis);
@@ -62,7 +62,7 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
         }
     }
 
-    private void saveProblems() {
+    private void save() {
         try {
             FileOutputStream fos = new FileOutputStream(new File(PROBLEM_FILENAME));
             OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -81,31 +81,55 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
 
     @Override
     public ProblemModel findProblem(String problemId) {
+        if (currentUser == null)
+            return null;
+
+        for (ProblemModel problem: currentUser.getProblems())
+            if (problemId.equals(problem.getPatientId()))
+                return problem;
+
         return null;
     }
 
     @Override
     public void addProblem(ProblemModel problem) {
-
+        save();
     }
 
     @Override
     public ArrayList<ProblemModel> getProblems(UserModel user) {
-        return null;
+        load();
+        return currentUser.getProblems();
     }
 
     @Override
     public RecordModel findRecord(String recordId) {
+        if (currentUser == null)
+            return null;
+
+        for (ProblemModel problem: currentUser.getProblems())
+            for (RecordModel record: problem.getRecords())
+                if (record.getRecordId().equals(recordId))
+                    return record;
+
         return null;
     }
 
     @Override
     public void addRecord(RecordModel record) {
-
+        save();
     }
 
     @Override
     public ArrayList<RecordModel> getRecords(ProblemModel problem) {
+        load();
+        if (currentUser == null)
+            return null;
+
+        for (ProblemModel loadedProblem: currentUser.getProblems())
+            if (problem.getProblemId().equals(problem.getProblemId()))
+                return loadedProblem.getRecords();
+
         return null;
     }
 
@@ -119,7 +143,9 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
 
     @Override
     public boolean addUser(UserModel user) {
-        return false;
+        currentUser = (Patient) user;
+        save();
+        return true;
     }
 
     @Override
@@ -129,6 +155,6 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
 
     @Override
     public void editUser(UserModel user) {
-
+        addUser(user);
     }
 }
