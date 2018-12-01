@@ -37,10 +37,9 @@ import java.io.FileOutputStream;
 public class FullGalleryFragment extends Fragment {
     public static final String PHOTO_CONTENT = "ca.cybersix.photo";
     public static final String GALLERY_MODE = "ca.cybersix.gallerymode";
-    private boolean galleryViewMode;
 
 
-    private Bitmap bitmaps[];
+    public static Bitmap bitmaps[];
     private int counter;
 
     public FullGalleryFragment() {
@@ -58,8 +57,6 @@ public class FullGalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_full_gallery, container, false);
-//        Bitmap b0 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_gallery);
-//        Bitmap b1 = BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.ic_body);
         bitmaps = new Bitmap[2000];
         counter = 0;
         int size;
@@ -73,10 +70,8 @@ public class FullGalleryFragment extends Fragment {
             }
 
             for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(j);
+                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(i);
                     counter++;
-                }
             }
 
         }else{
@@ -90,49 +85,26 @@ public class FullGalleryFragment extends Fragment {
             for (int i = 0; i < size; i++) {
                 int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
                 for (int j = 0; j < recordSize; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j);
+                    bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j);
                     counter++;
                 }
             }
 
         }
-//        bitmaps[0]= b0;
-//        bitmaps[1]= b1;
-//        bitmaps[2]= b0;
-//        bitmaps[3]= b1;
 
 
         GridView gridView = view.findViewById(R.id.fragment_full_gallery_gridview);
-        final ImageAdapter imageAdapter = new ImageAdapter(getActivity(), this.bitmaps);
+        final ImageAdapter imageAdapter = new ImageAdapter(getActivity(), bitmaps);
         gridView.setAdapter(imageAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bitmap bitmap = FullGalleryFragment.this.bitmaps[position];
                 Intent intent = new Intent(getActivity().getBaseContext(),
                         deletePhoto.class);
-
-                try {
-                    //Write file
-                    String filename = "bitmap.png";
-                    FileOutputStream stream = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-                    //Cleanup
-                    stream.close();
-                   /* if (bitmap != null && !bitmap.isRecycled()) {
-                        bitmap.recycle();
-                        bitmap = null;
-                    }
-                    */
-
-                    //Pop intent
-                    intent.putExtra(PHOTO_CONTENT, filename);
+                    intent.putExtra(PHOTO_CONTENT, position);
                     getActivity().startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
         });
 
