@@ -1,3 +1,6 @@
+/**
+ * CMPUT 301
+ */
 package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
