@@ -71,6 +71,7 @@ public class RecordInfoFragment extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
+            // TODO: What is going on here?
             java.util.ArrayList<RecordModel> test = RecordController.getInstance().getSelectedProblemRecords();
             selectedRecord =RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
         } else {

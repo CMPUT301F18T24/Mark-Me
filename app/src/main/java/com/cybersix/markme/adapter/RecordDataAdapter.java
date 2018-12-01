@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.cybersix.markme.actvity.LiveCameraActivity;
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.RecordModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,9 +49,10 @@ public class RecordDataAdapter {
         timestamp = r.getTimestamp();
         comment = r.getComment();
 
+        photos = new ArrayList<byte[]>();
         for (Bitmap photo : r.getPhotos()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, stream);
             photos.add(stream.toByteArray());
         }
 
