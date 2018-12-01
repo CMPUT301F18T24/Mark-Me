@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.cybersix.markme.actvity.MainActivity;
@@ -13,7 +14,9 @@ import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.fragment.BodyFragment;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.RecordModel;
+import com.cybersix.markme.model.UserModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -37,10 +40,14 @@ public class BodyActivityTest {
 
     @Rule
     public IntentsTestRule<MainActivity> mainActivityTestRule =
-            new IntentsTestRule<>(MainActivity.class);
+            new IntentsTestRule<>(MainActivity.class, true, false);
 
     @Before
-    public void setup(){
+    public void setup() throws UserModel.UsernameTooShortException {
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, "testtest");
+        mainActivityTestRule.launchActivity(intent);
+
         nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
         ProblemController.getInstance().createNewProblem("title","desc");
         ProblemController.getInstance().setSelectedProblem(0);

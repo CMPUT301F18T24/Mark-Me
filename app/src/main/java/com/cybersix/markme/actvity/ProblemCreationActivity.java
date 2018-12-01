@@ -46,8 +46,8 @@ package com.cybersix.markme.actvity;
 
 public class ProblemCreationActivity extends AppCompatActivity {
     private String consistency;
-
-
+    public static final String EXTRA_TITLE = "EXTRA_PROBLEM_TITLE";
+    public static final String EXTRA_DESCRIPTION = "EXTRA_PROBLEM_DESCRIPTION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +103,6 @@ public class ProblemCreationActivity extends AppCompatActivity {
         final EditText problemDescription = (EditText) findViewById(R.id.problemDescText);
 //        EditText problemNotifyTime = (EditText) findViewById(R.id.problemNotifyTime);
 
-        ProblemController instance = ProblemController.getInstance();
-        instance.createNewProblem(problemTitle.getText().toString(), problemDescription.getText().toString());
 
         // build the alert dialog that will show that the problem was saved
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -114,6 +112,8 @@ public class ProblemCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
+                intent.putExtra(EXTRA_TITLE, problemTitle.getText().toString());
+                intent.putExtra(EXTRA_DESCRIPTION, problemDescription.getText().toString());
                 setResult(RESULT_OK, intent);
                 finish();
             }

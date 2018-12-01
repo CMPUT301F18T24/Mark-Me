@@ -13,7 +13,10 @@ package com.cybersix.markme.actvity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.cybersix.markme.model.DataModel;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
@@ -24,6 +27,7 @@ public class MainActivity extends FragmentActivity {
     public static String EXTRA_CURRENT_USERNAME = "COM_CYBERSIX_MARKME_CURRENT_USERNAME";
     private NavigationController mNavigationController = null;
     private UserModel mUser = null;
+    private DataModel mData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +36,9 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        mUser = ElasticSearchIO.getInstance().findUser(username);
-
+        setUser(username);
         mNavigationController = NavigationController.getInstance(this);
-        mNavigationController.setSelectedItem(R.id.body);
+        mNavigationController.setSelectedItem(R.id.list);
     }
 
     @Override
@@ -50,5 +53,19 @@ public class MainActivity extends FragmentActivity {
 
     public UserModel getUser() {
         return mUser;
+    }
+
+    public void setUser(UserModel user) {
+        mUser = user;
+    }
+
+    public void setUser(String username) {
+        mData = DataModel.getInstance();
+        if (username != null) {
+            Log.i("SetUser", username);
+            mUser = ElasticSearchIO.getInstance().findUser(username);
+            if (mUser.getUserType().equals(Patient.class.getSimpleName()))
+                mData.setSelectedPatient((Patient) mUser);
+        }
     }
 }

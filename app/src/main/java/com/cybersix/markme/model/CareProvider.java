@@ -18,13 +18,17 @@ import java.util.List;
 public class CareProvider extends UserModel {
     private List<Patient> patients = null;
 
+    public CareProvider() {
+
+    }
+
     public CareProvider(String username) {
         this(username, null);
     }
 
     public CareProvider(String username, List<Patient> patients) {
         super();
-        super.setUserID(username);
+        super.setUserId(username);
 
         if (patients == null)
             this.patients = new ArrayList<Patient>();
@@ -32,6 +36,9 @@ public class CareProvider extends UserModel {
             this.patients = patients;
     }
 
+    public void setPatients(ArrayList<Patient> patients) {
+        this.patients = patients;
+    }
     public void addPatient(Patient p){
         patients.add(p);
     }

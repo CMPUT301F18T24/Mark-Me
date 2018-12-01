@@ -70,7 +70,7 @@ public class UserActivityAddPopUp extends AppCompatActivity {
             String tempID = "Fake ID " + Integer.toString(i);
             try {
                 UserModel tempUser = new UserModel(tempUsername);
-                tempUser.setUserID(tempID);
+                tempUser.setUserId(tempID);
                 users.add(tempUser);
             }
             catch (Exception e) {

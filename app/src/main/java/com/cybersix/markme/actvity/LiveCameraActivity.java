@@ -6,6 +6,9 @@
  *
  * Passing an intent containing the resource id of an @drawable will overlay
  * that @drawable on top of the TextureView containing the camera's output.
+ *
+ * Issues: - The photo compression has extremely varied results and it needs more work to ensure
+ * consistency of photo size that's returned.
  */
 
 package com.cybersix.markme.actvity;
@@ -14,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +27,8 @@ import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class LiveCameraActivity extends AppCompatActivity {
     public static final String EXTRA_IMAGE = "image";
@@ -59,15 +65,100 @@ public class LiveCameraActivity extends AppCompatActivity {
                     public void onCapture(Bitmap bitmap) {
                         Intent data = new Intent();
 
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                        byte[] bytes = stream.toByteArray();
-                        data.putExtra(EXTRA_IMAGE, bytes);
+                        // Empirical result: 75% seems to be working out well.
+                        byte[] bytes = compressBitmap(bitmap, 75);
 
+                        // Debug purposes. Use this for testing compression quality. Comment out
+                        // everything else to avoid crashes due to bitmaps getting recycled.
+                        // compressionTest(bitmap, 10);
+
+                        data.putExtra(EXTRA_IMAGE, bytes);
                         setResult(RESULT_OK, data);
                         finish();
-            }
+
+                    }
         });
+    }
+
+    public byte[] compressBitmap(Bitmap bitmap,  int quality) {
+        // Compress and output the bitmap.
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Bitmap newBitmap = scaleImage(bitmap);
+
+        // The quality was chosen empirically, additional testing is required.
+        newBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+
+        return out.toByteArray();
+    }
+
+    /**
+     * Generates an image that can be found here:
+     * .../data/data/com.cybersix.markme/files/test.jpeg
+     * This method is for debug purposes to help determine an appropriate quality
+     * for our photos. It prints the # of bytes needed for the corresponding quality of bitmap.
+     * @param bitmap The raw bitmap to compress.
+     * @param quality The quality to which we want to compress the bitmap.
+     */
+    public void DEBUGONLY_compressionTest(Bitmap bitmap, int quality) {
+        String filename = getApplicationContext().getFilesDir() + "/test_" + quality + ".jpeg";
+        try (FileOutputStream out = new FileOutputStream(filename)) {
+
+            // Scale the bitmap
+            Bitmap newBitmap = scaleImage(bitmap);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+
+            // Output the bitmap with request quality.
+            ByteArrayOutputStream supOut = new ByteArrayOutputStream();
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, quality, supOut);
+            byte[] bytesTest = supOut.toByteArray();
+
+            newBitmap.recycle(); // Destroy the original bitmap.
+
+            Log.d("Vishal_Compressed", Integer.toString(bytesTest.length));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Performs the following functions in order to cutdown on the image size:
+     * 1. Crops into a square from the center.
+     * 2. Scales the bitmap by a percentage.
+     *
+     * A good size appears to be ~750px.
+     * @param bitmap The original bitmap.
+     * @return Cropped and scaled bitmap.
+     */
+    public Bitmap scaleImage(Bitmap bitmap) {
+
+        //Log.d("Vishal_info", "Height: " + bitmap.getHeight() + " Width: " + bitmap.getWidth());
+        // Initially the image has 1 to 1 scaling.
+        Bitmap scaledBitmap = scale(1, bitmap);
+
+        // Scale based on resolution. Add more scaling as necessary.
+        if (bitmap.getWidth() > 2000) {
+            scaledBitmap = scale(0.12, bitmap);
+        } else if (bitmap.getWidth() > 1000) {
+            scaledBitmap = scale(0.25, bitmap);
+        }
+
+        bitmap.recycle(); // Conserve memory by destroying the original.
+
+        return scaledBitmap;
+    }
+
+    /**
+     * Scales down by the requested percentage while maintaining aspect ratio.
+     * Note: Save the result to a new bitmap and ensure you recycle the original bitmap.
+     * @param scalePercentage Percent value to scale bitmap down. ex) 0.5 = 50% reduction in size.
+     * @param bitmap The original bitmap.
+     * @return The scaled bitmap.
+     */
+    public Bitmap scale(double scalePercentage, Bitmap bitmap) {
+        return Bitmap.createScaledBitmap(bitmap,
+                (int)(bitmap.getWidth() * scalePercentage),
+                (int)(bitmap.getHeight() * scalePercentage),
+                true);
     }
 
     @Override

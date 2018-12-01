@@ -18,7 +18,7 @@ public class PatientTest {
     @Test
     public void testAddProblem() {
         try{
-            Patient pat = new Patient("guy44");
+            Patient pat = new Patient("guy4421313");
             ProblemModel pm = new ProblemModel("major issue","");
             ProblemModel pm2 = new ProblemModel("big problem","");
             pat.addProblem(pm);
@@ -40,7 +40,7 @@ public class PatientTest {
     @Test
     public void testGetProblem() {
         try{
-            Patient pat = new Patient("guy441");
+            Patient pat = new Patient("guy441123123");
             ProblemModel pm = new ProblemModel("major issue!","");
             ProblemModel pm2 = new ProblemModel("big problem!","");
             pat.addProblem(pm);
@@ -105,9 +105,9 @@ public class PatientTest {
 
     @Test
     public void testAddCareProvider() throws UserModel.UsernameTooShortException {
-        Patient pat = new Patient("guy44");
-        CareProvider careProv = new CareProvider("Joe");
-        CareProvider careProv2 = new CareProvider("Jorge");
+        Patient pat = new Patient("guy44123123");
+        CareProvider careProv = new CareProvider("Joe213123");
+        CareProvider careProv2 = new CareProvider("Jorge12313");
 
         pat.addCareProvider(careProv);
         pat.addCareProvider(careProv2);
@@ -118,9 +118,9 @@ public class PatientTest {
 
     @Test
     public void testGetCareProvider() throws UserModel.UsernameTooShortException {
-        Patient pat = new Patient("guy44");
-        CareProvider careProv = new CareProvider("Joe");
-        CareProvider careProv2 = new CareProvider("Jorge");
+        Patient pat = new Patient("guy431231234");
+        CareProvider careProv = new CareProvider("Joe2131233");
+        CareProvider careProv2 = new CareProvider("Jorge42342");
 
         pat.addCareProvider(careProv);
         ArrayList<CareProvider> careList = pat.getCareProviders();
@@ -134,9 +134,9 @@ public class PatientTest {
 
     @Test
     public void testRemoveCareProvider() throws UserModel.UsernameTooShortException {
-        Patient pat = new Patient("guy44");
-        CareProvider careProv = new CareProvider("Joe");
-        CareProvider careProv2 = new CareProvider("Jorge");
+        Patient pat = new Patient("guy4421312");
+        CareProvider careProv = new CareProvider("Joe2132131");
+        CareProvider careProv2 = new CareProvider("Jorge21331");
 
         pat.addCareProvider(careProv);
         pat.addCareProvider(careProv2);
@@ -150,8 +150,8 @@ public class PatientTest {
 
     @Test
     public void testRemoveCareProviderFromEmptyList() throws UserModel.UsernameTooShortException {
-        Patient pat = new Patient("guy44");
-        CareProvider careProv = new CareProvider("Joe");
+        Patient pat = new Patient("guy44123123");
+        CareProvider careProv = new CareProvider("Joe324234");
 
         assertEquals(pat.getCareProviders().size(), 0); // Check empty before
         pat.removeCareProvider(careProv);
