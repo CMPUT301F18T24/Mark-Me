@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the record model. This will hold all of the information of the records based on the logged
+ * in patient. This will help with keeping the record information of the patient consistent throughout
+ * the app
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-10
+ *
+ * Copyright Notice
+ * @author Vishal Patel TODO: Might be someone else
+ */
 package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
