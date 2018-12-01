@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This will help give fullscreen capabilities to the live camera activity
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-27
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.actvity.LiveCameraActivity
+ * @see com.cybersix.markme.controller.CameraPreview
+ */
 package com.cybersix.markme.utils;
 
 import android.app.Activity;
