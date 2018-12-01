@@ -1,13 +1,14 @@
 package com.cybersix.markme.io;
 
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
 
 public class GeneralIO implements UserModelIO {
     private DiskIO diskIO = null;
     private ElasticSearchIO elasticSearchIO = null;
 
-    public GeneralIO() {
-
+    private GeneralIO(Patient patient) {
+        diskIO = new DiskIO(patient);
     }
 
     @Override
