@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class DataModel {
     private static DataModel instance = null;
     private Patient selectedPatient;
     private ProblemModel selectedProblem;
-    private ElasticSearchIO io = ElasticSearchIO.getInstance();
+    private GeneralIO io = GeneralIO.getInstance();
 
     private DataModel(){
 

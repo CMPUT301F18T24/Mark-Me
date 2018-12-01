@@ -15,6 +15,7 @@ package com.cybersix.markme.controller;
 import android.support.annotation.NonNull;
 
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.io.UserModelIO;
 import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.model.UserModel.*;
@@ -22,7 +23,7 @@ import com.cybersix.markme.observer.UserObserver;
 
 public class UserProfileController {
     private UserModel model = null;
-    private UserModelIO io = (UserModelIO) ElasticSearchIO.getInstance();
+    private UserModelIO io = (UserModelIO) GeneralIO.getInstance();
 
     public UserProfileController(@NonNull UserModel user) {
         this.model = user;

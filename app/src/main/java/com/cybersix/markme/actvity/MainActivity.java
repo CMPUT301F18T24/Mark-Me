@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
@@ -28,15 +29,19 @@ public class MainActivity extends FragmentActivity {
     private NavigationController mNavigationController = null;
     private UserModel mUser = null;
     private DataModel mData = null;
+    private GeneralIO io = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        io = GeneralIO.getInstance();
+
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
         setUser(username);
+
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
     }
@@ -62,7 +67,7 @@ public class MainActivity extends FragmentActivity {
     public void setUser(String username) {
         mData = DataModel.getInstance();
         if (username != null) {
-            mUser = ElasticSearchIO.getInstance().findUser(username);
+            mUser = io.findUser(username);
             if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                 mData.setSelectedPatient((Patient) mUser);
         }

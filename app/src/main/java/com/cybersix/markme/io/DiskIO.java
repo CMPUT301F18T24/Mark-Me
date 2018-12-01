@@ -23,13 +23,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
-    private static final String PROBLEM_FILENAME = "problem_queue.dat";
-    private static final String RECORD_FILENAME = "record_queue.dat";
-    private Patient currentUser = null;
+public class DiskIO {
+    private static final String PATIENT_FILENAME = "PATIENT.dat";
 
-    protected DiskIO(Patient currentUser) {
-        this.currentUser = currentUser;
+    protected DiskIO() {
+
     }
 
     /**
@@ -42,17 +40,16 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
      * lonelyTwitter: https://github.com/joshua2ua/lonelyTwitter
      * author: joshua
      */
-    private void load() {
+    public Patient loadPatient() {
+        Patient patient = null;
         try {
-            InputStream fis = this.getClass().getClassLoader().getResourceAsStream(PROBLEM_FILENAME);//context.openFileInput();
+            InputStream fis = this.getClass().getClassLoader().getResourceAsStream(PATIENT_FILENAME);//context.openFileInput();
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
 
             Gson gson = new Gson();
-            Type typeList = new TypeToken<ArrayList<ProblemModel>>(){}.getType();
-            Patient loadedPatient = gson.fromJson(reader, typeList);
-            if (loadedPatient != null)
-                currentUser = loadedPatient;
+            Type typeList = new TypeToken<Patient>(){}.getType();
+            patient = gson.fromJson(reader, typeList);
 
             fis.close();
         } catch (FileNotFoundException e) {
@@ -60,15 +57,16 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return patient;
     }
 
-    private void save() {
+    public void save(Patient p) {
         try {
-            FileOutputStream fos = new FileOutputStream(new File(PROBLEM_FILENAME));
+            FileOutputStream fos = new FileOutputStream(new File(PATIENT_FILENAME));
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter writer = new BufferedWriter(osw);
             Gson gson = new Gson();
-            gson.toJson(currentUser, writer);
+            gson.toJson(p, writer);
 
             writer.flush();
             fos.close();
@@ -77,84 +75,5 @@ public class DiskIO implements UserModelIO, ProblemModelIO, RecordModelIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public ProblemModel findProblem(String problemId) {
-        if (currentUser == null)
-            return null;
-
-        for (ProblemModel problem: currentUser.getProblems())
-            if (problemId.equals(problem.getPatientId()))
-                return problem;
-
-        return null;
-    }
-
-    @Override
-    public void addProblem(ProblemModel problem) {
-        save();
-    }
-
-    @Override
-    public ArrayList<ProblemModel> getProblems(UserModel user) {
-        load();
-        return currentUser.getProblems();
-    }
-
-    @Override
-    public RecordModel findRecord(String recordId) {
-        if (currentUser == null)
-            return null;
-
-        for (ProblemModel problem: currentUser.getProblems())
-            for (RecordModel record: problem.getRecords())
-                if (record.getRecordId().equals(recordId))
-                    return record;
-
-        return null;
-    }
-
-    @Override
-    public void addRecord(RecordModel record) {
-        save();
-    }
-
-    @Override
-    public ArrayList<RecordModel> getRecords(ProblemModel problem) {
-        load();
-        if (currentUser == null)
-            return null;
-
-        for (ProblemModel loadedProblem: currentUser.getProblems())
-            if (problem.getProblemId().equals(problem.getProblemId()))
-                return loadedProblem.getRecords();
-
-        return null;
-    }
-
-    @Override
-    public UserModel findUser(String username) {
-        if (currentUser != null && currentUser.getUsername().equals(username))
-            return currentUser;
-        else
-            return null;
-    }
-
-    @Override
-    public boolean addUser(UserModel user) {
-        currentUser = (Patient) user;
-        save();
-        return true;
-    }
-
-    @Override
-    public boolean deleteUser(UserModel user) {
-        return false;
-    }
-
-    @Override
-    public void editUser(UserModel user) {
-        addUser(user);
     }
 }

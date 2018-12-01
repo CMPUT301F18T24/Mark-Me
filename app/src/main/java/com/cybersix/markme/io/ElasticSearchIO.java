@@ -301,7 +301,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
 
     @Override
     public void editUser(UserModel user) {
-
+        try {
+            new AddUserTask().execute(user).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
