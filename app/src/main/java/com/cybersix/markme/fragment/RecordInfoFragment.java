@@ -76,7 +76,7 @@ public class RecordInfoFragment extends Fragment {
         } else {
             //We have a map record
             recordIdx = b.getInt("MapRecordIdx",-1);
-            selectedRecord = RecordController.getInstance().getAllRecords().get(recordIdx);
+            selectedRecord = RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
         }
         initAttributes();
         setListeners();
