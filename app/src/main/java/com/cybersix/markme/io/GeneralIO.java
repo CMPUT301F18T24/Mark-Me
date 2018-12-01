@@ -75,7 +75,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
     @Override
     public boolean editUser(UserModel user) {
         if (diskIO.isUserOnDisk(user) && user.getUserType().equals(Patient.class.getSimpleName()))
-            diskIO.save((Patient) user);
+            diskIO.savePatient((Patient) user);
         return elasticSearchIO.editUser(user);
     }
 
@@ -95,7 +95,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
         Patient patient = diskIO.loadPatient();
         if (patient != null) {
             patient.addProblem(problem);
-            diskIO.save(patient);
+            diskIO.savePatient(patient);
         }
         if (!elasticSearchIO.addProblem(problem)) {
             settings.syncRequired = true;
@@ -135,7 +135,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
                 for (RecordModel lrecord: problem.getRecords())
                     if (lrecord.getRecordId().equals(record.getRecordId())) {
                         problem.addRecord(record);
-                        diskIO.save(patient);
+                        diskIO.savePatient(patient);
                     }
         }
         return elasticSearchIO.addRecord(record);
@@ -187,7 +187,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
             problem.setRecords( elasticSearchIO.getRecords(problem) );
         }
 
-        diskIO.save((Patient) user);
+        diskIO.savePatient((Patient) user);
     }
 
     protected static class Settings {

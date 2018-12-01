@@ -13,6 +13,7 @@
 package com.cybersix.markme.io;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cybersix.markme.adapter.ProblemDataAdapter;
@@ -48,6 +49,43 @@ public class DiskIO {
         this.context = context;
     }
 
+
+    public Patient loadPatient() {
+        Patient p = null;
+        try {
+            p = new LoadPatientTask().execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
+    public void savePatient(Patient p) {
+        try {
+            new SavePatientTask().execute(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public GeneralIO.Settings loadSettings() {
+        GeneralIO.Settings s = null;
+        try {
+            s = new LoadSettingsTask().execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public void saveSettings(GeneralIO.Settings s) {
+        try {
+            new SaveSettingsTask().execute(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Attempts to load the .sav file named under MainActivity.FILENAME, and store the
      * emotions in that file to the ArrayList of emotions.
@@ -58,7 +96,7 @@ public class DiskIO {
      * lonelyTwitter: https://github.com/joshua2ua/lonelyTwitter
      * author: joshua
      */
-    public Patient loadPatient() {
+    private Patient asyncLoadPatient() {
         Patient patient = null;
         try {
             FileInputStream fis = context.openFileInput(PATIENT_FILENAME);
@@ -90,7 +128,7 @@ public class DiskIO {
             return false;
     }
 
-    public void save(Patient p) {
+    private void asyncSavePatient(Patient p) {
         try {
             FileOutputStream fos = context.openFileOutput(PATIENT_FILENAME, 0);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -114,7 +152,7 @@ public class DiskIO {
             file.delete();
     }
 
-    public GeneralIO.Settings loadSettings() {
+    private GeneralIO.Settings asyncLoadSettings() {
         GeneralIO.Settings settings = new GeneralIO.Settings();
         try {
             FileInputStream fis = context.openFileInput(SETTINGS_FILENAME);
@@ -136,7 +174,7 @@ public class DiskIO {
         return settings;
     }
 
-    public void saveSettings(GeneralIO.Settings settings) {
+    private void asyncSaveSettings(GeneralIO.Settings settings) {
         try {
             FileOutputStream fos = context.openFileOutput(SETTINGS_FILENAME, 0);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -151,6 +189,34 @@ public class DiskIO {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class LoadPatientTask extends AsyncTask<Void, Void, Patient> {
+        protected Patient doInBackground(Void... params) {
+            return asyncLoadPatient();
+        }
+    }
+
+    private class SavePatientTask extends AsyncTask<Patient, Void, Void> {
+        protected Void doInBackground(Patient... params) {
+            for (Patient p: params)
+                asyncSavePatient(p);
+            return null;
+        }
+    }
+
+    private class LoadSettingsTask extends AsyncTask<Void, Void, GeneralIO.Settings> {
+        protected GeneralIO.Settings doInBackground(Void... params) {
+            return asyncLoadSettings();
+        }
+    }
+
+    private class SaveSettingsTask extends AsyncTask<GeneralIO.Settings, Void, Void> {
+        protected Void doInBackground(GeneralIO.Settings... params) {
+            for (GeneralIO.Settings s: params)
+                asyncSaveSettings(s);
+            return null;
         }
     }
 }

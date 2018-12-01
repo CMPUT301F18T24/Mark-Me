@@ -147,7 +147,6 @@ public class RecordModel extends Observable {
 
         photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, out);
         byte[] bytes = out.toByteArray();
-        Log.d("vishal_record", Integer.toString(bytes.length));
 
         if(bytes.length > 64000){ throw new PhotoTooLargeException(); }
 
