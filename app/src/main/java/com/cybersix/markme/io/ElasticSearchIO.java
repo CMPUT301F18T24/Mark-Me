@@ -274,7 +274,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             e.printStackTrace();
         }
 
-        Log.d("vishal", "Hi3");
         return null;
     }
 

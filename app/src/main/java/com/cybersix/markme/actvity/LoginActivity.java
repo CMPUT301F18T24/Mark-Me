@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     public void checkLogin() {
         // If we got exactly one username returned.
         if (userController.userExists(this.getApplicationContext())) {
+            Log.d("vishal_Loginboi", userModel.getUsername());
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);

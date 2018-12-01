@@ -130,7 +130,7 @@ public class UserProfileController {
             }
 
             input.close();
-            String securityToken = stringBuilder.toString();
+            String securityToken = stringBuilder.toString().trim();
             Log.d("UserProfileController: ", securityToken);
             return io.findUser(securityToken) != null;
 
