@@ -92,7 +92,7 @@ public class UserProfileController {
         // TODO: Use the userID instead. We need to change the "login" function to use userID instead.
         if (io.addUser(model)) {
 
-            String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";
+            String filename = "securityToken.txt";
             try (FileOutputStream output = context.openFileOutput(filename, Context.MODE_PRIVATE)) {
 
                 OutputStreamWriter writer = new OutputStreamWriter(output);
@@ -115,10 +115,10 @@ public class UserProfileController {
 
     // Checks locally for a password file, to see if an account has already been created.
     // TODO: Move password file check to diskIO utils?
-    // TODO: Uncouple the login button fro, the user observers
+    // TODO: Uncouple the login button from, the user observers
     public boolean userExists(Context context) {
 
-        String filename = context.getApplicationContext().getFilesDir() + "/security_token.txt";
+        String filename = "securityToken.txt";
         try (FileInputStream input = context.openFileInput(filename)) {
 
             InputStreamReader reader = new InputStreamReader(input);
@@ -131,6 +131,7 @@ public class UserProfileController {
 
             input.close();
             String securityToken = stringBuilder.toString();
+            Log.d("UserProfileController: ", securityToken);
             return io.findUser(securityToken) != null;
 
         } catch (FileNotFoundException e) {

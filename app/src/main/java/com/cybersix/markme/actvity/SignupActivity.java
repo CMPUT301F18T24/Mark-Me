@@ -54,7 +54,6 @@ public class SignupActivity extends AppCompatActivity {
         userObserver.setEmailView((TextView) findViewById(R.id.fragment_account_settings_email));
         userObserver.setPhoneView((TextView) findViewById(R.id.fragment_account_settings_phoneText));
         userObserver.setModifierButton(findViewById(R.id.signupButton));
-        TextView passwordText = (TextView) findViewById(R.id.passwordText);
 
         // Add an onClick listener that validates signup information
         userObserver.setOnModifierPressed(new View.OnClickListener() {

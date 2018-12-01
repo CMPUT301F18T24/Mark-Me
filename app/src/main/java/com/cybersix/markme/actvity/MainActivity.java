@@ -33,9 +33,9 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
+        Log.d("vishal", "Hi" + username);
         setUser(username);
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
         if (username != null) {
             Log.i("SetUser", username);
             mUser = ElasticSearchIO.getInstance().findUser(username);
+            Log.d("vishal", "Do I get called?");
             if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                 mData.setSelectedPatient((Patient) mUser);
         }

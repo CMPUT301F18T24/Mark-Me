@@ -201,6 +201,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 // Associate the ID with the original userModel object.
                 user.setUserId(result.getId());
             }
+            Log.d("vishal_addUser", user.getUsername() + " " + result.isSucceeded());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -272,11 +273,14 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        Log.d("vishal", "Hi3");
         return null;
     }
 
     @Override
     public boolean addUser(UserModel user) {
+
         // If username exists, then send a fail.
         if (findUser(user.getUsername()) != null) {
             return false;

@@ -45,19 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         userObserver = new UserObserver(userController);
 
         initUI();
+        checkLogin();
     }
 
     // Initializes onClick listeners for UI elements.
     public void initUI() {
-        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
-        userObserver.setModifierButton(findViewById(R.id.loginButton));
-        // Add an onClick listener that validates login information
-        userObserver.setOnModifierPressed(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkLogin();
-            }
-        });
+        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText));
 
         userModel.addObserver(userObserver);
         // Add an onClick listener that takes the user to the signup Activity.
