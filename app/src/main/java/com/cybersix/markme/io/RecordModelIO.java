@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface RecordModelIO {
     RecordModel findRecord(String recordId);
-    void addRecord(RecordModel record);
+    boolean addRecord(RecordModel record);
     ArrayList<RecordModel> getRecords(ProblemModel problem);
 }

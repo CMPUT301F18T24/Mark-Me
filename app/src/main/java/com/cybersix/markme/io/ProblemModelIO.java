@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface ProblemModelIO {
     ProblemModel findProblem(String problemId);
-    void addProblem(ProblemModel problem);
+    boolean addProblem(ProblemModel problem);
     ArrayList<ProblemModel> getProblems(UserModel user);
 }

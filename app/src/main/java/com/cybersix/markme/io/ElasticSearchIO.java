@@ -1,5 +1,6 @@
 package com.cybersix.markme.io;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
+    private Context context = null;
 
     protected ElasticSearchIO() {
         setClient();
@@ -300,11 +302,13 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
-    public void editUser(UserModel user) {
+    public boolean editUser(UserModel user) {
         try {
             new AddUserTask().execute(user).get();
+            return true;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -319,11 +323,13 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
-    public void addProblem(ProblemModel problem) {
+    public boolean addProblem(ProblemModel problem) {
         try {
             new AddProblemTask().execute(problem).get();
+            return true;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -349,11 +355,13 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
-    public void addRecord(RecordModel record) {
+    public boolean addRecord(RecordModel record) {
         try {
             new AddRecordTask().execute(record).get();
+            return true;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

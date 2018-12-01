@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.observer.UserObserver;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         userModel = new UserModel();
         userController = new UserProfileController(userModel);
         userObserver = new UserObserver(userController);
+        GeneralIO.getInstance().setContext(this);
 
         initUI();
     }
@@ -82,8 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
         // If we got exactly one username returned.
-        Log.i("UserFound", "" + userController.userExists());
-        if (userController.userExists()) {
+        if (userController.login()) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);

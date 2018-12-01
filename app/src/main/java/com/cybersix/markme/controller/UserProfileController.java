@@ -23,7 +23,7 @@ import com.cybersix.markme.observer.UserObserver;
 
 public class UserProfileController {
     private UserModel model = null;
-    private UserModelIO io = (UserModelIO) GeneralIO.getInstance();
+    private GeneralIO io = GeneralIO.getInstance();
 
     public UserProfileController(@NonNull UserModel user) {
         this.model = user;
@@ -68,10 +68,6 @@ public class UserProfileController {
         }
     }
 
-    public void updateRemoteModel() {
-        // TODO: Update the model information on elastic search
-    }
-
     // Attempts to add a model to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information
     //         userType - The type of the model.
@@ -83,5 +79,9 @@ public class UserProfileController {
 
     public boolean userExists() {
         return io.findUser(model.getUsername()) != null;
+    }
+
+    public boolean login() {
+        return io.loginAs(model.getUsername());
     }
 }

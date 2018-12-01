@@ -1,5 +1,8 @@
 package com.cybersix.markme.io;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
@@ -25,9 +28,15 @@ import java.util.ArrayList;
 
 public class DiskIO {
     private static final String PATIENT_FILENAME = "PATIENT.dat";
+    private static final String SETTINGS_FILENAME = "SETTINGS.dat";
+    private Context context = null;
 
     protected DiskIO() {
 
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     /**
@@ -43,7 +52,7 @@ public class DiskIO {
     public Patient loadPatient() {
         Patient patient = null;
         try {
-            InputStream fis = this.getClass().getClassLoader().getResourceAsStream(PATIENT_FILENAME);//context.openFileInput();
+            FileInputStream fis = context.openFileInput(PATIENT_FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
 
@@ -56,23 +65,82 @@ public class DiskIO {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         return patient;
     }
 
+    public boolean isUserOnDisk(UserModel user) {
+        UserModel loadedUser = loadPatient();
+        if (loadedUser == null)
+            return false;
+        else if (loadedUser.getUserId().equals(user.getUserId()))
+            return true;
+        else
+            return false;
+    }
+
     public void save(Patient p) {
         try {
-            FileOutputStream fos = new FileOutputStream(new File(PATIENT_FILENAME));
+            FileOutputStream fos = context.openFileOutput(PATIENT_FILENAME, 0);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter writer = new BufferedWriter(osw);
             Gson gson = new Gson();
             gson.toJson(p, writer);
-
             writer.flush();
             fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePatient() {
+        File file = new File(PATIENT_FILENAME);
+        if (file.exists())
+            file.delete();
+    }
+
+    public GeneralIO.Settings loadSettings() {
+        GeneralIO.Settings settings = new GeneralIO.Settings();
+        try {
+            FileInputStream fis = context.openFileInput(SETTINGS_FILENAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
+
+            Gson gson = new Gson();
+            Type typeList = new TypeToken<GeneralIO.Settings>(){}.getType();
+            settings = gson.fromJson(reader, typeList);
+
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return settings;
+    }
+
+    public void saveSettings(GeneralIO.Settings settings) {
+        try {
+            FileOutputStream fos = context.openFileOutput(SETTINGS_FILENAME, 0);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter writer = new BufferedWriter(osw);
+            Gson gson = new Gson();
+            gson.toJson(settings, writer);
+            writer.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }

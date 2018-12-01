@@ -13,7 +13,6 @@ package com.cybersix.markme.actvity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.model.DataModel;
@@ -21,7 +20,6 @@ import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
-import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.UserModel;
 
 public class MainActivity extends FragmentActivity {
@@ -29,14 +27,16 @@ public class MainActivity extends FragmentActivity {
     private NavigationController mNavigationController = null;
     private UserModel mUser = null;
     private DataModel mData = null;
-    private GeneralIO io = null;
+    private GeneralIO mIO = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        io = GeneralIO.getInstance();
+        mIO = GeneralIO.getInstance();
+        mIO.setContext(this);
+        mData = DataModel.getInstance();
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
@@ -65,9 +65,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void setUser(String username) {
-        mData = DataModel.getInstance();
         if (username != null) {
-            mUser = io.findUser(username);
+            mUser = mIO.findUser(username);
             if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                 mData.setSelectedPatient((Patient) mUser);
         }
