@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the record creation activity that the user will see when they wish to create a record
+ * to a selected problem
+ *
+ * Date: 2018-11-11
+ *
+ * Version 0.1
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.model.ProblemModel
+ * @see com.cybersix.markme.fragment.ProblemListFragment
+ */
 package com.cybersix.markme.actvity;
 
 import android.content.DialogInterface;
