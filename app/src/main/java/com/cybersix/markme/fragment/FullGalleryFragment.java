@@ -121,10 +121,11 @@ public class FullGalleryFragment extends Fragment {
 
                     //Cleanup
                     stream.close();
-                    if (bitmap != null && !bitmap.isRecycled()) {
+                   /* if (bitmap != null && !bitmap.isRecycled()) {
                         bitmap.recycle();
                         bitmap = null;
                     }
+                    */
 
                     //Pop intent
                     intent.putExtra(PHOTO_CONTENT, filename);
