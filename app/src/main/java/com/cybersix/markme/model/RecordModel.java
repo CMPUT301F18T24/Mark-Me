@@ -1,9 +1,12 @@
 package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
+import com.cybersix.markme.actvity.LiveCameraActivity;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,12 +127,19 @@ public class RecordModel extends Observable {
      * @throws PhotoTooLargeException
      */
     public void addPhoto(Bitmap photo) throws TooManyPhotosException, PhotoTooLargeException{
-        //TODO: Check photo size when Photo class has been figured out!
 
-        int photoSize = photo.getByteCount(); //TODO: GET PHOTO SIZE
-        if(photoSize > 64000){ throw new PhotoTooLargeException(); }
+        // Compress and output the bitmap.
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        if(photos.size()<10){ photos.add(photo); }
+        photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, out);
+        byte[] bytes = out.toByteArray();
+        Log.d("vishal_record", Integer.toString(bytes.length));
+
+        if(bytes.length > 64000){ throw new PhotoTooLargeException(); }
+
+        if(photos.size()<10){
+            photos.add(photo);
+        }
         else{ throw new TooManyPhotosException(); }
     }
 
