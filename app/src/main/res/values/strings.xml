@@ -74,5 +74,7 @@
     <string name="daily">Daily</string>
     <string name="every_other_day">Every other day</string>
     <string name="delete">Delete</string>
+    <string name="preference_file_key">com.cybersix.markme.history</string>
+    <string name="change_lang_text">Select Your Language</string>
     <string name="DontHaveAccountPromp">First time here? Sign up now!</string>
 </resources>

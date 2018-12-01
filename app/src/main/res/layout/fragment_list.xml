@@ -113,7 +113,7 @@
             android:contentDescription="@string/search_text"
             android:src="@android:drawable/ic_menu_search" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/fragment_list_seachField"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -124,5 +124,6 @@
             android:imeOptions="actionDone"
             android:textAlignment="textStart"
             android:textColor="@android:color/background_light" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

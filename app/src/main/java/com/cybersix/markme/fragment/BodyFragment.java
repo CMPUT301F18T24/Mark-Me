@@ -15,6 +15,8 @@ package com.cybersix.markme.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,10 +31,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cybersix.markme.actvity.LiveCameraActivity;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.utils.GuiUtils;
@@ -95,16 +99,19 @@ public class BodyFragment extends Fragment {
         }
     }
 
+    private final static int REQUEST_CODE_PHOTO = 2;
     public static final int REQUEST_RECORD_INFO = 1;
     public static final String EXTRA_SELECTED_PART = "SelectedPart";
     private ImageView bodyView;
+    private ImageView bodyImageView;
     private PointView point;
     private ImageButton rotateButton;
     private ImageButton addButton;
+    private ImageButton viewAllButton;
+    private ImageButton addBodyPhotoButton;
     private TextView totalText;
     private TextView userPromptText;
     private TextView notListedText;
-    private ImageButton viewAllButton;
     private ConstraintLayout bodyConstraintLayout;
     private ProblemController problemController = ProblemController.getInstance();
     private RecordController recordController = RecordController.getInstance();
@@ -113,8 +120,9 @@ public class BodyFragment extends Fragment {
     private int unlistedCount = 0;
     private boolean addingRecord = false;
     private HashMap<EBodyPart,ArrayList<RecordModel>> recordParts = new HashMap<EBodyPart,ArrayList<RecordModel>>();
-
-
+    private ArrayList<HighlightView> drawnViews = new ArrayList<HighlightView>();
+    private int screenHeight = 0;
+    private int screenWidth = 0;
 
     /*
         TODO:
@@ -130,17 +138,16 @@ public class BodyFragment extends Fragment {
     @Override
     public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        GuiUtils.setFullScreen(getActivity());
 
         bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
+
 
         if(problemController.getSelectedProblem() == null){
             //Send to problem view
             NavigationController.getInstance().setSelectedItem(R.id.list);
 
-//            Intent i = new Intent(getActivity(), ProblemListActivity.class);
-//            startActivity(i);
-            //TODO: finish();
         }
 
     }
@@ -148,34 +155,41 @@ public class BodyFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        GuiUtils.setFullScreen(getActivity());
         listedCount = 0;
         unlistedCount = 0;
         problemController = ProblemController.getInstance();
         initAttributes();
         setListeners();
-        getView().post(new Runnable() {
+        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void run() {
+            public void onGlobalLayout() {
+                //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
+                // Assistance with drawing POST measurement
+                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
                 drawRecords();
                 totalText.setText("Total: " + Integer.toString(listedCount));
-                notListedText.setText("Not Listed: " + Integer.toString(unlistedCount));
+                notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
+
             }
         });
+
     }
 
     private void initAttributes() {
         bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
+        bodyImageView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyImageView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
         rotateButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_rotateButton);
         addButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_addButton);
         viewAllButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_viewAllButton);
+        addBodyPhotoButton = (ImageButton) getActivity().findViewById(R.id.fragment_body_bodyCameraButton);
         totalText = (TextView) getActivity().findViewById(R.id.fragment_body_totalText);
         notListedText = (TextView) getActivity().findViewById(R.id.fragment_body_notListedText);
         userPromptText = (TextView) getActivity().findViewById(R.id.fragment_body_userPromptText);
 
         //Init mapping dict
-        recordParts.put(null,new ArrayList<RecordModel>());
         for(EBodyPart part : EBodyPart.values()) {
             recordParts.put(part,new ArrayList<RecordModel>());
         }
@@ -205,6 +219,13 @@ public class BodyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 newRecord();
+            }
+        });
+        addBodyPhotoButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                addNewBodyPhotos();
             }
         });
         viewAllButton.setOnClickListener(new View.OnClickListener(){
@@ -253,6 +274,8 @@ public class BodyFragment extends Fragment {
 
     private void reverse(){
         frontFacing = !frontFacing;
+        drawRecords();
+        //TODO: swap back/front image
     }
 
 
@@ -280,24 +303,34 @@ public class BodyFragment extends Fragment {
         Draws an overlay for records on the screen
     */
     private void drawRecords(){
+        //Clear all previously drawn views
+        for(HighlightView v: drawnViews){
+            bodyConstraintLayout.removeView(v);
+        }
+        drawnViews.clear();
         for(EBodyPart bp: recordParts.keySet()){
             if(bp != EBodyPart.UNLISTED){
                 listedCount += recordParts.get(bp).size();
             } else {
                 unlistedCount += recordParts.get(bp).size();
             }
-            if(recordParts.get(bp).size() > 0){
+            if(recordParts.get(bp).size() > 0 && bp.getFace() == frontFacing){
                 //Get p1 and p2 of the body part
                 PointF p1 = bp.getP1();
                 PointF p2 = bp.getP2();
 
                 //Need w/h to scale the x and y values dynamically to our screen
-                float h = bodyView.getHeight();
-                float w = bodyView.getWidth();
+                if(screenHeight == 0 || screenWidth == 0) {
+                    screenHeight = bodyConstraintLayout.getHeight();
+                    screenWidth = bodyConstraintLayout.getWidth();
+                }
+                float w = screenWidth;
+                float h = screenHeight;
 
                 //Create new view and add to layout
                 HighlightView highlight = new HighlightView(getActivity(), null,p1.x*w,p1.y*h,p2.x*w,p2.y*h);
                 bodyConstraintLayout.addView(highlight);
+                drawnViews.add(highlight);
             }
         }
     }
@@ -314,6 +347,12 @@ public class BodyFragment extends Fragment {
         }
     }
 
+    private void addNewBodyPhotos(){
+        // TODO: Create overlays for screen and send in intent
+        Intent i = new Intent(getActivity(),LiveCameraActivity.class);
+        i.putExtra(LiveCameraActivity.OVERLAY_RESOURCE_ID,R.drawable.body_upright);
+        startActivityForResult(i, REQUEST_CODE_PHOTO);
+    }
 
 
     /*
@@ -340,6 +379,16 @@ public class BodyFragment extends Fragment {
             int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
             b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
             NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
+        } else if(requestCode == REQUEST_CODE_PHOTO && resultCode == RESULT_OK){
+            //Bundle b = new Bundle();
+            //int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
+            //b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
+            //NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
+            //TODO: Implement body location saving AND implement flow for front/back photo
+            byte[] photo = data.getByteArrayExtra("image");
+            Bitmap photoMap = BitmapFactory.decodeByteArray(photo,0, photo.length);
+            bodyImageView.setImageBitmap(photoMap);
+            Log.d("Returned from cam", "Ret");
         }
     }
 
