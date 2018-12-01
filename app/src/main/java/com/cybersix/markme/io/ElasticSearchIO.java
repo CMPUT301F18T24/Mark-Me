@@ -46,6 +46,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
+    private final String USER_ASSIGNMENT = "AssignedUsers";
 
     private ElasticSearchIO() {
         setClient();
@@ -275,6 +276,60 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
 
         return recordList;
+    }
+
+    /**
+     * Gets all of the assigned users (patient) this the current user is taking are of
+     * @param username The Care Provider's username
+     * @return All the users that care provider is taking care of
+     */
+    private List<UserModel> asyncGetAssignedUsers(String username) {
+        // Case does matter, and subset of usernames will not cause problems.
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"username\" : \"" + username + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(USER_ASSIGNMENT)
+                .build();
+
+        ArrayList<UserModel> users = new ArrayList<UserModel>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<UserDataAdapter> userAdapter = result.getSourceAsObjectList(UserDataAdapter.class);
+                for (UserDataAdapter user: userAdapter) {
+                    users.add(user.get());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    /**
+     * Adds an assignment to the elastic search for the user to then keep track of
+     * @param user The patient that wants to be tracked
+     */
+    private void asyncAddAssignedUser(UserModel user){
+        Index index = new Index.Builder(new UserDataAdapter(user))
+                .index(INDEX)
+                .type(USER_ASSIGNMENT)
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                // Associate the ID with the original userModel object.
+                user.setUserId(result.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
