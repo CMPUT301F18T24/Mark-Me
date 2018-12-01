@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
     // TODO: Replace hard coded literal with key-value pair.
     public void checkRegistration() {
         // Create a user of type patient by default.
-        if (userController.addUser()) {
+        if (userController.addUser(this.getApplicationContext())) {
             finish();
         } else {
             // Notify the user that registration was unsuccessful.
