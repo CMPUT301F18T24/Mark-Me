@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,9 +30,10 @@ import com.cybersix.markme.R;
 public class ListFragment extends Fragment {
     private TextView mTitle = null;
     private TextView mDetails = null;
+    private View mSearchButton = null;
     private View mReturnButton = null;
     private View mAddButton = null;
-    private EditText mSearchField = null;
+    private AutoCompleteTextView mSearchField = null;
     private ListView mListView = null;
 
     @Override
@@ -50,6 +52,7 @@ public class ListFragment extends Fragment {
         mAddButton = getActivity().findViewById(R.id.fragment_list_addButton);
         mSearchField = getActivity().findViewById(R.id.fragment_list_seachField);
         mListView = getActivity().findViewById(R.id.fragment_list_mainListView);
+        mSearchButton = getActivity().findViewById(R.id.fragment_list_searchIcon);
     }
 
     public TextView getTitle() {
@@ -68,13 +71,18 @@ public class ListFragment extends Fragment {
         return mAddButton;
     }
 
-    public EditText getSearchField() {
+    public AutoCompleteTextView  getSearchField() {
         return mSearchField;
     }
 
     public ListView getListView() {
         return mListView;
     }
+
+    public View getSearchButton() {
+        return mSearchButton;
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -87,5 +95,6 @@ public class ListFragment extends Fragment {
         mSearchField = null;
         mListView = null;
         mReturnButton = null;
+        mSearchButton = null;
     }
 }
