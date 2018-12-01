@@ -1,3 +1,19 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This model will keep hold of the data of the patient. This will be used for the record list fragment,
+ * and the problem list fragment, as well as keeping track of the patients information to then sync
+ * with the elastic search database.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-11
+ *
+ * Copyright Notice
+ * @author Vishal Patel TODO: Maybe someone else I don't know
+ * @see com.cybersix.markme.fragment.RecordListFragment
+ * @see com.cybersix.markme.fragment.ProblemListFragment
+ */
 package com.cybersix.markme.model;
 
 import com.cybersix.markme.model.CareProvider;

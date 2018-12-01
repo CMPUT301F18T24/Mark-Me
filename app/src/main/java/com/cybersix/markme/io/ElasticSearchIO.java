@@ -1,3 +1,20 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the elastic search IO controller that will handle all of the queries, insertions, and
+ * updates to the connected elastic search database.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-17
+ *
+ * Copyright Notice
+ * @author Vishal Patel
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.adapter.UserDataAdapter
+ * @see com.cybersix.markme.adapter.RecordDataAdapter
+ * @see com.cybersix.markme.adapter.ProblemDataAdapter
+ */
 package com.cybersix.markme.io;
 
 import android.content.Context;

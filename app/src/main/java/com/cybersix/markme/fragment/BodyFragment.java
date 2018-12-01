@@ -340,7 +340,7 @@ public class BodyFragment extends Fragment {
      */
     private void viewRecords(EBodyPart selectedPart){
         //If we have records for the clicked part
-        if(selectedPart==null || recordParts.get(selectedPart).size() > 0){
+        if(selectedPart==null || recordParts.get(selectedPart).size() > 0 && !addingRecord){
             Bundle bundle = new Bundle();
             bundle.putSerializable(EXTRA_SELECTED_PART, selectedPart);
             NavigationController.getInstance().switchToFragment(RecordListFragment.class,bundle);

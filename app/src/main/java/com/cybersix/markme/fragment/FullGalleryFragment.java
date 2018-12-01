@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the full gallery fragment used to view all of the photos of all of the records and problems
+ * the user may have. This will also allow the user to edit any of their photos as they wish
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-20
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ * @see com.cybersix.markme.fragment.RecordInfoFragment
+ */
 package com.cybersix.markme.fragment;
 
 import android.content.Context;
@@ -107,7 +121,11 @@ public class FullGalleryFragment extends Fragment {
 
                     //Cleanup
                     stream.close();
-                    bitmap.recycle();
+                   /* if (bitmap != null && !bitmap.isRecycled()) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                    */
 
                     //Pop intent
                     intent.putExtra(PHOTO_CONTENT, filename);

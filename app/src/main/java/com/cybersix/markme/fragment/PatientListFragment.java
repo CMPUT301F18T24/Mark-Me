@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the patient list fragment. The user (of type "Care Provider") will be able to view a
+ * list of all of their assigned patients and select one of them to view all of their information
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-11
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi? TODO: May need to change!!
+ * @see com.cybersix.markme.model.Patient
+ * @see com.cybersix.markme.fragment.UserAssignmentFragment
+ */
 package com.cybersix.markme.fragment;
 
 import android.os.Bundle;

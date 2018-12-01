@@ -1,9 +1,25 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the record data adapter to be used in the elastic search IO class for adapting the
+ * queried record results into record objects that will be used throughout the application
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-19
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.io.ElasticSearchIO
+ * @see com.cybersix.markme.model.RecordModel
+ */
 package com.cybersix.markme.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.cybersix.markme.actvity.LiveCameraActivity;
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.RecordModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,9 +49,10 @@ public class RecordDataAdapter {
         timestamp = r.getTimestamp();
         comment = r.getComment();
 
+        photos = new ArrayList<byte[]>();
         for (Bitmap photo : r.getPhotos()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, stream);
             photos.add(stream.toByteArray());
         }
 

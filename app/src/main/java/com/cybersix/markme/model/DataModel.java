@@ -1,3 +1,19 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the data model that will hold the current instances of the selected patient, all of the
+ * patients problems/records, and the selected problems. This is to be used with the record and problem
+ * controllers for better data organization and management
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-25
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.controller.RecordController
+ * @see com.cybersix.markme.controller.ProblemController
+ */
 package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;

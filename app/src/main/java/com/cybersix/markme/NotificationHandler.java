@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the notification handler for setting up notifications on the user's device. This is called
+ * when a user is first creating a problem
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-25
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ * @see com.cybersix.markme.actvity.ProblemCreationActivity
+ */
 package com.cybersix.markme;
 
 import android.content.BroadcastReceiver;
