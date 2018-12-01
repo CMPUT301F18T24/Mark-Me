@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the map fragment that the use has access to from the navigation bar. The user will be
+ * able to view all of the locations of the records. The user can select any of the pins within the
+ * map to view the information of the record.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-14
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.fragment.RecordInfoFragment
+ */
 package com.cybersix.markme.fragment;
 
 import android.os.Bundle;

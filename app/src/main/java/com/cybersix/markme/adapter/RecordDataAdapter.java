@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the record data adapter to be used in the elastic search IO class for adapting the
+ * queried record results into record objects that will be used throughout the application
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-19
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.io.ElasticSearchIO
+ * @see com.cybersix.markme.model.RecordModel
+ */
 package com.cybersix.markme.adapter;
 
 import android.graphics.Bitmap;

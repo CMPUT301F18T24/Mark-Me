@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the Image Adapter to be used in the full gallery. Will allow the image to be visible.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-25
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ * @see com.cybersix.markme.fragment.FullGalleryFragment
+ */
 package com.cybersix.markme;
 /*
  * Copyright (c) 2016 Razeware LLC
