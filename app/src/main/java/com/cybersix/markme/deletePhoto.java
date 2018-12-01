@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the delete photo class to delete a photo from the full gallery
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-25
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ * @see com.cybersix.markme.fragment.FullGalleryFragment
+ */
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
