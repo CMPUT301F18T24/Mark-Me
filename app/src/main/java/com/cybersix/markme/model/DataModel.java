@@ -3,10 +3,7 @@ package com.cybersix.markme.model;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.cybersix.markme.ElasticSearchIOController;
-import com.cybersix.markme.actvity.MainActivity;
-import com.cybersix.markme.controller.ProblemController;
-import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.io.ElasticSearchIO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -14,11 +11,12 @@ import java.util.Date;
 
 public class DataModel {
     private static DataModel instance = null;
-    private ArrayList<ProblemModel> problems;
+    private Patient selectedPatient;
     private ProblemModel selectedProblem;
+    private ElasticSearchIO io = ElasticSearchIO.getInstance();
 
     private DataModel(){
-        problems = new ArrayList<ProblemModel>();
+
     }
 
     public static DataModel getInstance(){
@@ -29,7 +27,9 @@ public class DataModel {
     }
 
     public void setSelectedProblem(int index){
-        selectedProblem = problems.get(index);
+        selectedProblem = selectedPatient.getProblems().get(index);
+
+        selectedProblem.setRecords( io.getRecords(selectedProblem) );
     }
 
     public ProblemModel getSelectedProblem(){
@@ -37,17 +37,15 @@ public class DataModel {
     }
 
     public ArrayList<ProblemModel> getProblems() {
-        return problems;
+        return selectedPatient.getProblems();
     }
 
-    public void createNewProblem(String title, String description) {
+    public void createNewProblem(ProblemModel newProblem) {
         try {
-            ProblemModel newProblem = new ProblemModel(title, description);
-            newProblem.addRecord(new RecordModel("A","b"));
             // add the problem to the list of problems
-            instance.problems.add(newProblem);
+            selectedPatient.addProblem(newProblem);
             // also add it to the server
-            new ElasticSearchIOController.AddProblemTask().execute(newProblem);
+            io.addProblem(newProblem);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -56,9 +54,19 @@ public class DataModel {
 
     }
 
+    public Patient getSelectedPatient() {
+        return selectedPatient;
+    }
+
+    public void setSelectedPatient(Patient selectedPatient) {
+        this.selectedPatient = selectedPatient;
+
+        this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
+    }
+
     public void editProblem(int index, String newTitle, String newDescription) {
         // To find the problem, we compare the date as the date should be unique enough.
-        ProblemModel problem = instance.problems.get(index);
+        ProblemModel problem = selectedPatient.getProblems().get(index);
         // set the new getTitle and description
         try {
             // does references work here? Testing will check
@@ -78,13 +86,13 @@ public class DataModel {
         // TODO: test this works
 //        UserProfileController userInstance = UserProfileController();
         try {
-//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserID()).get();
-            for(ProblemModel p: instance.problems){
-                ArrayList<RecordModel> rm = new ElasticSearchIOController.GetRecordTask().execute(p.getProblemID()).get();
+//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
+            for(ProblemModel p: selectedPatient.getProblems()){
+                ArrayList<RecordModel> rm = p.getRecords();
                 p.addRecords(rm);
             }
             Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
-//                    userInstance.user.getUserID());
+//                    userInstance.user.getUserId());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +106,7 @@ public class DataModel {
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
+            io.addRecord(selectedProblem.getRecord(idx));
         } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
         } catch (RecordModel.PhotoTooLargeException e){
@@ -137,7 +146,8 @@ public class DataModel {
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
         instance.selectedProblem.addRecord(record);
-        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        io.addRecord( record );
+//        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
         Log.d("Jose_CreateRecord", "Record successfully created");
         return record;
     }
@@ -178,6 +188,8 @@ public class DataModel {
             String message = e.getMessage();
             Log.d("Jose_EditRecord", message);
         }
+
+        io.addRecord(record);
     }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
@@ -185,15 +197,19 @@ public class DataModel {
         selectedProblem.getRecord(idx).setDescription(desc);
         selectedProblem.getRecord(idx).setBodyLocation(bl);
         selectedProblem.getRecord(idx).setComment(comment);
+
+        io.addRecord(selectedProblem.getRecord(idx));
     }
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
+        Log.i("AddRecordLocation", "MapLocation Added");
+        io.addRecord(selectedProblem.getRecord(idx));
     }
 
     public ArrayList<RecordModel> getAllRecords() {
         ArrayList<RecordModel> rm = new ArrayList<>();
-        for(ProblemModel pm: problems){
+        for(ProblemModel pm: selectedPatient.getProblems()){
             rm.addAll(pm.getRecords());
         }
         return rm;

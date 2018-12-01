@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.cybersix.markme.R;
 import com.cybersix.markme.actvity.UserActivityAddPopUp;
 import com.cybersix.markme.controller.NavigationController;
-import com.cybersix.markme.fragment.SettingsFragment;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class UserAssignmentFragment extends Fragment {
             String tempID = "Fake ID " + Integer.toString(i);
             try {
                 UserModel tempUser = new UserModel(tempUsername);
-                tempUser.setUserID(tempID);
+                tempUser.setUserId(tempID);
                 userList.add(tempUser);
             }
             catch (Exception e) {

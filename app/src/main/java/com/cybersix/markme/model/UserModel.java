@@ -20,7 +20,6 @@ import java.util.Observable;
 import io.searchbox.annotations.JestId;
 
 public class UserModel extends Observable {
-    public static final String USERID = "USERID";
     public static final int MINIMUM_USERNAME_LENGTH = 8;
 
     private String username = null;
@@ -29,7 +28,7 @@ public class UserModel extends Observable {
     private final String type = getClass().getSimpleName();
 
     @JestId
-    private String userID = null;
+    private String userId = null;
 
     /**
      * Need a default constructor to compile with Patient/Care Provider inheritance.
@@ -46,17 +45,17 @@ public class UserModel extends Observable {
     }
 
     /**
-     * @return The userID which is the ID of the entry in the elastic search database.
+     * @return The userId which is the ID of the entry in the elastic search database.
      */
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
     /**
-     * @param userID ID of the entry in the elastic search database.
+     * @param userId ID of the entry in the elastic search database.
      */
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     /**
@@ -174,10 +173,10 @@ public class UserModel extends Observable {
      * @return Returns a string representation of the usermodel object,
      */
     public String toString() {
-        if (userID == null)
+        if (userId == null)
             return "null";
 
-        return userID.toString() + ": " + username.toString();
+        return userId.toString() + ": " + username.toString();
     }
 
     public void addView(UserObserver view) {

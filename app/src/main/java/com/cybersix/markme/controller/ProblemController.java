@@ -15,14 +15,7 @@
  */
 package com.cybersix.markme.controller;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.cybersix.markme.ElasticSearchIOController;
 import com.cybersix.markme.model.DataModel;
-import com.cybersix.markme.model.RecordModel.PhotoTooLargeException;
-import com.cybersix.markme.model.RecordModel;
-import com.cybersix.markme.model.RecordModel.TooManyPhotosException;
 import com.cybersix.markme.model.ProblemModel;
 
 import java.util.ArrayList;
@@ -69,7 +62,11 @@ public class ProblemController {
      * @author Jose Ramirez
      */
     public void createNewProblem(String title, String description) {
-        DataModel.getInstance().createNewProblem(title,description);
+        try {
+            DataModel.getInstance().createNewProblem(new ProblemModel(title, description));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

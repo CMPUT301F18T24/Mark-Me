@@ -55,8 +55,8 @@ public class ProblemListIntentTesting {
         onView(withId(R.id.problemSaveButton)).perform(click());
 
         ProblemModel problem = ProblemController.getInstance().getProblems().get(ProblemController.getInstance().getProblems().size() - 1);
-        assertEquals(problem.getTitle(), "My Problem");
-        assertEquals(problem.getDescription(), "My Description");
+        assertEquals("My Problem", problem.getTitle());
+        assertEquals("My Description", problem.getDescription());
 //        fail();
     }
 
