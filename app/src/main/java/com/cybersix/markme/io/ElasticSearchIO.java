@@ -23,6 +23,7 @@ import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
+import io.searchbox.params.SearchType;
 
 public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO {
     private static ElasticSearchIO instance = null;
@@ -66,9 +67,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      */
     private List<UserModel> asyncFindUser(String username) {
         // Case does matter, and subset of usernames will not cause problems.
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"username\" : \"" + username + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"username\": \"" + username + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -116,9 +119,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(UserModel user) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"patientId\" : \"" + user.getUserId() + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"patientId\": \"" + user.getUserId() + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -148,9 +153,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(String problemId) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"problemId\" : \"" + problemId + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"problemId\": \"" + problemId + "\"}\t\n" +
+                "\t}\n" +
+                "}";
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())
@@ -207,9 +214,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     private List<RecordModel> asyncGetRecords(ProblemModel problem) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"problemId\" : \"" + problem.getProblemId() + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"problemId\": \"" + problem.getProblemId() + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -234,9 +243,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     private List<RecordModel> asyncGetRecords(String recordId) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"recordId\" : \"" + recordId + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"recordId\": \"" + recordId + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
