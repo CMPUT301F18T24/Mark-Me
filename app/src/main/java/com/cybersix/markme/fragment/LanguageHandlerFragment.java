@@ -12,9 +12,11 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +25,11 @@ import android.widget.TextView;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
 
-public class LanguageHandlerFragment extends Fragment {
+import java.util.Locale;
 
+public class LanguageHandlerFragment extends Fragment {
+    private final String language_code_fr = "fr";
+    private final String language_code_en = "en";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class LanguageHandlerFragment extends Fragment {
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText("Select Your Language");
+        title.setText(R.string.change_lang_text);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +72,20 @@ public class LanguageHandlerFragment extends Fragment {
     }
 
     public void change_to_english(View view) {
+        Resources res = getContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(language_code_en.toLowerCase())); // API 17+ only.
+        res.updateConfiguration(conf, dm);
         NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 
     public void change_to_french(View view) {
+        Resources res = getContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(language_code_fr.toLowerCase())); // API 17+ only.
+        res.updateConfiguration(conf, dm);
         NavigationController.getInstance().setSelectedItem(R.id.body);
     }
 }
