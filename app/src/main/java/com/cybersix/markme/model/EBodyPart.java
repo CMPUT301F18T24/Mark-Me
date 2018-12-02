@@ -15,6 +15,8 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Region;
 
+import com.cybersix.markme.R;
+
 public enum EBodyPart {
     /*
         NOTE: The below values are attributes for the enumerables as follows:
@@ -26,32 +28,34 @@ public enum EBodyPart {
         should be multiplied against the width or height of the ImageView used to display the
         body to get a proper scaled X and Y coordinate
      */
-    LEFTHAND("Left Hand",new PointF(0.71224756f,0.5048549f), new PointF(0.817749f,0.5691034f),true),
-    LEFTARM("Left Arm",new PointF(0.6814575f,0.24038085f), new PointF(0.817749f,0.5048549f),true),
-    LEFTLEG("Left Leg",new PointF(0.5326538f,0.5718889f), new PointF(0.6647644f,0.865127f),true),
-    LEFTFOOT("Left Foot",new PointF(0.5326538f,0.8658409f), new PointF(0.6714575f,0.92840403f),true),
-    RIGHTHAND("Right Hand",new PointF(0.18774414f,0.49055526f), new PointF(0.29205322f,0.5692034f),true),
-    RIGHTARM("Right Arm",new PointF(0.18774414f,0.24038085f), new PointF(0.32196924f,0.49055526f),true),
-    RIGHTLEG("Right Leg",new PointF(0.33654785f,0.5718889f), new PointF(0.47146606f,0.865127f),true),
-    RIGHTFOOT("Right Foot",new PointF(0.33099365f,0.8658409f), new PointF(0.47561646f,0.9310547f),true),
-    HEAD("Head",new PointF(0.36157227f,0.06435547f), new PointF(0.6425171f,0.19570312f),true),
-    NECK("Neck",new PointF(0.44503784f,0.19570312f), new PointF(0.55908203f,0.22963867f),true),
-    CHEST("Chest",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),true),
-    ABDOMEN("Abdomen",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),true),
-    UPPERBACK("Upper Back",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),false),
-    LOWERBACK("Lower Back",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),false),
-    UNLISTED("Unlisted",new PointF(0,0), new PointF(0,0),true);
+    LEFTHAND("Left Hand",new PointF(0.71224756f,0.5048549f), new PointF(0.817749f,0.5691034f),true, R.drawable.outline_large),
+    LEFTARM("Left Arm",new PointF(0.6814575f,0.24038085f), new PointF(0.817749f,0.5048549f),true,R.drawable.outline_narrow),
+    LEFTLEG("Left Leg",new PointF(0.5326538f,0.5718889f), new PointF(0.6647644f,0.865127f),true,R.drawable.outline_narrow),
+    LEFTFOOT("Left Foot",new PointF(0.5326538f,0.8658409f), new PointF(0.6714575f,0.92840403f),true,R.drawable.outline_large),
+    RIGHTHAND("Right Hand",new PointF(0.18774414f,0.49055526f), new PointF(0.29205322f,0.5692034f),true,R.drawable.outline_large),
+    RIGHTARM("Right Arm",new PointF(0.18774414f,0.24038085f), new PointF(0.32196924f,0.49055526f),true,R.drawable.outline_narrow),
+    RIGHTLEG("Right Leg",new PointF(0.33654785f,0.5718889f), new PointF(0.47146606f,0.865127f),true,R.drawable.outline_narrow),
+    RIGHTFOOT("Right Foot",new PointF(0.33099365f,0.8658409f), new PointF(0.47561646f,0.9310547f),true,R.drawable.outline_large),
+    HEAD("Head",new PointF(0.36157227f,0.06435547f), new PointF(0.6425171f,0.19570312f),true,R.drawable.outline_large),
+    NECK("Neck",new PointF(0.44503784f,0.19570312f), new PointF(0.55908203f,0.22963867f),true,R.drawable.outline_large),
+    CHEST("Chest",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),true,R.drawable.outline_large),
+    ABDOMEN("Abdomen",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),true,R.drawable.outline_large),
+    UPPERBACK("Upper Back",new PointF(0.32681274f,0.2376953f), new PointF(0.6773071f,0.41194198f),false,R.drawable.outline_large),
+    LOWERBACK("Lower Back",new PointF(0.33654785f,0.41227817f), new PointF(0.6731262f,0.5705396f),false,R.drawable.outline_large),
+    UNLISTED("Unlisted",new PointF(0,0), new PointF(0,0),true,0);
 
     private final String name;
     private final PointF p1;
     private final PointF p2;
+    private final int drawable;
     private final boolean frontFacing;
 
-    private EBodyPart(String name,PointF p1,PointF p2, boolean front){
+    private EBodyPart(String name,PointF p1,PointF p2, boolean front, int drawable){
         this.name=name;
         this.p1=p1;
         this.p2=p2;
         this.frontFacing = front;
+        this.drawable = drawable;
     }
 
     public PointF getP1(){
@@ -70,5 +74,6 @@ public enum EBodyPart {
         return this.frontFacing;
     }
 
+    public int getOutlineDrawable() {return this.drawable; }
 
 }
