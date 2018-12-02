@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.io.UserModelIO;
 import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.model.UserModel.*;
@@ -68,20 +69,20 @@ public class UserProfileController {
         }
     }
 
+    public void findUser(OnTaskComplete handler) {
+        io.findUser(model.getUsername(), handler);
+    }
+
     // Attempts to add a model to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information
     //         userType - The type of the model.
     // Outputs: Returns true if added model was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public boolean addUser() {
-        return io.addUser(model);
+    public void addUser(OnTaskComplete handler) {
+        io.addUser(model, handler);
     }
 
-    public boolean userExists() {
-        return io.findUser(model.getUsername()) != null;
-    }
-
-    public boolean login() {
-        return io.loginAs(model.getUsername());
+    public void login(OnTaskComplete handler) {
+        io.loginAs(model.getUsername(), handler);
     }
 }

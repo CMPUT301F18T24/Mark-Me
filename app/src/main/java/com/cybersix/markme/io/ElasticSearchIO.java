@@ -33,6 +33,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -283,211 +284,204 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
-    public UserModel findUser(String username) {
+    public void findUser(String username, OnTaskComplete handler) {
         // when adding a user, a query should be done
         // for the user's type. A factory should be used
         // to return the correct UserModel Instance
-        try {
-            ArrayList<UserModel> users = new FindUserTask().execute(username).get();
-            if (!users.isEmpty())
-                return users.get(0);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+        new FindUserTask().execute(username, handler);
     }
 
     @Override
-    public boolean addUser(UserModel user) {
-        // If username exists, then send a fail.
-        if (findUser(user.getUsername()) != null) {
-            return false;
-        }
-
-        try {
-            new AddUserTask().execute(user).get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public void addUser(UserModel user, final OnTaskComplete handler) {
+        new AddUserTask().execute(user, handler);
     }
 
     @Override
-    public boolean deleteUser(UserModel user) {
-        return false;
+    public void deleteUser(UserModel user, OnTaskComplete handler) {
+
     }
 
     @Override
-    public boolean editUser(UserModel user) {
-        try {
-            new AddUserTask().execute(user).get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void editUser(UserModel user, OnTaskComplete handler) {
+        new AddUserTask().execute(user, handler);
     }
 
     @Override
-    public ProblemModel findProblem(String problemId) {
-        try {
-            return new FindProblemTask().execute(problemId).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void findProblem(String problemId, OnTaskComplete handler) {
+        new FindProblemTask().execute(problemId, handler);
     }
 
     @Override
-    public boolean addProblem(ProblemModel problem) {
-        try {
-            new AddProblemTask().execute(problem).get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void addProblem(ProblemModel problem, OnTaskComplete handler) {
+        new AddProblemTask().execute(problem, handler);
     }
 
     @Override
-    public ArrayList<ProblemModel> getProblems(UserModel user) {
-        ArrayList<ProblemModel> problems = new ArrayList<>();
-        try {
-            problems = new GetProblemTask().execute(user).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return problems;
+    public void getProblems(UserModel user, OnTaskComplete handler) {
+        new GetProblemTask().execute(user, handler);
     }
 
     @Override
-    public RecordModel findRecord(String recordId) {
-        try {
-            return new FindRecordTask().execute(recordId).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void findRecord(String recordId, OnTaskComplete handler) {
+        new FindRecordTask().execute(recordId, handler);
     }
 
     @Override
-    public boolean addRecord(RecordModel record) {
-        try {
-            new AddRecordTask().execute(record).get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void addRecord(RecordModel record, OnTaskComplete handler) {
+        new AddRecordTask().execute(record, handler);
     }
 
     @Override
-    public ArrayList<RecordModel> getRecords(ProblemModel problem) {
-        ArrayList<RecordModel> records = new ArrayList<>();
-        try {
-            records = new GetRecordTask().execute(problem).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return records;
+    public void getRecords(ProblemModel problem, OnTaskComplete handler) {
+        new GetRecordTask().execute(problem, handler);
     }
 
     /**
      * Queries a list the elastic search database for a list of users. See also getUser().
      */
-    private class FindUserTask extends AsyncTask<String, Void, ArrayList<UserModel>> {
-        protected ArrayList<UserModel> doInBackground(String... usernames) {
+    private class FindUserTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             ArrayList<UserModel> users = new ArrayList<UserModel>();
-            for (String name: usernames) {
-                users.addAll(asyncFindUser(name));
-            }
-            return users;
+            String name = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            users.addAll(asyncFindUser(name));
+            return new Object[] {users, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<UserModel> users = (ArrayList<UserModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(users);
         }
     }
 
-    private class AddUserTask extends AsyncTask<UserModel, Void, Void> {
-        protected Void doInBackground(UserModel... params) {
-            for (UserModel user : params) {
-                asyncAddUser(user);
-            }
-            return null;
+    private class AddUserTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        protected OnTaskComplete doInBackground(Object... params) {
+            UserModel user = (UserModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncAddUser(user);
+            return runnable;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
         }
     }
 
     /**
      * Gets the record for each given problemID.
      */
-    private class GetRecordTask extends AsyncTask<ProblemModel, Void, ArrayList<RecordModel>> {
-        protected ArrayList<RecordModel> doInBackground(ProblemModel... params) {
-            ArrayList<RecordModel> records = new ArrayList<RecordModel>();
-            for (ProblemModel p: params) {
-                records.addAll(asyncGetRecords(p));
-            }
-            return records;
+    private class GetRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            ArrayList<RecordModel> records = new ArrayList<>();
+            ProblemModel p = (ProblemModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            records.addAll(asyncGetRecords(p));
+            return new Object[] {records, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<RecordModel> records = (ArrayList<RecordModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(records);
         }
     }
 
     /**
      * Gets the record for each given problemID.
      */
-    private class FindRecordTask extends AsyncTask<String, Void, RecordModel> {
-        protected RecordModel doInBackground(String... params) {
-            ArrayList<RecordModel> records = new ArrayList<RecordModel>();
-            for (String id: params) {
-                records.addAll(asyncGetRecords(id));
-            }
+    private class FindRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            ArrayList<RecordModel> records = new ArrayList<>();
+            String id = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncGetRecords(id);
             if (!records.isEmpty())
-                return records.get(0);
+                return new Object[] {records.get(0), runnable};
             else
-                return null;
+                return new Object[] {null, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<RecordModel> records = (ArrayList<RecordModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(records);
         }
     }
 
     /**
      * Adds all records for each given problem.
      */
-    private class AddRecordTask extends AsyncTask<RecordModel, Void, Void> {
-        protected Void doInBackground(RecordModel... params) {
-            for (RecordModel r: params) {
-                asyncAddRecord(r);
-            }
-            return null;
+    private class AddRecordTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        protected OnTaskComplete doInBackground(Object... params) {
+            RecordModel record = (RecordModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncAddRecord(record);
+            return runnable;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
         }
     }
 
-    private class GetProblemTask extends AsyncTask<UserModel, Void, ArrayList<ProblemModel>> {
-        protected ArrayList<ProblemModel> doInBackground(UserModel... params) {
+    private class GetProblemTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            UserModel user = (UserModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
             ArrayList<ProblemModel> problems = new ArrayList<ProblemModel>();
-            for (UserModel u: params) {
-                problems.addAll(asyncGetProblems(u));
-            }
-            return problems;
+            problems.addAll(asyncGetProblems(user));
+            return new Object[] {problems, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(problems);
         }
     }
 
-    private class FindProblemTask extends AsyncTask<String, Void, ProblemModel> {
-        protected ProblemModel doInBackground(String... params) {
+    private class FindProblemTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             ArrayList<ProblemModel> problems = new ArrayList<>();
-            for (String id: params) {
-                problems.addAll(asyncGetProblems(id));
-            }
+            String id = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            problems.addAll(asyncGetProblems(id));
             if(!problems.isEmpty())
-                return problems.get(0);
+                return new Object[] {problems.get(0), runnable};
             else
-                return null;
+                return new Object[] {null, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(problems);
         }
     }
 
     /**
      * Adds a problem to the elastic search database. See also addProblem().
      */
-    private class AddProblemTask extends AsyncTask<ProblemModel, Void, Void> {
-        protected Void doInBackground(ProblemModel... params) {
-            for (ProblemModel problem : params) {
-                asyncAddProblem(problem);
-            }
-            return null;
+    private class AddProblemTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        @Override
+        protected OnTaskComplete doInBackground(Object... params) {
+            ProblemModel problem = (ProblemModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncAddProblem(problem);
+            return runnable;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
         }
     }
 }

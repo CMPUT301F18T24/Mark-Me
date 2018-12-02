@@ -18,9 +18,11 @@ package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -31,6 +33,12 @@ public class DataModel {
     private Patient selectedPatient;
     private ProblemModel selectedProblem;
     private GeneralIO io = GeneralIO.getInstance();
+    private Runnable onPatientSelected = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 
     private DataModel(){
 
@@ -45,8 +53,13 @@ public class DataModel {
 
     public void setSelectedProblem(int index){
         selectedProblem = selectedPatient.getProblems().get(index);
-
-        selectedProblem.setRecords( io.getRecords(selectedProblem) );
+        io.getRecords(selectedProblem, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                ArrayList<RecordModel> records = (ArrayList<RecordModel>) result;
+                selectedProblem.setRecords(records);
+            }
+        });
     }
 
     public ProblemModel getSelectedProblem(){
@@ -62,7 +75,12 @@ public class DataModel {
             // add the problem to the list of problems
             selectedPatient.addProblem(newProblem);
             // also add it to the server
-            io.addProblem(newProblem);
+            io.addProblem(newProblem, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+
+                }
+            });
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -75,10 +93,20 @@ public class DataModel {
         return selectedPatient;
     }
 
-    public void setSelectedPatient(Patient selectedPatient) {
+    public void setSelectedPatient(final Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
+        io.getProblems(selectedPatient, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) result;
+                selectedPatient.setProblems(problems);
+                onPatientSelected.run();
+            }
+        });
+    }
 
-        this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
+    public void setOnPatientSelected(Runnable onPatientSelected) {
+        this.onPatientSelected = onPatientSelected;
     }
 
     public void editProblem(int index, String newTitle, String newDescription) {
@@ -122,7 +150,12 @@ public class DataModel {
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
-            io.addRecord(selectedProblem.getRecord(idx));
+            io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+
+                }
+            });
         } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
         } catch (RecordModel.PhotoTooLargeException e){
@@ -162,8 +195,12 @@ public class DataModel {
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
         instance.selectedProblem.addRecord(record);
-        io.addRecord( record );
-//        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
+        io.addRecord(record, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+
+            }
+        });
         return record;
     }
 
@@ -202,7 +239,12 @@ public class DataModel {
             String message = e.getMessage();
         }
 
-        io.addRecord(record);
+        io.addRecord(record, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+
+            }
+        });
     }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
@@ -210,13 +252,22 @@ public class DataModel {
         selectedProblem.getRecord(idx).setDescription(desc);
         selectedProblem.getRecord(idx).setBodyLocation(bl);
         selectedProblem.getRecord(idx).setComment(comment);
+        io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
 
-        io.addRecord(selectedProblem.getRecord(idx));
+            }
+        });
     }
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
-        io.addRecord(selectedProblem.getRecord(idx));
+        io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+
+            }
+        });
     }
 
     public ArrayList<RecordModel> getAllRecords() {

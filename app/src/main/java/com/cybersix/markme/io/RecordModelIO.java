@@ -6,7 +6,7 @@ import com.cybersix.markme.model.RecordModel;
 import java.util.ArrayList;
 
 public interface RecordModelIO {
-    RecordModel findRecord(String recordId);
-    boolean addRecord(RecordModel record);
-    ArrayList<RecordModel> getRecords(ProblemModel problem);
+    void findRecord(String recordId, OnTaskComplete handler);
+    void addRecord(RecordModel record, OnTaskComplete handler);
+    void getRecords(ProblemModel problem, OnTaskComplete handler);
 }

@@ -6,7 +6,7 @@ import com.cybersix.markme.model.UserModel;
 import java.util.ArrayList;
 
 public interface ProblemModelIO {
-    ProblemModel findProblem(String problemId);
-    boolean addProblem(ProblemModel problem);
-    ArrayList<ProblemModel> getProblems(UserModel user);
+    void findProblem(String problemId, OnTaskComplete handler);
+    void addProblem(ProblemModel problem, OnTaskComplete handler);
+    void getProblems(UserModel user, OnTaskComplete handler);
 }

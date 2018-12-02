@@ -60,10 +60,15 @@ public class ProblemListFragment extends ListFragment {
 
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
-    private ProblemController controllerInstance = ProblemController.getInstance();
     private List<String> ShowHist;
     private ArrayAdapter<String> adapter;
-
+    private Runnable onDataModelReady = new Runnable() {
+        @Override
+        public void run() {
+            problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
+            getListView().setAdapter(problemListAdapter);
+        }
+    };
 
     private void saveHistory(String string){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
@@ -149,7 +154,7 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                controllerInstance.setSelectedProblem(position);
+                ProblemController.getInstance().setSelectedProblem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXTRA_PROBLEM_INDEX, position);
                 // TODO: for now the resulting activity will show preset data but the later version
@@ -162,8 +167,10 @@ public class ProblemListFragment extends ListFragment {
 
         });
 
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
-        getListView().setAdapter(problemListAdapter);
+        if (DataModel.getInstance().getSelectedPatient() == null)
+            DataModel.getInstance().setOnPatientSelected(onDataModelReady);
+        else
+            onDataModelReady.run();
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.observer.UserObserver;
@@ -29,10 +30,32 @@ import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
 
+import java.util.ArrayList;
+
 public class SignupActivity extends AppCompatActivity {
     UserModel userModel = null;
     UserProfileController userController = null;
     UserObserver userObserver = null;
+    OnTaskComplete onSearchComplete = new OnTaskComplete() {
+        @Override
+        public void onTaskComplete(Object result) {
+            ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+            if (users.isEmpty())
+                userController.addUser(onUserAdded);
+            else {
+                // Notify the user that registration was unsuccessful.
+                // TODO: Can we let the user know exactly what went wrong?
+                Toast toast = Toast.makeText(SignupActivity.this, "Registration failed!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    };
+    OnTaskComplete onUserAdded = new OnTaskComplete() {
+        @Override
+        public void onTaskComplete(Object result) {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +84,8 @@ public class SignupActivity extends AppCompatActivity {
         userObserver.setOnModifierPressed(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkRegistration();
+                userController.findUser(onSearchComplete);
             }
         });
-    }
-
-    // Checks the info the user provided and creates a new account if the info is valid,
-    // or lets the user know if the info is not valid.
-    // TODO: I need server integration to test if a user already exists.
-    public void checkRegistration() {
-        // Create a user of type patient by default.
-        if (userController.addUser()) {
-            finish();
-        } else {
-            // Notify the user that registration was unsuccessful.
-            // TODO: Can we let the user know exactly what went wrong?
-            Toast toast = Toast.makeText(this, "Registration failed!", Toast.LENGTH_SHORT);
-            toast.show();
-        }
     }
 }

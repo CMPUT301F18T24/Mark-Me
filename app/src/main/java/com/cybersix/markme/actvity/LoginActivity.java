@@ -13,6 +13,7 @@
  */
 package com.cybersix.markme.actvity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,11 +23,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.observer.UserObserver;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     UserModel userModel = null;
@@ -56,7 +60,14 @@ public class LoginActivity extends AppCompatActivity {
         userObserver.setOnModifierPressed(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkLogin();
+                userController.login(new OnTaskComplete() {
+                    @Override
+                    public void onTaskComplete(Object result) {
+                        ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+                        if (!users.isEmpty())
+                            onLogin();
+                    }
+                });
             }
         });
 
@@ -82,14 +93,12 @@ public class LoginActivity extends AppCompatActivity {
     // If info is not valid, it displays a error message.
     // Assumes that the user model has been loaded with user info.
     // Inputs: Reads the userText and passText.
-    public void checkLogin() {
+    public void onLogin() {
         // If we got exactly one username returned.
-        if (userController.login()) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
-            startActivity(intent);
-            finish();
-        }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
+        startActivity(intent);
+        finish();
     }
 
 }

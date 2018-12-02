@@ -15,12 +15,15 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
     public static String EXTRA_CURRENT_USERNAME = "COM_CYBERSIX_MARKME_CURRENT_USERNAME";
@@ -40,7 +43,7 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        setUser(username);
+        mIO.findUser(username, onFoundUser);
 
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
@@ -64,11 +67,15 @@ public class MainActivity extends FragmentActivity {
         mUser = user;
     }
 
-    public void setUser(String username) {
-        if (username != null) {
-            mUser = mIO.findUser(username);
-            if (mUser.getUserType().equals(Patient.class.getSimpleName()))
-                mData.setSelectedPatient((Patient) mUser);
+    OnTaskComplete onFoundUser = new OnTaskComplete() {
+        @Override
+        public void onTaskComplete(Object result) {
+            ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+            if (!users.isEmpty()) {
+                mUser = users.get(0);
+                if (mUser.getUserType().equals(Patient.class.getSimpleName()))
+                    mData.setSelectedPatient((Patient) mUser);
+            }
         }
-    }
+    };
 }
