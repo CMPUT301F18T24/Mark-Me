@@ -30,7 +30,7 @@ public class SlidingImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return FullGalleryFragment.bitmaps.size();
+        return FullGalleryFragment.photos.size();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SlidingImageAdapter extends PagerAdapter {
                 .findViewById(R.id.image);
 
 
-        imageView.setImageBitmap(FullGalleryFragment.bitmaps.get(position));
+        imageView.setImageBitmap(FullGalleryFragment.photos.get(position).getPhoto());
 
         view.addView(imageLayout, 0);
 
