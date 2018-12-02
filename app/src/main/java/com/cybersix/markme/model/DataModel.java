@@ -156,7 +156,12 @@ public class DataModel {
     }
 
     public ArrayList<RecordModel> getSelectedProblemRecords(){
-        return selectedProblem.getRecords();
+        try {
+            return selectedProblem.getRecords();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
