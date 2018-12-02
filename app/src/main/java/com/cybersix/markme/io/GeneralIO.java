@@ -47,6 +47,10 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
         diskIO.loadSettings(setSettingsHandler);
     }
 
+    public void saveToDisk(Patient p) {
+        diskIO.savePatient(p, emptyHandler);
+    }
+
     @Override
     public void findUser(final String username, final OnTaskComplete handler) {
         diskIO.loadPatient(new OnTaskComplete() {

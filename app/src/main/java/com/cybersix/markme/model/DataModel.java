@@ -78,7 +78,7 @@ public class DataModel {
             io.addProblem(newProblem, new OnTaskComplete() {
                 @Override
                 public void onTaskComplete(Object result) {
-
+                    io.saveToDisk(selectedPatient);
                 }
             });
         }
@@ -153,7 +153,7 @@ public class DataModel {
             io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
                 @Override
                 public void onTaskComplete(Object result) {
-
+                    io.saveToDisk(selectedPatient);
                 }
             });
         } catch (RecordModel.TooManyPhotosException e){
@@ -198,7 +198,7 @@ public class DataModel {
         io.addRecord(record, new OnTaskComplete() {
             @Override
             public void onTaskComplete(Object result) {
-
+                io.saveToDisk(selectedPatient);
             }
         });
         return record;
@@ -242,7 +242,7 @@ public class DataModel {
         io.addRecord(record, new OnTaskComplete() {
             @Override
             public void onTaskComplete(Object result) {
-
+                io.saveToDisk(selectedPatient);
             }
         });
     }
@@ -255,7 +255,7 @@ public class DataModel {
         io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
             @Override
             public void onTaskComplete(Object result) {
-
+                io.saveToDisk(selectedPatient);
             }
         });
     }
@@ -265,7 +265,7 @@ public class DataModel {
         io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
             @Override
             public void onTaskComplete(Object result) {
-
+                io.saveToDisk(selectedPatient);
             }
         });
     }
