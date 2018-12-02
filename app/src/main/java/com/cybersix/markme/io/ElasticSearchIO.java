@@ -46,7 +46,7 @@ import io.searchbox.core.Search;
 public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO {
     private static ElasticSearchIO instance = null;
     private JestDroidClient client = null;
-    private final String INDEX = "cmput301f18t24test";
+    private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
     private final String USER_ASSIGNMENT = "AssignedUsers";
 
