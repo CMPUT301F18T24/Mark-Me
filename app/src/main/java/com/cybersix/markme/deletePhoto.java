@@ -19,12 +19,14 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.fragment.BodyFragment;
 import com.cybersix.markme.fragment.FullGalleryFragment;
 
 public class deletePhoto extends AppCompatActivity {
     public static final String PHOTO_CONTENT = "ca.cybersix.photo";
     ImageView delete_image;
+    private int position;
 
 
 
@@ -36,8 +38,8 @@ public class deletePhoto extends AppCompatActivity {
         delete_image = findViewById(R.id.imageView_delete_photo);
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            int position = getIntent().getIntExtra(PHOTO_CONTENT,0);
-            delete_image.setImageBitmap(FullGalleryFragment.bitmaps.get(position));
+            position = getIntent().getIntExtra(PHOTO_CONTENT,0);
+            delete_image.setImageBitmap(FullGalleryFragment.photos.get(position).getPhoto());
 
         }
 
@@ -45,6 +47,8 @@ public class deletePhoto extends AppCompatActivity {
     }
 
     public void deleteImage(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
+        RecordController.getInstance().getSelectedProblemRecords().get(FullGalleryFragment.photos.get(position).getProblemIndex()).removePhoto(FullGalleryFragment.photos.get(position).getPhoto());
+        NavigationController.getInstance().switchToFragment(FullGalleryFragment.class);
+        finish();
     }
 }
