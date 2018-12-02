@@ -192,6 +192,7 @@ public class ProblemListFragment extends ListFragment {
         ProblemController instance = ProblemController.getInstance();
         instance.createNewProblem(title, description);
 //        controllerInstance.loadProblemData();
-        problemListAdapter.notifyDataSetChanged();
+        if (problemListAdapter != null)
+            problemListAdapter.notifyDataSetChanged();
     }
 }

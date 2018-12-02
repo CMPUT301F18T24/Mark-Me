@@ -99,7 +99,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
             @Override
             public void onTaskComplete(Object result) {
                 ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) result;
-                if (problems == null) {
+                if (problems.isEmpty()) {
                     diskIO.loadPatient(new OnTaskComplete() {
                         @Override
                         public void onTaskComplete(Object result) {
@@ -130,7 +130,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
             @Override
             public void onTaskComplete(Object result) {
                 final ArrayList<RecordModel> records = (ArrayList<RecordModel>) result;
-                if (records == null) {
+                if (records.isEmpty()) {
                     diskIO.loadPatient(new OnTaskComplete() {
                         @Override
                         public void onTaskComplete(Object result) {
@@ -161,12 +161,18 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
                 if (patient == null)
                     return;
 
-                for (ProblemModel problem: patient.getProblems()) {
-                    elasticSearchIO.addProblem(problem, emptyHandler);
-                    for (RecordModel record: problem.getRecords()) {
-                        record.setProblemId(problem.getProblemId());
-                        elasticSearchIO.addRecord(record, emptyHandler);
-                    }
+                for (final ProblemModel problem: patient.getProblems()) {
+                    if (problem.getPatientId() == null)
+                        problem.setPatientId(patient.getUserId());
+                    elasticSearchIO.addProblem(problem, new OnTaskComplete() {
+                        @Override
+                        public void onTaskComplete(Object result) {
+                            for (RecordModel record: problem.getRecords()) {
+                                record.setProblemId(problem.getProblemId());
+                                elasticSearchIO.addRecord(record);
+                            }
+                        }
+                    });
                 }
             }
         });

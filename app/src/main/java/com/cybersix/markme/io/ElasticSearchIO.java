@@ -46,16 +46,12 @@ import io.searchbox.params.SearchType;
 
 public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO {
     private JestDroidClient client = null;
-    private final String INDEX = "cmput301f18t24test";
+    private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
     private Context context = null;
 
     protected ElasticSearchIO() {
         setClient();
-    }
-
-    public boolean isConnected() {
-        return true;
     }
 
     /**
@@ -329,6 +325,14 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     @Override
     public void addRecord(RecordModel record, OnTaskComplete handler) {
         new AddRecordTask().execute(record, handler);
+    }
+
+    public void addRecord(RecordModel record) {
+        try {
+            new AddRecordTask().execute(record, GeneralIO.emptyHandler).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

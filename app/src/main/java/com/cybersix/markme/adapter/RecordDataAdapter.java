@@ -50,10 +50,8 @@ public class RecordDataAdapter {
         comment = r.getComment();
 
         photos = new ArrayList<byte[]>();
-        for (Bitmap photo : r.getPhotos()) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, stream);
-            photos.add(stream.toByteArray());
+        for (byte[] photo : r.getPhotos()) {
+            photos.add(photo);
         }
 
         bodyLocation = r.getBodyLocation();

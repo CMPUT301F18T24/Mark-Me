@@ -75,7 +75,6 @@ public class MainActivity extends FragmentActivity {
                 mUser = users.get(0);
                 if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                     mData.setSelectedPatient((Patient) mUser);
-                mIO.synchronizeRemotely();
             }
         }
     };

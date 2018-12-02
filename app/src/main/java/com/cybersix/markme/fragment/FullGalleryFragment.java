@@ -17,6 +17,7 @@ package com.cybersix.markme.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -74,7 +75,10 @@ public class FullGalleryFragment extends Fragment {
 
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(j);
+                    byte[] b = RecordController
+                            .getInstance().getSelectedProblemRecords()
+                            .get(problemIndex).getPhotos().get(j);
+                    this.bitmaps[counter] = BitmapFactory.decodeByteArray(b, 0, b.length);
                     counter++;
                 }
             }
@@ -90,7 +94,8 @@ public class FullGalleryFragment extends Fragment {
             for (int i = 0; i < size; i++) {
                 int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
                 for (int j = 0; j < recordSize; j++) {
-                    this.bitmaps[counter] = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j);
+                    byte[] b = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j);
+                    this.bitmaps[counter] = BitmapFactory.decodeByteArray(b, 0, b.length);
                     counter++;
                 }
             }
