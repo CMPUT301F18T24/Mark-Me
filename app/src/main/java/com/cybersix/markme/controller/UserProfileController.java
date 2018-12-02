@@ -132,7 +132,17 @@ public class UserProfileController {
             input.close();
             String securityToken = stringBuilder.toString().trim();
             Log.d("UserProfileController: ", securityToken);
-            return io.findUser(securityToken) != null;
+
+            if (io.findUser(securityToken) != null) { // If user exists, set the user model.
+                try {
+                    model.setUsername(securityToken);
+                    return true;
+                } catch (UsernameTooShortException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return false;
 
         } catch (FileNotFoundException e) {
             Log.d("UserProfileController: ", "Failed to find file.");
