@@ -37,7 +37,7 @@ public class deletePhoto extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
             int position = getIntent().getIntExtra(PHOTO_CONTENT,0);
-            delete_image.setImageBitmap(FullGalleryFragment.bitmaps[position]);
+            delete_image.setImageBitmap(FullGalleryFragment.bitmaps.get(position));
 
         }
 
