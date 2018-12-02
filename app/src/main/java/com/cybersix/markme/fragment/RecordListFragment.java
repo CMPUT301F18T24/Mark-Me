@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
@@ -92,7 +93,7 @@ public class RecordListFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        update();
+        DataModel.getInstance().setOnRecordReady(update);
     }
 
 //    @Override
@@ -101,22 +102,25 @@ public class RecordListFragment extends ListFragment {
 //        update();
 //    }
 
-    private void update() {
-        // this function will update the records to display onto the list everytime the fragemnent
-        // is called
-        // set the adapter for the list activity
-        recordsToDisplay = new ArrayList<RecordModel>();
-        if(selectedPart == null){
-            recordsToDisplay = recordController.getSelectedProblemRecords();
-        } else {
-            for(RecordModel r:recordController.getSelectedProblemRecords()){
-                if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
-                    recordsToDisplay.add(r);
+    private Runnable update = new Runnable() {
+        @Override
+        public void run() {
+            // this function will update the records to display onto the list everytime the fragemnent
+            // is called
+            // set the adapter for the list activity
+            recordsToDisplay = new ArrayList<RecordModel>();
+            if(selectedPart == null){
+                recordsToDisplay = recordController.getSelectedProblemRecords();
+            } else {
+                for(RecordModel r:recordController.getSelectedProblemRecords()){
+                    if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
+                        recordsToDisplay.add(r);
+                    }
                 }
             }
+            recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+            getListView().setAdapter(recordListAdapter);
+            recordListAdapter.notifyDataSetChanged();
         }
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
-        getListView().setAdapter(recordListAdapter);
-        recordListAdapter.notifyDataSetChanged();
-    }
+    };
 }

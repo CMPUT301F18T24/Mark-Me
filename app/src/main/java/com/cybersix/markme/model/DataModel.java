@@ -33,12 +33,16 @@ public class DataModel {
     private Patient selectedPatient;
     private ProblemModel selectedProblem;
     private GeneralIO io = GeneralIO.getInstance();
-    private Runnable onPatientSelected = new Runnable() {
+    public static final Runnable emptyRunnable = new Runnable() {
         @Override
         public void run() {
 
         }
     };
+
+    private Runnable onPatientSelected = emptyRunnable;
+
+    private Runnable onRecordReady = emptyRunnable;
 
     private DataModel(){
 
@@ -58,8 +62,17 @@ public class DataModel {
             public void onTaskComplete(Object result) {
                 ArrayList<RecordModel> records = (ArrayList<RecordModel>) result;
                 selectedProblem.setRecords(records);
+                try {
+                    onRecordReady.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    public void setOnRecordReady(Runnable onRecordReady) {
+        this.onRecordReady = onRecordReady;
     }
 
     public ProblemModel getSelectedProblem(){
@@ -75,12 +88,7 @@ public class DataModel {
             // add the problem to the list of problems
             selectedPatient.addProblem(newProblem);
             // also add it to the server
-            io.addProblem(newProblem, new OnTaskComplete() {
-                @Override
-                public void onTaskComplete(Object result) {
-//                    io.saveToDisk(selectedPatient);
-                }
-            });
+            io.addProblem(newProblem, GeneralIO.emptyHandler);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -100,7 +108,11 @@ public class DataModel {
             public void onTaskComplete(Object result) {
                 ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) result;
                 selectedPatient.setProblems(problems);
-                onPatientSelected.run();
+                try {
+                    onPatientSelected.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -150,12 +162,7 @@ public class DataModel {
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
-            io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
-                @Override
-                public void onTaskComplete(Object result) {
-//                    io.saveToDisk(selectedPatient);
-                }
-            });
+            io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
         } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
         } catch (RecordModel.PhotoTooLargeException e){
@@ -195,12 +202,7 @@ public class DataModel {
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
         instance.selectedProblem.addRecord(record);
-        io.addRecord(record, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-//                io.saveToDisk(selectedPatient);
-            }
-        });
+        io.addRecord(record, GeneralIO.emptyHandler);
         return record;
     }
 
@@ -239,12 +241,7 @@ public class DataModel {
             String message = e.getMessage();
         }
 
-        io.addRecord(record, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-                io.saveToDisk(selectedPatient);
-            }
-        });
+        io.addRecord(record, GeneralIO.emptyHandler);
     }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
@@ -252,22 +249,12 @@ public class DataModel {
         selectedProblem.getRecord(idx).setDescription(desc);
         selectedProblem.getRecord(idx).setBodyLocation(bl);
         selectedProblem.getRecord(idx).setComment(comment);
-        io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-//                io.saveToDisk(selectedPatient);
-            }
-        });
+        io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
     }
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
-        io.addRecord(selectedProblem.getRecord(idx), new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-//                io.saveToDisk(selectedPatient);
-            }
-        });
+        io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
     }
 
     public ArrayList<RecordModel> getAllRecords() {

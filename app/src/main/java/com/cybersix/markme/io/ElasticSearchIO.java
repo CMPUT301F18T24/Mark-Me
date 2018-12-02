@@ -24,6 +24,7 @@ import android.util.Log;
 import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.adapter.RecordDataAdapter;
 import com.cybersix.markme.adapter.UserDataAdapter;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.model.UserModel;
@@ -35,10 +36,13 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Bulk;
+import io.searchbox.core.BulkResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -114,6 +118,41 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 problem.setProblemId(result.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void asyncBulkAddPatient(Patient patient) {
+        Bulk.Builder bulkBuilder = new Bulk.Builder()
+                .defaultIndex(INDEX)
+                .defaultType(ProblemModel.class.getSimpleName());
+
+        for (ProblemModel problem: patient.getProblems()) {
+            problem.setPatientId(patient.getUserId());
+            bulkBuilder.addAction(
+                    new Index.Builder(new ProblemDataAdapter(problem))
+                    .index(INDEX)
+                    .type(problem.getClass().getSimpleName())
+                    .build()
+            );
+            for (RecordModel record: problem.getRecords()) {
+                bulkBuilder.addAction(
+                        new Index.Builder(new RecordDataAdapter(record))
+                                .index(INDEX)
+                                .type(record.getClass().getSimpleName())
+                                .build()
+                );
+            }
+        }
+
+        try {
+            BulkResult result = client.execute(bulkBuilder.build());
+            if (result.isSucceeded()) {
+                Iterator<BulkResult.BulkResultItem> it = result.getItems().iterator();
+                while (it.hasNext())
+                    Log.i("ELASTICSEARCHIO", it.next().type);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -292,6 +331,10 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         new AddUserTask().execute(user, handler);
     }
 
+    public void bulkAddPatient(Patient patient, OnTaskComplete handler) {
+        new BulkAddTask().execute(patient, handler);
+    }
+
     @Override
     public void deleteUser(UserModel user, OnTaskComplete handler) {
 
@@ -365,6 +408,20 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             UserModel user = (UserModel) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
             asyncAddUser(user);
+            return runnable;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
+        }
+    }
+
+    private class BulkAddTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        protected OnTaskComplete doInBackground(Object... params) {
+            Patient user = (Patient) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncBulkAddPatient(user);
             return runnable;
         }
 
