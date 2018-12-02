@@ -107,7 +107,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return users;
     }
 
-    private void asyncAddProblem(ProblemModel problem) {
+    private boolean asyncAddProblem(ProblemModel problem) {
         Index index = new Index.Builder(new ProblemDataAdapter(problem))
                 .index(INDEX)
                 .type(problem.getClass().getSimpleName())
@@ -118,13 +118,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 problem.setProblemId(result.getId());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    private void asyncBulkAddPatient(Patient patient) {
+    private boolean asyncBulkAddPatient(Patient patient) {
         Bulk.Builder bulkBuilder = new Bulk.Builder()
                 .defaultIndex(INDEX)
                 .defaultType(ProblemModel.class.getSimpleName());
@@ -154,9 +156,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 while (it.hasNext())
                     Log.i("ELASTICSEARCHIO", it.next().type);
             }
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -226,7 +230,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return problems;
     }
 
-    private void asyncAddRecord(RecordModel record) {
+    private boolean asyncAddRecord(RecordModel record) {
         Index index = new Index.Builder(new RecordDataAdapter(record))
                 .index(INDEX)
                 .type(record.getClass().getSimpleName())
@@ -237,13 +241,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 record.setRecordId(result.getId());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    private void asyncAddUser(UserModel user) {
+    private boolean asyncAddUser(UserModel user) {
         Index index = new Index.Builder(new UserDataAdapter(user))
                 .index(INDEX)
                 .type(UserModel.class.getSimpleName())
@@ -254,10 +260,12 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 user.setUserId(result.getId());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     private List<RecordModel> asyncGetRecords(ProblemModel problem) {
@@ -403,31 +411,35 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
     }
 
-    private class AddUserTask extends AsyncTask<Object, Void, OnTaskComplete> {
-        protected OnTaskComplete doInBackground(Object... params) {
+    private class AddUserTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             UserModel user = (UserModel) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
-            asyncAddUser(user);
-            return runnable;
+            Boolean success = asyncAddUser(user);
+            return new Object[] {success, runnable};
         }
 
         @Override
-        protected void onPostExecute(OnTaskComplete runnable) {
-            runnable.onTaskComplete(new Object());
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 
-    private class BulkAddTask extends AsyncTask<Object, Void, OnTaskComplete> {
-        protected OnTaskComplete doInBackground(Object... params) {
+    private class BulkAddTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             Patient user = (Patient) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
-            asyncBulkAddPatient(user);
-            return runnable;
+            Boolean success = asyncBulkAddPatient(user);
+            return new Object[] {success, runnable};
         }
 
         @Override
-        protected void onPostExecute(OnTaskComplete runnable) {
-            runnable.onTaskComplete(new Object());
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 
@@ -477,17 +489,19 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     /**
      * Adds all records for each given problem.
      */
-    private class AddRecordTask extends AsyncTask<Object, Void, OnTaskComplete> {
-        protected OnTaskComplete doInBackground(Object... params) {
+    private class AddRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             RecordModel record = (RecordModel) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
-            asyncAddRecord(record);
-            return runnable;
+            Boolean success = asyncAddRecord(record);
+            return new Object[] {success, runnable};
         }
 
         @Override
-        protected void onPostExecute(OnTaskComplete runnable) {
-            runnable.onTaskComplete(new Object());
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 
@@ -531,18 +545,20 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     /**
      * Adds a problem to the elastic search database. See also addProblem().
      */
-    private class AddProblemTask extends AsyncTask<Object, Void, OnTaskComplete> {
+    private class AddProblemTask extends AsyncTask<Object, Void, Object[]> {
         @Override
-        protected OnTaskComplete doInBackground(Object... params) {
+        protected Object[] doInBackground(Object... params) {
             ProblemModel problem = (ProblemModel) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
-            asyncAddProblem(problem);
-            return runnable;
+            Boolean success = asyncAddProblem(problem);
+            return new Object[] {success, runnable};
         }
 
         @Override
-        protected void onPostExecute(OnTaskComplete runnable) {
-            runnable.onTaskComplete(new Object());
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 }
