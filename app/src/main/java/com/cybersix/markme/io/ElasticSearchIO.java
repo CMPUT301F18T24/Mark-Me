@@ -19,7 +19,9 @@ package com.cybersix.markme.io;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.Pair;
 
+import com.cybersix.markme.adapter.AssignedUserAdapter;
 import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.adapter.RecordDataAdapter;
 import com.cybersix.markme.adapter.UserDataAdapter;
@@ -279,54 +281,56 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     /**
-     * Gets all of the assigned users (patient) this the current user is taking are of
-     * @param username The Care Provider's username
-     * @return All the users that care provider is taking care of
+     * Gets all of the assigned users (patient) this the current user is taking are of.
+     * @param providerId The Care Provider's username
+     * @return returns the string pair of id information (patientID, providerID)
      */
-    private List<UserModel> asyncGetAssignedUsers(String username) {
+    private List<Pair<String, String>> asyncGetAssignedUsers(String providerId) {
         // Case does matter, and subset of usernames will not cause problems.
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
-                "{ \"username\" : \"" + username + "\" }}}";
+                "{ \"providerId\" : \"" + providerId + "\" }}}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(USER_ASSIGNMENT)
                 .build();
 
-        ArrayList<UserModel> users = new ArrayList<UserModel>();
+        ArrayList<Pair<String, String>> assignments = new ArrayList<Pair<String, String>>();
 
         try {
             JestResult result = client.execute(search);
             if (result.isSucceeded()) {
-                List<UserDataAdapter> userAdapter = result.getSourceAsObjectList(UserDataAdapter.class);
-                for (UserDataAdapter user: userAdapter) {
-                    users.add(user.get());
+                List<AssignedUserAdapter> userAdapter = result.getSourceAsObjectList(AssignedUserAdapter.class);
+                for (AssignedUserAdapter assignment: userAdapter) {
+                    assignments.add(assignment.get());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return users;
+        return assignments;
     }
 
     /**
      * Adds an assignment to the elastic search for the user to then keep track of
-     * @param user The patient that wants to be tracked
+     * @param patientID The patient that wants to be tracked
+     * @param providerID The provider that is tracking the patient
      */
-    private void asyncAddAssignedUser(UserModel user){
-        Index index = new Index.Builder(new UserDataAdapter(user))
+    private void asyncAddAssignedUser(String patientID, String providerID){
+        Index index = new Index.Builder(new AssignedUserAdapter(patientID, providerID))
                 .index(INDEX)
                 .type(USER_ASSIGNMENT)
                 .build();
 
         try {
             DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                // Associate the ID with the original userModel object.
-                user.setUserId(result.getId());
-            }
+            // TODO: May not need this part unless we need to keep track of the assignment id
+//            if (result.isSucceeded()) {
+//                // Associate the ID with the original userModel object.
+//                user.setUserId(result.getId());
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -371,6 +375,17 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     @Override
     public void editUser(UserModel user) {
 
+    }
+
+    // TODO: Add all of the functions that are to call the assignment of functions
+    public ArrayList<UserModel> getAssignedUsers() {
+        // get all of the patient Ids based from the provider id
+        // then get all of the user models
+        return null;
+    }
+
+    public void addAssignedUser() {
+        // Add the user assignment
     }
 
     @Override
@@ -450,6 +465,28 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         protected Void doInBackground(UserModel... params) {
             for (UserModel user : params) {
                 asyncAddUser(user);
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Queries for the list of user assignments
+     */
+    private class FindAssignedUserTask extends AsyncTask<String, Void, ArrayList<Pair<String, String>>> {
+        protected ArrayList<Pair<String, String>> doInBackground(String... providerIDs) {
+            ArrayList<Pair<String, String>> ids = new ArrayList<Pair<String, String>>();
+            for (String providerID: providerIDs) {
+                ids.addAll(asyncGetAssignedUsers(providerID));
+            }
+            return ids;
+        }
+    }
+
+    private class AddAssignedUserTask extends AsyncTask<Pair<String, String>, Void, Void> {
+        protected Void doInBackground(Pair<String, String>... pairs) {
+            for (Pair<String, String> assignment: pairs) {
+                asyncAddAssignedUser(assignment.first, assignment.second);
             }
             return null;
         }
