@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cybersix.markme.io.GeneralIO;
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     UserModel userModel = null;
     UserObserver userObserver = null;
     UserProfileController userController = null;
+    ProgressBar progressBar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +56,22 @@ public class LoginActivity extends AppCompatActivity {
     // Initializes onClick listeners for UI elements.
     // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+        progressBar.setIndeterminate(true);
+
         userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
         userObserver.setModifierButton(findViewById(R.id.loginButton));
         // Add an onClick listener that validates login information
         userObserver.setOnModifierPressed(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 userController.login(new OnTaskComplete() {
                     @Override
                     public void onTaskComplete(Object result) {
+                        progressBar.setVisibility(View.GONE);
                         ArrayList<UserModel> users = (ArrayList<UserModel>) result;
                         if (!users.isEmpty())
                             onLogin();
