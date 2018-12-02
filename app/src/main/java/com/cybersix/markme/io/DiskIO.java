@@ -50,40 +50,20 @@ public class DiskIO {
     }
 
 
-    public Patient loadPatient() {
-        Patient p = null;
-        try {
-            p = new LoadPatientTask().execute().get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return p;
+    public void loadPatient(OnTaskComplete handler) {
+        new LoadPatientTask().execute(handler);
     }
 
-    public void savePatient(Patient p) {
-        try {
-            new SavePatientTask().execute(p);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void savePatient(Patient p, OnTaskComplete handler) {
+        new SavePatientTask().execute(p, handler);
     }
 
-    public GeneralIO.Settings loadSettings() {
-        GeneralIO.Settings s = null;
-        try {
-            s = new LoadSettingsTask().execute().get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return s;
+    public void loadSettings(OnTaskComplete handler) {
+        new LoadSettingsTask().execute(handler);
     }
 
-    public void saveSettings(GeneralIO.Settings s) {
-        try {
-            new SaveSettingsTask().execute(s);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void saveSettings(GeneralIO.Settings s, OnTaskComplete handler) {
+        new SaveSettingsTask().execute(s, handler);
     }
 
     /**
@@ -116,16 +96,6 @@ public class DiskIO {
             e.printStackTrace();
         }
         return patient;
-    }
-
-    public boolean isUserOnDisk(UserModel user) {
-        UserModel loadedUser = loadPatient();
-        if (loadedUser == null)
-            return false;
-        else if (loadedUser.getUserId().equals(user.getUserId()))
-            return true;
-        else
-            return false;
     }
 
     private void asyncSavePatient(Patient p) {
@@ -192,31 +162,61 @@ public class DiskIO {
         }
     }
 
-    private class LoadPatientTask extends AsyncTask<Void, Void, Patient> {
-        protected Patient doInBackground(Void... params) {
-            return asyncLoadPatient();
+    private class LoadPatientTask extends AsyncTask<OnTaskComplete, Void, Object[]> {
+        protected Object[] doInBackground(OnTaskComplete... params) {
+            Patient p = asyncLoadPatient();
+            OnTaskComplete handler = params[0];
+            return new Object[] {p, handler};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            Patient p = (Patient) params[0];
+            OnTaskComplete handler = (OnTaskComplete) params[1];
+            handler.onTaskComplete(p);
         }
     }
 
-    private class SavePatientTask extends AsyncTask<Patient, Void, Void> {
-        protected Void doInBackground(Patient... params) {
-            for (Patient p: params)
-                asyncSavePatient(p);
-            return null;
+    private class SavePatientTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        protected OnTaskComplete doInBackground(Object... params) {
+            Patient p = (Patient) params[0];
+            OnTaskComplete handler = (OnTaskComplete) params[1];
+            asyncSavePatient(p);
+            return handler;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
         }
     }
 
-    private class LoadSettingsTask extends AsyncTask<Void, Void, GeneralIO.Settings> {
-        protected GeneralIO.Settings doInBackground(Void... params) {
-            return asyncLoadSettings();
+    private class LoadSettingsTask extends AsyncTask<OnTaskComplete, Void, Object[]> {
+        protected Object[] doInBackground(OnTaskComplete... params) {
+            OnTaskComplete handler = params[0];
+            GeneralIO.Settings s = asyncLoadSettings();
+            return new Object[] {s, handler};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            GeneralIO.Settings s = (GeneralIO.Settings) params[0];
+            OnTaskComplete handler = (OnTaskComplete) params[1];
+            handler.onTaskComplete(s);
         }
     }
 
-    private class SaveSettingsTask extends AsyncTask<GeneralIO.Settings, Void, Void> {
-        protected Void doInBackground(GeneralIO.Settings... params) {
-            for (GeneralIO.Settings s: params)
-                asyncSaveSettings(s);
-            return null;
+    private class SaveSettingsTask extends AsyncTask<Object, Void, OnTaskComplete> {
+        protected OnTaskComplete doInBackground(Object... params) {
+            GeneralIO.Settings s = (GeneralIO.Settings) params[0];
+            OnTaskComplete handler = (OnTaskComplete) params[1];
+            asyncSaveSettings(s);
+            return handler;
+        }
+
+        @Override
+        protected void onPostExecute(OnTaskComplete runnable) {
+            runnable.onTaskComplete(new Object());
         }
     }
 }
