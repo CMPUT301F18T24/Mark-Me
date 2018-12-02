@@ -1,6 +1,7 @@
 package com.cybersix.markme.io;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cybersix.markme.model.Patient;
@@ -47,10 +48,6 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
         diskIO.loadSettings(setSettingsHandler);
     }
 
-    public void saveToDisk(Patient p) {
-        diskIO.savePatient(p, emptyHandler);
-    }
-
     @Override
     public void findUser(final String username, final OnTaskComplete handler) {
         diskIO.loadPatient(new OnTaskComplete() {
@@ -68,21 +65,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
     }
 
     public void loginAs(final String username, final OnTaskComplete handler) {
-        findUser(username, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-                final ArrayList<UserModel> users = (ArrayList<UserModel>) result;
-                if (users != null)
-                    diskIO.saveSettings(settings, new OnTaskComplete() {
-                        @Override
-                        public void onTaskComplete(Object result) {
-                            handler.onTaskComplete(users);
-                        }
-                    });
-                else
-                    handler.onTaskComplete(users);
-            }
-        });
+        findUser(username, handler);
     }
 
     @Override
@@ -162,6 +145,29 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
                     });
                 } else
                     handler.onTaskComplete(result);
+            }
+        });
+    }
+
+    public void saveToDisk(Patient p) {
+        diskIO.savePatient(p, emptyHandler);
+    }
+
+    public void synchronizeRemotely() {
+        diskIO.loadPatient(new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                Patient patient = (Patient) result;
+                if (patient == null)
+                    return;
+
+                for (ProblemModel problem: patient.getProblems()) {
+                    elasticSearchIO.addProblem(problem, emptyHandler);
+                    for (RecordModel record: problem.getRecords()) {
+                        record.setProblemId(problem.getProblemId());
+                        elasticSearchIO.addRecord(record, emptyHandler);
+                    }
+                }
             }
         });
     }
