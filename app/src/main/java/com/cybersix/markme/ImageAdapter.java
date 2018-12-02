@@ -43,19 +43,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.cybersix.markme.model.GalleryItemModel;
+
+import java.util.List;
+
 public class ImageAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final Bitmap[] bitmaps;
+    private final List<GalleryItemModel> photos;
 
-    public ImageAdapter(Context context, Bitmap[] bitmaps) {
+    public ImageAdapter(Context context, List<GalleryItemModel> photos) {
         this.mContext = context;
-        this.bitmaps = bitmaps;
+        this.photos = photos;
     }
 
     @Override
     public int getCount() {
-        return bitmaps.length;
+        return photos.size();
     }
 
     @Override
@@ -73,7 +77,7 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.linearlayout_image, parent, false);
         }
-        final Bitmap bitmap = bitmaps[position];
+        final Bitmap bitmap = this.photos.get(position).getPhoto();
         final ImageView imageView = convertView.findViewById(R.id.imageview);
         imageView.setImageBitmap(bitmap);
         return convertView;
