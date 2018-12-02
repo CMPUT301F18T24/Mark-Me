@@ -89,7 +89,6 @@ public class UserProfileController {
     public boolean addUser(Context context) {
 
         // If adding to elastic search was successful, write the username to the password file.
-        // TODO: Use the userID instead. We need to change the "login" function to use userID instead.
         if (io.addUser(model)) {
 
             String filename = "securityToken.txt";
