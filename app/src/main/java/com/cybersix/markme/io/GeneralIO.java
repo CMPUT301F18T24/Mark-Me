@@ -16,14 +16,7 @@ import java.util.Iterator;
 public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
     private DiskIO diskIO = null;
     private ElasticSearchIO elasticSearchIO = null;
-    private Settings settings = null;
     private static GeneralIO instance = null;
-    private OnTaskComplete setSettingsHandler = new OnTaskComplete() {
-        @Override
-        public void onTaskComplete(Object result) {
-            settings = (Settings) result;
-        }
-    };
 
     public static OnTaskComplete emptyHandler = new OnTaskComplete() {
         @Override
@@ -58,22 +51,22 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
 
     @Override
     public void addUser(UserModel user, OnTaskComplete handler) {
-//        if (user.getUserType().equals(Patient.class.getSimpleName()))
-//            diskIO.savePatient((Patient) user);
+        if (user.getUserType().equals(Patient.class.getSimpleName()))
+            diskIO.savePatient((Patient) user);
         elasticSearchIO.addUser(user, handler);
     }
 
     @Override
     public void deleteUser(UserModel user, OnTaskComplete handler) {
-//        if (user.getUserType().equals(Patient.class.getSimpleName()))
-//            diskIO.deleteUser();
+        if (user.getUserType().equals(Patient.class.getSimpleName()))
+            diskIO.deleteUser();
         elasticSearchIO.deleteUser(user, handler);
     }
 
     @Override
     public void editUser(UserModel user, OnTaskComplete handler) {
-//        if (user.getUserType().equals(Patient.class.getSimpleName()))
-//            diskIO.savePatient((Patient) user);
+        if (user.getUserType().equals(Patient.class.getSimpleName()))
+            diskIO.savePatient((Patient) user);
         elasticSearchIO.editUser(user, handler);
     }
 
@@ -84,22 +77,22 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
 
     @Override
     public void addProblem(ProblemModel problem, OnTaskComplete handler) {
-//        Patient p = diskIO.loadPatient();
-//        if (p != null) {
-//            p.addProblem(problem);
-//            diskIO.savePatient(p);
-//        }
+        Patient p = diskIO.loadPatient();
+        if (p != null) {
+            p.addProblem(problem);
+            diskIO.savePatient(p);
+        }
         elasticSearchIO.addProblem(problem, handler);
     }
 
     @Override
     public void getProblems(final UserModel user, final OnTaskComplete handler) {
-//        Patient p = diskIO.loadPatient();
-//        if (p != null) {
-//            handler.onTaskComplete(p.getProblems());
-//        } else {
+        Patient p = diskIO.loadPatient();
+        if (p != null) {
+            handler.onTaskComplete(p.getProblems());
+        } else {
             elasticSearchIO.getProblems(user, handler);
-//        }
+        }
     }
 
     @Override
@@ -109,35 +102,31 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
 
     @Override
     public void addRecord(RecordModel record, OnTaskComplete handler) {
-//        Patient p = diskIO.loadPatient();
-//        if (p != null) {
-//            for (ProblemModel prob: p.getProblems()) {
-//                if (prob.getProblemId().equals(record.getProblemId())) {
-//                    prob.addRecord(record);
-//                    break;
-//                }
-//            }
-//            diskIO.savePatient(p);
-//        }
+        Patient p = diskIO.loadPatient();
+        if (p != null) {
+            for (ProblemModel prob: p.getProblems()) {
+                if (prob.getProblemId().equals(record.getProblemId())) {
+                    prob.addRecord(record);
+                    break;
+                }
+            }
+            diskIO.savePatient(p);
+        }
         elasticSearchIO.addRecord(record, handler);
     }
 
     @Override
     public void getRecords(final ProblemModel problem, final OnTaskComplete handler) {
-//        Patient p = diskIO.loadPatient();
-//        if (p != null) {
-//            for (ProblemModel prob: p.getProblems()) {
-//                if (prob.getProblemId().equals(problem.getProblemId())) {
-//                    handler.onTaskComplete(prob.getRecords());
-//                    break;
-//                }
-//            }
-//        } else {
+        Patient p = diskIO.loadPatient();
+        if (p != null) {
+            for (ProblemModel prob: p.getProblems()) {
+                if (prob.getProblemId().equals(problem.getProblemId())) {
+                    handler.onTaskComplete(prob.getRecords());
+                    break;
+                }
+            }
+        } else {
             elasticSearchIO.getRecords(problem, handler);
-//        }
-    }
-
-    protected static class Settings {
-        public boolean syncRequired = false;
+        }
     }
 }
