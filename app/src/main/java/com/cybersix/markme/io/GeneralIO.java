@@ -41,4 +41,10 @@ public class GeneralIO implements UserModelIO {
 
         diskIO.editUser(user);
     }
+
+    @Override
+    public String transferUser(String shortcode) { return null; }
+
+    @Override
+    public String generateTransferCode(String username) { return null; }
 }

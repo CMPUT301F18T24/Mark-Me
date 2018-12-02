@@ -154,4 +154,12 @@ public class UserProfileController {
         return false;
 
     }
+
+    public String transferAccount(String shortCode) {
+        return io.transferUser(shortCode);
+    }
+
+    public String generateTransferCode() {
+        return io.generateTransferCode(model.getUsername());
+    }
 }

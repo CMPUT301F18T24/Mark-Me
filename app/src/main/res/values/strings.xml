@@ -77,4 +77,9 @@
     <string name="preference_file_key">com.cybersix.markme.history</string>
     <string name="change_lang_text">Select Your Language</string>
     <string name="DontHaveAccountPromp">First time here? Sign up now!</string>
+    <string name="transfer_account_text">Transfer Account</string>
+    <string name="transferAccountPrompt">To transfer an account, enter a shortcode below:</string>
+    <string name="enterPrompt">Enter</string>
+    <string name="generatePrompt" >Generate</string>
+    <string name="generateTransferCodePrompt">Generate a transfer code below:</string>
 </resources>

@@ -64,7 +64,6 @@ public class MainActivity extends FragmentActivity {
         if (username != null) {
             Log.i("SetUser", username);
             mUser = ElasticSearchIO.getInstance().findUser(username);
-            Log.d("vishal", "Do I get called?");
             if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                 mData.setSelectedPatient((Patient) mUser);
         }
