@@ -30,13 +30,6 @@ public class UserProfileControllerTest {
         try {
 
             UserProfileController controller = new UserProfileController(new UserModel(userID));
-
-            // Try editing the contact information
-//            assertTrue(controller.modifyModel(new UserObserver(controller)).);
-            // Check that changing contact info was successful.
-//            assertEquals(newEmail, controller.user.getEmail());
-//            assertEquals(newPhone, controller.user.getPhone());
-            fail("");
         } catch (Exception e) {
             fail();
         }

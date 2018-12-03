@@ -39,7 +39,6 @@ public class MapActivityTest {
     @Before
     public void setup(){
         nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
-        ProblemController.getInstance().setSelectedProblem(0);
         mainActivityTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout,new MapFragment())
