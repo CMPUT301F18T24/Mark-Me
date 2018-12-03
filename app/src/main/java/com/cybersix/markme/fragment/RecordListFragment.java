@@ -81,12 +81,13 @@ public class RecordListFragment extends ListFragment {
         });
 
          DataModel.getInstance().setOnRecordReady(update);
+         Log.i("Recordlist", "SetOnReady");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        update.run();
+//        update.run();
     }
 
     private Runnable update = new Runnable() {

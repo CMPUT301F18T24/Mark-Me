@@ -123,13 +123,18 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
 
     @Override
     public void addRecord(RecordModel record, final OnTaskComplete handler) {
-        elasticSearchIO.addRecord(record, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-                diskIO.savePatient();
-                handler.onTaskComplete(result);
-            }
-        });
+        if (offlineMode) {
+            diskIO.savePatient();
+            handler.onTaskComplete(new Object());
+        } else {
+            elasticSearchIO.addRecord(record, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    diskIO.savePatient();
+                    handler.onTaskComplete(result);
+                }
+            });
+        }
     }
 
     @Override
@@ -158,7 +163,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
             elasticSearchIO.bulkAddPatient(diskIO.loadPatient(), new OnTaskComplete() {
                 @Override
                 public void onTaskComplete(Object result) {
-//                    onlineSetup(user);
+                    onlineSetup(user);
                 }
             });
         } else {

@@ -67,8 +67,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         if (client == null) {
             DroidClientConfig config = new DroidClientConfig
                     .Builder(URI)
-                    .connTimeout(1000)
-                    .readTimeout(1000)
                     .build();
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
@@ -95,7 +93,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 .addType(UserModel.class.getSimpleName())
                 .build();
 
-        ArrayList<UserModel> users = new ArrayList<UserModel>();
+        ArrayList<UserModel> users = new ArrayList<>();
 
         try {
             JestResult result = client.execute(search);

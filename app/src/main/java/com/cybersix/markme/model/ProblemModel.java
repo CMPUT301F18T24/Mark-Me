@@ -14,6 +14,8 @@
  */
 package com.cybersix.markme.model;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,7 @@ public class ProblemModel extends Observable {
     private String description;
     private Date started;
     private String patientId;
+    private Runnable onRecordChanged = null;
 
     @JestId
     private String problemId;
@@ -166,6 +169,7 @@ public class ProblemModel extends Observable {
      * @param rs
      */
     public void addRecords(ArrayList<RecordModel> rs) {
+
         if(records == null){
             records = new ArrayList<RecordModel>();
         }
@@ -232,7 +236,18 @@ public class ProblemModel extends Observable {
      * @param records
      */
     public void setRecords(ArrayList<RecordModel> records) {
+        Log.i("setRecords", "setting record");
         this.records = records;
+        onRecordChanged();
+    }
+
+    public void onRecordChanged() {
+        if (onRecordChanged != null)
+            onRecordChanged.run();
+    }
+
+    public void setOnRecordChanged(Runnable runnable) {
+        onRecordChanged = runnable;
     }
 
     /**

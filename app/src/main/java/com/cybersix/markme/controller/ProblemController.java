@@ -36,7 +36,6 @@ public class ProblemController {
     public static ProblemController getInstance() {
         if (instance == null) {
             instance = new ProblemController();
-            instance.loadProblemData();
         }
         return instance;
     }
@@ -79,14 +78,6 @@ public class ProblemController {
         DataModel.getInstance().editProblem(index,newTitle,newDescription);
     }
 
-    /**
-     * This function will load the problems based on the user that called this. The user information
-     * is stored on the user profile controller
-     * @return will return a list of problems that the user has
-     */
-    public void loadProblemData() {
-        DataModel.getInstance().loadProblemData();
-    }
 
     /*
      * This function will save all of the problems that the user has changed. This will be uploaded

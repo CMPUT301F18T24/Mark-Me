@@ -18,9 +18,7 @@ package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
-import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.io.OnTaskComplete;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,7 +38,7 @@ public class DataModel {
         }
     };
 
-    private Runnable onPatientSelected = emptyRunnable;
+    private Runnable onProblemsReady = emptyRunnable;
 
     private Runnable onRecordReady = emptyRunnable;
 
@@ -57,23 +55,15 @@ public class DataModel {
 
     public void setSelectedProblem(int index){
         selectedProblem = selectedPatient.getProblems().get(index);
-        io.getRecords(selectedProblem, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-                ArrayList<RecordModel> records = (ArrayList<RecordModel>) result;
-                selectedProblem.setRecords(records);
-                Log.i("DataModel", records.size() + "");
-                try {
-                    onRecordReady.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        selectedProblem.setOnRecordChanged(onRecordReady);
     }
 
     public void setOnRecordReady(Runnable onRecordReady) {
         this.onRecordReady = onRecordReady;
+        if (selectedProblem != null) {
+            selectedProblem.setOnRecordChanged(onRecordReady);
+            onRecordReady.run();
+        }
     }
 
     public ProblemModel getSelectedProblem(){
@@ -104,24 +94,11 @@ public class DataModel {
 
     public void setSelectedPatient(final Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
-        io.getProblems(selectedPatient, new OnTaskComplete() {
-            @Override
-            public void onTaskComplete(Object result) {
-                ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) result;
-                if (problems.isEmpty()) {
-                    selectedPatient.setProblems(problems);
-                }
-                try {
-                    onPatientSelected.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        this.selectedPatient.setOnProblemsChanged(onProblemsReady);
     }
 
-    public void setOnPatientSelected(Runnable onPatientSelected) {
-        this.onPatientSelected = onPatientSelected;
+    public void setOnProblemsReady(Runnable onProblemsReady) {
+        this.onProblemsReady = onProblemsReady;
     }
 
     public void editProblem(int index, String newTitle, String newDescription) {
@@ -139,22 +116,6 @@ public class DataModel {
             // diaplay and error message that the problem could not be edited
             String message = e.getMessage();
             // TODO: talk to the group about how to display the error message
-        }
-    }
-
-    public void loadProblemData(){
-        // TODO: test this works
-//        UserProfileController userInstance = UserProfileController();
-        try {
-//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
-            for(ProblemModel p: selectedPatient.getProblems()){
-                ArrayList<RecordModel> rm = p.getRecords();
-                p.addRecords(rm);
-            }
-//                    userInstance.user.getUserId());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -209,7 +170,7 @@ public class DataModel {
 
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
-        instance.selectedProblem.addRecord(record);
+        selectedProblem.addRecord(record);
         io.addRecord(record, GeneralIO.emptyHandler);
         return record;
     }
