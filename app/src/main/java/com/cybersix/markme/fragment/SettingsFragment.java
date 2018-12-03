@@ -36,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private View mAccountButton = null;
     private View mAboutButton = null;
     private View mAssignmentButton = null;
+    private View mTransferAccountButton = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class SettingsFragment extends Fragment {
         mAccountButton = getActivity().findViewById(R.id.Account);
         mAboutButton = getActivity().findViewById(R.id.About);
         mAssignmentButton = getActivity().findViewById(R.id.userAssignmentButton);
+        mTransferAccountButton = getActivity().findViewById(R.id.fragment_transfer_account_transferAccountButton);
 
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
@@ -85,6 +87,13 @@ public class SettingsFragment extends Fragment {
                 openUserAssignment();
             }
         });
+
+        mTransferAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTransferAccount();
+            }
+        });
     }
 
     protected void openChangeLanguages() {
@@ -101,5 +110,9 @@ public class SettingsFragment extends Fragment {
 
     protected void openAbout() {
         NavigationController.getInstance().switchToFragment(AboutFragment.class);
+    }
+
+    protected void openTransferAccount() {
+        NavigationController.getInstance().switchToFragment(TransferAccountFragment.class);
     }
 }

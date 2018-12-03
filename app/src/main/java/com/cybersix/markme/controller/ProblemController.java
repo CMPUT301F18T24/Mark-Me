@@ -41,16 +41,6 @@ public class ProblemController {
         return instance;
     }
 
-    // TODO: THIS IS THE FAKE DATA UPDLOAD FOR THE LIST OF PROBLEMS
-    private static void uploadFakeData() {
-        // This function will just load fake problems to the data
-        for (int i = 0; i < 10; i++) {
-            String title = "Fake Title " + Integer.toString(i);
-            String Description = "This is a fake description for getTitle " + Integer.toString(i);
-            instance.createNewProblem(title, Description);
-        }
-    }
-
     // set up all of the necessary public functions that this controller will go through
 
     /**

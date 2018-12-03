@@ -56,10 +56,12 @@
             android:text="@string/about_settings"
             app:layout_constraintStart_toEndOf="@+id/fragment_list_titleTextView" />
 
-        <TextView
+        <Button
+            android:id="@+id/fragment_transfer_account_transferAccountButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/transfer_account_text" />
 
         <TextView
             android:layout_width="match_parent"
