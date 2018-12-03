@@ -41,6 +41,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
