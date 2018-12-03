@@ -45,6 +45,8 @@ import io.searchbox.core.Bulk;
 import io.searchbox.core.BulkResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
+import io.searchbox.core.MultiSearch;
+import io.searchbox.core.MultiSearchResult;
 import io.searchbox.core.Search;
 import io.searchbox.params.SearchType;
 
@@ -64,7 +66,10 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     public void setClient() {
         if (client == null) {
             DroidClientConfig config = new DroidClientConfig
-                    .Builder(URI).build();
+                    .Builder(URI)
+                    .connTimeout(1000)
+                    .readTimeout(1000)
+                    .build();
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
@@ -151,14 +156,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
 
         try {
             BulkResult result = client.execute(bulkBuilder.build());
+            Log.i("ELASTICSEARCHIO", "" + result.isSucceeded());
             if (result.isSucceeded()) {
-                Iterator<BulkResult.BulkResultItem> it = result.getItems().iterator();
-                while (it.hasNext())
-                    Log.i("ELASTICSEARCHIO", it.next().type);
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return false;
     }
@@ -378,12 +380,19 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         new AddRecordTask().execute(record, handler);
     }
 
-    public void addRecord(RecordModel record) {
+    public ArrayList<RecordModel> getRecords(final ProblemModel problem) {
+        final ArrayList<RecordModel> records = new ArrayList<>();
         try {
-            new AddRecordTask().execute(record, GeneralIO.emptyHandler).get();
+            new GetRecordTask().execute(problem, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    records.addAll((ArrayList<RecordModel>) result);
+                }
+            }).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return records;
     }
 
     @Override
@@ -396,10 +405,10 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      */
     private class FindUserTask extends AsyncTask<Object, Void, Object[]> {
         protected Object[] doInBackground(Object... params) {
-            ArrayList<UserModel> users = new ArrayList<UserModel>();
+
             String name = (String) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
-            users.addAll(asyncFindUser(name));
+            List<UserModel> users = asyncFindUser(name);
             return new Object[] {users, runnable};
         }
 

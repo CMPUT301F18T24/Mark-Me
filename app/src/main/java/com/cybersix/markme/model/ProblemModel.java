@@ -246,6 +246,23 @@ public class ProblemModel extends Observable {
         return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProblemModel that = (ProblemModel) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(started, that.started) &&
+                Objects.equals(patientId, that.patientId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(title, description, started, patientId);
+    }
+
     /**
      * throws an exception when the title too long
      */

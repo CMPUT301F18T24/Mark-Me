@@ -38,7 +38,7 @@ import java.lang.reflect.Type;
 
 public class DiskIO {
     private static final String PATIENT_FILENAME = "PATIENT.dat";
-    private static final String SETTINGS_FILENAME = "SETTINGS.dat";
+    private static final String MODE_FILENAME = "MODE.dat";
     private Context context = null;
     Patient patient = null;
 
@@ -61,9 +61,6 @@ public class DiskIO {
      * author: joshua
      */
     public Patient loadPatient() {
-        if (patient != null)
-            return patient;
-
         try {
             FileInputStream fis = context.openFileInput(PATIENT_FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -72,6 +69,7 @@ public class DiskIO {
             Gson gson = new Gson();
             Type typeList = new TypeToken<Patient>(){}.getType();
             patient = gson.fromJson(reader, typeList);
+            Log.i("DISKIO", patient.getProblems().get(0).getRecords().size() + "");
 
             fis.close();
         } catch (FileNotFoundException e) {
@@ -84,14 +82,18 @@ public class DiskIO {
         return patient;
     }
 
-    public void savePatient(Patient p) {
-        patient = p;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+        savePatient();
+    }
+
+    public void savePatient() {
         try {
             FileOutputStream fos = context.openFileOutput(PATIENT_FILENAME, 0);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter writer = new BufferedWriter(osw);
             Gson gson = new Gson();
-            gson.toJson(p, writer);
+            gson.toJson(patient, writer);
             writer.flush();
             fos.close();
         } catch (FileNotFoundException e) {
@@ -107,5 +109,45 @@ public class DiskIO {
         File file = new File(PATIENT_FILENAME);
         if (file.exists())
             file.delete();
+    }
+
+    public boolean loadPreviousMode() {
+        Boolean result = false;
+        try {
+            FileInputStream fis = context.openFileInput(MODE_FILENAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
+
+            Gson gson = new Gson();
+            Type typeList = new TypeToken<Boolean>(){}.getType();
+            result = gson.fromJson(reader, typeList);
+
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void savePreviousMode(Boolean mode) {
+        try {
+            FileOutputStream fos = context.openFileOutput(MODE_FILENAME, 0);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter writer = new BufferedWriter(osw);
+            Gson gson = new Gson();
+            gson.toJson(mode, writer);
+            writer.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -30,8 +30,8 @@ import java.util.Date;
 
 public class DataModel {
     private static DataModel instance = null;
-    private Patient selectedPatient;
-    private ProblemModel selectedProblem;
+    private Patient selectedPatient = null;
+    private ProblemModel selectedProblem = null;
     private GeneralIO io = GeneralIO.getInstance();
     public static final Runnable emptyRunnable = new Runnable() {
         @Override
@@ -62,6 +62,7 @@ public class DataModel {
             public void onTaskComplete(Object result) {
                 ArrayList<RecordModel> records = (ArrayList<RecordModel>) result;
                 selectedProblem.setRecords(records);
+                Log.i("DataModel", records.size() + "");
                 try {
                     onRecordReady.run();
                 } catch (Exception e) {
@@ -107,7 +108,9 @@ public class DataModel {
             @Override
             public void onTaskComplete(Object result) {
                 ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) result;
-                selectedPatient.setProblems(problems);
+                if (problems.isEmpty()) {
+                    selectedPatient.setProblems(problems);
+                }
                 try {
                     onPatientSelected.run();
                 } catch (Exception e) {

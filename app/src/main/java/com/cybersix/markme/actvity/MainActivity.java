@@ -13,6 +13,7 @@ package com.cybersix.markme.actvity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.io.OnTaskComplete;
@@ -73,9 +74,15 @@ public class MainActivity extends FragmentActivity {
             ArrayList<UserModel> users = (ArrayList<UserModel>) result;
             if (!users.isEmpty()) {
                 mUser = users.get(0);
-                if (mUser.getUserType().equals(Patient.class.getSimpleName()))
-                    mData.setSelectedPatient((Patient) mUser);
+                if (mUser.getUserType().equals(Patient.class.getSimpleName())) {
+                    mIO.getEverythingForPatient(mUser);
+                    refresh();
+                }
             }
         }
     };
+
+    public void refresh() {
+        mData.setSelectedPatient((Patient) mUser);
+    }
 }

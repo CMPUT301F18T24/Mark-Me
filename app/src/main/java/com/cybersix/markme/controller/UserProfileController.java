@@ -14,10 +14,8 @@ package com.cybersix.markme.controller;
 
 import android.support.annotation.NonNull;
 
-import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.io.OnTaskComplete;
-import com.cybersix.markme.io.UserModelIO;
 import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.model.UserModel.*;
 import com.cybersix.markme.observer.UserObserver;
@@ -83,6 +81,6 @@ public class UserProfileController {
     }
 
     public void login(OnTaskComplete handler) {
-        io.loginAs(model.getUsername(), handler);
+        io.findUser(model.getUsername(), handler);
     }
 }

@@ -17,6 +17,7 @@
 package com.cybersix.markme.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,16 +63,6 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
-        if(selectedPart == null){
-            recordsToDisplay = recordController.getSelectedProblemRecords();
-        } else {
-            for(RecordModel r:recordController.getSelectedProblemRecords()){
-                if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
-                    recordsToDisplay.add(r);
-                }
-            }
-        }
-
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,19 +79,15 @@ public class RecordListFragment extends ListFragment {
 
             }
         });
+
+         DataModel.getInstance().setOnRecordReady(update);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        DataModel.getInstance().setOnRecordReady(update);
+    public void onResume() {
+        super.onResume();
+        update.run();
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        update();
-//    }
 
     private Runnable update = new Runnable() {
         @Override
@@ -111,6 +98,7 @@ public class RecordListFragment extends ListFragment {
             recordsToDisplay = new ArrayList<RecordModel>();
             if(selectedPart == null){
                 recordsToDisplay = recordController.getSelectedProblemRecords();
+                Log.i("RecordListFragment", recordsToDisplay.size() + "");
             } else {
                 for(RecordModel r:recordController.getSelectedProblemRecords()){
                     if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
