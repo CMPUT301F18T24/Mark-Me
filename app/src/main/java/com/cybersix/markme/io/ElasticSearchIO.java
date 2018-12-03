@@ -43,7 +43,7 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 
-public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO {
+public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO, AssignmentIO {
     private static ElasticSearchIO instance = null;
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test2";
@@ -378,14 +378,49 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     // TODO: Add all of the functions that are to call the assignment of functions
-    public ArrayList<UserModel> getAssignedUsers() {
+
+    @Override
+    public ArrayList<UserModel> getAssignedUsers(String providerID) {
         // get all of the patient Ids based from the provider id
         // then get all of the user models
+        // TODO: For now I am going to test just the ids of the patient and then
+        // TODO: add the functionality of showing the username information
+        ArrayList<Pair<String, String>> results = new ArrayList<>();
+        try {
+            // first string is the patient ID, the second is the provider ID
+            results = new FindAssignedUserTask().execute(providerID).get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        try {
+            ArrayList<UserModel> resultUsers = new ArrayList<>();
+            for (Pair<String, String> resultPair: results) {
+                UserModel tempUser = new UserModel(resultPair.first);
+                tempUser.setUserId(resultPair.first);
+                resultUsers.add(tempUser);
+            }
+            return resultUsers;
+        }
+        catch (Exception e) {
+            // this is for the exception of the username to long exception
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
-    public void addAssignedUser() {
-        // Add the user assignment
+    @Override
+    public void addAssignedUser(String patientID, String providerID) {
+        // Add the user assignment ids to the elastic search IO
+        try {
+            Pair<String, String> input = new Pair<>(patientID, providerID);
+            new AddAssignedUserTask().execute(input).get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
