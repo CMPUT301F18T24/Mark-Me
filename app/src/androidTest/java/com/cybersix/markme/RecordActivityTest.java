@@ -73,7 +73,7 @@ public class RecordActivityTest {
     /*
         Adds new record and edits it
         (Both online and offline)
-        Use Cases: 6, 8, 20, 21
+        Use Cases: 2, 6, 8, 20, 21
     */
     @Test
     public void testViewRecordInfo(){

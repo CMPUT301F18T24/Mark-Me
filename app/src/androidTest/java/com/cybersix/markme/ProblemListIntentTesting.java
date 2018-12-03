@@ -52,7 +52,8 @@ public class ProblemListIntentTesting {
     }
 
     /*
-        Use case 1
+        Use case 1, 34
+        Creates a problem, with notification (Unfortunately unable to test the notification popup)
      */
     @Test
     public void testProblemCreationIntent(){

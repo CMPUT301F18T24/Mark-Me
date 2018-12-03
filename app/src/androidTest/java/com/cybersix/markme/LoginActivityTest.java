@@ -18,6 +18,7 @@ import com.cybersix.markme.actvity.LoginActivity;
 import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.actvity.ProblemCreationActivity;
 import com.cybersix.markme.fragment.AccountSettingsFragment;
+import com.cybersix.markme.fragment.LanguageHandlerFragment;
 import com.cybersix.markme.fragment.RecordInfoFragment;
 import com.cybersix.markme.fragment.RecordListFragment;
 import com.cybersix.markme.model.Patient;
@@ -42,8 +43,8 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 public class LoginActivityTest {
 
     @Rule
-    public IntentsTestRule<LoginActivity> loginActivityTestRule =
-            new IntentsTestRule<>(LoginActivity.class);
+    public IntentsTestRule<MainActivity> mainActivityIntentsTestRule =
+            new IntentsTestRule<>(MainActivity.class);
 
     /*
         Use cases: 31
@@ -70,43 +71,57 @@ public class LoginActivityTest {
     }
 
     /*
-        Use cases: 13,14
-     */
-    @Test
-    public void userEditContactInfo() {
-        Activity activity = loginActivityTestRule.getActivity();
-        Intent i = new Intent(activity, MainActivity.class);
-        i.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, "testtest");
-        activity.startActivity(i);
-        Bundle p = new Bundle();
-        Fragment g = new AccountSettingsFragment();
-        g.setArguments(p);
-        //Move to edit contact info
-        loginActivityTestRule.getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_layout,g)
-                .commitAllowingStateLoss();
-
-    }
-
-    /*
     Use cases: 32,33
     */
     @Test
     public void userViewShortCode() {
-        Activity activity = loginActivityTestRule.getActivity();
-        Intent i = new Intent(activity, MainActivity.class);
-        i.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, "testtest");
-        activity.startActivity(i);
+        Patient fakeUser = new Patient();
+        mainActivityIntentsTestRule.getActivity().setUser(fakeUser);
         Bundle p = new Bundle();
         Fragment g = new AccountSettingsFragment();
         g.setArguments(p);
         //Move to edit contact info
-        loginActivityTestRule.getActivity().getSupportFragmentManager()
+        mainActivityIntentsTestRule.getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout,g)
                 .commitAllowingStateLoss();
         //Short code is now in view for user
+    }
+
+    /*
+        Use Cases: 35
+     */
+    @Test
+    public void userChangeLanguage() {
+        Patient fakeUser = new Patient();
+        mainActivityIntentsTestRule.getActivity().setUser(fakeUser);
+        Bundle p = new Bundle();
+        Fragment g = new LanguageHandlerFragment();
+        g.setArguments(p);
+        //Move to language screen
+        mainActivityIntentsTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_layout,g)
+                .commitAllowingStateLoss();
+        onView(withId(R.id.fragment_language_french_button)).perform(click());
+    }
+
+    /*
+    Use cases: 13,14
+    */
+    @Test
+    public void userEditContactInfo() {
+        Patient fakeUser = new Patient();
+        mainActivityIntentsTestRule.getActivity().setUser(fakeUser);
+        Bundle p = new Bundle();
+        Fragment g = new AccountSettingsFragment();
+        g.setArguments(p);
+        //Move to edit contact info
+        mainActivityIntentsTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_layout,g)
+                .commitAllowingStateLoss();
+
     }
 }
 
