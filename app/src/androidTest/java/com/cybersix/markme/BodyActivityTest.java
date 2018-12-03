@@ -76,7 +76,8 @@ public class BodyActivityTest {
     }
 
     /*
-        Use Cases: 29
+        Use Cases: 29, 27
+        Shows all body locations of selected part (Or all parts)
     */
     @Test
     public void testViewRecords() {
