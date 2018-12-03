@@ -76,6 +76,7 @@
     <string name="delete">"Effacer"</string>
     <string name="preference_file_key">"com.cybersix.markme.history"</string>
     <string name="change_lang_text">Choisissez votre langue</string>
+
     <string name="DontHaveAccountPromp">Première fois ici? S\'inscrire maintenant!</string>
     <string name="transfer_account_text">Compte de transfert</string>
     <string name="transferAccountPrompt">Pour transférer un compte, entrez un code court ci-dessous:</string>
