@@ -152,8 +152,6 @@ public class ProblemListFragment extends ListFragment {
                 controllerInstance.setSelectedProblem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXTRA_PROBLEM_INDEX, position);
-                // TODO: for now the resulting activity will show preset data but the later version
-                // TODO: will show the records related to the problem
                 NavigationController.getInstance()
                         .switchToFragment(RecordListFragment.class, bundle);
 
