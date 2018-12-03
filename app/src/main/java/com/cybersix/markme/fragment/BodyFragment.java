@@ -311,6 +311,8 @@ public class BodyFragment extends Fragment {
             bodyConstraintLayout.removeView(v);
         }
         drawnViews.clear();
+        listedCount = 0;
+        unlistedCount = 0;
         for(EBodyPart bp: recordParts.keySet()){
             if(bp != EBodyPart.UNLISTED){
                 listedCount += recordParts.get(bp).size();
