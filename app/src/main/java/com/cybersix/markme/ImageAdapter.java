@@ -43,16 +43,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.cybersix.markme.model.GalleryItemModel;
+import com.cybersix.markme.model.GalleryItem;
 
 import java.util.List;
 
 public class ImageAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final List<GalleryItemModel> photos;
+    private final List<GalleryItem> photos;
 
-    public ImageAdapter(Context context, List<GalleryItemModel> photos) {
+    public ImageAdapter(Context context, List<GalleryItem> photos) {
         this.mContext = context;
         this.photos = photos;
     }
