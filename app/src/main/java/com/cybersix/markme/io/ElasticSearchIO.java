@@ -289,14 +289,14 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         // Case does matter, and subset of usernames will not cause problems.
         String query = "{ \"query\" : \n" +
                 "{ \"match\" :\n" +
-                "{ \"providerId\" : \"" + providerId + "\" }}}";
+                "{ \"providerID\" : \"" + providerId + "\" }}}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(USER_ASSIGNMENT)
                 .build();
 
-        ArrayList<Pair<String, String>> assignments = new ArrayList<Pair<String, String>>();
+        ArrayList<Pair<String, String>> assignments = new ArrayList<>();
 
         try {
             JestResult result = client.execute(search);
@@ -398,6 +398,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             for (Pair<String, String> resultPair: results) {
                 UserModel tempUser = new UserModel(resultPair.first);
                 tempUser.setUserId(resultPair.first);
+                tempUser.setUsername("ES" + resultPair.first);
                 resultUsers.add(tempUser);
             }
             return resultUsers;
@@ -516,7 +517,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      */
     private class FindAssignedUserTask extends AsyncTask<String, Void, ArrayList<Pair<String, String>>> {
         protected ArrayList<Pair<String, String>> doInBackground(String... providerIDs) {
-            ArrayList<Pair<String, String>> ids = new ArrayList<Pair<String, String>>();
+            ArrayList<Pair<String, String>> ids = new ArrayList<>();
             for (String providerID: providerIDs) {
                 ids.addAll(asyncGetAssignedUsers(providerID));
             }

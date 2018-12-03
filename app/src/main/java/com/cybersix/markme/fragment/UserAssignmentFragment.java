@@ -25,12 +25,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cybersix.markme.R;
+import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.actvity.UserActivityAddPopUp;
 import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public class UserAssignmentFragment extends Fragment {
     private ArrayList<UserModel> userList = new ArrayList<UserModel>();
     private ListView assignedUserListView;
     private int removePosition;
+    private UserModel currentUser = null;
+    private ElasticSearchIO ESController = ElasticSearchIO.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,28 +62,18 @@ public class UserAssignmentFragment extends Fragment {
         Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
         Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
+        currentUser = ((MainActivity) getActivity()).getUser();
 
-        // TODO: Will be removed once server functionality is implemented
-        for (int i = 0; i < 15; i++){
-            String tempUsername = "UserPerson" + Integer.toString(i);
-            String tempPassword = "1234";
-            String tempID = "Fake ID " + Integer.toString(i);
-            try {
-                UserModel tempUser = new UserModel(tempUsername);
-                tempUser.setUserId(tempID);
-                userList.add(tempUser);
-            }
-            catch (Exception e) {
-                // do nothing
-            }
-        }
+        // get the list of users that are from the elastic search database
+        userList.addAll(ESController.getAssignedUsers(currentUser.getUserId()));
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // This will open the add user popup
-                Intent addUserIntent = new Intent(getActivity(), UserActivityAddPopUp.class);
-                startActivity(addUserIntent);
+//                Intent addUserIntent = new Intent(getActivity(), UserActivityAddPopUp.class);
+//                startActivity(addUserIntent);
+                addUser();
             }
         });
 
@@ -170,6 +166,43 @@ public class UserAssignmentFragment extends Fragment {
     }
 
     private void addUser() {
-
+        final EditText patientCodeEdit;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Assign a patient");
+        builder.setMessage("Please enter the generated patient assignment code below...");
+        patientCodeEdit = new EditText(this.getContext());
+        builder.setView(patientCodeEdit);
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // get the patient ID from the server, then add the assignment to the database
+                // TODO: get the patient ID from the server based from the code.
+                // String patientID = getPatientID();
+                // for now the patient ID is hard coded
+                String patientID = patientCodeEdit.getText().toString();
+                // now add the assigned to elastic search
+                ESController.addAssignedUser(patientID, currentUser.getUserId());
+                // for now just add the empty user model to the list until we can get the real ones
+                UserModel temp = new UserModel();
+                temp.setUserId(patientID);
+                try {
+                    temp.setUsername(patientID);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                userList.add(temp);
+                userListAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+                return;
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
