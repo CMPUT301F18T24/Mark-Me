@@ -76,13 +76,13 @@ public class MainActivity extends FragmentActivity {
                 mUser = users.get(0);
                 if (mUser.getUserType().equals(Patient.class.getSimpleName())) {
                     mIO.getEverythingForPatient(mUser);
-                    mData.setSelectedPatient((Patient) mUser);
+                    refresh();
                 }
             }
         }
     };
 
     public void refresh() {
-
+        mData.setSelectedPatient((Patient) mUser);
     }
 }

@@ -164,6 +164,7 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
                 @Override
                 public void onTaskComplete(Object result) {
                     onlineSetup(user);
+                    ((MainActivity) context).refresh();
                 }
             });
         } else {

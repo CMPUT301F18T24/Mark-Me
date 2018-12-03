@@ -61,6 +61,9 @@ public class DiskIO {
      * author: joshua
      */
     public Patient loadPatient() {
+        if (patient != null)
+            return patient;
+
         try {
             FileInputStream fis = context.openFileInput(PATIENT_FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -69,7 +72,6 @@ public class DiskIO {
             Gson gson = new Gson();
             Type typeList = new TypeToken<Patient>(){}.getType();
             patient = gson.fromJson(reader, typeList);
-            Log.i("DISKIO", patient.getProblems().get(0).getRecords().size() + "");
 
             fis.close();
         } catch (FileNotFoundException e) {

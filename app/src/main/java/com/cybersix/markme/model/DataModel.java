@@ -95,10 +95,16 @@ public class DataModel {
     public void setSelectedPatient(final Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
         this.selectedPatient.setOnProblemsChanged(onProblemsReady);
+        if (onProblemsReady != null)
+            onProblemsReady.run();
     }
 
     public void setOnProblemsReady(Runnable onProblemsReady) {
         this.onProblemsReady = onProblemsReady;
+        if (this.selectedPatient != null) {
+            this.selectedPatient.setOnProblemsChanged(onProblemsReady);
+            onProblemsReady.run();
+        }
     }
 
     public void editProblem(int index, String newTitle, String newDescription) {

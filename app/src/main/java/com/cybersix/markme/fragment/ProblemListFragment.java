@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,6 +58,7 @@ public class ProblemListFragment extends ListFragment {
     private Runnable onDataModelReady = new Runnable() {
         @Override
         public void run() {
+            Log.i("ProblemListFragment", "Runnable");
             problemListAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
             getListView().setAdapter(problemListAdapter);
         }
@@ -159,10 +161,13 @@ public class ProblemListFragment extends ListFragment {
 
         });
 
-        if (DataModel.getInstance().getSelectedPatient() == null)
+        if (DataModel.getInstance().getSelectedPatient() == null) {
             DataModel.getInstance().setOnProblemsReady(onDataModelReady);
-        else
+            Log.i("ProblemListFragment", "null");
+        } else {
             onDataModelReady.run();
+            Log.i("ProblemListFragment", "not null");
+        }
     }
 
     @Override

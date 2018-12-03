@@ -81,7 +81,6 @@ public class RecordListFragment extends ListFragment {
         });
 
          DataModel.getInstance().setOnRecordReady(update);
-         Log.i("Recordlist", "SetOnReady");
     }
 
     @Override
@@ -99,7 +98,6 @@ public class RecordListFragment extends ListFragment {
             recordsToDisplay = new ArrayList<RecordModel>();
             if(selectedPart == null){
                 recordsToDisplay = recordController.getSelectedProblemRecords();
-                Log.i("RecordListFragment", recordsToDisplay.size() + "");
             } else {
                 for(RecordModel r:recordController.getSelectedProblemRecords()){
                     if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
