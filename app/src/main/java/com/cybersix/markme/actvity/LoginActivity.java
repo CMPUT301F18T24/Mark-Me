@@ -13,6 +13,8 @@
  */
 package com.cybersix.markme.actvity;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,20 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         userObserver = new UserObserver(userController);
 
         initUI();
+        checkLogin();
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
-        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
-        userObserver.setModifierButton(findViewById(R.id.loginButton));
-        // Add an onClick listener that validates login information
-        userObserver.setOnModifierPressed(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkLogin();
-            }
-        });
+        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText));
 
         userModel.addObserver(userObserver);
         // Add an onClick listener that takes the user to the signup Activity.
@@ -73,6 +67,10 @@ public class LoginActivity extends AppCompatActivity {
     public void openSignupActivity() {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
+
+        // Immediately try to login. There is a race condition with a slow server. Implement
+        // fix that queries the server until the account is setup.
+        checkLogin();
     }
 
     // Checks the provided login information against the UserModel.
@@ -82,12 +80,13 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
         // If we got exactly one username returned.
-        Log.i("UserFound", "" + userController.userExists());
-        if (userController.userExists()) {
+        if (userController.userExists(this.getApplicationContext())) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);
             finish();
+        } else { // Let user know they have to create an account.
+            // TODO: Display login buttons, replace spinner.
         }
     }
 

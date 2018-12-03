@@ -166,4 +166,5 @@ public class NavigationController {
     public Fragment getFragment(){
         return mFragment;
     }
+
 }

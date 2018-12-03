@@ -35,6 +35,7 @@ public class GeneralIO implements UserModelIO {
 
     @Override
     public boolean addUser(UserModel user) {
+        // What's going on here?
         if (elasticSearchIO.isConnected())
             return elasticSearchIO.addUser(user);
         return diskIO.addUser(user);
@@ -55,4 +56,10 @@ public class GeneralIO implements UserModelIO {
 
         diskIO.editUser(user);
     }
+
+    @Override
+    public String transferUser(String shortcode) { return null; }
+
+    @Override
+    public String generateTransferCode(String username) { return null; }
 }

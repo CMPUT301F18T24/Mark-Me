@@ -59,7 +59,6 @@ public class AccountSettingsFragment extends Fragment {
 
     public void initUI() {
         // Fill the textboxes with information
-        // TODO: These extra calls to the controller could be avoided if model was its own object.
         userObserver.setUsernameView((TextView) getActivity().findViewById(R.id.fragment_account_settings_usernameText));
         userObserver.setEmailView((TextView) getActivity().findViewById(R.id.fragment_account_settings_email));
         userObserver.setPhoneView((TextView) getActivity().findViewById(R.id.fragment_account_settings_phoneText));

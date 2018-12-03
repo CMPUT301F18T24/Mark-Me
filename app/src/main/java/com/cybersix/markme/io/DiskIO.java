@@ -98,4 +98,10 @@ public class DiskIO implements ProblemModelIO, RecordModelIO, UserModelIO {
     public ArrayList<RecordModel> getRecords(ProblemModel problem) {
         return null;
     }
+
+    @Override
+    public String transferUser(String shortCode) { return null; }
+
+    @Override
+    public String generateTransferCode(String username) { return null; }
 }
