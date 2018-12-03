@@ -64,6 +64,7 @@
     <string name="user_assignment_assigned_list">This is a list of assignment users.</string>
     <string name="user_assignment_remove">Remove</string>
     <string name="user_assignment_select_list">Search and select user to view progress.</string>
+    <string name="user_assignment_generateButton">Generate</string>
     <string name="add_button">Add</string>
     <string name="search_button">Search</string>
     <string name="filter_edit_text">Enter keyword here</string>
