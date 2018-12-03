@@ -14,9 +14,7 @@
  */
 package com.cybersix.markme.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,11 +29,11 @@ import android.widget.TextView;
 import com.cybersix.markme.ImageAdapter;
 import com.cybersix.markme.R;
 import com.cybersix.markme.SlideShowActivity;
+import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.deletePhoto;
 import com.cybersix.markme.model.GalleryItemModel;
 
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +77,7 @@ public class FullGalleryFragment extends Fragment {
                         BitmapFactory.decodeByteArray(photo, 0, photo.length)
                 ));
             }
-        }else{
-
+        } else if (ProblemController.getInstance().getSelectedProblem() != null) {
             if (RecordController.getInstance().getSelectedProblemRecords() == null) {
                 size = 0;
             } else {
@@ -97,7 +94,6 @@ public class FullGalleryFragment extends Fragment {
                     ));
                 }
             }
-
         }
 
 
@@ -131,4 +127,6 @@ public class FullGalleryFragment extends Fragment {
 
         return view;
     }
+
 }
+

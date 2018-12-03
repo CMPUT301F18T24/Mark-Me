@@ -13,7 +13,6 @@
  */
 package com.cybersix.markme.actvity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,34 +50,15 @@ public class LoginActivity extends AppCompatActivity {
         GeneralIO.getInstance().setContext(this);
 
         initUI();
+        onLogin();
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         progressBar.setIndeterminate(true);
-
-        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText) );
-        userObserver.setModifierButton(findViewById(R.id.loginButton));
-        // Add an onClick listener that validates login information
-        userObserver.setOnModifierPressed(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-
-                userController.login(new OnTaskComplete() {
-                    @Override
-                    public void onTaskComplete(Object result) {
-                        progressBar.setVisibility(View.GONE);
-                        ArrayList<UserModel> users = (ArrayList<UserModel>) result;
-                        if (!users.isEmpty())
-                            onLogin();
-                    }
-                });
-            }
-        });
+        userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText));
 
         userModel.addObserver(userObserver);
         // Add an onClick listener that takes the user to the signup Activity.
@@ -95,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
     public void openSignupActivity() {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
+
+        // Immediately try to login. There is a race condition with a slow server. Implement
+        // fix that queries the server until the account is setup.
+        onLogin();
     }
 
     // Checks the provided login information against the UserModel.
@@ -104,10 +88,14 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void onLogin() {
         // If we got exactly one username returned.
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
-        startActivity(intent);
-        finish();
+        if (userController.userExists(this.getApplicationContext())) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
+            startActivity(intent);
+            finish();
+        } else { // Let user know they have to create an account.
+            // TODO: Display login buttons, replace spinner.
+        }
     }
 
 }

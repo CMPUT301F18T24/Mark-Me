@@ -35,6 +35,7 @@ public class RecordModel extends Observable {
     private Date timestamp;
     private String comment;
     private ArrayList<byte[]> photos;
+    private String photoLabel = "";
     private BodyLocation bodyLocation;
     private LatLng mapLocation;
 
@@ -89,6 +90,17 @@ public class RecordModel extends Observable {
      * @param title
      */
     public void setTitle(String title){ this.title=title; }
+
+    /**
+     * sets the label
+     * @param label
+     */
+    public void setLabel(String label){ this.photoLabel=label; }
+
+    /**
+     * gets the label
+     */
+    public String getLabel() { return this.photoLabel; }
 
     /**
      * gets the description

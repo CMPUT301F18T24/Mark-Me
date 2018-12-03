@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.adapter.RecordDataAdapter;
+import com.cybersix.markme.adapter.TransferDataAdapter;
 import com.cybersix.markme.adapter.UserDataAdapter;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
@@ -38,6 +39,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
@@ -55,6 +57,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
     private Context context = null;
+    private final String TYPE_TRANSFER = "transfer";
 
     protected ElasticSearchIO() {
         setClient();
@@ -262,6 +265,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 user.setUserId(result.getId());
                 return true;
             }
+            Log.d("vishal_addUser", user.getUsername() + " " + result.isSucceeded());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -324,6 +328,74 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
 
         return recordList;
+    }
+
+    private List<String> asyncTransferUser(String shortCode) {
+
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"shortcode\" : \"" + shortCode + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(TYPE_TRANSFER)
+                .build();
+
+        ArrayList<String> usernameList = new ArrayList<>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<TransferDataAdapter> transferData = result.getSourceAsObjectList(TransferDataAdapter.class);
+                for (TransferDataAdapter t: transferData) {
+                    usernameList.add(t.getUsername());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return usernameList;
+
+    }
+
+    // Generates a random 5 character string.
+    // Credit to:  Eugen Paraschiv, Generate Random Bounded String with Plain Java
+    // Link: https://www.baeldung.com/java-random-string
+    public String generateShortCode() {
+
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 5;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+
+        return buffer.toString();
+    }
+
+    public String asyncGenerateTransferCode(String username) {
+        String shortcode = generateShortCode();
+        Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
+                .index(INDEX)
+                .type(TYPE_TRANSFER)
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                // Return the short code
+                return shortcode;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     @Override
@@ -566,6 +638,34 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             Boolean success = (Boolean) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
             runnable.onTaskComplete(success);
+        }
+    }
+
+    private class TransferAccountTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            ArrayList<String> usernames = new ArrayList<>();
+            for (String shortCode: params) {
+                usernames.addAll(asyncTransferUser(shortCode));
+            }
+            if(!usernames.isEmpty()) {
+                return usernames.get(0);
+            }
+
+            return null;
+        }
+    }
+
+    private class GenerateTransferCodeTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            for (String username: params) {
+                String shortcode = asyncGenerateTransferCode(username);
+                if (shortcode.compareTo("") != 0) {
+                    return shortcode;
+                }
+            }
+            return null;
         }
     }
 }

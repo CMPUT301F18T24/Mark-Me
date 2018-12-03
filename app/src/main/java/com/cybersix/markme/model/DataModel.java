@@ -219,6 +219,15 @@ public class DataModel {
         io.addRecord(record, GeneralIO.emptyHandler);
     }
 
+    public void addSelectedProblemRecordLabel(String label, int idx){
+        selectedProblem.getRecord(idx).setLabel(label);
+    }
+
+
+    public String getSelectedProblemRecordLabel(int idx){
+        return selectedProblem.getRecord(idx).getLabel();
+    }
+
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){
         selectedProblem.getRecord(idx).setTitle(title);
         selectedProblem.getRecord(idx).setDescription(desc);

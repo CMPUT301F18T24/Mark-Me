@@ -71,14 +71,12 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     // Initializes onClick listeners for UI elements.
-    // TODO: Need a more complete implementation to attempt robotium intent testing.
     public void initUI() {
         // Get the signup information.
         userObserver.setUsernameView((TextView) findViewById(R.id.fragment_account_settings_usernameText));
         userObserver.setEmailView((TextView) findViewById(R.id.fragment_account_settings_email));
         userObserver.setPhoneView((TextView) findViewById(R.id.fragment_account_settings_phoneText));
         userObserver.setModifierButton(findViewById(R.id.signupButton));
-        TextView passwordText = (TextView) findViewById(R.id.passwordText);
 
         // Add an onClick listener that validates signup information
         userObserver.setOnModifierPressed(new View.OnClickListener() {
@@ -88,4 +86,20 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Checks the info the user provided and creates a new account if the info is valid,
+    // or lets the user know if the info is not valid.
+    // TODO: Replace hard coded literal with key-value pair.
+    public void checkRegistration() {
+        // Create a user of type patient by default.
+        if (userController.addUser(this.getApplicationContext())) {
+            finish();
+        } else {
+            // Notify the user that registration was unsuccessful.
+            // TODO: Can we let the user know exactly what went wrong?
+            Toast toast = Toast.makeText(this, getString(R.string.registration_failure), Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 }

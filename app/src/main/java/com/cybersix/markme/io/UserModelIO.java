@@ -7,4 +7,6 @@ public interface UserModelIO {
     void addUser(UserModel user, OnTaskComplete handler);
     void deleteUser(UserModel user, OnTaskComplete handler);
     void editUser(UserModel user, OnTaskComplete handler);
+    String transferUser(String shortCode);
+    String generateTransferCode(String username);
 }

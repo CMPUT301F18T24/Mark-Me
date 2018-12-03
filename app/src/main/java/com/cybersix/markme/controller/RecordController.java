@@ -100,6 +100,14 @@ public class RecordController {
         DataModel.getInstance().addSelectedProblemRecordPhoto(b,idx);
     }
 
+    public void addSelectedProblemRecordLabel(String label, int idx){
+        DataModel.getInstance().addSelectedProblemRecordLabel(label, idx);
+    }
+
+    public String getSelectedProblemRecordLabel(int idx){
+       return DataModel.getInstance().getSelectedProblemRecordLabel(idx);
+    }
+
     public void addRecordLocation(LatLng loc, int idx){
         DataModel.getInstance().addRecordLocation(loc,idx);
     }
