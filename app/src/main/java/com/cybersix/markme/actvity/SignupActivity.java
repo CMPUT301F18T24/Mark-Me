@@ -16,6 +16,7 @@
  */
 package com.cybersix.markme.actvity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
 
 public class SignupActivity extends AppCompatActivity {
+    public static final String EXTRA_USERNAME = "com.cybersix.markme.EXTRA_USERNAME";
     UserModel userModel = null;
     UserProfileController userController = null;
     UserObserver userObserver = null;
@@ -70,6 +72,9 @@ public class SignupActivity extends AppCompatActivity {
     public void checkRegistration() {
         // Create a user of type patient by default.
         if (userController.addUser(this.getApplicationContext())) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_USERNAME, userModel.getUsername());
+            setResult(RESULT_OK, intent);
             finish();
         } else {
             // Notify the user that registration was unsuccessful.

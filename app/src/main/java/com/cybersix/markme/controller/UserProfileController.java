@@ -67,6 +67,15 @@ public class UserProfileController {
         }
     }
 
+    // Assumption: username is never null
+    public void setUsername(String username) {
+        try {
+            model.setUsername(username);
+        } catch (UsernameTooShortException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void modifyEmail(UserObserver view) {
         if (model == null || view == null || view.getEmailView() == null)
             return;
