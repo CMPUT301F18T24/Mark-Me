@@ -82,9 +82,6 @@ public class UserProfileController {
         this.model = model;
     }
 
-    public void updateRemoteModel() {
-        // TODO: Update the model information on elastic search
-    }
 
     // Attempts to add a model to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information

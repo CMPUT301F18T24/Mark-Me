@@ -2,7 +2,7 @@ package com.cybersix.markme.model;
 
 import android.graphics.Bitmap;
 
-public class GalleryItemModel {
+public class GalleryItem {
     private int problemIndex;
     private Bitmap photo;
 
@@ -14,7 +14,7 @@ public class GalleryItemModel {
         return photo;
     }
 
-    public GalleryItemModel(int problemIndex, Bitmap photo) {
+    public GalleryItem(int problemIndex, Bitmap photo) {
         this.problemIndex = problemIndex;
         this.photo = photo;
     }
