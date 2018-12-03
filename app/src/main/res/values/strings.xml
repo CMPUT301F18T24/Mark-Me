@@ -82,4 +82,7 @@
     <string name="enterPrompt">Enter</string>
     <string name="generatePrompt" >Generate</string>
     <string name="generateTransferCodePrompt">Generate a transfer code below:</string>
+    <string name="registration_failure">Registration Failed!</string>
+    <string name="transfer_account_success">Transfer Successful!</string>
+    <string name="transfer_account_failure">Transfer failed.</string>
 </resources>

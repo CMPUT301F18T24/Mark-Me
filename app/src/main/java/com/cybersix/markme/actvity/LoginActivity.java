@@ -67,6 +67,10 @@ public class LoginActivity extends AppCompatActivity {
     public void openSignupActivity() {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
+
+        // Immediately try to login. There is a race condition with a slow server. Implement
+        // fix that queries the server until the account is setup.
+        checkLogin();
     }
 
     // Checks the provided login information against the UserModel.
@@ -77,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
     public void checkLogin() {
         // If we got exactly one username returned.
         if (userController.userExists(this.getApplicationContext())) {
-            Log.d("vishal_Loginboi", userModel.getUsername());
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
             startActivity(intent);

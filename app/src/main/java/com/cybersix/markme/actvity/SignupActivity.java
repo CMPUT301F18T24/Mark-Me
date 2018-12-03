@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             // Notify the user that registration was unsuccessful.
             // TODO: Can we let the user know exactly what went wrong?
-            Toast toast = Toast.makeText(this, "Registration failed!", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, getString(R.string.registration_failure), Toast.LENGTH_SHORT);
             toast.show();
         }
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cybersix.markme.R;
 import com.cybersix.markme.actvity.MainActivity;
@@ -50,7 +51,7 @@ public class TransferAccountFragment extends Fragment {
 
     public void initUI() {
         // Initialize the button listeners
-        Button transferAccountButton = (Button) getActivity().findViewById(R.id.fragment_transfer_account_transferAccountText);
+        Button transferAccountButton = (Button) getActivity().findViewById(R.id.fragment_transfer_account_transferAccountButton);
         transferAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,12 +85,19 @@ public class TransferAccountFragment extends Fragment {
         // If not, print error.
         TextView transferAccountCode = getActivity().findViewById(R.id.fragment_transfer_account_transferAccountText);
         String username = userController.transferAccount(transferAccountCode.getText().toString());
+        Toast toast;
+
         if (username != null) {
             setUser(username);
+            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
             Log.d("TransferAccountFragment: ", "Successful");
+
         } else {
             // Toast that nothing happens
+            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_failure), Toast.LENGTH_SHORT);
         }
+
+        toast.show();
 
     }
 
@@ -103,11 +111,18 @@ public class TransferAccountFragment extends Fragment {
     public void setUser(String username) {
         mData = DataModel.getInstance();
         if (username != null) {
-            Log.i("SetUser", username);
             mUser = ElasticSearchIO.getInstance().findUser(username);
             if (mUser.getUserType().equals(Patient.class.getSimpleName()))
                 mData.setSelectedPatient((Patient) mUser);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        userController = null;
+        userModel = null;
     }
 
 }

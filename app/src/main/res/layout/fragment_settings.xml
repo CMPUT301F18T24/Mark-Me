@@ -57,7 +57,7 @@
             app:layout_constraintStart_toEndOf="@+id/fragment_list_titleTextView" />
 
         <Button
-            android:id="@+id/transferAccountButton"
+            android:id="@+id/fragment_transfer_account_transferAccountButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

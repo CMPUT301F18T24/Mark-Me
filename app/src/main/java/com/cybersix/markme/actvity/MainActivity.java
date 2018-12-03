@@ -35,7 +35,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        Log.d("vishal", "Hi" + username);
         setUser(username);
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);

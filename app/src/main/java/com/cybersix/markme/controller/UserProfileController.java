@@ -33,6 +33,7 @@ import java.io.OutputStreamWriter;
 public class UserProfileController {
     private UserModel model = null;
     private UserModelIO io = (UserModelIO) ElasticSearchIO.getInstance();
+    private final String SECURITY_FILE_NAME = "securityToken.txt";
 
     public UserProfileController(@NonNull UserModel user) {
         this.model = user;
@@ -91,8 +92,7 @@ public class UserProfileController {
         // If adding to elastic search was successful, write the username to the password file.
         if (io.addUser(model)) {
 
-            String filename = "securityToken.txt";
-            try (FileOutputStream output = context.openFileOutput(filename, Context.MODE_PRIVATE)) {
+            try (FileOutputStream output = context.openFileOutput(SECURITY_FILE_NAME, Context.MODE_PRIVATE)) {
 
                 OutputStreamWriter writer = new OutputStreamWriter(output);
                 writer.write(model.getUsername());
@@ -117,8 +117,7 @@ public class UserProfileController {
     // TODO: Uncouple the login button from, the user observers
     public boolean userExists(Context context) {
 
-        String filename = "securityToken.txt";
-        try (FileInputStream input = context.openFileInput(filename)) {
+        try (FileInputStream input = context.openFileInput(SECURITY_FILE_NAME)) {
 
             InputStreamReader reader = new InputStreamReader(input);
             BufferedReader bufferedReader = new BufferedReader(reader);

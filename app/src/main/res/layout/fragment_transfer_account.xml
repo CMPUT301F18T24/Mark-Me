@@ -14,11 +14,11 @@
         android:text="@string/generateTransferCodePrompt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transferAccountButton" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_transfer_account_transferAccountButton" />
 
     <Button
         android:id="@+id/fragment_transfer_account_transferCodeGenerateButton"
-        android:layout_width="98dp"
+        android:layout_width="131dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/generatePrompt"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_transfer_account_transferAccountPromptText" />
 
     <Button
-        android:id="@+id/transferAccountButton"
+        android:id="@+id/fragment_transfer_account_transferAccountButton"
         android:layout_width="107dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

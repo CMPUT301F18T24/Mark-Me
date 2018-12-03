@@ -34,7 +34,7 @@ public class SettingsFragment extends Fragment {
         mAccountButton = getActivity().findViewById(R.id.Account);
         mAboutButton = getActivity().findViewById(R.id.About);
         mAssignmentButton = getActivity().findViewById(R.id.userAssignmentButton);
-        mTransferAccountButton = getActivity().findViewById(R.id.transferAccountButton);
+        mTransferAccountButton = getActivity().findViewById(R.id.fragment_transfer_account_transferAccountButton);
 
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
