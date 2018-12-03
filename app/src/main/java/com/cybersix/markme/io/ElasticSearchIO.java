@@ -49,6 +49,8 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
+    private final String USER_ASSIGNMENT = "UserAssignment";
+    private final String TYPE_ASSIGNMENT = "AssignmentTransfer";
     private final String TYPE_TRANSFER = "transfer";
 
     private ElasticSearchIO() {
