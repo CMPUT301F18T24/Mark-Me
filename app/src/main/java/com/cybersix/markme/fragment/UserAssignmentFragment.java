@@ -210,9 +210,11 @@ public class UserAssignmentFragment extends Fragment {
                 String code = patientCodeEdit.getText().toString();
                 String patientUsername = ESController.getUserAssignmentCode(code);
                 // now add the assigned to elastic search
-                ESController.addAssignedUser(patientUsername, currentUser.getUserId());
-                userList.add(ESController.findUser(patientUsername));
-                userListAdapter.notifyDataSetChanged();
+                if (patientUsername != null) {
+                    ESController.addAssignedUser(patientUsername, currentUser.getUserId());
+                    userList.add(ESController.findUser(patientUsername));
+                    userListAdapter.notifyDataSetChanged();
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
