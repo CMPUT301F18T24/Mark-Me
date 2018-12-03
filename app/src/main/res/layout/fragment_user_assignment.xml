@@ -58,6 +58,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/user_assignment_remove"
+            android:textColor="@android:color/holo_red_light"
             app:layout_constraintBottom_toTopOf="@+id/fragment_user_assignment_addAssignUserButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -68,12 +69,24 @@
             android:id="@+id/fragment_user_assignment_addAssignUserButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="56dp"
             android:text="@string/add_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fragment_user_assignment_GenerateCode"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_user_assignment_removeUserButton" />
+
+        <Button
+            android:id="@+id/fragment_user_assignment_GenerateCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="56dp"
+            android:text="@string/user_assignment_generateButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_user_assignment_addAssignUserButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_user_assignment_removeUserButton" />

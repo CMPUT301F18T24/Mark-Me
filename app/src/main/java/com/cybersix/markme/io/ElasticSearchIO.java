@@ -20,7 +20,9 @@ package com.cybersix.markme.io;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.Pair;
 
+import com.cybersix.markme.adapter.AssignedUserAdapter;
 import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.adapter.RecordDataAdapter;
 import com.cybersix.markme.adapter.TransferDataAdapter;
@@ -35,6 +37,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,11 +55,14 @@ import io.searchbox.core.MultiSearchResult;
 import io.searchbox.core.Search;
 import io.searchbox.params.SearchType;
 
-public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO {
+public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO, AssignmentIO {
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
     private Context context = null;
+    private static ElasticSearchIO instance = null;
+    private final String USER_ASSIGNMENT = "UserAssignment";
+    private final String TYPE_ASSIGNMENT = "AssignmentTransfer";
     private final String TYPE_TRANSFER = "transfer";
 
     protected ElasticSearchIO() {
@@ -330,6 +336,109 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return recordList;
     }
 
+    /**
+     * Gets all of the assigned users (patient) this the current user is taking are of.
+     * @param providerId The Care Provider's username
+     * @return returns the string pair of id information (patientID, providerID)
+     */
+    private List<Pair<String, String>> asyncGetAssignedUsers(String providerId) {
+        // Case does matter, and subset of usernames will not cause problems.
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"providerID\" : \"" + providerId + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(USER_ASSIGNMENT)
+                .build();
+
+        ArrayList<Pair<String, String>> assignments = new ArrayList<>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<AssignedUserAdapter> userAdapter = result.getSourceAsObjectList(AssignedUserAdapter.class);
+                for (AssignedUserAdapter assignment : userAdapter) {
+                    assignments.add(assignment.get());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return assignments;
+    }
+
+    /**
+     * Adds an assignment to the elastic search for the user to then keep track of
+     * @param patientUserName The patient that wants to be tracked
+     * @param providerID The provider that is tracking the patient
+     */
+    private void asyncAddAssignedUser(String patientUserName, String providerID){
+        Index index = new Index.Builder(new AssignedUserAdapter(patientUserName, providerID))
+                .index(INDEX)
+                .type(USER_ASSIGNMENT)
+                .build();
+        try {
+            DocumentResult result = client.execute(index);
+            // TODO: May not need this part unless we need to keep track of the assignment id
+//            if (result.isSucceeded()) {
+//                // Associate the ID with the original userModel object.
+//                user.setUserId(result.getId());
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String asyncGenerateAssignmentCode(String username) {
+        String shortcode = generateShortCode();
+        Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
+                .index(INDEX)
+                .type(TYPE_ASSIGNMENT)
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                // Return the short code
+                return shortcode;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    private List<String> asyncGetCodeAssignmentUser(String shortCode) {
+
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"shortcode\" : \"" + shortCode + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(TYPE_ASSIGNMENT)
+                .build();
+
+        ArrayList<String> usernameList = new ArrayList<>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<TransferDataAdapter> transferData = result.getSourceAsObjectList(TransferDataAdapter.class);
+                for (TransferDataAdapter t: transferData) {
+                    usernameList.add(t.getUsername());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return usernameList;
+    }
+
     private List<String> asyncTransferUser(String shortCode) {
 
         String query = "{ \"query\" : \n" +
@@ -356,8 +465,8 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
 
         return usernameList;
-
     }
+
 
     // Generates a random 5 character string.
     // Credit to:  Eugen Paraschiv, Generate Random Bounded String with Plain Java
@@ -406,6 +515,27 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         new FindUserTask().execute(username, handler);
     }
 
+    public UserModel findUser(String username) {
+        // when adding a user, a query should be done
+        // for the user's type. A factory should be used
+        // to return the correct UserModel Instance
+        final ArrayList<UserModel> users = new ArrayList<>();
+        try {
+            new FindUserTask().execute(username, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    users.addAll((ArrayList<UserModel>) result);
+                }
+            }).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (users.isEmpty())
+            return null;
+        else
+            return users.get(0);
+    }
+
     @Override
     public String transferUser(String shortCode) {
         try {
@@ -439,6 +569,70 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     @Override
     public void deleteUser(UserModel user, OnTaskComplete handler) {
 
+    }
+
+    // TODO: Add all of the functions that are to call the assignment of functions
+
+    @Override
+    public ArrayList<UserModel> getAssignedUsers(String providerID) {
+        // get all of the patient Ids based from the provider id
+        // then get all of the user models
+        // TODO: For now I am going to test just the ids of the patient and then
+        // TODO: add the functionality of showing the username information
+        ArrayList<Pair<String, String>> results = new ArrayList<>();
+        try {
+            // first string is the patient ID, the second is the provider ID
+            results = new FindAssignedUserTask().execute(providerID).get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<UserModel> resultUsers = new ArrayList<>();
+        for (Pair<String, String> resultPair: results) {
+            // we are going to get the User from each of the patient IDs
+            resultUsers.add(findUser(resultPair.first));
+        }
+        return resultUsers;
+    }
+
+    @Override
+    public void addAssignedUser(String patientUserName, String providerID) {
+        // Add the user assignment ids to the elastic search IO
+        try {
+            Pair<String, String> input = new Pair<>(patientUserName, providerID);
+            new AddAssignedUserTask().execute(input).get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeAssignedUser(String patientID, String providerID) {
+        // remove the assigned user from the elastic search database
+        // TODO: To be implemented
+        // TODO: Please note that the Delete.builder requires the assignment ID
+    }
+
+    @Override
+    public String generateAssignmentCode(String username) {
+        try {
+            return new GenerateAssignmentCodeTask().execute(username).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getUserAssignmentCode(String shortCode) {
+        try {
+            return new GetAssignmentCodeUserTask().execute(shortCode).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -540,6 +734,56 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             Boolean success = (Boolean) params[0];
             OnTaskComplete runnable = (OnTaskComplete) params[1];
             runnable.onTaskComplete(success);
+        }
+    }
+
+    /**
+     * Queries for the list of user assignments
+     */
+    private class FindAssignedUserTask extends AsyncTask<String, Void, ArrayList<Pair<String, String>>> {
+        protected ArrayList<Pair<String, String>> doInBackground(String... providerIDs) {
+            ArrayList<Pair<String, String>> ids = new ArrayList<>();
+            for (String providerID: providerIDs) {
+                ids.addAll(asyncGetAssignedUsers(providerID));
+            }
+            return ids;
+        }
+    }
+
+    private class AddAssignedUserTask extends AsyncTask<Pair<String, String>, Void, Void> {
+        protected Void doInBackground(Pair<String, String>... pairs) {
+            for (Pair<String, String> assignment: pairs) {
+                asyncAddAssignedUser(assignment.first, assignment.second);
+            }
+            return null;
+        }
+    }
+
+    private class GenerateAssignmentCodeTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            for (String username: params) {
+                String shortcode = asyncGenerateAssignmentCode(username);
+                if (shortcode.compareTo("") != 0) {
+                    return shortcode;
+                }
+            }
+            return null;
+        }
+    }
+
+    private class GetAssignmentCodeUserTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            ArrayList<String> usernames = new ArrayList<>();
+            for (String shortCode: params) {
+                usernames.addAll(asyncGetCodeAssignmentUser(shortCode));
+            }
+            if(!usernames.isEmpty()) {
+                return usernames.get(0);
+            }
+
+            return null;
         }
     }
 

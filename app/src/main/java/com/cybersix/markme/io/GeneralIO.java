@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the GeneralIO "controller" that will be used for saving offline and/or online. If the
+ * online server can't connect, then everything is saved locally and later synced.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-12-02
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.io.ElasticSearchIO
+ * @see com.cybersix.markme.io.DiskIO
+ */
 package com.cybersix.markme.io;
 
 import android.app.Activity;
