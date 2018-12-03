@@ -561,6 +561,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     public void removeAssignedUser(String patientID, String providerID) {
         // remove the assigned user from the elastic search database
         // TODO: To be implemented
+        // TODO: Please note that the Delete.builder requires the assignment ID
     }
 
     @Override
