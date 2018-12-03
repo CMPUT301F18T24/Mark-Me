@@ -85,7 +85,7 @@ public class RecordInfoFragment extends Fragment {
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText("Record Info");
+        title.setText(R.string.recorf_info);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
