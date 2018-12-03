@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the map fragment that the use has access to from the navigation bar. The user will be
+ * able to view all of the locations of the records. The user can select any of the pins within the
+ * map to view the information of the record.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-14
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.fragment.RecordInfoFragment
+ */
 package com.cybersix.markme.fragment;
 
 import android.os.Bundle;
@@ -8,7 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cybersix.markme.R;
+import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.controller.RecordController;
+import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.controller.NavigationController;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,6 +123,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public boolean onMarkerClick(final Marker marker){
         //Tag is idx of selected record
         int idx = (int) marker.getTag();
+
+        RecordModel selectedRecord = RecordController.getInstance().getAllRecords().get(idx);
+        for(int i=0; i<ProblemController.getInstance().getProblems().size(); i++){
+            ProblemModel p = ProblemController.getInstance().getProblems().get(i);
+            for(int x=0; x<p.getRecords().size(); x++){ //Find problem and record true idx
+                RecordModel r = p.getRecords().get(x);
+                if(r.equals(selectedRecord)){
+                    ProblemController.getInstance().setSelectedProblem(i); //Set new selected problem
+                    idx = x; //Change to selected problem idx
+                }
+            }
+        }
+
         Bundle b = new Bundle();
         b.putInt("MapRecordIdx", idx);
         NavigationController.getInstance().switchToFragment(RecordInfoFragment.class,b);

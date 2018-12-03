@@ -1,3 +1,17 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the map selection activity. This activity is prompted when the user wishes to view the
+ * map from the record information activity
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-14
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.fragment.MapFragment
+ */
 package com.cybersix.markme.actvity;
 
 import android.content.DialogInterface;

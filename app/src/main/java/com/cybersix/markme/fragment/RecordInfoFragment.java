@@ -71,12 +71,13 @@ public class RecordInfoFragment extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
+            // TODO: What is going on here?
             java.util.ArrayList<RecordModel> test = RecordController.getInstance().getSelectedProblemRecords();
             selectedRecord =RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
         } else {
             //We have a map record
             recordIdx = b.getInt("MapRecordIdx",-1);
-            selectedRecord = RecordController.getInstance().getAllRecords().get(recordIdx);
+            selectedRecord = RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
         }
         initAttributes();
         setListeners();
@@ -141,7 +142,7 @@ public class RecordInfoFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: Create overlays for screen and send in intent
                 Intent i = new Intent(getActivity(),LiveCameraActivity.class);
-                // getIntent().putExtra()
+                i.putExtra(LiveCameraActivity.OVERLAY_RESOURCE_ID,selectedRecord.getBodyLocation().getBodyPart().getOutlineDrawable());
                 startActivityForResult(i, REQUEST_CODE_PHOTO);
             }
         });

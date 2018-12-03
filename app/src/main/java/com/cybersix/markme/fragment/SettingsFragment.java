@@ -1,3 +1,21 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the settings fragment that the user will be able to view from the navigation bar. The
+ * user can change multiple settings from this fragment such as the account settings, language,
+ * and patient assignments. There is also credits to the creators of the application.
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-11
+ *
+ * Copyright Notice
+ * @author Vishal Patel TODO: Sorry if this is not the correct author!!
+ * @see com.cybersix.markme.fragment.UserAssignmentFragment
+ * @see com.cybersix.markme.fragment.LanguageHandlerFragment
+ * @see com.cybersix.markme.fragment.AccountSettingsFragment
+ * @see com.cybersix.markme.fragment.AboutFragment
+ */
 package com.cybersix.markme.fragment;
 
 import android.support.annotation.Nullable;

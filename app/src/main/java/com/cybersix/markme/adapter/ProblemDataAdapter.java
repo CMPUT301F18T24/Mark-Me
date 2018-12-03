@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the problem data adapter which is used within the ElasticSearchIO which adapts the
+ * queried data from the database into problem objects to be used within the application
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-19
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.io.ElasticSearchIO
+ * @see com.cybersix.markme.model.ProblemModel
+ */
 package com.cybersix.markme.adapter;
 
 import android.util.Log;

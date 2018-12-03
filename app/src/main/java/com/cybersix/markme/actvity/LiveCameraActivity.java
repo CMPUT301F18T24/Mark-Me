@@ -33,6 +33,7 @@ import java.io.IOException;
 public class LiveCameraActivity extends AppCompatActivity {
     public static final String EXTRA_IMAGE = "image";
     public static final String OVERLAY_RESOURCE_ID = "OVERLAY_RESOURCE_ID";
+    public static final int IMAGE_QUALITY = 75;
     private TextureView textureView = null;
     private View toggleViewButton = null;
     private View captureButton = null;
@@ -66,7 +67,7 @@ public class LiveCameraActivity extends AppCompatActivity {
                         Intent data = new Intent();
 
                         // Empirical result: 75% seems to be working out well.
-                        byte[] bytes = compressBitmap(bitmap, 75);
+                        byte[] bytes = compressBitmap(bitmap, IMAGE_QUALITY);
 
                         // Debug purposes. Use this for testing compression quality. Comment out
                         // everything else to avoid crashes due to bitmaps getting recycled.

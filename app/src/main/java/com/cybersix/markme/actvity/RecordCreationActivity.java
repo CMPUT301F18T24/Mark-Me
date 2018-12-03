@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the record creation activity that the user is required to fill in before the record
+ * is saved onto the cloud
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-11
+ *
+ * Copyright Notice
+ * @author Curtis Goud
+ * @see com.cybersix.markme.model.RecordModel
+ * @see com.cybersix.markme.fragment.RecordListFragment
+ */
 package com.cybersix.markme.actvity;
 
 import android.content.DialogInterface;

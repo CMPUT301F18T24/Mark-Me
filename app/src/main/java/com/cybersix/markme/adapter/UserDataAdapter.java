@@ -1,3 +1,18 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the user data adapter to be used in the ElasticSearchIO for adapting the queried user
+ * data from the database and adapt it into user object models to be used throughout the application
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-19
+ *
+ * Copyright Notice
+ * @author Rizwan Qureshi
+ * @see com.cybersix.markme.io.ElasticSearchIO
+ * @see com.cybersix.markme.model.UserModel
+ */
 package com.cybersix.markme.adapter;
 
 import android.util.Log;

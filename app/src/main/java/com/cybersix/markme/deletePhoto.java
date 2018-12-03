@@ -1,20 +1,32 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ * This is the delete photo class to delete a photo from the full gallery
+ *
+ * Version 0.1
+ *
+ * Date: 2018-11-25
+ *
+ * Copyright Notice
+ * @author Dorsa Nahid
+ * @see com.cybersix.markme.fragment.FullGalleryFragment
+ */
 package com.cybersix.markme;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.fragment.BodyFragment;
-
-import java.io.FileInputStream;
+import com.cybersix.markme.fragment.FullGalleryFragment;
 
 public class deletePhoto extends AppCompatActivity {
     public static final String PHOTO_CONTENT = "ca.cybersix.photo";
     ImageView delete_image;
+    private int position;
 
 
 
@@ -26,17 +38,8 @@ public class deletePhoto extends AppCompatActivity {
         delete_image = findViewById(R.id.imageView_delete_photo);
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-
-            Bitmap bmp = null;
-            String filename = getIntent().getStringExtra("image");
-            try {
-                FileInputStream is = this.openFileInput(filename);
-                bmp = BitmapFactory.decodeStream(is);
-                delete_image.setImageBitmap(bmp);
-                is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            position = getIntent().getIntExtra(PHOTO_CONTENT,0);
+            delete_image.setImageBitmap(FullGalleryFragment.photos.get(position).getPhoto());
 
         }
 
@@ -44,6 +47,8 @@ public class deletePhoto extends AppCompatActivity {
     }
 
     public void deleteImage(View view) {
-        NavigationController.getInstance().switchToFragment(BodyFragment.class);
+        RecordController.getInstance().getSelectedProblemRecords().get(FullGalleryFragment.photos.get(position).getProblemIndex()).removePhoto(FullGalleryFragment.photos.get(position).getPhoto());
+        NavigationController.getInstance().switchToFragment(FullGalleryFragment.class);
+        finish();
     }
 }
