@@ -329,7 +329,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return buffer.toString();
     }
 
-    public boolean asyncGenerateTransferCode(String username) {
+    public String asyncGenerateTransferCode(String username) {
         String shortcode = generateShortCode();
         Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
                 .index(INDEX)
@@ -340,13 +340,13 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             DocumentResult result = client.execute(index);
             if (result.isSucceeded()) {
                 // Return the short code
-                return true;
+                return shortcode;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return "";
     }
 
     @Override
@@ -588,9 +588,10 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private class GenerateTransferCodeTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... params) {
 
-            for (String shortCode: params) {
-                if (asyncGenerateTransferCode(shortCode)) {
-                    return shortCode;
+            for (String username: params) {
+                String shortcode = asyncGenerateTransferCode(username);
+                if (shortcode.compareTo("") != 0) {
+                    return shortcode;
                 }
             }
             return null;

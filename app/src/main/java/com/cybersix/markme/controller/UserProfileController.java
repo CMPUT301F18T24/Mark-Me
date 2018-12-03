@@ -78,6 +78,10 @@ public class UserProfileController {
         }
     }
 
+    public void setModel(UserModel model) {
+        this.model = model;
+    }
+
     public void updateRemoteModel() {
         // TODO: Update the model information on elastic search
     }
@@ -91,24 +95,27 @@ public class UserProfileController {
 
         // If adding to elastic search was successful, write the username to the password file.
         if (io.addUser(model)) {
-
-            try (FileOutputStream output = context.openFileOutput(SECURITY_FILE_NAME, Context.MODE_PRIVATE)) {
-
-                OutputStreamWriter writer = new OutputStreamWriter(output);
-                writer.write(model.getUsername());
-                writer.close();
-
-                return true; // Everything was successful.
-
-            } catch (FileNotFoundException e) {
-                Log.d("UserProfileController: ", "Failed to find file.");
-            } catch (IOException e) {
-                Log.d("UserProfileController: ", "Failed to write to file.");
-            }
-
+            return updateSecurityTokenFile(context);
         }
 
-        // And the elastic search DB.
+        return false;
+    }
+
+    public boolean updateSecurityTokenFile(Context context) {
+        try (FileOutputStream output = context.openFileOutput(SECURITY_FILE_NAME, Context.MODE_PRIVATE)) {
+
+            OutputStreamWriter writer = new OutputStreamWriter(output);
+            writer.write(model.getUsername());
+            writer.close();
+
+            return true; // Everything was successful.
+
+        } catch (FileNotFoundException e) {
+            Log.d("UserProfileController: ", "Failed to find file.");
+        } catch (IOException e) {
+            Log.d("UserProfileController: ", "Failed to write to file.");
+        }
+
         return false;
     }
 

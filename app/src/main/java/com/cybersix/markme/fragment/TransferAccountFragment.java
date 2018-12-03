@@ -25,7 +25,6 @@ public class TransferAccountFragment extends Fragment {
 
     UserModel userModel = null;
     UserProfileController userController = null;
-    private UserModel mUser = null;
     private DataModel mData = null;
 
     @Override
@@ -89,6 +88,8 @@ public class TransferAccountFragment extends Fragment {
 
         if (username != null) {
             setUser(username);
+            userController.setModel(userModel);
+            userController.updateSecurityTokenFile(this.getContext());
             toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
             Log.d("TransferAccountFragment: ", "Successful");
 
@@ -111,9 +112,10 @@ public class TransferAccountFragment extends Fragment {
     public void setUser(String username) {
         mData = DataModel.getInstance();
         if (username != null) {
-            mUser = ElasticSearchIO.getInstance().findUser(username);
-            if (mUser.getUserType().equals(Patient.class.getSimpleName()))
-                mData.setSelectedPatient((Patient) mUser);
+            userModel = ElasticSearchIO.getInstance().findUser(username);
+            ((MainActivity)getActivity()).setUser(userModel);
+            if (userModel.getUserType().equals(Patient.class.getSimpleName()))
+                mData.setSelectedPatient((Patient) userModel);
         }
     }
 
