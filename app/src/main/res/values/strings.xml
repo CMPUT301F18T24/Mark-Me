@@ -85,11 +85,15 @@
     <string name="registration_failure">Registration Failed!</string>
     <string name="transfer_account_success">Transfer Successful!</string>
     <string name="transfer_account_failure">Transfer failed.</string>
+    <string name="body_location">Body Location:</string>
     <string name="record_description">Record Description:</string>
     <string name="record_name">Record Name:</string>
     <string name="cancel">Cancel</string>
     <string name="add_record">Add Record</string>
     <string name="unlisted">Unlisted:</string>
+    <string name="total">Total:</string>
+    <string name="touch_a_location">Touch a Location</string>
+    <string name="body_location">Body Location:</string>
     <string name="description">Description</string>
     <string name="location">Location:</string>
     <string name="record_information">Record Information</string>
