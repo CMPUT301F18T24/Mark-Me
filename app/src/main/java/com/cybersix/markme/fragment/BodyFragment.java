@@ -145,13 +145,6 @@ public class BodyFragment extends Fragment {
         bodyView = (ImageView) getActivity().findViewById(R.id.fragment_body_bodyView);
         bodyConstraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.bodyConstraintLayout);
 
-
-        if(problemController.getSelectedProblem() == null){
-            //Send to problem view
-            NavigationController.getInstance().setSelectedItem(R.id.list);
-
-        }
-
     }
 
     @Override
@@ -162,20 +155,27 @@ public class BodyFragment extends Fragment {
         problemController = ProblemController.getInstance();
         initAttributes();
         setListeners();
-        ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
-                // Assistance with drawing POST measurement
-                bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setBodyImage();
-                drawRecords();
-                totalText.setText("Total: " + Integer.toString(listedCount));
-                notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
+        if(problemController.getSelectedProblem() == null){
+            //Send to problem view
+            NavigationController.getInstance().setSelectedItem(R.id.list);
 
-            }
-        });
+        } else {
+            ViewTreeObserver vto = bodyConstraintLayout.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
+                    // Assistance with drawing POST measurement
+                    bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    setBodyImage();
+                    drawRecords();
+                    totalText.setText("Total: " + Integer.toString(listedCount));
+                    notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
+
+                }
+            });
+        }
+
 
     }
 
