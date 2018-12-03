@@ -44,7 +44,6 @@ public class RecordInfoFragment extends Fragment {
     private EditText recordTitleEdit;
     private EditText editTextDescription;
     private EditText editTextComment;
-    private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private Button buttonSave;
     private Button viewLocation;
@@ -72,9 +71,7 @@ public class RecordInfoFragment extends Fragment {
         recordIdx = b.getInt(RecordListFragment.EXTRA_RECORD_INDEX,-1);
         //We have a selected problem record
         if(recordIdx >= 0){
-            // TODO: What is going on here?
-            java.util.ArrayList<RecordModel> test = RecordController.getInstance().getSelectedProblemRecords();
-            selectedRecord =RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
+            selectedRecord = RecordController.getInstance().getSelectedProblemRecords().get(recordIdx);
         } else {
             //We have a map record
             recordIdx = b.getInt("MapRecordIdx",-1);
@@ -102,7 +99,6 @@ public class RecordInfoFragment extends Fragment {
         viewLocation = getActivity().findViewById(R.id.buttonViewLocation);
         viewPhotos = getActivity().findViewById(R.id.buttonViewPhotos);
         bodyLocationSpinner = getActivity().findViewById(R.id.bodyLocationSpinner);
-        textViewComment = getActivity().findViewById(R.id.commentTextView);
         editTextComment = getActivity().findViewById(R.id.editTextComment);
         //TODO: Test this here && Reactivate this check during integration
         if(((MainActivity) getActivity()).getUser().getUserType() == "CareProvider"){

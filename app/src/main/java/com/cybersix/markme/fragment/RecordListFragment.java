@@ -73,6 +73,7 @@ public class RecordListFragment extends ListFragment {
 
         getTitle().setVisibility(View.VISIBLE);
         getDetails().setVisibility(View.VISIBLE);
+        getAddButton().setVisibility(View.INVISIBLE);
         getActivity().findViewById(R.id.fragment_list_bodyImage).setVisibility(View.GONE);
         if(selectedPart == null){
             recordsToDisplay = recordController.getSelectedProblemRecords();
@@ -141,16 +142,14 @@ public class RecordListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
-                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
+                int recordIndex = 0;
+                for(int i =0; i<recordController.getSelectedProblemRecords().size(); i++){
+                    if(recordController.getSelectedProblemRecords().get(i).equals(recordsToDisplay.get(position))){
+                        recordIndex = i;
+                    }
+                }
+                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, recordIndex);
                 NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
-            }
-        });
-
-        getAddButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: What if we want to add a record with using the body?
-
             }
         });
     }
@@ -160,12 +159,6 @@ public class RecordListFragment extends ListFragment {
         super.onStart();
         update();
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        update();
-//    }
 
     private void update() {
         // this function will update the records to display onto the list everytime the fragemnent
