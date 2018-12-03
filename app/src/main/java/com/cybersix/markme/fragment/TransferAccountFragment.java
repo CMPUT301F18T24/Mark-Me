@@ -91,8 +91,8 @@ public class TransferAccountFragment extends Fragment {
         Toast toast;
 
         if (username != null) {
-            setUser(username);
             userController.setModel(userModel);
+            ((MainActivity) getActivity()).setUser(username);
             userController.updateSecurityTokenFile(this.getContext());
             toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
             Log.d("TransferAccountFragment: ", "Successful");
@@ -111,24 +111,6 @@ public class TransferAccountFragment extends Fragment {
         // Assumption: User is logged in.
         TextView transferCodeDisplay = getActivity().findViewById(R.id.fragment_transfer_account_transferCodeGenerateText);
         transferCodeDisplay.setText(userController.generateTransferCode());
-    }
-
-    public void setUser(String username) {
-        mData = DataModel.getInstance();
-        if (username != null) {
-            GeneralIO.getInstance().findUser(username, new OnTaskComplete() {
-                @Override
-                public void onTaskComplete(Object result) {
-                    ArrayList<UserModel> users = (ArrayList<UserModel>) result;
-                    if (users.isEmpty())
-                        return;
-                    userModel = users.get(0);
-                    ((MainActivity)getActivity()).setUser(userModel);
-                    if (userModel.getUserType().equals(Patient.class.getSimpleName()))
-                        mData.setSelectedPatient((Patient) userModel);
-                }
-            });
-        }
     }
 
     @Override
