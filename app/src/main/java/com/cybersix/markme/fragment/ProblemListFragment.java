@@ -134,6 +134,7 @@ public class ProblemListFragment extends ListFragment {
                 ShowHist.clear();
                 ShowHist.addAll(readHistory());
                 adapter.notifyDataSetChanged();
+                //searchProblems();
             }
         });
 
@@ -144,7 +145,7 @@ public class ProblemListFragment extends ListFragment {
             }
         });
 
-//         we are going to set the listener for the list view
+        // we are going to set the listener for the list view
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,8 +153,6 @@ public class ProblemListFragment extends ListFragment {
                 controllerInstance.setSelectedProblem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXTRA_PROBLEM_INDEX, position);
-                // TODO: for now the resulting activity will show preset data but the later version
-                // TODO: will show the records related to the problem
                 NavigationController.getInstance()
                         .switchToFragment(RecordListFragment.class, bundle);
 
@@ -180,6 +179,39 @@ public class ProblemListFragment extends ListFragment {
             );
         }
     }
+
+//    // Searches with the specified term but it does not handle updates to the data.
+//    // Browsing back to this fragment will reset the search.
+//    // Also doesn't do multiple searches well.
+//    public void searchProblems() {
+//
+//        // Get the search term
+//        String term = getSearchField().getText().toString().trim().toLowerCase();
+//        ArrayList<ProblemModel> searchedProblems = new ArrayList<>();
+//
+//        Log.d("vishal_search", term);
+//
+//        // Only perform searching if something was given in search term.
+//        if (term.compareTo("") != 0) {
+//            // Iterate through all records to see if we should display them.
+//            // TODO: If enough time, partial match.
+//            for (ProblemModel record : problToDisplay) {
+//                if (record.getTitle().trim().toLowerCase().compareTo(term) == 0) {
+//                    searchedRecords.add(record);
+//                }
+//            }
+//
+//            // Add only the searched records.
+//            recordsToDisplay = new ArrayList<RecordModel>();
+//            recordsToDisplay.addAll(searchedRecords);
+//
+//            // Update the display
+//            recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+//            getListView().setAdapter(recordListAdapter);
+//            recordListAdapter.notifyDataSetChanged();
+//        }
+//
+//    }
 
     public void update(String title, String description) {
         ProblemController instance = ProblemController.getInstance();

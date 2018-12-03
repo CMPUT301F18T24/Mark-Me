@@ -17,9 +17,11 @@
 package com.cybersix.markme.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
@@ -87,6 +89,13 @@ public class RecordListFragment extends ListFragment {
 
             }
         });
+
+        getSearchButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchRecords();
+            }
+        });
     }
 
     @Override
@@ -101,8 +110,44 @@ public class RecordListFragment extends ListFragment {
 //        update();
 //    }
 
+    // Searches with the specified term but it does not handle updates to the data.
+    // Browsing back to this fragment will reset the search.
+    // Also doesn't do multiple searches well.
+    public void searchRecords() {
+
+        // Make sure we have the full list
+        update();
+
+        // Get the search term
+        String term = getSearchField().getText().toString().trim().toLowerCase();
+        ArrayList<RecordModel> searchedRecords = new ArrayList<>();
+
+        Log.d("vishal_search", term);
+
+        // Only perform searching if something was given in search term.
+        if (term.compareTo("") != 0) {
+            // Iterate through all records to see if we should display them.
+            // TODO: If enough time, partial match.
+            for (RecordModel record : recordsToDisplay) {
+                if (record.getTitle().trim().toLowerCase().compareTo(term) == 0) {
+                    searchedRecords.add(record);
+                }
+            }
+
+            // Add only the searched records.
+            recordsToDisplay = new ArrayList<RecordModel>();
+            recordsToDisplay.addAll(searchedRecords);
+
+            // Update the display
+            recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+            getListView().setAdapter(recordListAdapter);
+            recordListAdapter.notifyDataSetChanged();
+        }
+
+    }
+
     private void update() {
-        // this function will update the records to display onto the list everytime the fragemnent
+        // this function will update the records to display onto the list everytime the fragment
         // is called
         // set the adapter for the list activity
         recordsToDisplay = new ArrayList<RecordModel>();
