@@ -22,4 +22,6 @@ public interface AssignmentIO {
     ArrayList<UserModel> getAssignedUsers(String provider);
     void addAssignedUser(String patientID, String providerID);
     void removeAssignedUser(String patientID, String providerID);
+    String generateAssignmentCode(String username);
+    String getUserAssignmentCode(String shortcode);
 }

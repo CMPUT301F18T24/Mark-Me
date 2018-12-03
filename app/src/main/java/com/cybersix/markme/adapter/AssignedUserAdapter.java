@@ -25,16 +25,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AssignedUserAdapter {
-    private String patientID = null;
+    private String patientUserName = null;
     private String providerID = null;
 
-    public AssignedUserAdapter(String patientUserID, String careProviderID) {
+    public AssignedUserAdapter(String patientName, String careProviderID) {
         // Add the care provider username and the patient username
-        patientID = patientUserID;
+        patientUserName = patientName;
         providerID = careProviderID;
     }
 
     public Pair<String, String> get() {
-        return new Pair<String, String>(patientID, providerID);
+        return new Pair<String, String>(patientUserName, providerID);
     }
 }

@@ -14,6 +14,8 @@ package com.cybersix.markme.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -61,6 +63,7 @@ public class UserAssignmentFragment extends Fragment {
         // set up all of the buttons that are used within this activity
         Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
         Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
+        Button generateButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_GenerateCode);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
         currentUser = ((MainActivity) getActivity()).getUser();
 
@@ -84,6 +87,14 @@ public class UserAssignmentFragment extends Fragment {
                 // ask for a popup whether or not the user wishes to continue
 
                 removeUser();
+            }
+        });
+
+        generateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // generate the code and show it in a dialog popup
+                generateAssignmentCode();
             }
         });
 
@@ -179,19 +190,11 @@ public class UserAssignmentFragment extends Fragment {
                 // TODO: get the patient ID from the server based from the code.
                 // String patientID = getPatientID();
                 // for now the patient ID is hard coded
-                String patientID = patientCodeEdit.getText().toString();
+                String code = patientCodeEdit.getText().toString();
+                String patientUsername = ESController.getUserAssignmentCode(code);
                 // now add the assigned to elastic search
-                ESController.addAssignedUser(patientID, currentUser.getUserId());
-                // for now just add the empty user model to the list until we can get the real ones
-                UserModel temp = new UserModel();
-                temp.setUserId(patientID);
-                try {
-                    temp.setUsername(patientID);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-                userList.add(temp);
+                ESController.addAssignedUser(patientUsername, currentUser.getUserId());
+                userList.add(ESController.findUser(patientUsername));
                 userListAdapter.notifyDataSetChanged();
             }
         });
@@ -200,6 +203,25 @@ public class UserAssignmentFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
                 return;
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void generateAssignmentCode() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Generate Assignment Code");
+        String code = ESController.generateAssignmentCode(currentUser.getUsername());
+        builder.setMessage("Please send and notify the care provider the code that has been generated.\n" +
+        "Assignment code: " + code);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+                return;
+
             }
         });
         AlertDialog dialog = builder.create();

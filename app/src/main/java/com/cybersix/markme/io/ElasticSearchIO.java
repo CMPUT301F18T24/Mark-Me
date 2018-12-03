@@ -50,7 +50,8 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
-    private final String USER_ASSIGNMENT = "AssignedUsers";
+    private final String USER_ASSIGNMENT = "UserAssignment";
+    private final String TYPE_ASSIGNMENT = "AssignmentTransfer";
     private final String TYPE_TRANSFER = "transfer";
 
     private ElasticSearchIO() {
@@ -316,6 +317,77 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return assignments;
     }
 
+    /**
+     * Adds an assignment to the elastic search for the user to then keep track of
+     * @param patientUserName The patient that wants to be tracked
+     * @param providerID The provider that is tracking the patient
+     */
+    private void asyncAddAssignedUser(String patientUserName, String providerID){
+        Index index = new Index.Builder(new AssignedUserAdapter(patientUserName, providerID))
+                .index(INDEX)
+                .type(USER_ASSIGNMENT)
+                .build();
+        try {
+            DocumentResult result = client.execute(index);
+            // TODO: May not need this part unless we need to keep track of the assignment id
+//            if (result.isSucceeded()) {
+//                // Associate the ID with the original userModel object.
+//                user.setUserId(result.getId());
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String asyncGenerateAssignmentCode(String username) {
+        String shortcode = generateShortCode();
+        Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
+                .index(INDEX)
+                .type(TYPE_ASSIGNMENT)
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                // Return the short code
+                return shortcode;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    private List<String> asyncGetCodeAssignmentUser(String shortCode) {
+
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"shortcode\" : \"" + shortCode + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(TYPE_ASSIGNMENT)
+                .build();
+
+        ArrayList<String> usernameList = new ArrayList<>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<TransferDataAdapter> transferData = result.getSourceAsObjectList(TransferDataAdapter.class);
+                for (TransferDataAdapter t: transferData) {
+                    usernameList.add(t.getUsername());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return usernameList;
+    }
+
     private List<String> asyncTransferUser(String shortCode) {
 
         String query = "{ \"query\" : \n" +
@@ -344,28 +416,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return usernameList;
     }
 
-    /**
-     * Adds an assignment to the elastic search for the user to then keep track of
-     * @param patientID The patient that wants to be tracked
-     * @param providerID The provider that is tracking the patient
-     */
-    private void asyncAddAssignedUser(String patientID, String providerID){
-        Index index = new Index.Builder(new AssignedUserAdapter(patientID, providerID))
-                .index(INDEX)
-                .type(USER_ASSIGNMENT)
-                .build();
-        try {
-            DocumentResult result = client.execute(index);
-            // TODO: May not need this part unless we need to keep track of the assignment id
-//            if (result.isSucceeded()) {
-//                // Associate the ID with the original userModel object.
-//                user.setUserId(result.getId());
-//            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     // Generates a random 5 character string.
     // Credit to:  Eugen Paraschiv, Generate Random Bounded String with Plain Java
@@ -485,30 +535,20 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        try {
-            ArrayList<UserModel> resultUsers = new ArrayList<>();
-            for (Pair<String, String> resultPair: results) {
-                UserModel tempUser = new UserModel(resultPair.first);
-                tempUser.setUserId(resultPair.first);
-                tempUser.setUsername("ES" + resultPair.first);
-                resultUsers.add(tempUser);
-            }
-            return resultUsers;
-        }
-        catch (Exception e) {
-            // this is for the exception of the username to long exception
-            e.printStackTrace();
-        }
 
-
-        return null;
+        ArrayList<UserModel> resultUsers = new ArrayList<>();
+        for (Pair<String, String> resultPair: results) {
+            // we are going to get the User from each of the patient IDs
+            resultUsers.add(findUser(resultPair.first));
+        }
+        return resultUsers;
     }
 
     @Override
-    public void addAssignedUser(String patientID, String providerID) {
+    public void addAssignedUser(String patientUserName, String providerID) {
         // Add the user assignment ids to the elastic search IO
         try {
-            Pair<String, String> input = new Pair<>(patientID, providerID);
+            Pair<String, String> input = new Pair<>(patientUserName, providerID);
             new AddAssignedUserTask().execute(input).get();
         }
         catch (InterruptedException | ExecutionException e) {
@@ -520,6 +560,26 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     public void removeAssignedUser(String patientID, String providerID) {
         // remove the assigned user from the elastic search database
         // TODO: To be implemented
+    }
+
+    @Override
+    public String generateAssignmentCode(String username) {
+        try {
+            return new GenerateAssignmentCodeTask().execute(username).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getUserAssignmentCode(String shortCode) {
+        try {
+            return new GetAssignmentCodeUserTask().execute(shortCode).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -622,6 +682,34 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             for (Pair<String, String> assignment: pairs) {
                 asyncAddAssignedUser(assignment.first, assignment.second);
             }
+            return null;
+        }
+    }
+
+    private class GenerateAssignmentCodeTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            for (String username: params) {
+                String shortcode = asyncGenerateAssignmentCode(username);
+                if (shortcode.compareTo("") != 0) {
+                    return shortcode;
+                }
+            }
+            return null;
+        }
+    }
+
+    private class GetAssignmentCodeUserTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            ArrayList<String> usernames = new ArrayList<>();
+            for (String shortCode: params) {
+                usernames.addAll(asyncGetCodeAssignmentUser(shortCode));
+            }
+            if(!usernames.isEmpty()) {
+                return usernames.get(0);
+            }
+
             return null;
         }
     }
