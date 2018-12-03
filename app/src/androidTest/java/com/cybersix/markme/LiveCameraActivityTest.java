@@ -32,6 +32,9 @@ public class LiveCameraActivityTest {
      * Sending to Google's issue tracker.
      */
 
+    /*
+        Use case: 10,15
+     */
     @Test
     public void testCameraDeviceToggle() {
         CameraPreview cameraPreview = mActivityRule.getActivity().getCameraPreview();
@@ -49,7 +52,7 @@ public class LiveCameraActivityTest {
     }
 
     /*
-        Use Cases: 15
+        Use Cases: 15, 28
      */
     @Test
     public void testPhotoIsTaken() {
@@ -63,6 +66,9 @@ public class LiveCameraActivityTest {
         assertNotNull(bitmap); // successfully able to decode back into a bitmap image
     }
 
+    /*
+        Use cases: 10
+     */
     @Test
     public void testOverlayDisplayed() {
         Intent intent = new Intent();
@@ -72,13 +78,5 @@ public class LiveCameraActivityTest {
         onView(withId(R.id.overlayView))
                 .check(matches(isDisplayed()));
 
-        Drawable realDrawable = camera.getResources().getDrawable(R.drawable.body_upright);
-        Bitmap realBitmap = Bitmap.createBitmap(realDrawable.getIntrinsicWidth(), realDrawable.getIntrinsicHeight(), Bitmap.Config.ALPHA_8);
-
-        Drawable overlayDrawable = camera.getOverlayView().getDrawable();
-        Bitmap overlayBitmap = Bitmap.createBitmap(overlayDrawable.getIntrinsicWidth(), overlayDrawable.getIntrinsicHeight(), Bitmap.Config.ALPHA_8);
-
-        assertTrue(realBitmap.getByteCount() == overlayBitmap.getByteCount());
-        assertTrue(0.75 == camera.getOverlayView().getAlpha());
     }
 }
