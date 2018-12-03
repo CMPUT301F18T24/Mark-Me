@@ -145,5 +145,12 @@
             android:textAlignment="textStart"
             android:textColor="@android:color/background_light" />
 
+        <ImageView
+            android:id="@+id/fragment_list_searchMoreButton"
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_action_name" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

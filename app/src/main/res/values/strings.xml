@@ -85,4 +85,7 @@
     <string name="registration_failure">Registration Failed!</string>
     <string name="transfer_account_success">Transfer Successful!</string>
     <string name="transfer_account_failure">Transfer failed.</string>
+    <string name="enter_filters_prompt">Enter the filters you want to use below:</string>
+    <string name="enter_terms_prompt">Enter search terms:</string>
+    <string name="enter_bodyLocations_prompt">Select a body location:</string>
 </resources>

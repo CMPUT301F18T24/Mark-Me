@@ -31,6 +31,7 @@ public class ListFragment extends Fragment {
     private TextView mTitle = null;
     private TextView mDetails = null;
     private View mSearchButton = null;
+    private View mSearchMoreButton = null;
     private View mReturnButton = null;
     private View mAddButton = null;
     private AutoCompleteTextView mSearchField = null;
@@ -53,6 +54,7 @@ public class ListFragment extends Fragment {
         mSearchField = getActivity().findViewById(R.id.fragment_list_seachField);
         mListView = getActivity().findViewById(R.id.fragment_list_mainListView);
         mSearchButton = getActivity().findViewById(R.id.fragment_list_searchIcon);
+        mSearchMoreButton = getActivity().findViewById(R.id.fragment_list_searchMoreButton);
     }
 
     public TextView getTitle() {
@@ -82,6 +84,8 @@ public class ListFragment extends Fragment {
     public View getSearchButton() {
         return mSearchButton;
     }
+
+    public View getSearchMoreButton() { return mSearchMoreButton; }
 
 
     @Override

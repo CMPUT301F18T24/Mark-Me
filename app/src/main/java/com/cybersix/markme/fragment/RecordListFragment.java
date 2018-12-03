@@ -161,6 +161,7 @@ public class RecordListFragment extends ListFragment {
                 searchRecords();
             }
         });
+
     }
 
     @Override
