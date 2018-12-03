@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.EBodyPart;
@@ -63,9 +64,12 @@ public class RecordCreationActivity extends AppCompatActivity {
                 String desc = recordAddDescText.getText().toString();
                 BodyLocation bl = new BodyLocation(selectedPart);
                 RecordModel record = recordController.createNewRecord(title,desc,null,null,bl);
-                // problemController.getSelectedProblem().addRecord(record); Jose: Moved this segment
-                //                                                           into the recordControllor function
-                newRecordAlert();
+
+                if(title.length() > 0){
+                    newRecordAlert();
+                } else {
+                    Toast.makeText(RecordCreationActivity.this, "Title is too short", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
