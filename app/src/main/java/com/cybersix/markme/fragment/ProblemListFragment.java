@@ -61,6 +61,7 @@ public class ProblemListFragment extends ListFragment {
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
+    private ArrayList<ProblemModel> problemsToDisplay = new ArrayList<>();
     private List<String> ShowHist;
     private ArrayAdapter<String> adapter;
 
@@ -173,10 +174,9 @@ public class ProblemListFragment extends ListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
-            update(
-                    intent.getStringExtra(ProblemCreationActivity.EXTRA_TITLE),
-                    intent.getStringExtra(ProblemCreationActivity.EXTRA_DESCRIPTION)
-            );
+            controllerInstance.createNewProblem(intent.getStringExtra(ProblemCreationActivity.EXTRA_TITLE),
+                                      intent.getStringExtra(ProblemCreationActivity.EXTRA_DESCRIPTION));
+            updateUI();
         }
     }
 
@@ -213,10 +213,12 @@ public class ProblemListFragment extends ListFragment {
 //
 //    }
 
-    public void update(String title, String description) {
-        ProblemController instance = ProblemController.getInstance();
-        instance.createNewProblem(title, description);
-//        controllerInstance.loadProblemData();
+    public void updateUI() {
+
+        problemsToDisplay = new ArrayList<ProblemModel>();
+        problemsToDisplay.addAll(controllerInstance.getProblems());
+        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, problemsToDisplay);
+        getListView().setAdapter(problemListAdapter);
         problemListAdapter.notifyDataSetChanged();
     }
 }
