@@ -39,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     UserObserver userObserver = null;
     UserProfileController userController = null;
 
+    // Create the Handler object (on the main thread by default)
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         userModel = new UserModel();
         userController = new UserProfileController(userModel);
         userObserver = new UserObserver(userController);
+        handler = new Handler();
 
         initUI();
         checkLogin();
@@ -66,9 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                 userController.setUsername(data.getStringExtra(SignupActivity.EXTRA_USERNAME));
 
                 // Display the spinner
-                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-
                 // And the offline button
+                TextView loginAssurance = (TextView) findViewById(R.id.activity_login_assurance);
+                loginAssurance.setVisibility(View.VISIBLE);
+
                 Button signInOfflineButton = (Button) findViewById(R.id.signinAnwaysButton);
                 signInOfflineButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -84,8 +89,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Create the Handler object (on the main thread by default)
-    Handler handler = new Handler();
     // Define the code block to be executed
     Runnable runnableCode = new Runnable() {
         @Override
@@ -98,6 +101,12 @@ public class LoginActivity extends AppCompatActivity {
             handler.postDelayed(runnableCode, 2000);
         }
     };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacksAndMessages(null);
+    }
 
     // Initializes onClick listeners for UI elements.
     public void initUI() {
@@ -132,16 +141,10 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void checkLogin() {
 
-        // Display spinner
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-
         // If we got exactly one username returned.
         if (userController.userExists(this.getApplicationContext())) {
             launchMain();
         }
-
-        // Remove spinner
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
     }
 

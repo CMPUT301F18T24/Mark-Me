@@ -86,4 +86,5 @@
     <string name="transfer_account_success">Transfer Successful!</string>
     <string name="transfer_account_failure">Transfer failed.</string>
     <string name="signup_anways_prompt">Sign In Offline</string>
+    <string name="logging_in_assurance">Logging you in...</string>
 </resources>
