@@ -85,6 +85,8 @@
     <string name="registration_failure">Échec de l\'enregistrement!</string>
     <string name="transfer_account_success">Transfert réussi!</string>
     <string name="transfer_account_failure">Le transfert a échoué.</string>
+    <string name="signup_anways_prompt">Se connecter hors ligne</string>
+    <string name="logging_in_assurance">Vous connecter à ...</string>
     <string name="record_description">Description de l\'enregistrement:</string>
     <string name="record_name">Nom de l\'enregistrement</string>
     <string name="cancel">Annuler</string>
