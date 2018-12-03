@@ -135,7 +135,7 @@ public class ProblemListFragment extends ListFragment {
                 ShowHist.clear();
                 ShowHist.addAll(readHistory());
                 adapter.notifyDataSetChanged();
-                //searchProblems();
+                searchProblems();
             }
         });
 
@@ -180,38 +180,40 @@ public class ProblemListFragment extends ListFragment {
         }
     }
 
-//    // Searches with the specified term but it does not handle updates to the data.
-//    // Browsing back to this fragment will reset the search.
-//    // Also doesn't do multiple searches well.
-//    public void searchProblems() {
-//
-//        // Get the search term
-//        String term = getSearchField().getText().toString().trim().toLowerCase();
-//        ArrayList<ProblemModel> searchedProblems = new ArrayList<>();
-//
-//        Log.d("vishal_search", term);
-//
-//        // Only perform searching if something was given in search term.
-//        if (term.compareTo("") != 0) {
-//            // Iterate through all records to see if we should display them.
-//            // TODO: If enough time, partial match.
-//            for (ProblemModel record : problToDisplay) {
-//                if (record.getTitle().trim().toLowerCase().compareTo(term) == 0) {
-//                    searchedRecords.add(record);
-//                }
-//            }
-//
-//            // Add only the searched records.
-//            recordsToDisplay = new ArrayList<RecordModel>();
-//            recordsToDisplay.addAll(searchedRecords);
-//
-//            // Update the display
-//            recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
-//            getListView().setAdapter(recordListAdapter);
-//            recordListAdapter.notifyDataSetChanged();
-//        }
-//
-//    }
+    // Searches with the specified term but it does not handle updates to the data.
+    // Browsing back to this fragment will reset the search.
+    // Also doesn't do multiple searches well.
+    public void searchProblems() {
+
+        // Start off fresh.
+        updateUI();
+
+        // Get the search term
+        String term = getSearchField().getText().toString().trim().toLowerCase();
+        ArrayList<ProblemModel> searchedProblems = new ArrayList<>();
+
+        Log.d("vishal_search", term);
+
+        // Only perform searching if something was given in search term.
+        if (term.compareTo("") != 0) {
+            // Iterate through all records to see if we should display them.
+            for (ProblemModel problem : problemsToDisplay) {
+                if (problem.getTitle().trim().toLowerCase().contains(term)) {
+                    searchedProblems.add(problem);
+                }
+            }
+
+            // Add only the searched records.
+            problemsToDisplay = new ArrayList<ProblemModel>();
+            problemsToDisplay.addAll(searchedProblems);
+
+            // Update the display
+            problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, problemsToDisplay);
+            getListView().setAdapter(problemListAdapter);
+            problemListAdapter.notifyDataSetChanged();
+        }
+
+    }
 
     public void updateUI() {
 

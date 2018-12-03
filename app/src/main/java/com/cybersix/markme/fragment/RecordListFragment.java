@@ -79,6 +79,7 @@ public class RecordListFragment extends ListFragment {
                 Bundle b = new Bundle();
                 b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
                 NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
+                
             }
         });
 
@@ -126,10 +127,9 @@ public class RecordListFragment extends ListFragment {
 
         // Only perform searching if something was given in search term.
         if (term.compareTo("") != 0) {
-            // Iterate through all records to see if we should display them.
-            // TODO: If enough time, partial match.
+            // Iterate through all records and check if the title contains a substring of search term.
             for (RecordModel record : recordsToDisplay) {
-                if (record.getTitle().trim().toLowerCase().compareTo(term) == 0) {
+                if (record.getTitle().trim().toLowerCase().contains(term)) {
                     searchedRecords.add(record);
                 }
             }
