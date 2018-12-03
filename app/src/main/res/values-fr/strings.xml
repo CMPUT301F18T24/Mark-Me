@@ -98,4 +98,13 @@
     <string name="comment">Commentaire</string>
     <string name="view_photos">Voir les photos</string>
     <string name="add_photo">Ajouter une photo</string>
+    <string name="body_location">Emplacement du corps</string>
+    <string name="About_mark_me">Sur MarkMe</string>
+    <string name="total_frag_name">Total:</string>
+    <string name="unlisted_frag_name">Non répertorié:</string>
+    <string name="list_of_prob">Liste de problèmes</string>
+    <string name="recorf_info">Enregistrer des informations</string>
+    <string name="assign_myself">M\'assigne</string>
+
+
 </resources>

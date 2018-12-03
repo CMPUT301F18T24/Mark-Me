@@ -57,7 +57,7 @@ public class SettingsFragment extends Fragment {
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText("Settings");
+        title.setText(R.string.title_settings);
         returnButton.setVisibility(View.GONE);
 
         mLanguageButton.setOnClickListener(new View.OnClickListener() {

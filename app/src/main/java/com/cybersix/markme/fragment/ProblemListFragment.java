@@ -110,7 +110,7 @@ public class ProblemListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getTitle().setText("List of Problems");
+        getTitle().setText(R.string.list_of_prob);
 
 
         ShowHist = new ArrayList<String>(readHistory());

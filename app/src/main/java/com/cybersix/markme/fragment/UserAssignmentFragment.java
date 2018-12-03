@@ -87,7 +87,7 @@ public class UserAssignmentFragment extends Fragment {
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText("Assign Myself");
+        title.setText(R.string.assign_myself);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

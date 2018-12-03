@@ -69,7 +69,7 @@ public class TransferAccountFragment extends Fragment {
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText("Transfer Account");
+        title.setText(R.string.transfer_account_text);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

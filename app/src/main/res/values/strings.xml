@@ -98,4 +98,12 @@
     <string name="comment">Comment</string>
     <string name="view_photos">View Photos</string>
     <string name="add_photo">Add Photo</string>
+    <string name="body_location">Body Location</string>
+    <string name="About_mark_me">About MarkMe</string>
+    <string name="total_frag_name">Total:</string>
+    <string name="unlisted_frag_name">Unlisted:</string>
+    <string name="list_of_prob">List of Problems</string>
+    <string name="recorf_info">Record Info</string>
+    <string name="assign_myself">Assign Myself</string>
+
 </resources>
