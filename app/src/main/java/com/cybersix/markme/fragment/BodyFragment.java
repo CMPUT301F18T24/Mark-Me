@@ -37,8 +37,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cybersix.markme.actvity.LiveCameraActivity;
+import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.model.EBodyPart;
+import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
@@ -167,7 +169,7 @@ public class BodyFragment extends Fragment {
                 //https://stackoverflow.com/questions/7733813/how-can-you-tell-when-a-layout-has-been-drawn
                 // Assistance with drawing POST measurement
                 bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
+                setBodyImage();
                 drawRecords();
                 totalText.setText("Total: " + Integer.toString(listedCount));
                 notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
@@ -274,6 +276,7 @@ public class BodyFragment extends Fragment {
 
     private void reverse(){
         frontFacing = !frontFacing;
+        setBodyImage();
         drawRecords();
         //TODO: swap back/front image
     }
@@ -308,6 +311,8 @@ public class BodyFragment extends Fragment {
             bodyConstraintLayout.removeView(v);
         }
         drawnViews.clear();
+        listedCount = 0;
+        unlistedCount = 0;
         for(EBodyPart bp: recordParts.keySet()){
             if(bp != EBodyPart.UNLISTED){
                 listedCount += recordParts.get(bp).size();
@@ -349,6 +354,11 @@ public class BodyFragment extends Fragment {
 
     private void addNewBodyPhotos(){
         // TODO: Create overlays for screen and send in intent
+        UserModel user = ((MainActivity) getActivity()).getUser();
+        if(user.getPhotoFront() != null && user.getPhotoBack() != null){
+            user.setPhotoFront(null); //wipe pics for new ones
+            user.setPhotoBack(null);
+        }
         Intent i = new Intent(getActivity(),LiveCameraActivity.class);
         i.putExtra(LiveCameraActivity.OVERLAY_RESOURCE_ID,R.drawable.body_upright);
         startActivityForResult(i, REQUEST_CODE_PHOTO);
@@ -372,6 +382,17 @@ public class BodyFragment extends Fragment {
 
     }
 
+    private void setBodyImage(){
+        UserModel user = ((MainActivity) getActivity()).getUser();
+        if(user.getPhotoFront() != null && user.getPhotoBack() != null) {
+            if (frontFacing) {
+                bodyImageView.setImageBitmap(user.getPhotoFront());
+            } else {
+                bodyImageView.setImageBitmap(user.getPhotoBack());
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_RECORD_INFO && resultCode == RESULT_OK){
@@ -380,15 +401,19 @@ public class BodyFragment extends Fragment {
             b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
             NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
         } else if(requestCode == REQUEST_CODE_PHOTO && resultCode == RESULT_OK){
-            //Bundle b = new Bundle();
-            //int index = data.getIntExtra(RecordListFragment.EXTRA_RECORD_INDEX, 0);
-            //b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, index);
-            //NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
             //TODO: Implement body location saving AND implement flow for front/back photo
             byte[] photo = data.getByteArrayExtra("image");
             Bitmap photoMap = BitmapFactory.decodeByteArray(photo,0, photo.length);
-            bodyImageView.setImageBitmap(photoMap);
-            Log.d("Returned from cam", "Ret");
+            UserModel user = ((MainActivity) getActivity()).getUser();
+            if(user.getPhotoFront() == null){ //This triggers one time per cycle to take the back photo
+                //This is challenging due to the async return from the activity
+                user.setPhotoFront(photoMap);
+                addNewBodyPhotos();
+            }else {
+                user.setPhotoBack(photoMap);
+                setBodyImage();
+                Log.d("Returned from cam", "Ret");
+            }
         }
     }
 

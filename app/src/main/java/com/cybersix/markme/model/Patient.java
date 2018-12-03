@@ -16,6 +16,8 @@
  */
 package com.cybersix.markme.model;
 
+import android.graphics.Bitmap;
+
 import com.cybersix.markme.model.CareProvider;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.UserModel;
@@ -28,6 +30,7 @@ public class Patient extends UserModel {
     private ArrayList<ProblemModel> problems;
     private ArrayList<CareProvider> providers;
 
+
     public Patient() {
 
     }
@@ -38,6 +41,7 @@ public class Patient extends UserModel {
         problems = new ArrayList<ProblemModel>();
         providers = new ArrayList<CareProvider>();
     }
+
 
     public void addProblem(ProblemModel problem){
         problems.add(problem);

@@ -1,3 +1,16 @@
+/**
+ * CMPUT 301 Team 24
+ *
+ *
+ * Todo: Fill in this comment.
+ *
+ * Version 1.0
+ *
+ * Date: 2018-11-29
+ *
+ * Copyright Notice
+ * @author ...
+ */
 package com.cybersix.markme.observer;
 
 import android.view.View;

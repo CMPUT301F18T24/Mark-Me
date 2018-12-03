@@ -76,7 +76,7 @@ public class DataModel {
 
     public void setSelectedPatient(Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
-
+        Log.d("vishal_data", this.selectedPatient.getUsername());
         this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
     }
 
@@ -206,6 +206,15 @@ public class DataModel {
         }
 
         io.addRecord(record);
+    }
+
+    public void addSelectedProblemRecordLabel(String label, int idx){
+        selectedProblem.getRecord(idx).setLabel(label);
+    }
+
+
+    public String getSelectedProblemRecordLabel(int idx){
+        return selectedProblem.getRecord(idx).getLabel();
     }
 
     public void saveRecordChanges(String title, String desc, String comment, BodyLocation bl, int idx){

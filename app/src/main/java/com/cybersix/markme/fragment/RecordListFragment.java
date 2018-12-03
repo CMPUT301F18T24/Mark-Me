@@ -16,11 +16,10 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cybersix.markme.R;
@@ -30,6 +29,8 @@ import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.controller.RecordController;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -63,13 +64,70 @@ public class RecordListFragment extends ListFragment {
             }
         });
 
+        getTitle().setVisibility(View.VISIBLE);
+        getDetails().setVisibility(View.VISIBLE);
+        getAddButton().setVisibility(View.INVISIBLE);
+        getActivity().findViewById(R.id.fragment_list_bodyImage).setVisibility(View.GONE);
         if(selectedPart == null){
             recordsToDisplay = recordController.getSelectedProblemRecords();
         } else {
+            //Below vars are for displaying the picture to label
+            boolean photoExists = false;
+            int photoIdx = 0;
+            int i = 0;
             for(RecordModel r:recordController.getSelectedProblemRecords()){
                 if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
                     recordsToDisplay.add(r);
+                    if(!photoExists && r.getPhotos() != null && r.getPhotos().size() > 0){
+                        photoExists = true;
+                        photoIdx = i;
+                    }
                 }
+                i++;
+            }
+            if(photoExists){
+                final int idx = photoIdx;
+                getTitle().setVisibility(View.GONE);
+                getDetails().setText(recordController.getSelectedProblemRecords().get(photoIdx).getLabel());
+                ImageView img = getActivity().findViewById(R.id.fragment_list_bodyImage);
+                img.setVisibility(View.VISIBLE);
+                Bitmap b = recordController.getSelectedProblemRecords().get(photoIdx).getPhotos().get(0);
+                img.setImageBitmap(b);
+                img.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Please enter a label");
+
+                        // Set up the input
+                        final EditText input = new EditText(getActivity());
+                        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                        builder.setView(input);
+
+                        // Set up the buttons
+                        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO: Save to server/pull from server
+                                String label = input.getText().toString();
+                                getDetails().setVisibility(View.VISIBLE);
+                                getDetails().setText(label);
+                                RecordController.getInstance().addSelectedProblemRecordLabel(label,idx);
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+                        return true;
+                    }
+                });
             }
         }
 
@@ -77,24 +135,15 @@ public class RecordListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
-                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, position);
+                int recordIndex = 0;
+                for(int i =0; i<recordController.getSelectedProblemRecords().size(); i++){
+                    if(recordController.getSelectedProblemRecords().get(i).equals(recordsToDisplay.get(position))){
+                        recordIndex = i;
+                    }
+                }
+                b.putInt(RecordListFragment.EXTRA_RECORD_INDEX, recordIndex);
                 NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
-                
-            }
-        });
 
-        getAddButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: What if we want to add a record with using the body?
-
-            }
-        });
-
-        getSearchButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchRecords();
             }
         });
     }

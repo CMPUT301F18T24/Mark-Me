@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.actvity.MapSelectActivity;
@@ -43,7 +44,6 @@ public class RecordInfoFragment extends Fragment {
     private EditText recordTitleEdit;
     private EditText editTextDescription;
     private EditText editTextComment;
-    private TextView textViewComment;
     private Spinner bodyLocationSpinner;
     private Button buttonSave;
     private Button viewLocation;
@@ -81,14 +81,6 @@ public class RecordInfoFragment extends Fragment {
         setListeners();
     }
 
-
-    // record activity will be linked with the photo gallery and being able to add photos, but the
-    // user should be able to view all of the information
-
-    // TODO: the "feebackButton" view is only visible to the care provider. Make sure there is
-    // TODO: Add picture, Add Location
-    //       a case for checking who the user is
-
     private void initAttributes(){
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
@@ -107,15 +99,13 @@ public class RecordInfoFragment extends Fragment {
         viewLocation = getActivity().findViewById(R.id.buttonViewLocation);
         viewPhotos = getActivity().findViewById(R.id.buttonViewPhotos);
         bodyLocationSpinner = getActivity().findViewById(R.id.bodyLocationSpinner);
-        textViewComment = getActivity().findViewById(R.id.commentTextView);
         editTextComment = getActivity().findViewById(R.id.editTextComment);
-        /*TODO: Test this here && Reactivate this check during integration
-        if(UserProfileController.getmInstance().user.getmUserType().toLowerCase() == "care_provider"){
+        //TODO: Test this here && Reactivate this check during integration
+        if(((MainActivity) getActivity()).getUser().getUserType() == "CareProvider"){
             editTextComment.setEnabled(true);
         } else {
             editTextComment.setEnabled(false);
         }
-        */
         buttonSave = getActivity().findViewById(R.id.buttonSaveChanges);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
