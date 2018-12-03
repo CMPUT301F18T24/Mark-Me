@@ -76,7 +76,6 @@ public class DataModel {
 
     public void setSelectedPatient(Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
-        Log.d("vishal_data", this.selectedPatient.getUsername());
         this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
     }
 
