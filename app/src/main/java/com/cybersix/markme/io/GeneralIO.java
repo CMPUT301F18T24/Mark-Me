@@ -39,6 +39,11 @@ import java.util.Iterator;
 
 public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
     private DiskIO diskIO = null;
+
+    public ElasticSearchIO getElasticSearchIO() {
+        return elasticSearchIO;
+    }
+
     private ElasticSearchIO elasticSearchIO = null;
     private static GeneralIO instance = null;
     private Boolean offlineMode = false;
