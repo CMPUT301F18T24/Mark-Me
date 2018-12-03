@@ -14,9 +14,12 @@
  */
 package com.cybersix.markme.model;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.TimeZone;
 
@@ -28,6 +31,7 @@ public class ProblemModel extends Observable {
     private String description;
     private Date started;
     private String patientId;
+    private Runnable onRecordChanged = null;
 
     @JestId
     private String problemId;
@@ -165,6 +169,7 @@ public class ProblemModel extends Observable {
      * @param rs
      */
     public void addRecords(ArrayList<RecordModel> rs) {
+
         if(records == null){
             records = new ArrayList<RecordModel>();
         }
@@ -231,7 +236,18 @@ public class ProblemModel extends Observable {
      * @param records
      */
     public void setRecords(ArrayList<RecordModel> records) {
+        Log.i("setRecords", "setting record");
         this.records = records;
+        onRecordChanged();
+    }
+
+    public void onRecordChanged() {
+        if (onRecordChanged != null)
+            onRecordChanged.run();
+    }
+
+    public void setOnRecordChanged(Runnable runnable) {
+        onRecordChanged = runnable;
     }
 
     /**
@@ -243,6 +259,23 @@ public class ProblemModel extends Observable {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
         return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProblemModel that = (ProblemModel) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(started, that.started) &&
+                Objects.equals(patientId, that.patientId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(title, description, started, patientId);
     }
 
     /**

@@ -25,14 +25,17 @@ import com.cybersix.markme.model.UserModel.UsernameTooShortException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Patient extends UserModel {
     private ArrayList<ProblemModel> problems;
     private ArrayList<CareProvider> providers;
+    private Runnable onProblemsChanged = null;
 
 
     public Patient() {
-
+        problems = new ArrayList<ProblemModel>();
+        providers = new ArrayList<CareProvider>();
     }
 
     public Patient(String username) throws UsernameTooShortException {
@@ -51,8 +54,18 @@ public class Patient extends UserModel {
         notifyObservers();
     }
 
+    public void onProblemsChanged() {
+        if (onProblemsChanged != null)
+            onProblemsChanged.run();
+    }
+
+    public void setOnProblemsChanged(Runnable runnable) {
+        onProblemsChanged = runnable;
+    }
+
     public void setProblems(ArrayList<ProblemModel> problems) {
         this.problems = problems;
+        onProblemsChanged();
     }
 
     public ArrayList<ProblemModel> getProblems() {

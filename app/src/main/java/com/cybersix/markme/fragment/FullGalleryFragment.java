@@ -15,6 +15,7 @@
 package com.cybersix.markme.fragment;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -70,22 +71,27 @@ public class FullGalleryFragment extends Fragment {
             }
 
             for (int i = 0; i < size; i++) {
-                    photos.add(new GalleryItemModel(problemIndex,RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(i)));
+                byte[] photo = RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(i);
+                photos.add(new GalleryItemModel(
+                        problemIndex,
+                        BitmapFactory.decodeByteArray(photo, 0, photo.length)
+                ));
+            }
+        } else if (ProblemController.getInstance().getSelectedProblem() != null) {
+            if (RecordController.getInstance().getSelectedProblemRecords() == null) {
+                size = 0;
+            } else {
+                size = RecordController.getInstance().getSelectedProblemRecords().size();
             }
 
-        }else{
-            if(ProblemController.getInstance().getSelectedProblem()!=null) {
-                if (RecordController.getInstance().getSelectedProblemRecords() == null) {
-                    size = 0;
-                } else {
-                    size = RecordController.getInstance().getSelectedProblemRecords().size();
-                }
-
-                for (int i = 0; i < size; i++) {
-                    int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
-                    for (int j = 0; j < recordSize; j++) {
-                        photos.add(new GalleryItemModel(i, RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j)));
-                    }
+            for (int i = 0; i < size; i++) {
+                int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
+                for (int j = 0; j < recordSize; j++) {
+                    byte[] photo = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(i);
+                    photos.add(new GalleryItemModel(
+                            i,
+                            BitmapFactory.decodeByteArray(photo, 0, photo.length)
+                    ));
                 }
             }
         }
@@ -121,4 +127,6 @@ public class FullGalleryFragment extends Fragment {
 
         return view;
     }
+
 }
+

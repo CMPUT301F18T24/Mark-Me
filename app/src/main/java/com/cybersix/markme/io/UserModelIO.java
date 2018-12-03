@@ -17,10 +17,10 @@ package com.cybersix.markme.io;
 import com.cybersix.markme.model.UserModel;
 
 public interface UserModelIO {
-    UserModel findUser(String username);
-    boolean addUser(UserModel user);
-    boolean deleteUser(UserModel user);
-    void editUser(UserModel user);
+    void findUser(String username, OnTaskComplete handler);
+    void addUser(UserModel user, OnTaskComplete handler);
+    void deleteUser(UserModel user, OnTaskComplete handler);
+    void editUser(UserModel user, OnTaskComplete handler);
     String transferUser(String shortCode);
     String generateTransferCode(String username);
 }

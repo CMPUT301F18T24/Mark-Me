@@ -121,7 +121,6 @@ public class LoginActivityTest {
                 .beginTransaction()
                 .replace(R.id.fragment_layout,g)
                 .commitAllowingStateLoss();
-
     }
 }
 

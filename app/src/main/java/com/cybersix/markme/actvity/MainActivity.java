@@ -15,27 +15,37 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
-import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
     public static String EXTRA_CURRENT_USERNAME = "COM_CYBERSIX_MARKME_CURRENT_USERNAME";
     private NavigationController mNavigationController = null;
     private UserModel mUser = null;
     private DataModel mData = null;
+    private GeneralIO mIO = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mIO = GeneralIO.getInstance();
+        mIO.setContext(this);
+        mData = DataModel.getInstance();
+
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        setUser(username);
+        setUser(username, GeneralIO.emptyHandler);
+
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
     }
@@ -49,22 +59,38 @@ public class MainActivity extends FragmentActivity {
     public NavigationController getNavigationController() {
         return mNavigationController;
     }
-
     public UserModel getUser() {
         return mUser;
     }
-
     public void setUser(UserModel user) {
         mUser = user;
     }
 
-    public void setUser(String username) {
-        mData = DataModel.getInstance();
-        if (username != null) {
-            Log.i("SetUser", username);
-            mUser = ElasticSearchIO.getInstance().findUser(username);
-            if (mUser.getUserType().equals(Patient.class.getSimpleName()))
-                mData.setSelectedPatient((Patient) mUser);
+    OnTaskComplete onFoundUser = new OnTaskComplete() {
+        @Override
+        public void onTaskComplete(Object result) {
+            ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+            if (!users.isEmpty()) {
+                mUser = users.get(0);
+                if (mUser.getUserType().equals(Patient.class.getSimpleName())) {
+                    mIO.getEverythingForPatient(mUser);
+                    refresh();
+                }
+            }
         }
+    };
+
+    public void refresh() {
+        mData.setSelectedPatient((Patient) mUser);
+    }
+
+    public void setUser(String username, final OnTaskComplete handler) {
+        mIO.findUser(username, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                onFoundUser.onTaskComplete(result);
+                handler.onTaskComplete(result);
+            }
+        });
     }
 }

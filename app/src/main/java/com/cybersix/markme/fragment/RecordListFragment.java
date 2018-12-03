@@ -18,6 +18,7 @@ package com.cybersix.markme.fragment;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -26,12 +27,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cybersix.markme.R;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
+import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.EBodyPart;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
@@ -98,7 +98,8 @@ public class RecordListFragment extends ListFragment {
                 getDetails().setText(recordController.getSelectedProblemRecords().get(photoIdx).getLabel());
                 ImageView img = getActivity().findViewById(R.id.fragment_list_bodyImage);
                 img.setVisibility(View.VISIBLE);
-                Bitmap b = recordController.getSelectedProblemRecords().get(photoIdx).getPhotos().get(0);
+                byte[] photo = recordController.getSelectedProblemRecords().get(photoIdx).getPhotos().get(0);
+                Bitmap b = BitmapFactory.decodeByteArray(photo, 0, photo.length);
                 img.setImageBitmap(b);
                 img.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -152,30 +153,35 @@ public class RecordListFragment extends ListFragment {
                 NavigationController.getInstance().switchToFragment(RecordInfoFragment.class, b);
             }
         });
+
+         DataModel.getInstance().setOnRecordReady(update);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        update();
+    public void onResume() {
+        super.onResume();
+//        update.run();
     }
 
-    private void update() {
-        // this function will update the records to display onto the list everytime the fragemnent
-        // is called
-        // set the adapter for the list activity
-        recordsToDisplay = new ArrayList<RecordModel>();
-        if(selectedPart == null){
-            recordsToDisplay = recordController.getSelectedProblemRecords();
-        } else {
-            for(RecordModel r:recordController.getSelectedProblemRecords()){
-                if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
-                    recordsToDisplay.add(r);
+    private Runnable update = new Runnable() {
+        @Override
+        public void run() {
+            // this function will update the records to display onto the list everytime the fragemnent
+            // is called
+            // set the adapter for the list activity
+            recordsToDisplay = new ArrayList<RecordModel>();
+            if(selectedPart == null){
+                recordsToDisplay = recordController.getSelectedProblemRecords();
+            } else {
+                for(RecordModel r:recordController.getSelectedProblemRecords()){
+                    if(r.getBodyLocation().getBodyPart().equals(selectedPart)){
+                        recordsToDisplay.add(r);
+                    }
                 }
             }
+            recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
+            getListView().setAdapter(recordListAdapter);
+            recordListAdapter.notifyDataSetChanged();
         }
-        recordListAdapter = new ArrayAdapter<RecordModel>(getActivity(), R.layout.list_item, recordsToDisplay);
-        getListView().setAdapter(recordListAdapter);
-        recordListAdapter.notifyDataSetChanged();
-    }
+    };
 }

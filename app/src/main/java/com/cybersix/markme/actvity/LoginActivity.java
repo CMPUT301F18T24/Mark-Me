@@ -13,21 +13,24 @@
  */
 package com.cybersix.markme.actvity;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 import com.cybersix.markme.observer.UserObserver;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     UserModel userModel = null;
@@ -43,9 +46,10 @@ public class LoginActivity extends AppCompatActivity {
         userModel = new UserModel();
         userController = new UserProfileController(userModel);
         userObserver = new UserObserver(userController);
+        GeneralIO.getInstance().setContext(this);
 
         initUI();
-        checkLogin();
+        onLogin();
     }
 
     // Initializes onClick listeners for UI elements.
@@ -70,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Immediately try to login. There is a race condition with a slow server. Implement
         // fix that queries the server until the account is setup.
-        checkLogin();
+        onLogin();
     }
 
     // Checks the provided login information against the UserModel.
@@ -78,16 +82,17 @@ public class LoginActivity extends AppCompatActivity {
     // If info is not valid, it displays a error message.
     // Assumes that the user model has been loaded with user info.
     // Inputs: Reads the userText and passText.
-    public void checkLogin() {
+    public void onLogin() {
         // If we got exactly one username returned.
-        if (userController.userExists(this.getApplicationContext())) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
-            startActivity(intent);
-            finish();
-        } else { // Let user know they have to create an account.
-            // TODO: Display login buttons, replace spinner.
-        }
+        userController.userExists(this.getApplicationContext(), new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 }

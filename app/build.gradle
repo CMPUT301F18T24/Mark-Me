@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        animationsDisabled = true
+    }
     buildToolsVersion '28.0.3'
 }
 
@@ -31,6 +34,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.jayway.android.robotium:robotium:5.6.3'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
     implementation 'com.google.android.gms:play-services-maps:16.0.0'

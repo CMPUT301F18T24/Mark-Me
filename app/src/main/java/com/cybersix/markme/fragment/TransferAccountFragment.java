@@ -17,9 +17,13 @@ import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class TransferAccountFragment extends Fragment {
 
@@ -84,22 +88,22 @@ public class TransferAccountFragment extends Fragment {
         // If not, print error.
         TextView transferAccountCode = getActivity().findViewById(R.id.fragment_transfer_account_transferAccountText);
         String username = userController.transferAccount(transferAccountCode.getText().toString());
-        Toast toast;
-
-        if (username != null) {
-            setUser(username);
-            userController.setModel(userModel);
-            userController.updateSecurityTokenFile(this.getContext());
-            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
-            Log.d("TransferAccountFragment: ", "Successful");
-
-        } else {
-            // Toast that nothing happens
-            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_failure), Toast.LENGTH_SHORT);
-        }
-
-        toast.show();
-
+        ((MainActivity) getActivity()).setUser(username, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+                Toast toast;
+                if (!users.isEmpty()) {
+                    userController.setModel(users.get(0));
+                    userController.updateSecurityTokenFile(getActivity());
+                    toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
+                    Log.d("TransferAccountFragment: ", "Successful");
+                } else  {
+                    toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_failure), Toast.LENGTH_SHORT);
+                }
+                toast.show();
+            }
+        });
     }
 
     public void generateCode() {
@@ -107,16 +111,6 @@ public class TransferAccountFragment extends Fragment {
         // Assumption: User is logged in.
         TextView transferCodeDisplay = getActivity().findViewById(R.id.fragment_transfer_account_transferCodeGenerateText);
         transferCodeDisplay.setText(userController.generateTransferCode());
-    }
-
-    public void setUser(String username) {
-        mData = DataModel.getInstance();
-        if (username != null) {
-            userModel = ElasticSearchIO.getInstance().findUser(username);
-            ((MainActivity)getActivity()).setUser(userModel);
-            if (userModel.getUserType().equals(Patient.class.getSimpleName()))
-                mData.setSelectedPatient((Patient) userModel);
-        }
     }
 
     @Override

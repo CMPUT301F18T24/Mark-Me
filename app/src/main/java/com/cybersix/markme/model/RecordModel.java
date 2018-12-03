@@ -34,8 +34,8 @@ public class RecordModel extends Observable {
     private String description;
     private Date timestamp;
     private String comment;
+    private ArrayList<byte[]> photos;
     private String photoLabel = "";
-    private ArrayList<Bitmap> photos;
     private BodyLocation bodyLocation;
     private LatLng mapLocation;
 
@@ -72,7 +72,7 @@ public class RecordModel extends Observable {
      * @param desc
      */
     public RecordModel(String title, String desc){
-        photos = new ArrayList<Bitmap>(10);
+        photos = new ArrayList<byte[]>(10);
         this.title = title;
         this.description = desc;
         this.bodyLocation = new BodyLocation(EBodyPart.UNLISTED); //By default unlisted
@@ -159,12 +159,11 @@ public class RecordModel extends Observable {
 
         photo.compress(Bitmap.CompressFormat.JPEG, LiveCameraActivity.IMAGE_QUALITY, out);
         byte[] bytes = out.toByteArray();
-        Log.d("vishal_record", Integer.toString(bytes.length));
 
         if(bytes.length > 64000){ throw new PhotoTooLargeException(); }
 
         if(photos.size()<10){
-            photos.add(photo);
+            photos.add(bytes);
         }
         else{ throw new TooManyPhotosException(); }
     }
@@ -173,7 +172,7 @@ public class RecordModel extends Observable {
      * get an array of photos
      * @return
      */
-    public ArrayList<Bitmap> getPhotos() {
+    public ArrayList<byte[]> getPhotos() {
         return photos;
     }
 

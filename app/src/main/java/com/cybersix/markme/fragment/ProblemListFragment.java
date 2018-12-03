@@ -18,23 +18,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.cybersix.markme.R;
-import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.actvity.ProblemCreationActivity;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.ProblemController;
-import com.cybersix.markme.fragment.ListFragment;
-import com.cybersix.markme.io.ElasticSearchIO;
 import com.cybersix.markme.model.DataModel;
-import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
-import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,10 +53,19 @@ public class ProblemListFragment extends ListFragment {
 
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
-    private ProblemController controllerInstance = ProblemController.getInstance();
     private List<String> ShowHist;
     private ArrayAdapter<String> adapter;
-
+    private Runnable onDataModelReady = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                problemListAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
+                getListView().setAdapter(problemListAdapter);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     private void saveHistory(String string){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
@@ -149,7 +151,7 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                controllerInstance.setSelectedProblem(position);
+                ProblemController.getInstance().setSelectedProblem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXTRA_PROBLEM_INDEX, position);
                 NavigationController.getInstance()
@@ -160,8 +162,13 @@ public class ProblemListFragment extends ListFragment {
 
         });
 
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
-        getListView().setAdapter(problemListAdapter);
+        if (DataModel.getInstance().getSelectedPatient() == null) {
+            DataModel.getInstance().setOnProblemsReady(onDataModelReady);
+            Log.i("ProblemListFragment", "null");
+        } else {
+            onDataModelReady.run();
+            Log.i("ProblemListFragment", "not null");
+        }
     }
 
     @Override
@@ -183,6 +190,7 @@ public class ProblemListFragment extends ListFragment {
         ProblemController instance = ProblemController.getInstance();
         instance.createNewProblem(title, description);
 //        controllerInstance.loadProblemData();
-        problemListAdapter.notifyDataSetChanged();
+        if (problemListAdapter != null)
+            problemListAdapter.notifyDataSetChanged();
     }
 }

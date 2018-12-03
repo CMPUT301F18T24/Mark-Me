@@ -28,6 +28,7 @@ import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.model.UserModel;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -40,6 +41,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.fail;
+import static org.hamcrest.CoreMatchers.anything;
 
 
 public class RecordActivityTest {
@@ -48,7 +50,7 @@ public class RecordActivityTest {
 
     @Rule
     public IntentsTestRule<MainActivity> mainActivityTestRule =
-            new IntentsTestRule<>(MainActivity.class);
+            new IntentsTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setup(){
@@ -77,7 +79,6 @@ public class RecordActivityTest {
     */
     @Test
     public void testViewRecordInfo(){
-
         Bundle p = new Bundle();
         p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
         Fragment g = new RecordInfoFragment();
@@ -155,5 +156,4 @@ public class RecordActivityTest {
         onView(withId(R.id.buttonViewPhotos)).perform(scrollTo());
         onView(withId(R.id.buttonViewPhotos)).perform(click());
     }
-
 }

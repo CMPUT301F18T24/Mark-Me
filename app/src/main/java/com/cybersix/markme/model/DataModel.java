@@ -19,7 +19,8 @@ package com.cybersix.markme.model;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -27,9 +28,19 @@ import java.util.Date;
 
 public class DataModel {
     private static DataModel instance = null;
-    private Patient selectedPatient;
-    private ProblemModel selectedProblem;
-    private ElasticSearchIO io = ElasticSearchIO.getInstance();
+    private Patient selectedPatient = null;
+    private ProblemModel selectedProblem = null;
+    private GeneralIO io = GeneralIO.getInstance();
+    public static final Runnable emptyRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
+
+    private Runnable onProblemsReady = emptyRunnable;
+
+    private Runnable onRecordReady = emptyRunnable;
 
     private DataModel(){
 
@@ -44,8 +55,15 @@ public class DataModel {
 
     public void setSelectedProblem(int index){
         selectedProblem = selectedPatient.getProblems().get(index);
+        selectedProblem.setOnRecordChanged(onRecordReady);
+    }
 
-        selectedProblem.setRecords( io.getRecords(selectedProblem) );
+    public void setOnRecordReady(Runnable onRecordReady) {
+        this.onRecordReady = onRecordReady;
+        if (selectedProblem != null) {
+            selectedProblem.setOnRecordChanged(onRecordReady);
+            onRecordReady.run();
+        }
     }
 
     public ProblemModel getSelectedProblem(){
@@ -61,7 +79,7 @@ public class DataModel {
             // add the problem to the list of problems
             selectedPatient.addProblem(newProblem);
             // also add it to the server
-            io.addProblem(newProblem);
+            io.addProblem(newProblem, GeneralIO.emptyHandler);
         }
         catch (Exception e) {
             // display an error that the problem has too long of a getTitle
@@ -74,10 +92,19 @@ public class DataModel {
         return selectedPatient;
     }
 
-    public void setSelectedPatient(Patient selectedPatient) {
+    public void setSelectedPatient(final Patient selectedPatient) {
         this.selectedPatient = selectedPatient;
-        Log.d("vishal_data", this.selectedPatient.getUsername());
-        this.selectedPatient.setProblems( io.getProblems(this.selectedPatient) );
+        this.selectedPatient.setOnProblemsChanged(onProblemsReady);
+        if (onProblemsReady != null)
+            onProblemsReady.run();
+    }
+
+    public void setOnProblemsReady(Runnable onProblemsReady) {
+        this.onProblemsReady = onProblemsReady;
+        if (this.selectedPatient != null) {
+            this.selectedPatient.setOnProblemsChanged(onProblemsReady);
+            onProblemsReady.run();
+        }
     }
 
     public void editProblem(int index, String newTitle, String newDescription) {
@@ -98,31 +125,19 @@ public class DataModel {
         }
     }
 
-    public void loadProblemData(){
-        // TODO: test this works
-//        UserProfileController userInstance = UserProfileController();
-        try {
-//            instance.problems = new ElasticSearchIOController.GetProblemTask().execute(userInstance.user.getUserId()).get();
-            for(ProblemModel p: selectedPatient.getProblems()){
-                ArrayList<RecordModel> rm = p.getRecords();
-                p.addRecords(rm);
-            }
-            Log.d("Jose-Problems", "The system successfully got problems from userID: "); //+
-//                    userInstance.user.getUserId());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<RecordModel> getSelectedProblemRecords(){
-        return selectedProblem.getRecords();
+        try {
+            return selectedProblem.getRecords();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     public void addSelectedProblemRecordPhoto(Bitmap b, int idx){
         try{
             selectedProblem.getRecord(idx).addPhoto(b);
-            io.addRecord(selectedProblem.getRecord(idx));
+            io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
         } catch (RecordModel.TooManyPhotosException e){
             Log.d("Warning", "Too many photos. Photo not added");
         } catch (RecordModel.PhotoTooLargeException e){
@@ -161,10 +176,8 @@ public class DataModel {
 
         // finally add the record to the record list
         // instance.records.add(record); dont need this since we just update the selected problem
-        instance.selectedProblem.addRecord(record);
-        io.addRecord( record );
-//        new ElasticSearchIOController.AddRecordTask().execute(ProblemController.getInstance().getSelectedProblem());
-        Log.d("Jose_CreateRecord", "Record successfully created");
+        selectedProblem.addRecord(record);
+        io.addRecord(record, GeneralIO.emptyHandler);
         return record;
     }
 
@@ -197,15 +210,13 @@ public class DataModel {
             }
             // we are done. Display a complete message
             // TODO: implement a complete message for now put it in the log
-            Log.d("Jose_EditRecord","Successfully edited record");
         }
         catch (Exception e) {
             // display an error for the description
             String message = e.getMessage();
-            Log.d("Jose_EditRecord", message);
         }
 
-        io.addRecord(record);
+        io.addRecord(record, GeneralIO.emptyHandler);
     }
 
     public void addSelectedProblemRecordLabel(String label, int idx){
@@ -222,14 +233,12 @@ public class DataModel {
         selectedProblem.getRecord(idx).setDescription(desc);
         selectedProblem.getRecord(idx).setBodyLocation(bl);
         selectedProblem.getRecord(idx).setComment(comment);
-
-        io.addRecord(selectedProblem.getRecord(idx));
+        io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
     }
 
     public void addRecordLocation(LatLng loc, int idx){
         selectedProblem.getRecord(idx).setMapLocation(loc);
-        Log.i("AddRecordLocation", "MapLocation Added");
-        io.addRecord(selectedProblem.getRecord(idx));
+        io.addRecord(selectedProblem.getRecord(idx), GeneralIO.emptyHandler);
     }
 
     public ArrayList<RecordModel> getAllRecords() {

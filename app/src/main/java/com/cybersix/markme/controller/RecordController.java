@@ -36,7 +36,7 @@ public class RecordController {
     }
 
     // Lazy construction of instance.
-    public static synchronized RecordController getInstance() {
+    public static RecordController getInstance() {
         if (instance == null) {
             instance = new RecordController();
             //loadFakeData();

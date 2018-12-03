@@ -73,7 +73,7 @@ public class NavigationController {
      * @param activity
      * @return the singleton instance
      */
-    public static synchronized NavigationController getInstance(MainActivity activity) {
+    public static NavigationController getInstance(MainActivity activity) {
         if (mNavigationController == null)
             mNavigationController = new NavigationController(
                     activity.getSupportFragmentManager(),

@@ -17,6 +17,7 @@
  */
 package com.cybersix.markme.io;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
@@ -26,6 +27,7 @@ import com.cybersix.markme.adapter.ProblemDataAdapter;
 import com.cybersix.markme.adapter.RecordDataAdapter;
 import com.cybersix.markme.adapter.TransferDataAdapter;
 import com.cybersix.markme.adapter.UserDataAdapter;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.ProblemModel;
 import com.cybersix.markme.model.RecordModel;
 import com.cybersix.markme.model.UserModel;
@@ -35,39 +37,36 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
-import io.searchbox.core.Delete;
+import io.searchbox.core.Bulk;
+import io.searchbox.core.BulkResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
+import io.searchbox.core.MultiSearch;
+import io.searchbox.core.MultiSearchResult;
 import io.searchbox.core.Search;
+import io.searchbox.params.SearchType;
 
 public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModelIO, AssignmentIO {
-    private static ElasticSearchIO instance = null;
     private JestDroidClient client = null;
     private final String INDEX = "cmput301f18t24test2";
     private final String URI = "http://cmput301.softwareprocess.es:8080/";
+    private Context context = null;
+    private static ElasticSearchIO instance = null;
     private final String USER_ASSIGNMENT = "UserAssignment";
     private final String TYPE_ASSIGNMENT = "AssignmentTransfer";
     private final String TYPE_TRANSFER = "transfer";
 
-    private ElasticSearchIO() {
+    protected ElasticSearchIO() {
         setClient();
-    }
-
-    public static ElasticSearchIO getInstance() {
-        if (instance == null)
-            instance = new ElasticSearchIO();
-
-        return instance;
-    }
-
-    public boolean isConnected() {
-        return true;
     }
 
     /**
@@ -76,7 +75,8 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     public void setClient() {
         if (client == null) {
             DroidClientConfig config = new DroidClientConfig
-                    .Builder(URI).build();
+                    .Builder(URI)
+                    .build();
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
@@ -91,16 +91,18 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      */
     private List<UserModel> asyncFindUser(String username) {
         // Case does matter, and subset of usernames will not cause problems.
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"username\" : \"" + username + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"username\": \"" + username + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(UserModel.class.getSimpleName())
                 .build();
 
-        ArrayList<UserModel> users = new ArrayList<UserModel>();
+        ArrayList<UserModel> users = new ArrayList<>();
 
         try {
             JestResult result = client.execute(search);
@@ -117,7 +119,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return users;
     }
 
-    private void asyncAddProblem(ProblemModel problem) {
+    private boolean asyncAddProblem(ProblemModel problem) {
         Index index = new Index.Builder(new ProblemDataAdapter(problem))
                 .index(INDEX)
                 .type(problem.getClass().getSimpleName())
@@ -128,10 +130,46 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 problem.setProblemId(result.getId());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    private boolean asyncBulkAddPatient(Patient patient) {
+        Bulk.Builder bulkBuilder = new Bulk.Builder()
+                .defaultIndex(INDEX)
+                .defaultType(ProblemModel.class.getSimpleName());
+
+        for (ProblemModel problem: patient.getProblems()) {
+            problem.setPatientId(patient.getUserId());
+            bulkBuilder.addAction(
+                    new Index.Builder(new ProblemDataAdapter(problem))
+                    .index(INDEX)
+                    .type(problem.getClass().getSimpleName())
+                    .build()
+            );
+            for (RecordModel record: problem.getRecords()) {
+                bulkBuilder.addAction(
+                        new Index.Builder(new RecordDataAdapter(record))
+                                .index(INDEX)
+                                .type(record.getClass().getSimpleName())
+                                .build()
+                );
+            }
+        }
+
+        try {
+            BulkResult result = client.execute(bulkBuilder.build());
+            Log.i("ELASTICSEARCHIO", "" + result.isSucceeded());
+            if (result.isSucceeded()) {
+            }
+            return true;
+        } catch (IOException e) {
+        }
+        return false;
     }
 
     /**
@@ -141,9 +179,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(UserModel user) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"patientId\" : \"" + user.getUserId() + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"patientId\": \"" + user.getUserId() + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -173,9 +213,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
      * @return All problems for the given userID.
      */
     private List<ProblemModel> asyncGetProblems(String problemId) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"problemId\" : \"" + problemId + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"problemId\": \"" + problemId + "\"}\t\n" +
+                "\t}\n" +
+                "}";
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
                 .addType(ProblemModel.class.getSimpleName())
@@ -197,7 +239,7 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return problems;
     }
 
-    private void asyncAddRecord(RecordModel record) {
+    private boolean asyncAddRecord(RecordModel record) {
         Index index = new Index.Builder(new RecordDataAdapter(record))
                 .index(INDEX)
                 .type(record.getClass().getSimpleName())
@@ -208,13 +250,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 record.setRecordId(result.getId());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    private void asyncAddUser(UserModel user) {
+    private boolean asyncAddUser(UserModel user) {
         Index index = new Index.Builder(new UserDataAdapter(user))
                 .index(INDEX)
                 .type(UserModel.class.getSimpleName())
@@ -225,17 +269,21 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             if (result.isSucceeded()) {
                 // Associate the ID with the original userModel object.
                 user.setUserId(result.getId());
+                return true;
             }
             Log.d("vishal_addUser", user.getUsername() + " " + result.isSucceeded());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     private List<RecordModel> asyncGetRecords(ProblemModel problem) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"problemId\" : \"" + problem.getProblemId() + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"problemId\": \"" + problem.getProblemId() + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -260,9 +308,11 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     private List<RecordModel> asyncGetRecords(String recordId) {
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"recordId\" : \"" + recordId + "\" }}}";
+        String query = "{\"from\" : 0, \"size\" : 10000,\n" +
+                "\t\"query\" : {\n" +
+                "\t\t\"match\": {\"recordId\": \"" + recordId + "\"}\t\n" +
+                "\t}\n" +
+                "}";
 
         Search search = new Search.Builder(query)
                 .addIndex(INDEX)
@@ -458,36 +508,32 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
+    public void findUser(String username, OnTaskComplete handler) {
+        // when adding a user, a query should be done
+        // for the user's type. A factory should be used
+        // to return the correct UserModel Instance
+        new FindUserTask().execute(username, handler);
+    }
+
     public UserModel findUser(String username) {
         // when adding a user, a query should be done
         // for the user's type. A factory should be used
         // to return the correct UserModel Instance
+        final ArrayList<UserModel> users = new ArrayList<>();
         try {
-            ArrayList<UserModel> users = new FindUserTask().execute(username).get();
-            if (!users.isEmpty())
-                return users.get(0);
-        } catch (InterruptedException | ExecutionException e) {
+            new FindUserTask().execute(username, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    users.addAll((ArrayList<UserModel>) result);
+                }
+            }).get();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
-    }
-
-    @Override
-    public boolean addUser(UserModel user) {
-
-        // If username exists, then send a fail.
-        if (findUser(user.getUsername()) != null) {
-            return false;
-        }
-
-        try {
-            new AddUserTask().execute(user).get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
+        if (users.isEmpty())
+            return null;
+        else
+            return users.get(0);
     }
 
     @Override
@@ -510,13 +556,18 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return null;
     }
 
+
     @Override
-    public boolean deleteUser(UserModel user) {
-        return false;
+    public void addUser(UserModel user, final OnTaskComplete handler) {
+        new AddUserTask().execute(user, handler);
+    }
+
+    public void bulkAddPatient(Patient patient, OnTaskComplete handler) {
+        new BulkAddTask().execute(patient, handler);
     }
 
     @Override
-    public void editUser(UserModel user) {
+    public void deleteUser(UserModel user, OnTaskComplete handler) {
 
     }
 
@@ -585,84 +636,104 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
-    public ProblemModel findProblem(String problemId) {
-        try {
-            return new FindProblemTask().execute(problemId).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void editUser(UserModel user, OnTaskComplete handler) {
+        new AddUserTask().execute(user, handler);
     }
 
     @Override
-    public void addProblem(ProblemModel problem) {
-        try {
-            new AddProblemTask().execute(problem).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+    public void findProblem(String problemId, OnTaskComplete handler) {
+        new FindProblemTask().execute(problemId, handler);
     }
 
     @Override
-    public ArrayList<ProblemModel> getProblems(UserModel user) {
-        ArrayList<ProblemModel> problems = new ArrayList<>();
-        try {
-            problems = new GetProblemTask().execute(user).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return problems;
+    public void addProblem(ProblemModel problem, OnTaskComplete handler) {
+        new AddProblemTask().execute(problem, handler);
     }
 
     @Override
-    public RecordModel findRecord(String recordId) {
-        try {
-            return new FindRecordTask().execute(recordId).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void getProblems(UserModel user, OnTaskComplete handler) {
+        new GetProblemTask().execute(user, handler);
     }
 
     @Override
-    public void addRecord(RecordModel record) {
-        try {
-            new AddRecordTask().execute(record).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+    public void findRecord(String recordId, OnTaskComplete handler) {
+        new FindRecordTask().execute(recordId, handler);
     }
 
     @Override
-    public ArrayList<RecordModel> getRecords(ProblemModel problem) {
-        ArrayList<RecordModel> records = new ArrayList<>();
+    public void addRecord(RecordModel record, OnTaskComplete handler) {
+        new AddRecordTask().execute(record, handler);
+    }
+
+    public ArrayList<RecordModel> getRecords(final ProblemModel problem) {
+        final ArrayList<RecordModel> records = new ArrayList<>();
         try {
-            records = new GetRecordTask().execute(problem).get();
-        } catch (InterruptedException | ExecutionException e) {
+            new GetRecordTask().execute(problem, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    records.addAll((ArrayList<RecordModel>) result);
+                }
+            }).get();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return records;
     }
 
+    @Override
+    public void getRecords(ProblemModel problem, OnTaskComplete handler) {
+        new GetRecordTask().execute(problem, handler);
+    }
+
     /**
      * Queries a list the elastic search database for a list of users. See also getUser().
      */
-    private class FindUserTask extends AsyncTask<String, Void, ArrayList<UserModel>> {
-        protected ArrayList<UserModel> doInBackground(String... usernames) {
-            ArrayList<UserModel> users = new ArrayList<UserModel>();
-            for (String name: usernames) {
-                users.addAll(asyncFindUser(name));
-            }
-            return users;
+    private class FindUserTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+
+            String name = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            List<UserModel> users = asyncFindUser(name);
+            return new Object[] {users, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<UserModel> users = (ArrayList<UserModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(users);
         }
     }
 
-    private class AddUserTask extends AsyncTask<UserModel, Void, Void> {
-        protected Void doInBackground(UserModel... params) {
-            for (UserModel user : params) {
-                asyncAddUser(user);
-            }
-            return null;
+    private class AddUserTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            UserModel user = (UserModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            Boolean success = asyncAddUser(user);
+            return new Object[] {success, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
+        }
+    }
+
+    private class BulkAddTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            Patient user = (Patient) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            Boolean success = asyncBulkAddPatient(user);
+            return new Object[] {success, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 
@@ -719,76 +790,119 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     /**
      * Gets the record for each given problemID.
      */
-    private class GetRecordTask extends AsyncTask<ProblemModel, Void, ArrayList<RecordModel>> {
-        protected ArrayList<RecordModel> doInBackground(ProblemModel... params) {
-            ArrayList<RecordModel> records = new ArrayList<RecordModel>();
-            for (ProblemModel p: params) {
-                records.addAll(asyncGetRecords(p));
-            }
-            return records;
+    private class GetRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            ArrayList<RecordModel> records = new ArrayList<>();
+            ProblemModel p = (ProblemModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            records.addAll(asyncGetRecords(p));
+            return new Object[] {records, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<RecordModel> records = (ArrayList<RecordModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(records);
         }
     }
 
     /**
      * Gets the record for each given problemID.
      */
-    private class FindRecordTask extends AsyncTask<String, Void, RecordModel> {
-        protected RecordModel doInBackground(String... params) {
-            ArrayList<RecordModel> records = new ArrayList<RecordModel>();
-            for (String id: params) {
-                records.addAll(asyncGetRecords(id));
-            }
+    private class FindRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            ArrayList<RecordModel> records = new ArrayList<>();
+            String id = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            asyncGetRecords(id);
             if (!records.isEmpty())
-                return records.get(0);
+                return new Object[] {records.get(0), runnable};
             else
-                return null;
+                return new Object[] {null, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<RecordModel> records = (ArrayList<RecordModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(records);
         }
     }
 
     /**
      * Adds all records for each given problem.
      */
-    private class AddRecordTask extends AsyncTask<RecordModel, Void, Void> {
-        protected Void doInBackground(RecordModel... params) {
-            for (RecordModel r: params) {
-                asyncAddRecord(r);
-            }
-            return null;
+    private class AddRecordTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            RecordModel record = (RecordModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            Boolean success = asyncAddRecord(record);
+            return new Object[] {success, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 
-    private class GetProblemTask extends AsyncTask<UserModel, Void, ArrayList<ProblemModel>> {
-        protected ArrayList<ProblemModel> doInBackground(UserModel... params) {
+    private class GetProblemTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
+            UserModel user = (UserModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
             ArrayList<ProblemModel> problems = new ArrayList<ProblemModel>();
-            for (UserModel u: params) {
-                problems.addAll(asyncGetProblems(u));
-            }
-            return problems;
+            problems.addAll(asyncGetProblems(user));
+            return new Object[] {problems, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(problems);
         }
     }
 
-    private class FindProblemTask extends AsyncTask<String, Void, ProblemModel> {
-        protected ProblemModel doInBackground(String... params) {
+    private class FindProblemTask extends AsyncTask<Object, Void, Object[]> {
+        protected Object[] doInBackground(Object... params) {
             ArrayList<ProblemModel> problems = new ArrayList<>();
-            for (String id: params) {
-                problems.addAll(asyncGetProblems(id));
-            }
+            String id = (String) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            problems.addAll(asyncGetProblems(id));
             if(!problems.isEmpty())
-                return problems.get(0);
+                return new Object[] {problems.get(0), runnable};
             else
-                return null;
+                return new Object[] {null, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            ArrayList<ProblemModel> problems = (ArrayList<ProblemModel>) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(problems);
         }
     }
 
     /**
      * Adds a problem to the elastic search database. See also addProblem().
      */
-    private class AddProblemTask extends AsyncTask<ProblemModel, Void, Void> {
-        protected Void doInBackground(ProblemModel... params) {
-            for (ProblemModel problem : params) {
-                asyncAddProblem(problem);
-            }
-            return null;
+    private class AddProblemTask extends AsyncTask<Object, Void, Object[]> {
+        @Override
+        protected Object[] doInBackground(Object... params) {
+            ProblemModel problem = (ProblemModel) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            Boolean success = asyncAddProblem(problem);
+            return new Object[] {success, runnable};
+        }
+
+        @Override
+        protected void onPostExecute(Object[] params) {
+            Boolean success = (Boolean) params[0];
+            OnTaskComplete runnable = (OnTaskComplete) params[1];
+            runnable.onTaskComplete(success);
         }
     }
 

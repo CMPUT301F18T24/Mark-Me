@@ -16,8 +16,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.cybersix.markme.io.ElasticSearchIO;
-import com.cybersix.markme.io.UserModelIO;
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.model.UserModel;
 import com.cybersix.markme.model.UserModel.*;
 import com.cybersix.markme.observer.UserObserver;
@@ -29,10 +29,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class UserProfileController {
+    public void setModel(UserModel model) {
+        this.model = model;
+    }
+
     private UserModel model = null;
-    private UserModelIO io = (UserModelIO) ElasticSearchIO.getInstance();
+    private GeneralIO io = GeneralIO.getInstance();
     private final String SECURITY_FILE_NAME = "securityToken.txt";
 
     public UserProfileController(@NonNull UserModel user) {
@@ -78,12 +83,8 @@ public class UserProfileController {
         }
     }
 
-    public void setModel(UserModel model) {
-        this.model = model;
-    }
-
-    public void updateRemoteModel() {
-        // TODO: Update the model information on elastic search
+    public void findUser(OnTaskComplete handler) {
+        io.findUser(model.getUsername(), handler);
     }
 
     // Attempts to add a model to the elasticsearch database.
@@ -91,14 +92,13 @@ public class UserProfileController {
     //         userType - The type of the model.
     // Outputs: Returns true if added model was successful, false otherwise.
     // TODO: This should save to the elastic search database.
-    public boolean addUser(Context context) {
 
-        // If adding to elastic search was successful, write the username to the password file.
-        if (io.addUser(model)) {
-            return updateSecurityTokenFile(context);
-        }
+    public void addUser(OnTaskComplete handler) {
+        io.addUser(model, handler);
+    }
 
-        return false;
+    public void login(OnTaskComplete handler) {
+        io.findUser(model.getUsername(), handler);
     }
 
     public boolean updateSecurityTokenFile(Context context) {
@@ -122,11 +122,10 @@ public class UserProfileController {
     // Checks locally for a password file, to see if an account has already been created.
     // TODO: Move password file check to diskIO utils?
     // TODO: Uncouple the login button from, the user observers
-    public boolean userExists(Context context) {
-
+    public void userExists(Context context, final OnTaskComplete handler) {
         try (FileInputStream input = context.openFileInput(SECURITY_FILE_NAME)) {
 
-            InputStreamReader reader = new InputStreamReader(input);
+            final InputStreamReader reader = new InputStreamReader(input);
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder stringBuilder = new StringBuilder();
             String line;
@@ -135,29 +134,28 @@ public class UserProfileController {
             }
 
             input.close();
-            String securityToken = stringBuilder.toString().trim();
+            final String securityToken = stringBuilder.toString().trim();
             Log.d("UserProfileController: ", securityToken);
 
-            if (io.findUser(securityToken) != null) { // If user exists, set the user model.
-                try {
-                    model.setUsername(securityToken);
-                    return true;
-                } catch (UsernameTooShortException e) {
-                    e.printStackTrace();
+            io.findUser(securityToken, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+                    if (users.isEmpty())
+                        return;
+                    try {
+                        model.setUsername(securityToken);
+                        handler.onTaskComplete(new Object());
+                    } catch (UsernameTooShortException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-
-            return false;
-
+            });
         } catch (FileNotFoundException e) {
             Log.d("UserProfileController: ", "Failed to find file.");
         } catch (IOException e) {
             Log.d("UserProfileController: ", "Failed to read file.");
         }
-
-        // If file not found, then ask user to signup.
-        return false;
-
     }
 
     public String transferAccount(String shortCode) {
