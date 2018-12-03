@@ -240,7 +240,7 @@ public class ProblemModel extends Observable {
      */
     public String toString() {
         // This will return the string that will be visible to the user
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
         return this.getTitle() + " - " + this.getDescription() + " | " + format.format(this.getDateStarted());
     }
