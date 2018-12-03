@@ -59,11 +59,9 @@ public class MainActivity extends FragmentActivity {
     public NavigationController getNavigationController() {
         return mNavigationController;
     }
-
     public UserModel getUser() {
         return mUser;
     }
-
     public void setUser(UserModel user) {
         mUser = user;
     }

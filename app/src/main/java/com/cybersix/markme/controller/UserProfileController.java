@@ -143,7 +143,6 @@ public class UserProfileController {
                     ArrayList<UserModel> users = (ArrayList<UserModel>) result;
                     if (users.isEmpty())
                         return;
-                    model = users.get(0);
                     try {
                         model.setUsername(securityToken);
                         handler.onTaskComplete(new Object());
