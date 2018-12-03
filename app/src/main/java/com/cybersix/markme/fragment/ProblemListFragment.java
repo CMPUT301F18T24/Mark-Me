@@ -113,7 +113,6 @@ public class ProblemListFragment extends ListFragment {
 
         getTitle().setText("List of Problems");
 
-
         ShowHist = new ArrayList<String>(readHistory());
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line,ShowHist);
         getSearchField().setAdapter(adapter);
@@ -151,19 +150,25 @@ public class ProblemListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                controllerInstance.setSelectedProblem(position);
+
                 Bundle bundle = new Bundle();
-                bundle.putInt(EXTRA_PROBLEM_INDEX, position);
+                int recordIndex = 0;
+                for (int i = 0; i < controllerInstance.getProblems().size(); i++){
+                    if (controllerInstance.getProblems().get(i).equals(problemsToDisplay.get(position))){
+                        recordIndex = i;
+                    }
+                }
+
+                controllerInstance.setSelectedProblem(recordIndex);
+                bundle.putInt(EXTRA_PROBLEM_INDEX, recordIndex);
                 NavigationController.getInstance()
                         .switchToFragment(RecordListFragment.class, bundle);
-
 
             }
 
         });
 
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
-        getListView().setAdapter(problemListAdapter);
+        updateUI();
     }
 
     @Override

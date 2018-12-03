@@ -16,10 +16,17 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cybersix.markme.R;
@@ -36,7 +43,7 @@ import java.util.ArrayList;
 
 /**
  * Jose: I will have to set this up also to be able to get a list of records based off of a problem
- *      TODO: this may involve some elastic searching and queries that should be handled by the controller
+ * TODO: this may involve some elastic searching and queries that should be handled by the controller
  */
 public class RecordListFragment extends ListFragment {
     public static final String EXTRA_RECORD_INDEX = "RecordIdx";
@@ -101,7 +108,8 @@ public class RecordListFragment extends ListFragment {
 
                         // Set up the input
                         final EditText input = new EditText(getActivity());
-                        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                        // Specify the type of input expected; this, for example, sets the input as
+                        // a password, and will mask the text
                         input.setInputType(InputType.TYPE_CLASS_TEXT);
                         builder.setView(input);
 
@@ -146,6 +154,13 @@ public class RecordListFragment extends ListFragment {
 
             }
         });
+
+        getSearchButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchRecords();
+            }
+        });
     }
 
     @Override
@@ -153,12 +168,6 @@ public class RecordListFragment extends ListFragment {
         super.onStart();
         update();
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        update();
-//    }
 
     // Searches with the specified term but it does not handle updates to the data.
     // Browsing back to this fragment will reset the search.
