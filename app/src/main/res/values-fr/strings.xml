@@ -76,4 +76,27 @@
     <string name="delete">"Effacer"</string>
     <string name="preference_file_key">"com.cybersix.markme.history"</string>
     <string name="change_lang_text">Choisissez votre langue</string>
+    <string name="DontHaveAccountPromp">First time here? Sign up now!</string>
+    <string name="transfer_account_text">Transfer Account</string>
+    <string name="transferAccountPrompt">To transfer an account, enter a shortcode below:</string>
+    <string name="enterPrompt">Enter</string>
+    <string name="generatePrompt" >Generate</string>
+    <string name="generateTransferCodePrompt">Generate a transfer code below:</string>
+    <string name="registration_failure">Registration Failed!</string>
+    <string name="transfer_account_success">Transfer Successful!</string>
+    <string name="transfer_account_failure">Transfer failed.</string>
+    <string name="body_location">Body Location:</string>
+    <string name="record_description">Record Description:</string>
+    <string name="record_name">Record Name:</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_record">Add Record</string>
+    <string name="unlisted">Unlisted:</string>
+    <string name="description">Description</string>
+    <string name="location">Location:</string>
+    <string name="record_information">Record Information</string>
+    <string name="view_location">View Location</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="comment">Comment</string>
+    <string name="view_photos">View Photos</string>
+    <string name="add_photo">Add Photo</string>
 </resources>
