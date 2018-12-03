@@ -152,10 +152,4 @@ public class DiskIO {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public String transferUser(String shortCode) { return null; }
-
-    @Override
-    public String generateTransferCode(String username) { return null; }
 }

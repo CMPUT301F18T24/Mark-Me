@@ -407,6 +407,27 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
+    public String transferUser(String shortCode) {
+        try {
+            return new TransferAccountTask().execute(shortCode).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String generateTransferCode(String username) {
+        try {
+            return new GenerateTransferCodeTask().execute(username).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @Override
     public void addUser(UserModel user, final OnTaskComplete handler) {
         new AddUserTask().execute(user, handler);
     }

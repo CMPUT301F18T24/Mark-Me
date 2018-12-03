@@ -197,8 +197,8 @@ public class GeneralIO implements UserModelIO, RecordModelIO, ProblemModelIO {
     }
 
     @Override
-    public String transferUser(String shortcode) { return null; }
+    public String transferUser(String shortcode) { return elasticSearchIO.transferUser(shortcode); }
 
     @Override
-    public String generateTransferCode(String username) { return null; }
+    public String generateTransferCode(String username) { return elasticSearchIO.generateTransferCode(username); }
 }

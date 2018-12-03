@@ -17,9 +17,13 @@ import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
+import com.cybersix.markme.io.OnTaskComplete;
 import com.cybersix.markme.model.DataModel;
 import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
+
+import java.util.ArrayList;
 
 public class TransferAccountFragment extends Fragment {
 
@@ -112,10 +116,18 @@ public class TransferAccountFragment extends Fragment {
     public void setUser(String username) {
         mData = DataModel.getInstance();
         if (username != null) {
-            userModel = ElasticSearchIO.getInstance().findUser(username);
-            ((MainActivity)getActivity()).setUser(userModel);
-            if (userModel.getUserType().equals(Patient.class.getSimpleName()))
-                mData.setSelectedPatient((Patient) userModel);
+            GeneralIO.getInstance().findUser(username, new OnTaskComplete() {
+                @Override
+                public void onTaskComplete(Object result) {
+                    ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+                    if (users.isEmpty())
+                        return;
+                    userModel = users.get(0);
+                    ((MainActivity)getActivity()).setUser(userModel);
+                    if (userModel.getUserType().equals(Patient.class.getSimpleName()))
+                        mData.setSelectedPatient((Patient) userModel);
+                }
+            });
         }
     }
 

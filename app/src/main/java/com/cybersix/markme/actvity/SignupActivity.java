@@ -53,6 +53,7 @@ public class SignupActivity extends AppCompatActivity {
     OnTaskComplete onUserAdded = new OnTaskComplete() {
         @Override
         public void onTaskComplete(Object result) {
+            userController.updateSecurityTokenFile(getApplicationContext());
             finish();
         }
     };
@@ -85,21 +86,6 @@ public class SignupActivity extends AppCompatActivity {
                 userController.findUser(onSearchComplete);
             }
         });
-    }
-
-    // Checks the info the user provided and creates a new account if the info is valid,
-    // or lets the user know if the info is not valid.
-    // TODO: Replace hard coded literal with key-value pair.
-    public void checkRegistration() {
-        // Create a user of type patient by default.
-        if (userController.addUser(this.getApplicationContext())) {
-            finish();
-        } else {
-            // Notify the user that registration was unsuccessful.
-            // TODO: Can we let the user know exactly what went wrong?
-            Toast toast = Toast.makeText(this, getString(R.string.registration_failure), Toast.LENGTH_SHORT);
-            toast.show();
-        }
     }
 
 }

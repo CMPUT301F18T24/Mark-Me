@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     UserModel userModel = null;
     UserObserver userObserver = null;
     UserProfileController userController = null;
-    ProgressBar progressBar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Initializes onClick listeners for UI elements.
     public void initUI() {
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-        progressBar.setIndeterminate(true);
         userObserver.setUsernameView( (TextView) findViewById(R.id.fragment_account_settings_usernameText));
 
         userModel.addObserver(userObserver);
@@ -88,14 +84,15 @@ public class LoginActivity extends AppCompatActivity {
     // Inputs: Reads the userText and passText.
     public void onLogin() {
         // If we got exactly one username returned.
-        if (userController.userExists(this.getApplicationContext())) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
-            startActivity(intent);
-            finish();
-        } else { // Let user know they have to create an account.
-            // TODO: Display login buttons, replace spinner.
-        }
+        userController.userExists(this.getApplicationContext(), new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, userModel.getUsername());
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 }
