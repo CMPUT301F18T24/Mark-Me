@@ -22,11 +22,9 @@
         <activity
             android:name=".actvity.MainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".actvity.LoginActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,26 +40,21 @@
 
         <activity
             android:name=".actvity.SignupActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName=".actvity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".actvity.LiveCameraActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".actvity.ProblemCreationActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Reminder" />
         <activity
             android:name=".actvity.RecordCreationActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".actvity.UserActivityAddPopUp"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -80,13 +73,9 @@
 
         <activity
             android:name=".actvity.MapSelectActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".deletePhoto"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SlideShowActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity android:name=".deletePhoto"/>
+        <activity android:name=".SlideShowActivity"></activity>
     </application>
 
 </manifest>
