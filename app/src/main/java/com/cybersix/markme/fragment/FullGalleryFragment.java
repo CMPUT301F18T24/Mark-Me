@@ -31,7 +31,7 @@ import com.cybersix.markme.SlideShowActivity;
 import com.cybersix.markme.controller.ProblemController;
 import com.cybersix.markme.controller.RecordController;
 import com.cybersix.markme.deletePhoto;
-import com.cybersix.markme.model.GalleryItemModel;
+import com.cybersix.markme.model.GalleryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class FullGalleryFragment extends Fragment {
     public static final String GALLERY_MODE = "ca.cybersix.gallerymode";
 
 
-    public static List<GalleryItemModel> photos;
+    public static List<GalleryItem> photos;
 
     public FullGalleryFragment() {
         // Required empty public constructor
@@ -58,7 +58,7 @@ public class FullGalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_full_gallery, container, false);
-        photos = new ArrayList<GalleryItemModel>();
+        photos = new ArrayList<GalleryItem>();
         int size;
 
         if(getArguments()!=null) {
@@ -70,7 +70,7 @@ public class FullGalleryFragment extends Fragment {
             }
 
             for (int i = 0; i < size; i++) {
-                    photos.add(new GalleryItemModel(problemIndex,RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(i)));
+                    photos.add(new GalleryItem(problemIndex,RecordController.getInstance().getSelectedProblemRecords().get(problemIndex).getPhotos().get(i)));
             }
 
         }else{
@@ -84,7 +84,7 @@ public class FullGalleryFragment extends Fragment {
                 for (int i = 0; i < size; i++) {
                     int recordSize = RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().size();
                     for (int j = 0; j < recordSize; j++) {
-                        photos.add(new GalleryItemModel(i, RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j)));
+                        photos.add(new GalleryItem(i, RecordController.getInstance().getSelectedProblemRecords().get(i).getPhotos().get(j)));
                     }
                 }
             }

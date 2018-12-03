@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class ProblemController {
     // set up the controller instance with lazy construction
     private static ProblemController instance = null;
-    private UserProfileController userInstance;
 
     /**
      * This contructor will set up the controller variable "problems"
@@ -77,21 +76,7 @@ public class ProblemController {
     public void loadProblemData() {
         DataModel.getInstance().loadProblemData();
     }
-
-    /*
-     * This function will save all of the problems that the user has changed. This will be uploaded
-     * from the cloud using elastic search
-     * @param problems the list of problems to save
-
-    /*
-    public void saveProblemData(ArrayList<ProblemModel> problems) {
-        /*
-        TODO: will need to add elastic search functionality. For now it will just update the current
-        list of problems. THIS IS SPECIFICALLY FOR EDITS
-
-        instance.problems = problems;
-    }
-    */
+    
 
     public void setSelectedProblem(int index){
        DataModel.getInstance().setSelectedProblem(index);

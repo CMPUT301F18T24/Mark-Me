@@ -70,8 +70,8 @@ public class ProblemListIntentTesting {
         onView(withId(R.id.problemSaveButton)).perform(click());
     }
 
-    /**
-     * User case 4
+    /*
+      Use cases: 4
      */
     @Test
     public void testViewListOfProblems() {
@@ -79,5 +79,20 @@ public class ProblemListIntentTesting {
         navigationController = mainActivity.getNavigationController();
         navigationController.setSelectedItem(R.id.list);
         assertEquals(navigationController.getFragment().getClass(), ProblemListFragment.class);
+    }
+
+    /*
+      Use cases: 33, 25
+      Searching and past searches
+     */
+    @Test
+    public void testViewListOfRecentSearches() {
+        mainActivity = mActivityRule.getActivity();
+        navigationController = mainActivity.getNavigationController();
+        navigationController.setSelectedItem(R.id.list);
+        assertEquals(navigationController.getFragment().getClass(), ProblemListFragment.class);
+        onView(withId(R.id.fragment_list_seachField)).perform(typeText("search1"));
+        onView(withId(R.id.fragment_list_seachField)).perform(click());
+        //User can now see previously browsed keywords
     }
 }

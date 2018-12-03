@@ -111,7 +111,7 @@ public class ProblemListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getTitle().setText("List of Problems");
+        getTitle().setText(R.string.list_of_prob);
 
         ShowHist = new ArrayList<String>(readHistory());
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line,ShowHist);

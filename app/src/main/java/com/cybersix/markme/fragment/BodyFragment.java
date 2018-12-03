@@ -169,8 +169,8 @@ public class BodyFragment extends Fragment {
                     bodyConstraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     setBodyImage();
                     drawRecords();
-                    totalText.setText("Total: " + Integer.toString(listedCount));
-                    notListedText.setText("Unlisted: " + Integer.toString(unlistedCount));
+                    totalText.setText(String.format("%s%s", getString(R.string.total_frag_name), Integer.toString(listedCount)));
+                    notListedText.setText(String.format("%s%s", getString(R.string.unlisted_frag_name), Integer.toString(unlistedCount)));
 
                 }
             });
