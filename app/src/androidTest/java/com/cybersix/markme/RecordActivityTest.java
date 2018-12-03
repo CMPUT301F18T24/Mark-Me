@@ -20,6 +20,7 @@ import com.cybersix.markme.fragment.RecordInfoFragment;
 import com.cybersix.markme.fragment.RecordListFragment;
 import com.cybersix.markme.model.RecordModel;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -31,6 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.fail;
+import static org.hamcrest.CoreMatchers.anything;
 
 
 public class RecordActivityTest {
@@ -39,18 +41,21 @@ public class RecordActivityTest {
 
     @Rule
     public IntentsTestRule<MainActivity> mainActivityTestRule =
-            new IntentsTestRule<>(MainActivity.class);
+            new IntentsTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setup(){
-        nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
-        ProblemController.getInstance().createNewProblem("title","desc");
-        ProblemController.getInstance().setSelectedProblem(0);
-        ProblemController.getInstance().getSelectedProblem().getRecords().add(new RecordModel("a","v"));
-        mainActivityTestRule.getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_layout,new ProblemListFragment())
-                .commitAllowingStateLoss();
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.EXTRA_CURRENT_USERNAME, "rizwan146");
+        mainActivityTestRule.launchActivity(intent);
+//        nav = NavigationController.getInstance(mainActivityTestRule.getActivity());
+//        ProblemController.getInstance().createNewProblem("title","desc");
+//        ProblemController.getInstance().setSelectedProblem(0);
+//        ProblemController.getInstance().getSelectedProblem().getRecords().add(new RecordModel("a","v"));
+//        mainActivityTestRule.getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment_layout,new ProblemListFragment())
+//                .commitAllowingStateLoss();
     }
 
 
@@ -60,15 +65,20 @@ public class RecordActivityTest {
     @Test
     public void testViewRecordInfo(){
 
-        Bundle p = new Bundle();
-        p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
-        Fragment g = new RecordInfoFragment();
-        g.setArguments(p);
+//        Bundle p = new Bundle();
+//        p.putInt(RecordListFragment.EXTRA_RECORD_INDEX,0);
+//        Fragment g = new RecordInfoFragment();
+//        g.setArguments(p);
         //Move to record info
-        mainActivityTestRule.getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_layout,g)
-                .commitAllowingStateLoss();
+//        mainActivityTestRule.getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment_layout,g)
+//                .commitAllowingStateLoss();
+        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
+        onData((anything())).inAdapterView(withId(R.id.fragment_list_mainListView)).atPosition(0).perform(click());
+        onView(withId(R.id.fragment_list_mainListView)).check(matches(isDisplayed()));
+        onData((anything())).inAdapterView(withId(R.id.fragment_list_mainListView)).atPosition(0).perform(click());
+
         onView(withId(R.id.recordTitleEdit)).check(matches(isDisplayed()));
         //Type text nd save
         onView(withId(R.id.recordTitleEdit)).perform(typeText("record"));
@@ -93,6 +103,4 @@ public class RecordActivityTest {
     public void viewRecordPhotos(){
         fail("Implementation required");
     }
-
-
 }

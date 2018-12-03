@@ -58,8 +58,12 @@ public class ProblemListFragment extends ListFragment {
     private Runnable onDataModelReady = new Runnable() {
         @Override
         public void run() {
-            problemListAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
-            getListView().setAdapter(problemListAdapter);
+            try {
+                problemListAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
+                getListView().setAdapter(problemListAdapter);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     };
 

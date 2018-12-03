@@ -36,7 +36,7 @@ public class LoginActivityTest {
         //Login with an existing account.
 
         // Type the username and password.
-        onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText("testtest"));
+//        onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText("testtest"));
         Espresso.closeSoftKeyboard();
 //        onView(withId(R.id.passwordText)).perform(typeText("hihi"));
 //        Espresso.closeSoftKeyboard();
@@ -46,7 +46,6 @@ public class LoginActivityTest {
 
         // Check if MainActivity
         intended(hasComponent(MainActivity.class.getName()));
-
     }
 
 }
