@@ -570,6 +570,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
     }
 
+//    private class SearchRecordsTask extends AsyncTask<String, Void, RecordModel> {
+//        protected Void doInBackground(String... params) {
+//            for (String term : params) {
+//                asyncSearchRecords(term);
+//            }
+//            return null;
+//        }
+//    }
+
     private class TransferAccountTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... params) {
 
@@ -597,4 +606,5 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             return null;
         }
     }
+
 }
