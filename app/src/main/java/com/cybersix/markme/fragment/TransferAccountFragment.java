@@ -88,22 +88,22 @@ public class TransferAccountFragment extends Fragment {
         // If not, print error.
         TextView transferAccountCode = getActivity().findViewById(R.id.fragment_transfer_account_transferAccountText);
         String username = userController.transferAccount(transferAccountCode.getText().toString());
-        Toast toast;
-
-        if (username != null) {
-            userController.setModel(userModel);
-            ((MainActivity) getActivity()).setUser(username);
-            userController.updateSecurityTokenFile(this.getContext());
-            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
-            Log.d("TransferAccountFragment: ", "Successful");
-
-        } else {
-            // Toast that nothing happens
-            toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_failure), Toast.LENGTH_SHORT);
-        }
-
-        toast.show();
-
+        ((MainActivity) getActivity()).setUser(username, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                ArrayList<UserModel> users = (ArrayList<UserModel>) result;
+                Toast toast;
+                if (!users.isEmpty()) {
+                    userController.setModel(users.get(0));
+                    userController.updateSecurityTokenFile(getActivity());
+                    toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_success), Toast.LENGTH_SHORT);
+                    Log.d("TransferAccountFragment: ", "Successful");
+                } else  {
+                    toast = Toast.makeText(getActivity(), getString(R.string.transfer_account_failure), Toast.LENGTH_SHORT);
+                }
+                toast.show();
+            }
+        });
     }
 
     public void generateCode() {

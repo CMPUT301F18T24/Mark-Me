@@ -1,5 +1,6 @@
 package com.cybersix.markme.io;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

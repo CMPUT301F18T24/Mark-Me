@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra(EXTRA_CURRENT_USERNAME);
-        setUser(username);
+        setUser(username, GeneralIO.emptyHandler);
 
         mNavigationController = NavigationController.getInstance(this);
         mNavigationController.setSelectedItem(R.id.list);
@@ -84,7 +84,13 @@ public class MainActivity extends FragmentActivity {
         mData.setSelectedPatient((Patient) mUser);
     }
 
-    public void setUser(String username) {
-        mIO.findUser(username, onFoundUser);
+    public void setUser(String username, final OnTaskComplete handler) {
+        mIO.findUser(username, new OnTaskComplete() {
+            @Override
+            public void onTaskComplete(Object result) {
+                onFoundUser.onTaskComplete(result);
+                handler.onTaskComplete(result);
+            }
+        });
     }
 }
