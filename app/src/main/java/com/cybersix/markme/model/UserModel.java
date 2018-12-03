@@ -13,6 +13,8 @@
 package com.cybersix.markme.model;
 //Click the class or method you want to test, then press Ctrl+Shift+T (⇧⌘T).
 
+import android.graphics.Bitmap;
+
 import com.cybersix.markme.observer.UserObserver;
 
 import java.util.Observable;
@@ -26,6 +28,8 @@ public class UserModel extends Observable {
     private String email = null;
     private String phone = null;
     private final String type = getClass().getSimpleName();
+    private Bitmap photoFront = null;
+    private Bitmap photoBack = null;
 
     @JestId
     private String userId = null;
@@ -34,6 +38,29 @@ public class UserModel extends Observable {
      * Need a default constructor to compile with Patient/Care Provider inheritance.
      */
     public UserModel() { }
+
+
+    /**
+     * Sets new front photo
+     * @param b Bitmap of user
+     */
+    public void setPhotoFront(Bitmap b){ this.photoFront=b; }
+
+    /**
+     * get front user photo
+     */
+    public Bitmap getPhotoFront(){ return this.photoFront; }
+
+    /**
+     * Sets new back photo
+     * @param b Bitmap of user
+     */
+    public void setPhotoBack(Bitmap b){ this.photoBack=b; }
+
+    /**
+     * get back user photo
+     */
+    public Bitmap getPhotoBack(){ return this.photoBack; }
 
     /**
      *
