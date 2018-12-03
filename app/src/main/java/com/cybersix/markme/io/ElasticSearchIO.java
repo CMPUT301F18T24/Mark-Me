@@ -424,6 +424,12 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     @Override
+    public void removeAssignedUser(String patientID, String providerID) {
+        // remove the assigned user from the elastic search database
+        // TODO: To be implemented
+    }
+
+    @Override
     public ProblemModel findProblem(String problemId) {
         try {
             return new FindProblemTask().execute(problemId).get();

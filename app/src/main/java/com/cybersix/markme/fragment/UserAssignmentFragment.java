@@ -12,13 +12,17 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,6 +41,7 @@ public class UserAssignmentFragment extends Fragment {
     private ArrayAdapter<UserModel> userListAdapter;
     private ArrayList<UserModel> userList = new ArrayList<UserModel>();
     private ListView assignedUserListView;
+    private int removePosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +85,8 @@ public class UserAssignmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // the user has selected a user from the list view and wants to remove the user
+                // ask for a popup whether or not the user wishes to continue
+
                 removeUser();
             }
         });
@@ -92,6 +99,17 @@ public class UserAssignmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
+
+        //TODO: still need to set the "selected" animation to be there
+        assignedUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // this is when one of the selected items within the list view is selected
+                view.setSelected(true);
+                assignedUserListView.setSelected(true);
+                removePosition = position;
             }
         });
     }
@@ -117,16 +135,41 @@ public class UserAssignmentFragment extends Fragment {
     private void removeUser() {
         // TODO: add a prompt asking if the user is sure they want to remove the item
         if (assignedUserListView.isSelected()) {
+            assignedUserListView.setSelected(false);
             // get and remove the selected item
-            try {
-                userList.remove(assignedUserListView.getSelectedItemPosition());
-                // save the list into the server
-                // IOUtilityController.saveUser(userList);
-            }
-            catch (Exception e) {
-                // display an error when removing the list item
-                // TODO: display an error prompt
-            }
+            UserModel removeUser = userList.get(removePosition);
+            // build the warning dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("Are you sure?");
+            builder.setMessage("Are you sure you want to remove this patient?\n" + removeUser.toString());
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        userList.remove(removePosition);
+                        userListAdapter.notifyDataSetChanged();
+                        //TODO: save the list into the server
+                        Log.d("Remove Assign User", "The user assignment has been removed");
+                    }
+                    catch (Exception e) {
+                        // display an error when removing the list item
+                        e.printStackTrace();
+                    }
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // return null to the activity
+                    return;
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
+    }
+
+    private void addUser() {
+
     }
 }

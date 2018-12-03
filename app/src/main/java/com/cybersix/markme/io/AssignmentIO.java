@@ -21,4 +21,5 @@ import java.util.ArrayList;
 public interface AssignmentIO {
     ArrayList<UserModel> getAssignedUsers(String provider);
     void addAssignedUser(String patientID, String providerID);
+    void removeAssignedUser(String patientID, String providerID);
 }
