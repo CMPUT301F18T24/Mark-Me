@@ -223,7 +223,7 @@ public class RecordModel extends Observable {
      */
     public String toString() {
         // this will return a formatted string that will be visible to the user
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setTimeZone(TimeZone.getTimeZone("MDT"));
         String bodyPart;
         if (this.getBodyLocation() == null) {
