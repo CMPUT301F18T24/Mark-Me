@@ -65,6 +65,7 @@
     <string name="user_assignment_remove">"Retirer"</string>
     <string name="user_assignment_select_list">"Recherchez et sélectionnez un utilisateur pour afficher sa progression."</string>
     <string name="user_assignment_generateButton">Produire</string>
+    <string name="user_assignment_checkButton">Patient de contrôle</string>
     <string name="add_button">"Ajouter"</string>
     <string name="search_button">"Chercher"</string>
     <string name="filter_edit_text">"Entrez le mot clé ici"</string>

@@ -64,8 +64,14 @@ public class UserAssignmentFragment extends Fragment {
         Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
         Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
         Button generateButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_GenerateCode);
+        Button checkButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_checkPatient);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
         currentUser = ((MainActivity) getActivity()).getUser();
+        if (currentUser.getUserType() == "Patient") {
+            // patient should not be able to remove anything
+            removeButton.setVisibility(View.GONE);
+            checkButton.setVisibility(View.GONE);
+        }
 
         // get the list of users that are from the elastic search database
         userList.addAll(ESController.getAssignedUsers(currentUser.getUserId()));
@@ -95,6 +101,14 @@ public class UserAssignmentFragment extends Fragment {
             public void onClick(View v) {
                 // generate the code and show it in a dialog popup
                 generateAssignmentCode();
+            }
+        });
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // set the user profile to "become" the patient
+                checkPatient();
             }
         });
 
@@ -216,6 +230,23 @@ public class UserAssignmentFragment extends Fragment {
         String code = ESController.generateAssignmentCode(currentUser.getUsername());
         builder.setMessage("Please send and notify the care provider the code that has been generated.\n" +
         "Assignment code: " + code);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+                return;
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void checkPatient() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Checking Patient");
+        String code = ESController.generateAssignmentCode(currentUser.getUsername());
+        builder.setMessage("Are you sure you want to ");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
