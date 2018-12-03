@@ -35,7 +35,7 @@ public class SignupActivityTest {
         // Type the username and password.
         onView(withId(R.id.fragment_account_settings_email)).perform(typeText("test@test"));
         onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText(Integer.toString(username)));
-        onView(withId(R.id.passwordText)).perform(typeText("hihi"));
+//        onView(withId(R.id.passwordText)).perform(typeText("hihi"));
         onView(withId(R.id.fragment_account_settings_phoneText)).perform(typeText("780-123-4567"));
 
         Espresso.closeSoftKeyboard();

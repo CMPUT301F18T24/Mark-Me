@@ -1,6 +1,7 @@
 package com.cybersix.markme;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.cybersix.markme.model.BodyLocation;
 import com.cybersix.markme.model.EBodyPart;
@@ -142,8 +143,8 @@ public class RecordModelTest {
         Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<Bitmap> ph = rm.getPhotos();
-            assertEquals(photo,ph.get(0));
+            ArrayList<byte[]> ph = rm.getPhotos();
+            assertEquals(photo, BitmapFactory.decodeByteArray(ph.get(0), 0, ph.get(0).length));
         } catch(TooManyPhotosException e){
             fail();
         }
@@ -191,9 +192,8 @@ public class RecordModelTest {
         Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<Bitmap> ph = rm.getPhotos();
-            Bitmap p = ph.get(0);
-            assertEquals(photo,p);
+            ArrayList<byte[]> ph = rm.getPhotos();
+            assertEquals(photo,BitmapFactory.decodeByteArray(ph.get(0), 0, ph.get(0).length));
         } catch(TooManyPhotosException e){
             fail();
         }
@@ -208,9 +208,8 @@ public class RecordModelTest {
         Bitmap photo = Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_4444);
         try{
             rm.addPhoto(photo);
-            ArrayList<Bitmap> ph = rm.getPhotos();
-            Bitmap p = ph.get(0);
-            assertEquals(photo,p);
+            ArrayList<byte[]> ph = rm.getPhotos();
+            assertEquals(photo,BitmapFactory.decodeByteArray(ph.get(0), 0, ph.get(0).length));
 
             rm.removePhoto(photo);
             ph = rm.getPhotos();

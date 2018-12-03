@@ -38,11 +38,11 @@ public class LoginActivityTest {
         // Type the username and password.
         onView(withId(R.id.fragment_account_settings_usernameText)).perform(typeText("testtest"));
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.passwordText)).perform(typeText("hihi"));
-        Espresso.closeSoftKeyboard();
+//        onView(withId(R.id.passwordText)).perform(typeText("hihi"));
+//        Espresso.closeSoftKeyboard();
 
         // Hit the login button.
-        onView(withId(R.id.loginButton)).perform(click());
+//        onView(withId(R.id.loginButton)).perform(click());
 
         // Check if MainActivity
         intended(hasComponent(MainActivity.class.getName()));
