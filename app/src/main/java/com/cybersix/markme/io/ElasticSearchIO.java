@@ -540,7 +540,10 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         ArrayList<UserModel> resultUsers = new ArrayList<>();
         for (Pair<String, String> resultPair: results) {
             // we are going to get the User from each of the patient IDs
-            resultUsers.add(findUser(resultPair.first));
+            UserModel user = findUser(resultPair.first);
+            if (user != null) {
+                resultUsers.add(user);
+            }
         }
         return resultUsers;
     }

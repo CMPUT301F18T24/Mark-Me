@@ -37,6 +37,8 @@ import com.cybersix.markme.actvity.UserActivityAddPopUp;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.model.DataModel;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class UserAssignmentFragment extends Fragment {
     private ArrayAdapter<UserModel> userListAdapter;
     private ArrayList<UserModel> userList = new ArrayList<UserModel>();
     private ListView assignedUserListView;
-    private int removePosition;
+    private int selectedPosition;
     private UserModel currentUser = null;
     private ElasticSearchIO ESController = ElasticSearchIO.getInstance();
 
@@ -62,16 +64,16 @@ public class UserAssignmentFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // set up all of the buttons that are used within this activity
         Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
-        Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
+//        Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
         Button generateButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_GenerateCode);
         Button checkButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_checkPatient);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
         currentUser = ((MainActivity) getActivity()).getUser();
-        if (currentUser.getUserType() == "Patient") {
-            // patient should not be able to remove anything
-            removeButton.setVisibility(View.GONE);
-            checkButton.setVisibility(View.GONE);
-        }
+//        removeButton.setVisibility(View.GONE);
+//        if (currentUser.getUserType().compareTo("Patient") == 0) {
+//            // patient should not be able to remove anything
+//            checkButton.setVisibility(View.GONE);
+//        }
 
         // get the list of users that are from the elastic search database
         userList.addAll(ESController.getAssignedUsers(currentUser.getUserId()));
@@ -86,15 +88,15 @@ public class UserAssignmentFragment extends Fragment {
             }
         });
 
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // the user has selected a user from the list view and wants to remove the user
-                // ask for a popup whether or not the user wishes to continue
-
-                removeUser();
-            }
-        });
+//        removeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // the user has selected a user from the list view and wants to remove the user
+//                // ask for a popup whether or not the user wishes to continue
+//
+//                removeUser();
+//            }
+//        });
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +132,7 @@ public class UserAssignmentFragment extends Fragment {
                 // this is when one of the selected items within the list view is selected
                 view.setSelected(true);
                 assignedUserListView.setSelected(true);
-                removePosition = position;
+                selectedPosition = position;
             }
         });
     }
@@ -155,10 +157,11 @@ public class UserAssignmentFragment extends Fragment {
 
     private void removeUser() {
         // TODO: add a prompt asking if the user is sure they want to remove the item
+        // TODO: functionality may not be present in final solution
         if (assignedUserListView.isSelected()) {
             assignedUserListView.setSelected(false);
             // get and remove the selected item
-            UserModel removeUser = userList.get(removePosition);
+            UserModel removeUser = userList.get(selectedPosition);
             // build the warning dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             builder.setTitle("Are you sure?");
@@ -167,7 +170,7 @@ public class UserAssignmentFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        userList.remove(removePosition);
+                        userList.remove(selectedPosition);
                         userListAdapter.notifyDataSetChanged();
                         //TODO: save the list into the server
                         Log.d("Remove Assign User", "The user assignment has been removed");
@@ -243,19 +246,49 @@ public class UserAssignmentFragment extends Fragment {
     }
 
     private void checkPatient() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-        builder.setTitle("Checking Patient");
-        String code = ESController.generateAssignmentCode(currentUser.getUsername());
-        builder.setMessage("Are you sure you want to ");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // do nothing
-                return;
+        // make sure something is selected
+        if (assignedUserListView.isSelected()) {
+            assignedUserListView.setSelected(false);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("Checking Patient");
+            final UserModel selectedUser = userList.get(selectedPosition);
+            builder.setMessage("Are you sure you want to become patient?\n\n" + selectedUser.toString());
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Become the patient and put it in the data model
+                    DataModel instance = DataModel.getInstance();
+                    instance.setSelectedPatient((Patient) selectedUser);
+                    Log.d("Jose-Set Patient", "The patient: " + selectedUser.toString() +
+                    " has been selected!");
+                    return;
 
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Don't set the user profile to the selected patient
+                    return;
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("No patient selection!");
+            builder.setMessage("Please select a patient from the patient list.");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing
+                    return;
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 }
