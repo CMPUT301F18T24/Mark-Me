@@ -119,6 +119,40 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return users;
     }
 
+    /**
+     * Queries the elasticsearch database for a user. Do NOT call directly, call getUserTask
+     * instead.
+     * @param username - The username you want to find.
+     * @return - Returns a list of users that match the username, which should be 0 or 1.
+     */
+    private List<UserModel> asyncFindUserForced(String username) {
+        // Case does matter, and subset of usernames will not cause problems.
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"username\" : \"" + username + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(UserModel.class.getSimpleName())
+                .build();
+
+        ArrayList<UserModel> users = new ArrayList<UserModel>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<UserDataAdapter> userAdapter = result.getSourceAsObjectList(UserDataAdapter.class);
+                for (UserDataAdapter user: userAdapter) {
+                    users.add(user.get());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
     private boolean asyncAddProblem(ProblemModel problem) {
         Index index = new Index.Builder(new ProblemDataAdapter(problem))
                 .index(INDEX)
@@ -519,21 +553,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         // when adding a user, a query should be done
         // for the user's type. A factory should be used
         // to return the correct UserModel Instance
-        final ArrayList<UserModel> users = new ArrayList<>();
         try {
-            new FindUserTask().execute(username, new OnTaskComplete() {
-                @Override
-                public void onTaskComplete(Object result) {
-                    users.addAll((ArrayList<UserModel>) result);
-                }
-            }).get();
-        } catch (Exception e) {
+            ArrayList<UserModel> users = new FindUserTaskForced().execute(username).get();
+            if (!users.isEmpty())
+                return users.get(0);
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        if (users.isEmpty())
-            return null;
-        else
-            return users.get(0);
+
+        return null;
     }
 
     @Override
@@ -589,10 +617,13 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
 
         ArrayList<UserModel> resultUsers = new ArrayList<>();
-        for (Pair<String, String> resultPair: results) {
+        if (results != null) for (Pair<String, String> resultPair: results) {
             // we are going to get the User from each of the patient IDs
-            resultUsers.add(findUser(resultPair.first));
+            UserModel user = findUser(resultPair.first);
+            if (user != null)
+                resultUsers.add(user);
         }
+        Log.i("GetAssigned", "" + resultUsers);
         return resultUsers;
     }
 
@@ -931,6 +962,19 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
                 }
             }
             return null;
+        }
+    }
+
+    /**
+     * Queries a list the elastic search database for a list of users. See also getUser().
+     */
+    private class FindUserTaskForced extends AsyncTask<String, Void, ArrayList<UserModel>> {
+        protected ArrayList<UserModel> doInBackground(String... usernames) {
+            ArrayList<UserModel> users = new ArrayList<UserModel>();
+            for (String name: usernames) {
+                users.addAll(asyncFindUserForced(name));
+            }
+            return users;
         }
     }
 }

@@ -37,6 +37,7 @@ import com.cybersix.markme.actvity.UserActivityAddPopUp;
 import com.cybersix.markme.controller.NavigationController;
 import com.cybersix.markme.controller.UserProfileController;
 import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.io.GeneralIO;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
@@ -49,8 +50,7 @@ public class UserAssignmentFragment extends Fragment {
     private ListView assignedUserListView;
     private int removePosition;
     private UserModel currentUser = null;
-    private ElasticSearchIO ESController = ElasticSearchIO.getInstance();
-
+    private ElasticSearchIO ESController = GeneralIO.getInstance().getElasticSearchIO();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -136,7 +136,6 @@ public class UserAssignmentFragment extends Fragment {
         // userList = IOUtilityController.getUsers();
         userListAdapter = new ArrayAdapter<UserModel>(getContext(), R.layout.list_item, userList);
         assignedUserListView.setAdapter(userListAdapter);
-
     }
 
     private void removeUser() {
@@ -194,7 +193,9 @@ public class UserAssignmentFragment extends Fragment {
                 String patientUsername = ESController.getUserAssignmentCode(code);
                 // now add the assigned to elastic search
                 ESController.addAssignedUser(patientUsername, currentUser.getUserId());
-                userList.add(ESController.findUser(patientUsername));
+                UserModel user = ESController.findUser(patientUsername);
+                if (user != null)
+                    userList.add(user);
                 userListAdapter.notifyDataSetChanged();
             }
         });
