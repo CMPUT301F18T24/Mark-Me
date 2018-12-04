@@ -41,7 +41,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
-import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -286,6 +285,74 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return recordList;
     }
 
+    private List<String> asyncTransferUser(String shortCode) {
+
+        String query = "{ \"query\" : \n" +
+                "{ \"match\" :\n" +
+                "{ \"shortcode\" : \"" + shortCode + "\" }}}";
+
+        Search search = new Search.Builder(query)
+                .addIndex(INDEX)
+                .addType(TYPE_TRANSFER)
+                .build();
+
+        ArrayList<String> usernameList = new ArrayList<>();
+
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                List<TransferDataAdapter> transferData = result.getSourceAsObjectList(TransferDataAdapter.class);
+                for (TransferDataAdapter t: transferData) {
+                    usernameList.add(t.getUsername());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return usernameList;
+
+    }
+
+    // Generates a random 5 character string.
+    // Credit to:  Eugen Paraschiv, Generate Random Bounded String with Plain Java
+    // Link: https://www.baeldung.com/java-random-string
+    public String generateShortCode() {
+
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 5;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+
+        return buffer.toString();
+    }
+
+    public String asyncGenerateTransferCode(String username) {
+        String shortcode = generateShortCode();
+        Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
+                .index(INDEX)
+                .type(TYPE_TRANSFER)
+                .build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                // Return the short code
+                return shortcode;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
     /**
      * Gets all of the assigned users (patient) this the current user is taking are of.
      * @param providerId The Care Provider's username
@@ -389,74 +456,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         return usernameList;
     }
 
-    private List<String> asyncTransferUser(String shortCode) {
-
-        String query = "{ \"query\" : \n" +
-                "{ \"match\" :\n" +
-                "{ \"shortcode\" : \"" + shortCode + "\" }}}";
-
-        Search search = new Search.Builder(query)
-                .addIndex(INDEX)
-                .addType(TYPE_TRANSFER)
-                .build();
-
-        ArrayList<String> usernameList = new ArrayList<>();
-
-        try {
-            JestResult result = client.execute(search);
-            if (result.isSucceeded()) {
-                List<TransferDataAdapter> transferData = result.getSourceAsObjectList(TransferDataAdapter.class);
-                for (TransferDataAdapter t: transferData) {
-                    usernameList.add(t.getUsername());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return usernameList;
-    }
-
-
-    // Generates a random 5 character string.
-    // Credit to:  Eugen Paraschiv, Generate Random Bounded String with Plain Java
-    // Link: https://www.baeldung.com/java-random-string
-    public String generateShortCode() {
-
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 5;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(targetStringLength);
-        for (int i = 0; i < targetStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-
-        return buffer.toString();
-    }
-
-    public String asyncGenerateTransferCode(String username) {
-        String shortcode = generateShortCode();
-        Index index = new Index.Builder(new TransferDataAdapter(shortcode, username))
-                .index(INDEX)
-                .type(TYPE_TRANSFER)
-                .build();
-
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                // Return the short code
-                return shortcode;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
     @Override
     public UserModel findUser(String username) {
         // when adding a user, a query should be done
@@ -519,8 +518,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     public void editUser(UserModel user) {
 
     }
-
-    // TODO: Add all of the functions that are to call the assignment of functions
 
     @Override
     public ArrayList<UserModel> getAssignedUsers(String providerID) {
@@ -670,56 +667,6 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
     }
 
     /**
-     * Queries for the list of user assignments
-     */
-    private class FindAssignedUserTask extends AsyncTask<String, Void, ArrayList<Pair<String, String>>> {
-        protected ArrayList<Pair<String, String>> doInBackground(String... providerIDs) {
-            ArrayList<Pair<String, String>> ids = new ArrayList<>();
-            for (String providerID: providerIDs) {
-                ids.addAll(asyncGetAssignedUsers(providerID));
-            }
-            return ids;
-        }
-    }
-
-    private class AddAssignedUserTask extends AsyncTask<Pair<String, String>, Void, Void> {
-        protected Void doInBackground(Pair<String, String>... pairs) {
-            for (Pair<String, String> assignment: pairs) {
-                asyncAddAssignedUser(assignment.first, assignment.second);
-            }
-            return null;
-        }
-    }
-
-    private class GenerateAssignmentCodeTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... params) {
-
-            for (String username: params) {
-                String shortcode = asyncGenerateAssignmentCode(username);
-                if (shortcode.compareTo("") != 0) {
-                    return shortcode;
-                }
-            }
-            return null;
-        }
-    }
-
-    private class GetAssignmentCodeUserTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... params) {
-
-            ArrayList<String> usernames = new ArrayList<>();
-            for (String shortCode: params) {
-                usernames.addAll(asyncGetCodeAssignmentUser(shortCode));
-            }
-            if(!usernames.isEmpty()) {
-                return usernames.get(0);
-            }
-
-            return null;
-        }
-    }
-
-    /**
      * Gets the record for each given problemID.
      */
     private class GetRecordTask extends AsyncTask<ProblemModel, Void, ArrayList<RecordModel>> {
@@ -795,6 +742,15 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
         }
     }
 
+//    private class SearchRecordsTask extends AsyncTask<String, Void, RecordModel> {
+//        protected Void doInBackground(String... params) {
+//            for (String term : params) {
+//                asyncSearchRecords(term);
+//            }
+//            return null;
+//        }
+//    }
+
     private class TransferAccountTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... params) {
 
@@ -822,4 +778,55 @@ public class ElasticSearchIO implements UserModelIO, ProblemModelIO, RecordModel
             return null;
         }
     }
+
+    /**
+     * Queries for the list of user assignments
+     */
+    private class FindAssignedUserTask extends AsyncTask<String, Void, ArrayList<Pair<String, String>>> {
+        protected ArrayList<Pair<String, String>> doInBackground(String... providerIDs) {
+            ArrayList<Pair<String, String>> ids = new ArrayList<>();
+            for (String providerID: providerIDs) {
+                ids.addAll(asyncGetAssignedUsers(providerID));
+            }
+            return ids;
+        }
+    }
+
+    private class AddAssignedUserTask extends AsyncTask<Pair<String, String>, Void, Void> {
+        protected Void doInBackground(Pair<String, String>... pairs) {
+            for (Pair<String, String> assignment: pairs) {
+                asyncAddAssignedUser(assignment.first, assignment.second);
+            }
+            return null;
+        }
+    }
+
+    private class GenerateAssignmentCodeTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            for (String username: params) {
+                String shortcode = asyncGenerateAssignmentCode(username);
+                if (shortcode.compareTo("") != 0) {
+                    return shortcode;
+                }
+            }
+            return null;
+        }
+    }
+
+    private class GetAssignmentCodeUserTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+
+            ArrayList<String> usernames = new ArrayList<>();
+            for (String shortCode: params) {
+                usernames.addAll(asyncGetCodeAssignmentUser(shortCode));
+            }
+            if(!usernames.isEmpty()) {
+                return usernames.get(0);
+            }
+
+            return null;
+        }
+    }
+
 }

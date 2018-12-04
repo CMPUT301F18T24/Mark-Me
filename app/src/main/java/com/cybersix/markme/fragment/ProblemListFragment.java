@@ -61,6 +61,7 @@ public class ProblemListFragment extends ListFragment {
 
     private ArrayAdapter<ProblemModel> problemListAdapter = null;
     private ProblemController controllerInstance = ProblemController.getInstance();
+    private ArrayList<ProblemModel> problemsToDisplay = new ArrayList<>();
     private List<String> ShowHist;
     private ArrayAdapter<String> adapter;
 
@@ -110,8 +111,7 @@ public class ProblemListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getTitle().setText("List of Problems");
-
+        getTitle().setText(R.string.list_of_prob);
 
         ShowHist = new ArrayList<String>(readHistory());
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line,ShowHist);
@@ -134,6 +134,7 @@ public class ProblemListFragment extends ListFragment {
                 ShowHist.clear();
                 ShowHist.addAll(readHistory());
                 adapter.notifyDataSetChanged();
+                searchProblems();
             }
         });
 
@@ -144,24 +145,30 @@ public class ProblemListFragment extends ListFragment {
             }
         });
 
-//         we are going to set the listener for the list view
+        // we are going to set the listener for the list view
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // the user is going to select the problem that they want to view
-                controllerInstance.setSelectedProblem(position);
+
                 Bundle bundle = new Bundle();
-                bundle.putInt(EXTRA_PROBLEM_INDEX, position);
+                int recordIndex = 0;
+                for (int i = 0; i < controllerInstance.getProblems().size(); i++){
+                    if (controllerInstance.getProblems().get(i).equals(problemsToDisplay.get(position))){
+                        recordIndex = i;
+                    }
+                }
+
+                controllerInstance.setSelectedProblem(recordIndex);
+                bundle.putInt(EXTRA_PROBLEM_INDEX, recordIndex);
                 NavigationController.getInstance()
                         .switchToFragment(RecordListFragment.class, bundle);
-
 
             }
 
         });
 
-        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, DataModel.getInstance().getProblems());
-        getListView().setAdapter(problemListAdapter);
+        updateUI();
     }
 
     @Override
@@ -172,17 +179,53 @@ public class ProblemListFragment extends ListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
-            update(
-                    intent.getStringExtra(ProblemCreationActivity.EXTRA_TITLE),
-                    intent.getStringExtra(ProblemCreationActivity.EXTRA_DESCRIPTION)
-            );
+            controllerInstance.createNewProblem(intent.getStringExtra(ProblemCreationActivity.EXTRA_TITLE),
+                                      intent.getStringExtra(ProblemCreationActivity.EXTRA_DESCRIPTION));
+            updateUI();
         }
     }
 
-    public void update(String title, String description) {
-        ProblemController instance = ProblemController.getInstance();
-        instance.createNewProblem(title, description);
-//        controllerInstance.loadProblemData();
+    // Searches with the specified term but it does not handle updates to the data.
+    // Browsing back to this fragment will reset the search.
+    // Also doesn't do multiple searches well.
+    public void searchProblems() {
+
+        // Start off fresh.
+        updateUI();
+
+        // Get the search term
+        String term = getSearchField().getText().toString().trim().toLowerCase();
+        ArrayList<ProblemModel> searchedProblems = new ArrayList<>();
+
+        Log.d("vishal_search", term);
+
+        // Only perform searching if something was given in search term.
+        if (term.compareTo("") != 0) {
+            // Iterate through all records to see if we should display them.
+            for (ProblemModel problem : problemsToDisplay) {
+                if (problem.getTitle().trim().toLowerCase().contains(term)) {
+                    searchedProblems.add(problem);
+                }
+            }
+
+            // Add only the searched records.
+            problemsToDisplay = new ArrayList<ProblemModel>();
+            problemsToDisplay.addAll(searchedProblems);
+
+            // Update the display
+            problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, problemsToDisplay);
+            getListView().setAdapter(problemListAdapter);
+            problemListAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void updateUI() {
+
+        problemsToDisplay = new ArrayList<ProblemModel>();
+        problemsToDisplay.addAll(controllerInstance.getProblems());
+        problemListAdapter = new ArrayAdapter<ProblemModel>(getActivity(), R.layout.list_item, problemsToDisplay);
+        getListView().setAdapter(problemListAdapter);
         problemListAdapter.notifyDataSetChanged();
     }
 }

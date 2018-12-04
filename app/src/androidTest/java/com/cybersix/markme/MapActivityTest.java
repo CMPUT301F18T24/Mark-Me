@@ -47,7 +47,7 @@ public class MapActivityTest {
 
 
     /*
-        Use Case: 19
+        Use Case: 19, 26
      */
     @Test
     public void testMapAllRecords(){

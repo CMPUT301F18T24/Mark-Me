@@ -87,4 +87,26 @@
     <string name="registration_failure">Registration Failed!</string>
     <string name="transfer_account_success">Transfer Successful!</string>
     <string name="transfer_account_failure">Transfer failed.</string>
+    <string name="signup_anways_prompt">Sign In Offline</string>
+    <string name="logging_in_assurance">Logging you in...</string>
+    <string name="record_description">Record Description:</string>
+    <string name="record_name">Record Name:</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_record">Add Record</string>
+    <string name="unlisted">Unlisted:</string>
+    <string name="description">Description</string>
+    <string name="location">Location:</string>
+    <string name="record_information">Record Information</string>
+    <string name="view_location">View Location</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="comment">Comment</string>
+    <string name="view_photos">View Photos</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="body_location">Body Location</string>
+    <string name="About_mark_me">About MarkMe</string>
+    <string name="total_frag_name">Total:</string>
+    <string name="unlisted_frag_name">Unlisted:</string>
+    <string name="list_of_prob">List of Problems</string>
+    <string name="recorf_info">Record Info</string>
+    <string name="assign_myself">Assign Myself</string>
 </resources>

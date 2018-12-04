@@ -67,6 +67,15 @@ public class UserProfileController {
         }
     }
 
+    // Assumption: username is never null
+    public void setUsername(String username) {
+        try {
+            model.setUsername(username);
+        } catch (UsernameTooShortException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void modifyEmail(UserObserver view) {
         if (model == null || view == null || view.getEmailView() == null)
             return;
@@ -82,9 +91,6 @@ public class UserProfileController {
         this.model = model;
     }
 
-    public void updateRemoteModel() {
-        // TODO: Update the model information on elastic search
-    }
 
     // Attempts to add a model to the elasticsearch database.
     // Inputs: userID, email, phone, password - User information

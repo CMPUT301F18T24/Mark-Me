@@ -234,7 +234,7 @@ public class UserAssignmentFragment extends Fragment {
         builder.setTitle("Generate Assignment Code");
         String code = ESController.generateAssignmentCode(currentUser.getUsername());
         builder.setMessage("Please send and notify the care provider the code that has been generated.\n" +
-        "Assignment code: " + code);
+                "Assignment code: " + code);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -262,7 +262,7 @@ public class UserAssignmentFragment extends Fragment {
                     DataModel instance = DataModel.getInstance();
                     instance.setSelectedPatient((Patient) selectedUser);
                     Log.d("Jose-Set Patient", "The patient: " + selectedUser.toString() +
-                    " has been selected!");
+                            " has been selected!");
                     return;
 
                 }
