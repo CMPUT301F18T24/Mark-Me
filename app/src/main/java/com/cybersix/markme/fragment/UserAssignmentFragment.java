@@ -12,21 +12,33 @@
  */
 package com.cybersix.markme.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cybersix.markme.R;
+import com.cybersix.markme.actvity.MainActivity;
 import com.cybersix.markme.actvity.UserActivityAddPopUp;
 import com.cybersix.markme.controller.NavigationController;
+import com.cybersix.markme.controller.UserProfileController;
+import com.cybersix.markme.io.ElasticSearchIO;
+import com.cybersix.markme.model.DataModel;
+import com.cybersix.markme.model.Patient;
 import com.cybersix.markme.model.UserModel;
 
 import java.util.ArrayList;
@@ -37,6 +49,9 @@ public class UserAssignmentFragment extends Fragment {
     private ArrayAdapter<UserModel> userListAdapter;
     private ArrayList<UserModel> userList = new ArrayList<UserModel>();
     private ListView assignedUserListView;
+    private int selectedPosition;
+    private UserModel currentUser = null;
+    private ElasticSearchIO ESController = ElasticSearchIO.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,49 +64,75 @@ public class UserAssignmentFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // set up all of the buttons that are used within this activity
         Button addButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_addAssignUserButton);
-        Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
+//        Button removeButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_removeUserButton);
+        Button generateButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_GenerateCode);
+        Button checkButton = (Button) getActivity().findViewById(R.id.fragment_user_assignment_checkPatient);
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
+        currentUser = ((MainActivity) getActivity()).getUser();
+//        removeButton.setVisibility(View.GONE);
+//        if (currentUser.getUserType().compareTo("Patient") == 0) {
+//            // patient should not be able to remove anything
+//            checkButton.setVisibility(View.GONE);
+//        }
 
-        // TODO: Will be removed once server functionality is implemented
-        for (int i = 0; i < 15; i++){
-            String tempUsername = "UserPerson" + Integer.toString(i);
-            String tempPassword = "1234";
-            String tempID = "Fake ID " + Integer.toString(i);
-            try {
-                UserModel tempUser = new UserModel(tempUsername);
-                tempUser.setUserId(tempID);
-                userList.add(tempUser);
-            }
-            catch (Exception e) {
-                // do nothing
-            }
-        }
+        // get the list of users that are from the elastic search database
+        userList.addAll(ESController.getAssignedUsers(currentUser.getUserId()));
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // This will open the add user popup
-                Intent addUserIntent = new Intent(getActivity(), UserActivityAddPopUp.class);
-                startActivity(addUserIntent);
+//                Intent addUserIntent = new Intent(getActivity(), UserActivityAddPopUp.class);
+//                startActivity(addUserIntent);
+                addUser();
             }
         });
 
-        removeButton.setOnClickListener(new View.OnClickListener() {
+//        removeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // the user has selected a user from the list view and wants to remove the user
+//                // ask for a popup whether or not the user wishes to continue
+//
+//                removeUser();
+//            }
+//        });
+
+        generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // the user has selected a user from the list view and wants to remove the user
-                removeUser();
+                // generate the code and show it in a dialog popup
+                generateAssignmentCode();
+            }
+        });
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // set the user profile to "become" the patient
+                checkPatient();
             }
         });
 
         TextView title = getActivity().findViewById(R.id.fragment_title_bar_fragmentTitle);
         View returnButton = getActivity().findViewById(R.id.fragment_title_bar_returnButton);
 
-        title.setText(R.string.assign_myself);
+        title.setText("Assign Myself");
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavigationController.getInstance().switchToFragment(SettingsFragment.class);
+            }
+        });
+
+        //TODO: still need to set the "selected" animation to be there
+        assignedUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // this is when one of the selected items within the list view is selected
+                view.setSelected(true);
+                assignedUserListView.setSelected(true);
+                selectedPosition = position;
             }
         });
     }
@@ -116,17 +157,140 @@ public class UserAssignmentFragment extends Fragment {
 
     private void removeUser() {
         // TODO: add a prompt asking if the user is sure they want to remove the item
+        // TODO: functionality may not be present in final solution
         if (assignedUserListView.isSelected()) {
+            assignedUserListView.setSelected(false);
             // get and remove the selected item
-            try {
-                userList.remove(assignedUserListView.getSelectedItemPosition());
-                // save the list into the server
-                // IOUtilityController.saveUser(userList);
+            UserModel removeUser = userList.get(selectedPosition);
+            // build the warning dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("Are you sure?");
+            builder.setMessage("Are you sure you want to remove this patient?\n" + removeUser.toString());
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        userList.remove(selectedPosition);
+                        userListAdapter.notifyDataSetChanged();
+                        //TODO: save the list into the server
+                        Log.d("Remove Assign User", "The user assignment has been removed");
+                    }
+                    catch (Exception e) {
+                        // display an error when removing the list item
+                        e.printStackTrace();
+                    }
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // return null to the activity
+                    return;
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+    private void addUser() {
+        final EditText patientCodeEdit;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Assign a patient");
+        builder.setMessage("Please enter the generated patient assignment code below...");
+        patientCodeEdit = new EditText(this.getContext());
+        builder.setView(patientCodeEdit);
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // get the patient ID from the server, then add the assignment to the database
+                // TODO: get the patient ID from the server based from the code.
+                // String patientID = getPatientID();
+                // for now the patient ID is hard coded
+                String code = patientCodeEdit.getText().toString();
+                String patientUsername = ESController.getUserAssignmentCode(code);
+                // now add the assigned to elastic search
+                if (patientUsername != null) {
+                    ESController.addAssignedUser(patientUsername, currentUser.getUserId());
+                    userList.add(ESController.findUser(patientUsername));
+                    userListAdapter.notifyDataSetChanged();
+                }
             }
-            catch (Exception e) {
-                // display an error when removing the list item
-                // TODO: display an error prompt
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+                return;
             }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void generateAssignmentCode() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Generate Assignment Code");
+        String code = ESController.generateAssignmentCode(currentUser.getUsername());
+        builder.setMessage("Please send and notify the care provider the code that has been generated.\n" +
+                "Assignment code: " + code);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+                return;
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void checkPatient() {
+        // make sure something is selected
+        if (assignedUserListView.isSelected()) {
+            assignedUserListView.setSelected(false);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("Checking Patient");
+            final UserModel selectedUser = userList.get(selectedPosition);
+            builder.setMessage("Are you sure you want to become patient?\n\n" + selectedUser.toString());
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Become the patient and put it in the data model
+                    DataModel instance = DataModel.getInstance();
+                    instance.setSelectedPatient((Patient) selectedUser);
+                    Log.d("Jose-Set Patient", "The patient: " + selectedUser.toString() +
+                            " has been selected!");
+                    return;
+
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Don't set the user profile to the selected patient
+                    return;
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("No patient selection!");
+            builder.setMessage("Please select a patient from the patient list.");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing
+                    return;
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 }
