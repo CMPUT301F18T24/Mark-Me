@@ -70,10 +70,10 @@ public class UserAssignmentFragment extends Fragment {
         assignedUserListView = (ListView) getActivity().findViewById(R.id.fragment_user_assignment_listView);
         currentUser = ((MainActivity) getActivity()).getUser();
 //        removeButton.setVisibility(View.GONE);
-//        if (currentUser.getUserType().compareTo("Patient") == 0) {
-//            // patient should not be able to remove anything
-//            checkButton.setVisibility(View.GONE);
-//        }
+        if (currentUser.getUserType().compareTo("Patient") == 0) {
+            // patient should not be able to remove anything
+            checkButton.setVisibility(View.GONE);
+        }
 
         // get the list of users that are from the elastic search database
         userList.addAll(ESController.getAssignedUsers(currentUser.getUserId()));
