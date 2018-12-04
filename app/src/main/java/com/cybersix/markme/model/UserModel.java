@@ -203,7 +203,7 @@ public class UserModel extends Observable {
         if (userId == null)
             return "null";
 
-        return userId.toString() + ": " + username.toString();
+        return username.toString() + "- Contact Information:\nPhone: " + phone + ", e-mail: " + email;
     }
 
     public void addView(UserObserver view) {
