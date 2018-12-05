@@ -15,6 +15,7 @@ package com.cybersix.markme.actvity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +27,10 @@ import com.cybersix.markme.controller.CameraPreview;
 import com.cybersix.markme.utils.GuiUtils;
 import com.cybersix.markme.R;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -46,39 +50,83 @@ public class LiveCameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_camera);
         GuiUtils.setFullScreen(this);
 
-        textureView = findViewById(R.id.liveCameraView);
-        toggleViewButton = findViewById(R.id.toggleCameraButton);
-        captureButton = findViewById(R.id.captureCameraButton);
-        overlayView = findViewById(R.id.overlayView);
+//        textureView = findViewById(R.id.liveCameraView);
+//        toggleViewButton = findViewById(R.id.toggleCameraButton);
+//        captureButton = findViewById(R.id.captureCameraButton);
+//        overlayView = findViewById(R.id.overlayView);
+//
+//        Intent intent = getIntent();
+//        int overlay_id = intent.getIntExtra(OVERLAY_RESOURCE_ID, 0);
+//        if (overlay_id != 0) {
+//            overlayView.setImageResource(overlay_id);
+//            overlayView.setAlpha((float) 0.75);
+//        }
+//
+//        cameraPreview = new CameraPreview(this, textureView);
+//        cameraPreview.setToggleViewButton(toggleViewButton);
+//        cameraPreview.setCaptureButton(captureButton);
+//        cameraPreview.setOnCaptureListener(new CameraPreview.OnCaptureListener() {
+//                    @Override
+//                    public void onCapture(Bitmap bitmap) {
+//                        Intent data = new Intent();
+//
+//                        // Empirical result: 75% seems to be working out well.
+//                        byte[] bytes = compressBitmap(bitmap, IMAGE_QUALITY);
+//
+//                        // Debug purposes. Use this for testing compression quality. Comment out
+//                        // everything else to avoid crashes due to bitmaps getting recycled.
+//                        // compressionTest(bitmap, 10);
+//
+//                        data.putExtra(EXTRA_IMAGE, bytes);
+//                        setResult(RESULT_OK, data);
+//                        finish();
+//
+//                    }
+//        });
 
-        Intent intent = getIntent();
-        int overlay_id = intent.getIntExtra(OVERLAY_RESOURCE_ID, 0);
-        if (overlay_id != 0) {
-            overlayView.setImageResource(overlay_id);
-            overlayView.setAlpha((float) 0.75);
+        testEVERYTHING();
+    }
+
+    public void testEVERYTHING() {
+
+        // 1-12 real quick boi
+        for (int i = 1; i <= 12; i++) {
+            // Generate the appropriate standard file name.
+            String filename = getApplicationContext().getFilesDir() + "/picsum.photos_" + i + ".jpg";
+            File file = new File(filename);
+
+            try { // Open the file.
+
+                // Read and decode the file
+                //BitmapFactory.Options options = new BitmapFactory.Options();
+                //options.inPreferredConfig = Bitmap.Config.RGB_565;
+                Bitmap myBoi =  BitmapFactory.decodeStream(new FileInputStream(file)); // Let android decode it
+
+                // Print the original sizes
+                ByteArrayOutputStream supIn = new ByteArrayOutputStream();
+                myBoi.compress(Bitmap.CompressFormat.JPEG, 75, supIn);
+                byte[] bytesTestIn = supIn.toByteArray();
+                Log.d("Vishal_B_" + i, Integer.toString(bytesTestIn.length));
+
+                // Scale the bitmap
+                Bitmap newBitmap = scaleImage(myBoi);
+
+                // Output the bitmap with request quality.
+                ByteArrayOutputStream supOut = new ByteArrayOutputStream();
+                newBitmap.compress(Bitmap.CompressFormat.JPEG, 75, supOut);
+                byte[] bytesTest = supOut.toByteArray();
+
+                newBitmap.recycle(); // Destroy the original bitmap.
+
+                Log.d("Vishal_A_" + i, Integer.toString(bytesTest.length));
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        cameraPreview = new CameraPreview(this, textureView);
-        cameraPreview.setToggleViewButton(toggleViewButton);
-        cameraPreview.setCaptureButton(captureButton);
-        cameraPreview.setOnCaptureListener(new CameraPreview.OnCaptureListener() {
-                    @Override
-                    public void onCapture(Bitmap bitmap) {
-                        Intent data = new Intent();
 
-                        // Empirical result: 75% seems to be working out well.
-                        byte[] bytes = compressBitmap(bitmap, IMAGE_QUALITY);
-
-                        // Debug purposes. Use this for testing compression quality. Comment out
-                        // everything else to avoid crashes due to bitmaps getting recycled.
-                        // compressionTest(bitmap, 10);
-
-                        data.putExtra(EXTRA_IMAGE, bytes);
-                        setResult(RESULT_OK, data);
-                        finish();
-
-                    }
-        });
     }
 
     public byte[] compressBitmap(Bitmap bitmap,  int quality) {
@@ -88,6 +136,7 @@ public class LiveCameraActivity extends AppCompatActivity {
 
         // The quality was chosen empirically, additional testing is required.
         newBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+
 
         return out.toByteArray();
     }
