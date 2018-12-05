@@ -111,4 +111,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/button_tests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Run tests!"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_body_bodyCameraButton"
+            app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
